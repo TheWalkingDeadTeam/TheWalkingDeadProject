@@ -1,6 +1,0 @@
-hello
-sdfsdf
-hello from local
-hello from remote
-asdasd
-sdfsfd
