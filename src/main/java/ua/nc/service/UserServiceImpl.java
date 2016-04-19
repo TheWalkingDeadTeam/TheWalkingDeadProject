@@ -10,7 +10,7 @@ import ua.nc.entity.User;
 public class UserServiceImpl implements UserService {
     @Override
     public User getUser(String email) {
-        User user = new User();
+        User user;
         try {
             UserDB userDB = new UserDB();
             user = userDB.findByEmail(email);

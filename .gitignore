@@ -1,7 +1,9 @@
-$cat .gitignore
-.svn
+db.txt
 .idea
 *.iml
 out
+target
+README.md
 log
+TheWalkingDeadProject.iml
 .log

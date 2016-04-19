@@ -15,8 +15,8 @@ import java.util.Set;
  */
 public class UserDB {
     private static PostgresConnectionPool connectionPool = new PostgresConnectionPool();
-    private final String sqlFindByEmail= "SELECT * FROM public.user u WHERE u.email = ?";
-    private final String sqlFindRoleByEmail= "SELECT r.name FROM public.user u " +
+    private final String sqlFindByEmail = "SELECT * FROM public.user u WHERE u.email = ?";
+    private final String sqlFindRoleByEmail = "SELECT r.name FROM public.user u " +
             "JOIN public.user_role ur on u.user_id = ur.user_id " +
             "JOIN public.role r ON ur.role_id = r.role_id " +
             "WHERE u.email = ?";
