@@ -1,5 +1,6 @@
 package ua.nc.db;
 
+import ua.nc.connection.PostgresConnectionPool;
 import ua.nc.entity.User;
 import ua.nc.entity.enums.Role;
 

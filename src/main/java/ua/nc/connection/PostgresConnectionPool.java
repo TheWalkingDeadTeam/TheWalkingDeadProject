@@ -1,4 +1,4 @@
-package ua.nc.db;
+package ua.nc.connection;
 
 import org.postgresql.ds.PGPoolingDataSource;
 
