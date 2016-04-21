@@ -1,6 +1,7 @@
-package ua.nc.db;
+package ua.nc.dao.postgresql;
 
 import org.postgresql.ds.PGPoolingDataSource;
+import ua.nc.dao.pool.ConnectionPool;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -8,7 +9,7 @@ import java.sql.SQLException;
 /**
  * Created by Pavel on 18.04.2016.
  */
-public class PostgresConnectionPool {
+public class PostgresConnectionPool extends ConnectionPool {
     private static PostgresConnectionPool instance;
     private PGPoolingDataSource dataSource;
 
