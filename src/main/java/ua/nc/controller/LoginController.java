@@ -23,7 +23,7 @@ public class LoginController {
 
     @RequestMapping(value = {"/", "/login"}, method = RequestMethod.GET)
     public String login(Model model) {
-        return "/WEB-INF/jsp/login.jsp";
+        return "login";
     }
 
     @RequestMapping(value = {"/register"}, method = RequestMethod.POST)
