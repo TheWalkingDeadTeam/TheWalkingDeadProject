@@ -10,26 +10,30 @@ import java.sql.SQLException;
  * Created by Pavel on 18.04.2016.
  */
 public class PostgreConnectionPool extends ConnectionPool {
-    private static PostgreConnectionPool instance;
+    
+    private static volatile PostgreConnectionPool instance;
     private PGPoolingDataSource dataSource;
 
-    public PostgreConnectionPool() {
+    private PostgreConnectionPool() {
         dataSource = new PGPoolingDataSource();
         dataSource.setServerName("130.211.149.11");
         dataSource.setDatabaseName("wd");
         dataSource.setUser("postgres");
         dataSource.setPassword("netcrackerpwd");
     }
-
-
-    public static synchronized PostgreConnectionPool getInstance() {
-        if (instance == null) {
-            return new PostgreConnectionPool();
-        } else {
-            return instance;
-        }
-    }
-
+    
+    public static PostgreConnectionPool getInstance() {
+		PostgreConnectionPool localInstance = instance;
+		if (localInstance == null) {
+			synchronized (PostgreConnectionPool.class) {
+				localInstance = instance;
+				if (localInstance == null) {
+					instance = localInstance = new PostgreConnectionPool();
+				}
+			}
+		}
+		return localInstance;
+	}
 
     public Connection getConnection() throws SQLException {
         Connection connection = null;
