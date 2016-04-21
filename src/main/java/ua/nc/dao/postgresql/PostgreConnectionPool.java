@@ -9,11 +9,11 @@ import java.sql.SQLException;
 /**
  * Created by Pavel on 18.04.2016.
  */
-public class PostgresConnectionPool extends ConnectionPool {
-    private static PostgresConnectionPool instance;
+public class PostgreConnectionPool extends ConnectionPool {
+    private static PostgreConnectionPool instance;
     private PGPoolingDataSource dataSource;
 
-    public PostgresConnectionPool() {
+    public PostgreConnectionPool() {
         dataSource = new PGPoolingDataSource();
         dataSource.setServerName("130.211.149.11");
         dataSource.setDatabaseName("wd");
@@ -22,9 +22,9 @@ public class PostgresConnectionPool extends ConnectionPool {
     }
 
 
-    public static synchronized PostgresConnectionPool getInstance() {
+    public static synchronized PostgreConnectionPool getInstance() {
         if (instance == null) {
-            return new PostgresConnectionPool();
+            return new PostgreConnectionPool();
         } else {
             return instance;
         }

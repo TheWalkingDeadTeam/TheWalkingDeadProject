@@ -2,6 +2,7 @@ package ua.nc.dao.factory;
 
 import ua.nc.dao.UserDAO;
 import ua.nc.dao.enums.DataBaseType;
+import ua.nc.dao.postgresql.PostgreDAOFactory;
 
 /**
  * Created by Pavel on 21.04.2016.

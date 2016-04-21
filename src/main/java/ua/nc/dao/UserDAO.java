@@ -6,7 +6,7 @@ import ua.nc.entity.User;
 /**
  * Created by Pavel on 21.04.2016.
  */
-public abstract class UserDAO extends AbstractDAO {
+public abstract class UserDAO extends GenericDAO {
     public abstract User findByEmail() throws DAOException;
 
 }

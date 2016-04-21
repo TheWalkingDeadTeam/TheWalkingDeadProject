@@ -8,8 +8,9 @@ import ua.nc.dao.pool.ConnectionPool;
 /**
  * Created by Pavel on 21.04.2016.
  */
-public class PostgreDAOFacoty extends DAOFactory {
+public class PostgreDAOFactory extends DAOFactory {
     private static ConnectionPool connectionPool = ConnectionPool.getConnectionPool(DataBaseType.POSTGRESQL);
+
     @Override
     public UserDAO getUserDAO() {
         return new PostgreUserDAO(connectionPool);
