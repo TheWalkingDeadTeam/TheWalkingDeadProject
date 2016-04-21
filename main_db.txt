@@ -70,10 +70,9 @@ CREATE TABLE Course_Enrollment_Session (
 );
 
 CREATE TABLE Interviewer_Participation (
-  Int_Part_ID serial PRIMARY KEY,
   System_User_ID int NOT NULL references System_User(System_User_ID)  ON DELETE RESTRICT ON UPDATE CASCADE,
   CES_ID int NOT NULL references Course_Enrollment_Session(CES_ID)  ON DELETE RESTRICT ON UPDATE CASCADE,
-  UNIQUE(System_User_ID, CES_ID)
+  PRIMARY KEY(System_User_ID, CES_ID)
 );
 
 CREATE TABLE Application (
@@ -85,13 +84,12 @@ CREATE TABLE Application (
 );
 
 CREATE TABLE Interviewee (
-  Interviewee_ID serial PRIMARY KEY,
   Application_ID int NOT NULL references Application(Application_ID) ON DELETE RESTRICT ON UPDATE CASCADE,
   Interview_Time timestamp NOT NULL,
   Special_mark int,
   Dev_Feedback_ID int NOT NULL references Feedback(Feedback_ID) ON DELETE RESTRICT ON UPDATE CASCADE,
   HR_Feedback_ID int NOT NULL references Feedback(Feedback_ID) ON DELETE RESTRICT ON UPDATE CASCADE,
-  UNIQUE(Application_ID)
+  PRIMARY KEY(Application_ID)
 );
 
 CREATE TABLE List (
