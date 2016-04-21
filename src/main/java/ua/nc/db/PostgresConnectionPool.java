@@ -18,7 +18,6 @@ public class PostgresConnectionPool {
         dataSource.setDatabaseName("wd");
         dataSource.setUser("postgres");
         dataSource.setPassword("netcrackerpwd");
-        dataSource.setMaxConnections(10);
     }
 
 

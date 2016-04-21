@@ -7,4 +7,6 @@ import ua.nc.entity.User;
  */
 public interface UserService {
     User getUser(String email);
+
+    User createUser(User user);
 }
