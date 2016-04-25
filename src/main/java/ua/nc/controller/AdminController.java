@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class AdminController {
     @RequestMapping(value = {"/admin"}, method = RequestMethod.GET)
     public String login(Model model) {
-        return "/WEB-INF/jsp/admin.jsp";
+        return "admin";
     }
 
 }

@@ -1,35 +1,38 @@
-package ua.nc.db;
+package ua.nc.dao.postgresql;
 
+import ua.nc.dao.AppSetting;
+import ua.nc.dao.UserDAO;
+import ua.nc.dao.exception.DAOException;
+import ua.nc.dao.pool.ConnectionPool;
 import ua.nc.entity.User;
-import ua.nc.entity.enums.Role;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashSet;
-import java.util.Set;
+
 
 /**
- * Created by Pavel on 18.04.2016.
+ * Created by Pavel on 21.04.2016.
  */
-public class UserDB {
-    private static PostgresConnectionPool connectionPool = new PostgresConnectionPool();
-    private final String sqlFindByEmail = "SELECT * FROM public.user u WHERE u.email = ?";
-    private final String sqlFindRoleByEmail = "SELECT r.name FROM public.user u " +
-            "JOIN public.user_role ur on u.user_id = ur.user_id " +
-            "JOIN public.role r ON ur.role_id = r.role_id " +
-            "WHERE u.email = ?";
+public class PostgreUserDAO extends UserDAO {
+    /*    private static final Logger LOGGER = Logger.getLogger(PostgreUserDAO.class);*/
+    private final ConnectionPool connectionPool;
 
+    public PostgreUserDAO(ConnectionPool connectionPool) {
+        this.connectionPool = connectionPool;
+    }
 
-    public User findByEmail(String email) throws SQLException {
+    @Override
+    public User findByEmail(String email) throws DAOException {
+        String sql = AppSetting.get("user.findByEmail");
         User user = null;
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
             connection = connectionPool.getConnection();
-            statement = connection.prepareStatement(sqlFindByEmail);
+            statement = connection.prepareStatement(sql);
             statement.setString(1, email);
             resultSet = statement.executeQuery();
             resultSet.next();
@@ -40,7 +43,8 @@ public class UserDB {
             user.setPassword(resultSet.getString("password"));
             System.out.println(user.getName());
         } catch (SQLException e) {
-            throw e;
+            System.out.println("User with " + email + " not find in DB");
+            throw new DAOException(e);
         } finally {
             try {
                 if (resultSet != null)
@@ -48,31 +52,30 @@ public class UserDB {
                 if (statement != null)
                     statement.close();
                 if (connection != null)
-                    connection.close();
+                    connectionPool.putConnection(connection);
             } catch (Exception e) {
-                throw e;//toDo log4j
+                throw new DAOException(e);
             }
         }
         return user;
     }
 
-    public Set<Role> findRoleByEmail(String email) throws SQLException {
-        Set<Role> roles = new HashSet<>();
+    @Override
+    public void createUser(User user) throws DAOException {
+        String sql = AppSetting.get("user.createUser");
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
             connection = connectionPool.getConnection();
-            statement = connection.prepareStatement(sqlFindRoleByEmail);
-            statement.setString(1, email);
-            resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                String role = resultSet.getString("name");
-                System.out.println(role);
-                roles.add(Role.valueOf(role));
-            }
+            statement = connection.prepareStatement(sql);
+            statement.setString(1, user.getName());
+            statement.setString(2, user.getEmail());
+            statement.setString(3, user.getPassword());
+            statement.executeUpdate();
         } catch (SQLException e) {
-            throw e;
+            System.out.println("User with name" + user.getName() + "  not created");
+            throw new DAOException(e);
         } finally {
             try {
                 if (resultSet != null)
@@ -80,11 +83,10 @@ public class UserDB {
                 if (statement != null)
                     statement.close();
                 if (connection != null)
-                    connection.close();
+                    connectionPool.putConnection(connection);
             } catch (Exception e) {
-                throw e;//toDo log4j
+                throw new DAOException(e);
             }
         }
-        return roles;
     }
 }
