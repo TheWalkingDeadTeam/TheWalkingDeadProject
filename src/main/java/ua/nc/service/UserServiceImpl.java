@@ -19,6 +19,7 @@ public class UserServiceImpl implements UserService {
     private DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
     private UserDAO userDAO = daoFactory.getUserDAO();
     private RoleDAO roleDAO = daoFactory.getRoleDAO();
+    private MailService mailService = new MailServiceImpl();
 
     @Override
     public User getUser(String email) {
@@ -34,6 +35,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(User user) {
+
+
         Md5PasswordEncoder encoder = new Md5PasswordEncoder();
         user.setPassword(encoder.encodePassword(user.getPassword(), null));
         Set<Role> roles = new HashSet<>();
@@ -45,10 +48,15 @@ public class UserServiceImpl implements UserService {
             userDAO.createUser(user);
             System.out.println("Created " + user);
             roleDAO.setRoleToUser(user.getRoles(), user);
+            System.out.println("Error before");
+            mailService.sendMail(user.getEmail(),"Registration","Welcome");
+            System.out.println("Error after");
             return user;
         } catch (DAOException e) {
             System.out.println("DB exception"); //toDo log4j
             return null;
         }
+
+
     }
 }
