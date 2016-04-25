@@ -1,8 +1,6 @@
 package ua.nc.service;
 
-import org.apache.log4j.Logger;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
-import org.springframework.stereotype.Service;
 import ua.nc.dao.RoleDAO;
 import ua.nc.dao.UserDAO;
 import ua.nc.dao.enums.DataBaseType;
@@ -23,8 +21,10 @@ import java.util.Set;
  */
 @Service
 public class UserServiceImpl implements UserService {
-
-//    private static final Logger LOGGER = Logger.getLogger(UserServiceImpl.class);
+    private DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
+    private UserDAO userDAO = daoFactory.getUserDAO();
+    private RoleDAO roleDAO = daoFactory.getRoleDAO();
+    private MailService mailService = new MailServiceImpl();
 
     @Override
     public User getUser(String email) {
@@ -35,16 +35,16 @@ public class UserServiceImpl implements UserService {
         try {
             user = userDAO.findUserByEmail(email);
             user.setRoles(roleDAO.findByEmail(email));
-        } catch (Exception e) {
-//            LOGGER.error(e);
+        } catch (DAOException e) {
+            System.out.println("DB exception"); //toDo log4j
         }
         return user;
     }
 
     @Override
     public User createUser(User user) {
-        Md5PasswordEncoder encoder = new Md5PasswordEncoder();
-        user.setPassword(encoder.encodePassword(user.getPassword(), null));
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        user.setPassword(encoder.encode(user.getPassword()));
         Set<Role> roles = new HashSet<>();
         DAOFactory factory = PostgreDAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
         UserDAO userDAO = factory.getUserDAO();
@@ -52,8 +52,12 @@ public class UserServiceImpl implements UserService {
         try {
             int id = userDAO.create(user);
             roles.add(roleDAO.findByName("ROLE_STUDENT"));
+            for (Role role : roles)
+                System.out.println(role.getName());
             user.setRoles(roles);
+            userDAO.createUser(user);
             roleDAO.setRoleToUser(user.getRoles(), user);
+            mailService.sendMail(user.getEmail(),"Registration","Welcome " + user.getName() + " ! \n NetCracker[TheWalkingDeadTeam] " );
             return user;
         } catch (Exception e) {
 //            LOGGER.error(e);
@@ -92,6 +96,8 @@ public class UserServiceImpl implements UserService {
         } catch (DAOException e) {
 //            LOGGER.error(e);
         }
+
+
         return users;
     }
 

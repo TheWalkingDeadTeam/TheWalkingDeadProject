@@ -1,14 +1,14 @@
 package ua.nc.dao.postgresql;
 
 import org.postgresql.ds.PGPoolingDataSource;
-import ua.nc.dao.exception.DAOException;
 import ua.nc.dao.pool.ConnectionPool;
+import ua.nc.dao.exception.DAOException;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
- * Created by Pavel on 18.04.2016.
+ * Created by Pavel on 25.04.2016.
  */
 public class PostgreConnectionPool extends ConnectionPool {
 
