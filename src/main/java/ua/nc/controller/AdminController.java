@@ -14,5 +14,4 @@ public class AdminController {
     public String login(Model model) {
         return "admin";
     }
-
 }
