@@ -1,5 +1,6 @@
 package ua.nc.dao.postgresql;
 
+import ua.nc.dao.MailDAO;
 import ua.nc.dao.RoleDAO;
 import ua.nc.dao.UserDAO;
 import ua.nc.dao.enums.DataBaseType;
@@ -20,5 +21,10 @@ public class PostgreDAOFactory extends DAOFactory {
     @Override
     public RoleDAO getRoleDAO() {
         return new PostgreRoleDAO(connectionPool);
+    }
+
+    @Override
+    public MailDAO getMailDAO() {
+        return new PostgreMailDAO(connectionPool);
     }
 }
