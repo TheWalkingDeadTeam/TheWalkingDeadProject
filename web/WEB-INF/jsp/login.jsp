@@ -103,6 +103,12 @@
                 <p><sec:authentication property="principal.authorities"/></p>
             </div>
             <p><a class="btn btn-lg btn-danger" href="<c:url value="/logout" />" role="button">Logout</a></p>
+            <p>
+                <form id = "photoUpload" method="post" action="uploadPhoto" enctype="multipart/form-data">
+                    Photo to upload: <input type="file" name="photo" accept="image/jpeg"><br />
+                    <input type="submit" value="Upload"/>
+                </form>
+            </p>
         </sec:authorize>
     </div>
 </div>

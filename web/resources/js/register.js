@@ -15,7 +15,7 @@ $(document).ready(function () {
                 password: $('#password').val()
             }),
             success: function (response) {
-                window.location.href = response.redirect; 
+                window.location.href = response.redirect;
 
             }
         });

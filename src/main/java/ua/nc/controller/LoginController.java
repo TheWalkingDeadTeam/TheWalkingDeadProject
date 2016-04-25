@@ -7,25 +7,42 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.HandlerExceptionResolver;
+import org.springframework.web.servlet.ModelAndView;
 import ua.nc.entity.User;
 import ua.nc.service.UserDetailsServiceImpl;
 import ua.nc.service.UserService;
 import ua.nc.service.UserServiceImpl;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 /**
  * Created by Pavel on 18.04.2016.
  */
 @Controller
-public class LoginController {
+public class LoginController implements HandlerExceptionResolver {
     @Autowired
     @Qualifier("authenticationManager")
     protected AuthenticationManager authenticationManager;
+
+    @Override
+    public ModelAndView resolveException(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) {
+        if (e instanceof MaxUploadSizeExceededException){
+            return new ModelAndView("redirect:/login?photo=toobig");
+        }
+        return new ModelAndView("redirect:/login");
+    }
 
     private final UserService userService = new UserServiceImpl();
 
@@ -48,7 +65,7 @@ public class LoginController {
             System.out.println("success");
             jsonResponse.setRedirect("/login");
         } catch (BadCredentialsException e) {
-            System.out.println("Duthorization deny" + user.getEmail());
+            System.out.println("Authorization deny" + user.getEmail());
             jsonResponse.setRedirect("/login?error");
         }
         return jsonResponse;
@@ -71,6 +88,37 @@ public class LoginController {
             jsonResponse.setRedirect("/login?register=exist");
         }
         return jsonResponse;
+    }
+
+    @RequestMapping(value = {"/uploadPhoto"}, method = RequestMethod.POST, produces = "application/json")
+    public
+    String uploadPhoto(@RequestParam("photo") MultipartFile photo){
+            if (!photo.isEmpty()) {
+                if (!(photo.getOriginalFilename().endsWith(".jpg") || photo.getOriginalFilename().endsWith(".jpeg") ||
+                        photo.getOriginalFilename().endsWith(".png"))) {
+                    return "redirect:/login?photo=wrong";
+                }
+                try {
+                    byte[] photoBytes = photo.getBytes();
+
+                    String resHome = System.getProperty("catalina.home");
+                    UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
+                            .getPrincipal();
+                    String userName = userDetails.getUsername();
+                    int userID = userService.getUser(userName).getId();
+                    File dir = new File(resHome + File.separator + "photos" + File.separator + userID);
+                    if (!dir.exists()) {
+                        dir.mkdirs();
+                    }
+                    File localFile = new File(dir.getAbsolutePath() + File.separator + "photo");
+                    BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(localFile));
+                    stream.write(photoBytes);
+                    stream.close();
+                } catch (IOException e) {
+                     return"redirect:/login?photo=exception";
+                }
+            }
+        return "redirect:/login?photo=success";
     }
 
     private class JSONResponse {
