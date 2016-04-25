@@ -35,8 +35,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(User user) {
-
-
         Md5PasswordEncoder encoder = new Md5PasswordEncoder();
         user.setPassword(encoder.encodePassword(user.getPassword(), null));
         Set<Role> roles = new HashSet<>();
@@ -46,11 +44,8 @@ public class UserServiceImpl implements UserService {
                 System.out.println(role.getName());
             user.setRoles(roles);
             userDAO.createUser(user);
-            System.out.println("Created " + user);
             roleDAO.setRoleToUser(user.getRoles(), user);
-            System.out.println("Error before");
-            mailService.sendMail(user.getEmail(),"Registration","Welcome");
-            System.out.println("Error after");
+            mailService.sendMail("olexander.halii@gmail.com","Registration","Welcome");
             return user;
         } catch (DAOException e) {
             System.out.println("DB exception"); //toDo log4j
