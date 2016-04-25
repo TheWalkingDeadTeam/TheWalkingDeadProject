@@ -2,6 +2,7 @@ package ua.nc.service;
 
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.scheduling.annotation.Async;
@@ -35,9 +36,9 @@ public class MailServiceImpl implements MailService {
 
 
     public MailServiceImpl() {
-//        scheduler = new ThreadPoolTaskScheduler();
-//        scheduler.setPoolSize(POOL_SIZE);
-//        scheduler.initialize();
+        scheduler = new ThreadPoolTaskScheduler();
+        scheduler.setPoolSize(POOL_SIZE);
+        scheduler.initialize();
     }
 
     /**
@@ -93,21 +94,22 @@ public class MailServiceImpl implements MailService {
         message.setTo(address);
         message.setSubject(header);
         message.setText(body);
-        // AsynchronousSender(message);
-        mailSender.send(message);
+        AsynchronousSender(message,mailSender);
+        //mailSender.send(message);
     }
 
     /**
      * Not implemented yet
+     *
      * @param message
      */
-    public void AsynchronousSender(final SimpleMailMessage message) {
+    public void AsynchronousSender(final SimpleMailMessage message, final MailSender mailSender) {
         System.out.println(scheduler);
         scheduler.execute(new Runnable() {
             @Override
             public void run() {
                 try {
-                    //mailSender.send(message);
+                    mailSender.send(message);
                 } catch (Exception e) {
                     LOGGER.error("Failed to send", e);
                 }
