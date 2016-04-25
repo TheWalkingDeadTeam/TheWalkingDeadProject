@@ -1,6 +1,7 @@
 package ua.nc.service;
 
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import ua.nc.dao.RoleDAO;
 import ua.nc.dao.UserDAO;
 import ua.nc.dao.enums.DataBaseType;
@@ -34,8 +35,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(User user) {
-        Md5PasswordEncoder encoder = new Md5PasswordEncoder();
-        user.setPassword(encoder.encodePassword(user.getPassword(), null));
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        user.setPassword(encoder.encode(user.getPassword()));
         Set<Role> roles = new HashSet<>();
         try {
             roles.add(roleDAO.findByName("ROLE_STUDENT"));

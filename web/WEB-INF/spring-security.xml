@@ -21,9 +21,9 @@
     </http>
 
 
-    <authentication-manager>
+    <authentication-manager id="authenticationManager">
         <authentication-provider user-service-ref="UserDetailsServiceImpl">
-            <password-encoder hash="md5"/>
+            <password-encoder hash="bcrypt"/>
         </authentication-provider>
     </authentication-manager>
 
