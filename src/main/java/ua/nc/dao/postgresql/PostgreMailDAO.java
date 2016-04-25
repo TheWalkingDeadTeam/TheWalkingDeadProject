@@ -203,7 +203,7 @@ public class PostgreMailDAO extends MailDAO {
         List<Mail> mails = new ArrayList<>();
         try {
             connection = connectionPool.getConnection();
-            preparedStatement = connection.prepareStatement("");
+            preparedStatement = connection.prepareStatement(SQL_GET_EMAILS_BY_HEADER);
             preparedStatement.setString(1, header);
             rs = preparedStatement.executeQuery();
             Mail mail;
