@@ -1,0 +1,73 @@
+{
+  "name": "Barack",
+  "surname": "Obama",
+  "phoneNumber": "+382281488666",
+  "email": "barack.obi@weed.black",
+  "university": {
+    "values": [
+      "ghetto",
+      "street"
+    ],
+    "selected": "ghetto"
+  },
+  "multiplyQuestions": [
+    {
+      "title": "Your interests",
+      "questionId": "228",
+      "allValues": [
+        "interest1",
+        "interest2",
+        "interest3",
+        "interest4"
+      ],
+      "checkedValues": [
+        "interest2",
+        "interest3"
+      ]
+    },
+    {
+      "title": "Your hobbies",
+      "questionId": "2281",
+      "allValues": [
+        "hobbie1",
+        "hobbie2",
+        "hobbie3"
+      ],
+      "checkedValues": [
+        "hobbie2"
+      ]
+    }
+  ],
+  "singleQuestions": [
+    {
+      "title": "Kak vi uznali o centre?",
+      "questionId": "2281",
+      "allValues": [
+        "vk",
+        "univer",
+        "gazeta",
+        "drug"
+      ],
+      "selectedValue": "gazeta"
+    }
+  ],
+  "programingLanguages": [
+    {
+      "id": "javaId",
+      "name": "java",
+      "assesment": "1"
+    },
+    {
+      "id": "scriptId",
+      "name": "script",
+      "assesment": "2"
+    }
+  ],
+  "course": {
+    "values": [
+      "5",
+      "6"
+    ],
+    "selected": "6"
+  }
+}

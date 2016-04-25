@@ -1,8 +1,8 @@
 package ua.nc.dao.enums;
 
 /**
- * Created by Pavel on 22.04.2016.
+ * Created by Pavel on 21.04.2016.
  */
-public enum DataBaseType {
+public enum  DataBaseType {
     POSTGRESQL
 }

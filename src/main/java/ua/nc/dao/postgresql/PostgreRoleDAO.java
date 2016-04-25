@@ -1,6 +1,6 @@
 package ua.nc.dao.postgresql;
 
-import ua.nc.dao.AppSetting;
+import org.apache.log4j.Logger;
 import ua.nc.dao.RoleDAO;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.dao.pool.ConnectionPool;
@@ -14,13 +14,19 @@ import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 
-
 /**
- * Created by Pavel on 22.04.2016.
+ * Created by Neltarion on 23.04.2016.
  */
 public class PostgreRoleDAO extends RoleDAO {
-    /*    private static final Logger LOGGER = Logger.getLogger(PostgreRoleDAO.class);*/
+
+    private static final Logger LOGGER = Logger.getLogger(PostgreRoleDAO.class);
+    private static final String sqlFindByName = "SELECT * FROM public.role r WHERE r.name = ?";
+    private static final String sqlFindByEmail = "SELECT  r.role_id, r.name FROM public.user u JOIN public.user_role ur on u.user_id = ur.user_id JOIN public.role r ON ur.role_id = r.role_id WHERE u.email = ?";
+    private static final String sqlSetRoleToUser = "INSERT INTO public.user_role(role_id, user_id)  SELECT ?, user_id FROM public.user u WHERE u.email=?";
     private final ConnectionPool connectionPool;
+    private Connection connection = null;
+    private PreparedStatement preparedStatement = null;
+    private ResultSet resultSet = null;
 
     public PostgreRoleDAO(ConnectionPool connectionPool) {
         this.connectionPool = connectionPool;
@@ -28,106 +34,67 @@ public class PostgreRoleDAO extends RoleDAO {
 
     @Override
     public Role findByName(String name) throws DAOException {
-        String sql = AppSetting.get("role.findByName");
         Role role = null;
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
         try {
             connection = connectionPool.getConnection();
-            statement = connection.prepareStatement(sql);
-            statement.setString(1, name);
-            resultSet = statement.executeQuery();
+            preparedStatement = connection.prepareStatement(sqlFindByName);
+            preparedStatement.setString(1, name);
+            resultSet = preparedStatement.executeQuery();
             resultSet.next();
             role = new Role();
             role.setId(resultSet.getInt("role_id"));
             role.setName(resultSet.getString("name"));
         } catch (SQLException e) {
-            System.out.println("Role" + name + "  not found");
-            throw new DAOException(e);
+            LOGGER.error(e);
         } finally {
-            try {
-                if (resultSet != null)
-                    resultSet.close();
-                if (statement != null)
-                    statement.close();
-                if (connection != null)
-                    connectionPool.putConnection(connection);
-            } catch (Exception e) {
-                throw new DAOException(e);
-            }
+            closeConnStmt(connectionPool, connection, preparedStatement, resultSet);
         }
         return role;
     }
 
     @Override
     public Set<Role> findByEmail(String email) throws DAOException {
-        String sql = AppSetting.get("role.findByEmail");
-        Set<Role> roles = new HashSet<>();
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
+        Set<Role> roles = new HashSet<Role>();
         try {
             connection = connectionPool.getConnection();
-            statement = connection.prepareStatement(sql);
-            statement.setString(1, email);
-            resultSet = statement.executeQuery();
+            preparedStatement = connection.prepareStatement(sqlFindByEmail);
+            preparedStatement.setString(1, email);
+            resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 Role role = new Role();
                 role.setId(resultSet.getInt("role_id"));
                 role.setName(resultSet.getString("name"));
-                System.out.println(role.getName());
                 roles.add(role);
             }
         } catch (SQLException e) {
-            System.out.println("Roles for " + email + "  not found");
-            throw new DAOException(e);
+            e.printStackTrace();
         } finally {
-            try {
-                if (resultSet != null)
-                    resultSet.close();
-                if (statement != null)
-                    statement.close();
-                if (connection != null)
-                    connectionPool.putConnection(connection);
-            } catch (Exception e) {
-                throw new DAOException(e);
-            }
+            closeConnStmt(connectionPool, connection, preparedStatement, resultSet);
         }
         return roles;
     }
 
     @Override
     public void setRoleToUser(Set<Role> roles, User user) throws DAOException {
-        String sql = AppSetting.get("role.setRoleToUser");
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
         try {
             connection = connectionPool.getConnection();
             connection.setAutoCommit(false);
-            for (Role role : roles) {
-                statement = connection.prepareStatement(sql);
-                statement.setInt(1, role.getId());
-                statement.setString(2, user.getEmail());
-                statement.addBatch();
-            }
-            statement.executeBatch();
+            roles.forEach(r -> {
+                try {
+                    preparedStatement = connection.prepareStatement(sqlSetRoleToUser);
+                    preparedStatement.setInt(1, r.getId());
+                    preparedStatement.setString(2, user.getEmail());
+                    preparedStatement.addBatch();
+                } catch (SQLException e) {
+                    LOGGER.error(e);
+                }
+            });
+            preparedStatement.executeBatch();
             connection.commit();
         } catch (SQLException e) {
-            System.out.println("Cant set roles to user" + user.getName());
-            throw new DAOException(e);
+            e.printStackTrace();
         } finally {
-            try {
-                if (resultSet != null)
-                    resultSet.close();
-                if (statement != null)
-                    statement.close();
-                if (connection != null)
-                    connectionPool.putConnection(connection);
-            } catch (Exception e) {
-                throw new DAOException(e);
-            }
+            closeConnStmt(connectionPool, connection, preparedStatement, resultSet);
         }
     }
 }

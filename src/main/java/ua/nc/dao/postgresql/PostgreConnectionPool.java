@@ -12,16 +12,17 @@ import java.sql.SQLException;
  */
 public class PostgreConnectionPool extends ConnectionPool {
 
-    private static volatile PostgreConnectionPool instance;
+    private static PostgreConnectionPool instance;
     private PGPoolingDataSource dataSource;
 
-    private PostgreConnectionPool() {
+    public PostgreConnectionPool() {
         dataSource = new PGPoolingDataSource();
         dataSource.setServerName("130.211.149.11");
         dataSource.setDatabaseName("wd");
         dataSource.setUser("postgres");
         dataSource.setPassword("netcrackerpwd");
     }
+
 
     public static PostgreConnectionPool getInstance() {
         PostgreConnectionPool localInstance = instance;
@@ -36,7 +37,8 @@ public class PostgreConnectionPool extends ConnectionPool {
         return localInstance;
     }
 
-    public Connection getConnection() throws DAOException {
+
+    public Connection getConnection() throws SQLException, DAOException {
         Connection connection = null;
         try {
             connection = dataSource.getConnection();
@@ -47,7 +49,7 @@ public class PostgreConnectionPool extends ConnectionPool {
     }
 
 
-    public void putConnection(Connection connection) throws DAOException {
+    public void putConnection(Connection connection) throws SQLException, DAOException {
         try {
             connection.close();
         } catch (SQLException e) {

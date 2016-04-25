@@ -24,11 +24,9 @@
                     <small>or error catch you...</small>
                 </h1>
             </div>
-        </div>
-        <sec:authorize access="isAuthenticated()">
-        <p><sec:authentication property="principal.authorities"/></p>
-        </sec:authorize>
 
+        </div>
+        <p><sec:authentication property="principal.authorities"/></p>
         <img src="/resources/images/error.gif"/>
     </div>
 </div>

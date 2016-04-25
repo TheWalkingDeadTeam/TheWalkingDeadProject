@@ -1,6 +1,8 @@
 package ua.nc.entity;
 
+
 import java.util.Set;
+import ua.nc.entity.Role;
 
 /**
  * Created by Pavel on 18.04.2016.
@@ -63,5 +65,14 @@ public class User {
         this.roles = roles;
     }
 
-
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", roles=" + roles +
+                '}';
+    }
 }

@@ -25,7 +25,7 @@
 
 <header class="header">
     <div class="container-fluid navbar headerTop">
-        <a href="#"><img class="col-lg-4 col-md-4 col-sm-9 col-xs-12" src="/resources/images/logo.png" alt="logo"/></a>
+        <a href="/test"><img class="col-lg-4 col-md-4 col-sm-9 col-xs-12" src="/resources/images/logo.png" alt="logo"/></a>
         <div class="headerBtn col-lg-2 col-md-2 col-sm-3 hidden-xs col-lg-offset-6 col-md-offset-6">
             <button class="btn col-sm-6 pull-right hidden-sm">Sign In</button>
             <button class="btnSm col-sm-6 pull-right visible-sm">Sign in</button>
@@ -68,7 +68,7 @@
                         Such user already exists
                     </div>
                 </c:if>
-                <h2 class="form-signin-heading">Studet Registration</h2>
+                <h2 class="form-signin-heading">Student Registration</h2>
                 <form:input path="name" cssClass="form-control" placeholder="Name"/>
                 <form:input path="email" cssClass="form-control" placeholder="Email address"/>
                 <form:password path="password" cssClass="form-control" placeholder="Password"/>

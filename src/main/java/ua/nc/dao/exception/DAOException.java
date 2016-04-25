@@ -1,10 +1,11 @@
 package ua.nc.dao.exception;
 
 /**
- * Created by Pavel on 22.04.2016.
+ * Created by Pavel on 21.04.2016.
  */
 public class DAOException extends Exception {
     public DAOException() {
+        super();
     }
 
     public DAOException(String message) {
@@ -19,7 +20,7 @@ public class DAOException extends Exception {
         super(cause);
     }
 
-    public DAOException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    protected DAOException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }

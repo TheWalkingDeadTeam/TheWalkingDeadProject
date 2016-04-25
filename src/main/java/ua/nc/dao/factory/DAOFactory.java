@@ -20,7 +20,7 @@ public abstract class DAOFactory {
         }
     }
 
-    public abstract UserDAO getUserDAO();
+    public abstract UserDAO getUserDAO(/*Role role*/);
 
     public abstract RoleDAO getRoleDAO();
 }

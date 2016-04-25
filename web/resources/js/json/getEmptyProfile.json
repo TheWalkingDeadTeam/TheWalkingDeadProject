@@ -1,0 +1,28 @@
+{
+  "university": {
+    "values": [
+      "ghetto",
+      "street"
+    ],
+    "selected": "ghetto"
+  },
+  "course": {
+    "values": [
+      "5",
+      "6"
+    ],
+    "selected": "6"
+  },
+  "programingLanguages": [
+    {
+      "id": "javaId",
+      "name": "java",
+      "assesment": "228"
+    },
+    {
+      "id": "scriptId",
+      "name": "script",
+      "assesment": "1488"
+    }
+  ]
+}
