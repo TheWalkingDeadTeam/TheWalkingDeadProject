@@ -126,7 +126,7 @@ public class MailServiceImpl implements MailService {
         mailProperties.put("mail.smtp.starttls.enable", "true");
         mailProperties.put("mail.debug", true);
         mailProperties.put("username", "olexander.halii@gmail.com");
-        mailProperties.put("password", "kzevyetf");
+        mailProperties.put("password", "****");
         return mailProperties;
     }
 
