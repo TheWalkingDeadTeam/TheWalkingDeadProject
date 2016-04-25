@@ -1,10 +1,13 @@
 package ua.nc.service;
 
 import org.apache.log4j.Logger;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Service;
 import ua.nc.dao.MailDAO;
 import ua.nc.dao.enums.DataBaseType;
@@ -20,14 +23,23 @@ import java.util.Properties;
 /**
  * Created by Alexander Haliy on 23.04.2016.
  */
-
+@Configuration
+@EnableScheduling
 @Service("mailService")
 public class MailServiceImpl implements MailService {
     private static final Logger LOGGER = Logger.getLogger(MailServiceImpl.class);
     private DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
     private MailDAO mailDAO = daoFactory.getMailDAO();
-    private JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-    private static final String MAIL_EXCEPTION = "Something bad happened at your mail service system :(";
+    private ThreadPoolTaskScheduler scheduler;
+    private static final int POOL_SIZE = 10;
+
+
+    public MailServiceImpl() {
+//        scheduler = new ThreadPoolTaskScheduler();
+//        scheduler.setPoolSize(POOL_SIZE);
+//        scheduler.initialize();
+    }
+
     /**
      * Create new Mail and store
      * it in db
@@ -43,7 +55,7 @@ public class MailServiceImpl implements MailService {
             mail.setBodyTemplate(body);
             mailDAO.create(mail);
         } catch (DAOException e) {
-            LOGGER.error(MAIL_EXCEPTION, e);
+            LOGGER.error("Bad Happened", e);
         }
     }
 
@@ -67,26 +79,46 @@ public class MailServiceImpl implements MailService {
      * @param header
      * @param body
      */
-    @Override
-    @Async
-    @Scheduled(fixedDelay = 2000)
+
     public void sendMail(String address, String header, String body) {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-        mailSender.setJavaMailProperties(getMailProperties());
-        //System.out.println(getMailProperties());
-        System.out.println(mailSender.getHost());
-
-        mailSender.setJavaMailProperties(getMailProperties());
+        Properties properties = getMailProperties();
+        mailSender.setProtocol("smtp");
+        mailSender.setHost("smtp.gmail.com");
+        mailSender.setPort(587);
+        mailSender.setUsername("netcrackerua@gmail.com");
+        mailSender.setPassword("netcrackerpwd");
+        mailSender.setJavaMailProperties(properties);
         SimpleMailMessage message = new SimpleMailMessage();
-
         message.setTo(address);
         message.setSubject(header);
         message.setText(body);
+        // AsynchronousSender(message);
         mailSender.send(message);
     }
 
     /**
-     * Ret
+     * Not implemented yet
+     * @param message
+     */
+    public void AsynchronousSender(final SimpleMailMessage message) {
+        System.out.println(scheduler);
+        scheduler.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    //mailSender.send(message);
+                } catch (Exception e) {
+                    LOGGER.error("Failed to send", e);
+                }
+            }
+        });
+
+    }
+
+
+    /**
+     * Retrieve mail by id
      *
      * @param id
      */
@@ -111,7 +143,7 @@ public class MailServiceImpl implements MailService {
         try {
             mails = mailDAO.getByHeader(header);
         } catch (DAOException e) {
-            LOGGER.error(MAIL_EXCEPTION, e);
+            LOGGER.error("Can't handle mail template", e);
         }
         return mails;
     }
@@ -124,30 +156,24 @@ public class MailServiceImpl implements MailService {
      */
     private Properties getMailProperties() {
         Properties mailProperties = new Properties();
-        mailProperties.put("mail.smtp.host", "smtp.gmail.com");
-        mailProperties.put("mail.smtp.port", "587");
-        mailProperties.put("mail.debug", "true");
-        mailProperties.put("mail.debug", "true");
-        mailProperties.put("mail.smtp.auth", "true");
+        mailProperties.put("mail.smtps.auth", "true");
+        mailProperties.put("mail.smtp.ssl.trust", "smtp.gmail.com");
         mailProperties.put("mail.smtp.starttls.enable", "true");
-        mailProperties.put("mail.debug", true);
-        mailProperties.put("username", "netcrackerua@gmail.com");
-        mailProperties.put("password", "netcrackerpwd");
+        mailProperties.put("mail.smtp.debug", "true");
         return mailProperties;
     }
 
     /**
      * Scheduld method - sends mails through period of time
-     *  NOT IMPLEMENTED YET!!!
+     * NOT IMPLEMENTED YET!!!
      *
      * @param users
      */
     @Async
-    @Scheduled
+    @Scheduled(fixedDelay = 1)
     public void massDelivery(List<User> users, Mail mail) {
         for (User i : users) {
             sendMail(i.getEmail(), mail);
         }
     }
-
 }

@@ -25,7 +25,7 @@
         <javax.servlet>3.0.1</javax.servlet>
         <jstl.version>1.2</jstl.version>
         <spring.securiry>4.0.3.RELEASE</spring.securiry>
-        <jackson.version>2.7.0-rc2</jackson.version>
+        <jackson.version>2.7.3</jackson.version>
     </properties>
 
     <dependencies>
@@ -117,7 +117,6 @@
             <artifactId>spring-context-support</artifactId>
             <version>4.1.6.RELEASE</version>
         </dependency>
-
 
 
         <dependency>
