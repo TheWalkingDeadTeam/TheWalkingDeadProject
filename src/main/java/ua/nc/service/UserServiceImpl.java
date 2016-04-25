@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
             user.setRoles(roles);
             userDAO.createUser(user);
             roleDAO.setRoleToUser(user.getRoles(), user);
-            mailService.sendMail("olexander.halii@gmail.com","Registration","Welcome");
+            mailService.sendMail(user.getEmail(),"Registration","Welcome " + user.getName() + " ! \n NetCracker[TheWalkingDeadTeam] " );
             return user;
         } catch (DAOException e) {
             System.out.println("DB exception"); //toDo log4j

@@ -157,6 +157,7 @@ public class MailServiceImpl implements MailService {
     private Properties getMailProperties() {
         Properties mailProperties = new Properties();
         mailProperties.put("mail.smtps.auth", "true");
+        mailProperties.put("mail.smtp.ssl.trust", "smtp.gmail.com");
         mailProperties.put("mail.smtp.starttls.enable", "true");
         mailProperties.put("mail.smtp.debug", "true");
         return mailProperties;

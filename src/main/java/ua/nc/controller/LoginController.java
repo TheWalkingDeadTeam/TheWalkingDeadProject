@@ -9,8 +9,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import ua.nc.entity.User;
 import ua.nc.service.UserDetailsServiceImpl;
 import ua.nc.service.UserService;
@@ -32,8 +34,10 @@ public class LoginController {
         return "login";
     }
 
-    @RequestMapping(value = "/security_check ", method = RequestMethod.POST, produces = "application/json" )
-    public @ResponseBody JSONResponse authentication(@RequestBody User user) {
+    @RequestMapping(value = "/security_check ", method = RequestMethod.POST, produces = "application/json")
+    public
+    @ResponseBody
+    JSONResponse authentication(@RequestBody User user) {
         JSONResponse jsonResponse = new JSONResponse();
         UserDetailsService userDetailsService = new UserDetailsServiceImpl();
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
@@ -50,8 +54,10 @@ public class LoginController {
         return jsonResponse;
     }
 
-    @RequestMapping(value = {"/register"}, method = RequestMethod.POST, produces="application/json")
-    public @ResponseBody JSONResponse registerUser(@RequestBody User user) {
+    @RequestMapping(value = {"/register"}, method = RequestMethod.POST, produces = "application/json")
+    public
+    @ResponseBody
+    JSONResponse registerUser(@RequestBody User user) {
         JSONResponse jsonResponse = new JSONResponse();
         if (userService.getUser(user.getEmail()) == null) {
             User registredUser = userService.createUser(user);
