@@ -1,6 +1,8 @@
 package ua.nc.service;
 
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
 import ua.nc.dao.RoleDAO;
 import ua.nc.dao.UserDAO;
 import ua.nc.dao.enums.DataBaseType;
@@ -50,14 +52,14 @@ public class UserServiceImpl implements UserService {
         UserDAO userDAO = factory.getUserDAO();
         RoleDAO roleDAO = factory.getRoleDAO();
         try {
-            int id = userDAO.create(user);
+
             roles.add(roleDAO.findByName("ROLE_STUDENT"));
             for (Role role : roles)
                 System.out.println(role.getName());
             user.setRoles(roles);
             userDAO.createUser(user);
             roleDAO.setRoleToUser(user.getRoles(), user);
-            mailService.sendMail(user.getEmail(),"Registration","Welcome " + user.getName() + " ! \n NetCracker[TheWalkingDeadTeam] " );
+            mailService.sendMail(user.getEmail(), "Registration", "Welcome " + user.getName() + " ! \n NetCracker[TheWalkingDeadTeam] ");
             return user;
         } catch (Exception e) {
 //            LOGGER.error(e);
@@ -76,10 +78,8 @@ public class UserServiceImpl implements UserService {
             return user;
         } catch (DAOException e) {
 //            LOGGER.error(e);
-        } catch (SQLException e) {
-//            LOGGER.error(e);
+            return null;
         }
-        return null;
     }
 
     @Override
@@ -162,6 +162,6 @@ public class UserServiceImpl implements UserService {
                 "            \"book\": null\n" +
                 "    }]\n" +
                 "}]";
-    return str;
+        return str;
     }
 }
