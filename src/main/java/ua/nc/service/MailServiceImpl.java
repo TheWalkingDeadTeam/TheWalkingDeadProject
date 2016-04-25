@@ -71,8 +71,14 @@ public class MailServiceImpl implements MailService {
     @Async
     @Scheduled(fixedDelay = 2000)
     public void sendMail(String address, String header, String body) {
+        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+        mailSender.setJavaMailProperties(getMailProperties());
+        //System.out.println(getMailProperties());
+        System.out.println(mailSender.getHost());
+
         mailSender.setJavaMailProperties(getMailProperties());
         SimpleMailMessage message = new SimpleMailMessage();
+
         message.setTo(address);
         message.setSubject(header);
         message.setText(body);
@@ -125,8 +131,8 @@ public class MailServiceImpl implements MailService {
         mailProperties.put("mail.smtp.auth", "true");
         mailProperties.put("mail.smtp.starttls.enable", "true");
         mailProperties.put("mail.debug", true);
-        mailProperties.put("username", "olexander.halii@gmail.com");
-        mailProperties.put("password", "****");
+        mailProperties.put("username", "netcrackerua@gmail.com");
+        mailProperties.put("password", "netcrackerpwd");
         return mailProperties;
     }
 

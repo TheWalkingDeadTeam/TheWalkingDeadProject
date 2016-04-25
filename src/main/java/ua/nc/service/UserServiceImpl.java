@@ -1,15 +1,20 @@
 package ua.nc.service;
 
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import ua.nc.dao.RoleDAO;
 import ua.nc.dao.UserDAO;
 import ua.nc.dao.enums.DataBaseType;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.dao.factory.DAOFactory;
+import ua.nc.dao.pool.ConnectionPool;
+import ua.nc.dao.postgresql.PostgreMailDAO;
+import ua.nc.entity.Mail;
 import ua.nc.entity.Role;
 import ua.nc.entity.User;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -49,7 +54,14 @@ public class UserServiceImpl implements UserService {
             System.out.println("Created " + user);
             roleDAO.setRoleToUser(user.getRoles(), user);
             System.out.println("Error before");
-            mailService.sendMail(user.getEmail(),"Registration","Welcome");
+
+
+            /*PostgreMailDAO postgreMailDAO = new PostgreMailDAO(ConnectionPool.getConnectionPool(DataBaseType.POSTGRESQL));
+            List<Mail> mailList= postgreMailDAO.getByHeader("Registration");
+            mailService.sendMail(user.getEmail(), mailList.get(0));*/
+
+            mailService.sendMail(user.getEmail(), "reg", "wel");
+
             System.out.println("Error after");
             return user;
         } catch (DAOException e) {
