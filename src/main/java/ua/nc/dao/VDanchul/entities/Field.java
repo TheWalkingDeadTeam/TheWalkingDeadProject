@@ -18,6 +18,5 @@ public class Field implements Identified<Integer>{
 
     protected void setID(int id){
         this.ID = id;
-
     }
 }
