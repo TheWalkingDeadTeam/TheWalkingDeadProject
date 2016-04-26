@@ -7,9 +7,9 @@ public class Field implements Identified<Integer>{
     private int ID;
     public int cesID;
     public String name;
-    public FieldType fieldType;
+    public int fieldTypeID;
     public boolean multipleChoice;
-    public ListType listType;
+    public int listTypeID;
 
     @Override
     public Integer getID() {
