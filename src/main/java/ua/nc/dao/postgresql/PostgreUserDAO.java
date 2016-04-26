@@ -23,6 +23,11 @@ public class PostgreUserDAO extends UserDAO {
         this.connectionPool = connectionPool;
     }
 
+    /**
+     * @param email
+     * @return
+     * @throws DAOException
+     */
     @Override
     public User findByEmail(String email) throws DAOException {
         String sql = AppSetting.get("user.findByEmail");

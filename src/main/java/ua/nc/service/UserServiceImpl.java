@@ -1,7 +1,5 @@
 package ua.nc.service;
 
-import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import ua.nc.dao.RoleDAO;
 import ua.nc.dao.UserDAO;
@@ -17,8 +15,6 @@ import java.util.Set;
 /**
  * Created by Pavel on 18.04.2016.
  */
-@Configuration
-@EnableAsync
 public class UserServiceImpl implements UserService {
     private DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
     private UserDAO userDAO = daoFactory.getUserDAO();
@@ -32,7 +28,7 @@ public class UserServiceImpl implements UserService {
             user = userDAO.findByEmail(email);
             user.setRoles(roleDAO.findByEmail(email));
         } catch (DAOException e) {
-            System.out.println("DB exception"); //toDo log4j
+            System.out.println("DB exception");
         }
         return user;
     }

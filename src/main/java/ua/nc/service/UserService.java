@@ -1,6 +1,5 @@
 package ua.nc.service;
 
-import org.springframework.stereotype.Service;
 import ua.nc.entity.User;
 
 /**
