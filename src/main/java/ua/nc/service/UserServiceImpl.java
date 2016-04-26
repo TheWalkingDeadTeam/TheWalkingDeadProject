@@ -1,6 +1,7 @@
 package ua.nc.service;
 
-import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import ua.nc.dao.RoleDAO;
 import ua.nc.dao.UserDAO;
@@ -16,6 +17,8 @@ import java.util.Set;
 /**
  * Created by Pavel on 18.04.2016.
  */
+@Configuration
+@EnableAsync
 public class UserServiceImpl implements UserService {
     private DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
     private UserDAO userDAO = daoFactory.getUserDAO();
@@ -46,7 +49,7 @@ public class UserServiceImpl implements UserService {
             user.setRoles(roles);
             userDAO.createUser(user);
             roleDAO.setRoleToUser(user.getRoles(), user);
-            mailService.sendMail(user.getEmail(),"Registration","Welcome " + user.getName() + " ! \n NetCracker[TheWalkingDeadTeam] " );
+            mailService.sendMail(user.getEmail(), "Registration", "Welcome " + user.getName() + " ! \n NetCracker[TheWalkingDeadTeam] ");
             return user;
         } catch (DAOException e) {
             System.out.println("DB exception"); //toDo log4j
