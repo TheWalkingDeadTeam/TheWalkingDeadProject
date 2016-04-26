@@ -20,13 +20,12 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">You catch the error,
-                    <small>or error catch you...</small>
+                <h1 class="page-header">You caught the error,
+                    <small>or error caught you...</small>
                 </h1>
             </div>
 
         </div>
-        <p><sec:authentication property="principal.authorities"/></p>
         <img src="/resources/images/error.gif"/>
     </div>
 </div>

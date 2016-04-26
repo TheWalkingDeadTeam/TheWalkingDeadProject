@@ -2,7 +2,7 @@
  * Created by Pavel on 25.04.2016.
  */
 $(document).ready(function () {
-    $("#loginButton").click(function () {
+    $("#buttonSignIn").click(function () {
         event.preventDefault();
         $.ajax({
             type: 'post',
@@ -14,11 +14,24 @@ $(document).ready(function () {
                 password: $('#j_password').val(),
             }),
             success: function (response) {
-                window.location.href = response.redirect;
-
+                if (response.errors.length) {
+                    var errors_out = "";
+                    for (var i in response.errors) {
+                        errors_out += response.errors[i].errorMessage + "</br>"
+                    }
+                    $('#messageRegistration')
+                        .removeClass()
+                        .empty();
+                    $('#messageSignIn')
+                        .addClass('alert alert-danger')
+                        .html(errors_out);
+                    $('#j_password').val("");
+                } else {
+                    window.location.href = window.location.href;
+                }
             },
             error: function (jqXHR, exception) {
-                alert('Error')
+                window.location.href = "/error"
             }
         });
     });

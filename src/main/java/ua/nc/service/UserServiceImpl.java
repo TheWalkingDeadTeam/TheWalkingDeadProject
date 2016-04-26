@@ -1,6 +1,5 @@
 package ua.nc.service;
 
-import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import ua.nc.dao.RoleDAO;
 import ua.nc.dao.UserDAO;
@@ -29,7 +28,7 @@ public class UserServiceImpl implements UserService {
             user = userDAO.findByEmail(email);
             user.setRoles(roleDAO.findByEmail(email));
         } catch (DAOException e) {
-            System.out.println("DB exception"); //toDo log4j
+            System.out.println("DB exception");
         }
         return user;
     }
@@ -46,7 +45,7 @@ public class UserServiceImpl implements UserService {
             user.setRoles(roles);
             userDAO.createUser(user);
             roleDAO.setRoleToUser(user.getRoles(), user);
-            mailService.sendMail(user.getEmail(),"Registration","Welcome " + user.getName() + " ! \n NetCracker[TheWalkingDeadTeam] " );
+            mailService.sendMail(user.getEmail(), "Registration", "Welcome " + user.getName() + " ! \n NetCracker[TheWalkingDeadTeam] ");
             return user;
         } catch (DAOException e) {
             System.out.println("DB exception"); //toDo log4j
