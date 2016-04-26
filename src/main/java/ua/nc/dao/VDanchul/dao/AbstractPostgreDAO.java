@@ -21,8 +21,6 @@ public abstract class AbstractPostgreDAO<T extends Identified<PK>, PK extends In
 
     public abstract String getUpdateQuery();
 
-    public abstract String getDeleteQuery();
-
     protected abstract List<T> parseResultSet(ResultSet rs) throws DAOException;
 
     protected abstract void prepareStatementForInsert(PreparedStatement statement, T object) throws DAOException;
@@ -42,7 +40,7 @@ public abstract class AbstractPostgreDAO<T extends Identified<PK>, PK extends In
         } catch (Exception e) {
             throw new DAOException(e);
         }
-        sql = getSelectQuery() + " WHERE id = last_insert_id();";
+        sql = getSelectQuery() + " WHERE id = " + object.getID() + ";";
         try (PreparedStatement statement = connectionPool.getConnection().prepareStatement(sql)) {
             ResultSet rs = statement.executeQuery();
             List<T> list = parseResultSet(rs);
@@ -86,25 +84,6 @@ public abstract class AbstractPostgreDAO<T extends Identified<PK>, PK extends In
             if (count != 1) {
                 throw new DAOException("On update modify more then 1 record: " + count);
             }
-        } catch (Exception e) {
-            throw new DAOException(e);
-        }
-    }
-
-    @Override
-    public void delete(T object) throws DAOException {
-        String sql = getDeleteQuery();
-        try (PreparedStatement statement = connectionPool.getConnection().prepareStatement(sql)) {
-            try {
-                statement.setObject(1, object.getID());
-            } catch (Exception e) {
-                throw new DAOException(e);
-            }
-            int count = statement.executeUpdate();
-            if (count != 1) {
-                throw new DAOException("On delete modify more then 1 record: " + count);
-            }
-            statement.close();
         } catch (Exception e) {
             throw new DAOException(e);
         }

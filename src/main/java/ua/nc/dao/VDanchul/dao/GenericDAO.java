@@ -14,6 +14,5 @@ public interface GenericDAO<T extends Identified, PK extends Serializable> {
     public T persist(T object) throws DAOException;
     public T read(PK key) throws DAOException;
     public void update(T object) throws DAOException;
-    public void delete(T object) throws DAOException;
     public List<T> getAll() throws DAOException;
 }
