@@ -2,9 +2,11 @@ package ua.nc.service;
 
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
@@ -16,9 +18,11 @@ import ua.nc.dao.factory.DAOFactory;
 import ua.nc.entity.Mail;
 import ua.nc.entity.User;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.concurrent.ScheduledFuture;
 
 /**
  * Created by Alexander Haliy on 23.04.2016.
@@ -31,13 +35,18 @@ public class MailServiceImpl implements MailService {
     private DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
     private MailDAO mailDAO = daoFactory.getMailDAO();
     private ThreadPoolTaskScheduler scheduler;
-    private static final int POOL_SIZE = 10;
-
+    private ThreadPoolTaskScheduler schedulerMassDeliveryService;
+    private static final int POOL_SIZE = 2;
+    private static final int POOL_SIZE_SCHEDULER = 10;
 
     public MailServiceImpl() {
-//        scheduler = new ThreadPoolTaskScheduler();
-//        scheduler.setPoolSize(POOL_SIZE);
-//        scheduler.initialize();
+        schedulerMassDeliveryService = new ThreadPoolTaskScheduler();
+        scheduler = new ThreadPoolTaskScheduler();
+        schedulerMassDeliveryService = new ThreadPoolTaskScheduler();
+        scheduler.setPoolSize(POOL_SIZE);
+        schedulerMassDeliveryService.setPoolSize(POOL_SIZE_SCHEDULER);
+        scheduler.initialize();
+        schedulerMassDeliveryService.initialize();
     }
 
     /**
@@ -80,7 +89,9 @@ public class MailServiceImpl implements MailService {
      * @param body
      */
 
+
     public void sendMail(String address, String header, String body) {
+
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         Properties properties = getMailProperties();
         mailSender.setProtocol("smtp");
@@ -93,27 +104,60 @@ public class MailServiceImpl implements MailService {
         message.setTo(address);
         message.setSubject(header);
         message.setText(body);
-        // AsynchronousSender(message);
-        mailSender.send(message);
+        AsynchronousSender(message, mailSender);
+        //mailSender.send(message);
     }
 
     /**
-     * Not implemented yet
+     * Async mail sending
+     *
      * @param message
+     * @param mailSender
      */
-    public void AsynchronousSender(final SimpleMailMessage message) {
-        System.out.println(scheduler);
+    public void AsynchronousSender(final SimpleMailMessage message, final MailSender mailSender) {
         scheduler.execute(new Runnable() {
             @Override
             public void run() {
                 try {
-                    //mailSender.send(message);
+                    mailSender.send(message);
                 } catch (Exception e) {
                     LOGGER.error("Failed to send", e);
                 }
             }
         });
+    }
 
+    /**
+     * Massive delivery service for async mailing
+     * Everything you need is to put time
+     * @param dateDelivery specific date mail to be send
+     * @param users who will get invitation
+     * @param mail template
+     */
+    public void massDelivery(String dateDelivery, final List<User> users, final Mail mail) {
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        // String date format 2012-07-06 13:05:45
+        try {
+            Date date = dateFormatter.parse(dateDelivery);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        schedulerMassDeliveryService.schedule(new Runnable() {
+            @Override
+            public void run() {
+                try {
+
+                    for (User i : users) {
+                        //Sleep for one second,google may think you're spamming :(
+                        Thread.sleep(1000);
+                        sendMail(i.getEmail(), mail);
+                    }
+
+                } catch (Exception e) {
+                    LOGGER.error("Failed to send", e);
+                }
+            }
+        }, new Date());
     }
 
 
@@ -163,17 +207,5 @@ public class MailServiceImpl implements MailService {
         return mailProperties;
     }
 
-    /**
-     * Scheduld method - sends mails through period of time
-     * NOT IMPLEMENTED YET!!!
-     *
-     * @param users
-     */
-    @Async
-    @Scheduled(fixedDelay = 1)
-    public void massDelivery(List<User> users, Mail mail) {
-        for (User i : users) {
-            sendMail(i.getEmail(), mail);
-        }
-    }
+
 }
