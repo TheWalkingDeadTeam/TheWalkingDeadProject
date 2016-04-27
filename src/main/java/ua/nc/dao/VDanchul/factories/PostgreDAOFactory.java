@@ -1,7 +1,7 @@
 package ua.nc.dao.VDanchul.factories;
 
 import ua.nc.dao.VDanchul.dao.GenericDAO;
-import ua.nc.dao.VDanchul.dao.specific.FieldDAO;
+import ua.nc.dao.VDanchul.dao.specific.PostgreFieldDAO;
 import ua.nc.dao.VDanchul.entities.Field;
 import ua.nc.dao.enums.DataBaseType;
 import ua.nc.dao.exception.DAOException;
@@ -36,7 +36,7 @@ public class PostgreDAOFactory implements DAOFactory.DaoFactory<ConnectionPool> 
         creators.put(Field.class, new DaoCreator<ConnectionPool>() {
             @Override
             public GenericDAO create(ConnectionPool connectionPool) {
-                return new FieldDAO(connectionPool);
+                return new PostgreFieldDAO(connectionPool);
             }
         });
     }
