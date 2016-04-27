@@ -24,7 +24,7 @@ CREATE TABLE System_User_Status (
 
 CREATE TABLE System_User (
   System_User_ID serial PRIMARY KEY,
-  Email varchar(100) NOT NULL,
+  Email varchar(100) NOT NULL UNIQUE,
   Password char(32) NOT NULL,
   Name varchar(30) NOT NULL,
   Surname varchar(30) NOT NULL,
@@ -64,9 +64,9 @@ CREATE TABLE Course_Enrollment_Session (
   End_Interviewing_Date date CHECK(End_Interviewing_Date > Start_Interviewing_Date),
   Quota int NOT NULL CHECK (Quota > 0),
   CES_Status_ID int NOT NULL references CES_Status(CES_Status_ID)  ON DELETE RESTRICT ON UPDATE CASCADE,
-  Reminders int NOT NULL CHECK (Reminders > 0),
-  Interviewing_Time_Person int NOT NULL CHECK (Interviewing_Time_Person > 0),
-  Interviewing_Time_Day int NOT NULL CHECK (Interviewing_Time_Day > 0)
+  Reminders int CHECK (Reminders > 0),
+  Interviewing_Time_Person int CHECK (Interviewing_Time_Person > 0),
+  Interviewing_Time_Day int CHECK (Interviewing_Time_Day > 0)
 );
 
 CREATE TABLE Interviewer_Participation (
