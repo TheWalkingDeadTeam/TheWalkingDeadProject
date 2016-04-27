@@ -26,12 +26,7 @@
 <header class="header">
     <div class="container-fluid navbar headerTop">
         <a href="#"><img class="col-lg-4 col-md-4 col-sm-9 col-xs-12" src="/resources/images/logo.png" alt="logo"/></a>
-        <div class="headerBtn col-lg-2 col-md-2 col-sm-3 hidden-xs col-lg-offset-6 col-md-offset-6">
-            <button class="btn col-sm-6 pull-right hidden-sm">Sign In</button>
-            <button class="btnSm col-sm-6 pull-right visible-sm">Sign in</button>
-            <p class="col-lg-10 col-md-10 col-sm-10 col-lg-offset-2 col-md-offset-2 col-sm-offset-2">Forgot
-                password?</p>
-        </div>
+
     </div>
     <div class="col-lg-12 col-md-12 hidden-sm hidden-xs">
         <div class="container-fluid navbar-inner navigation">
@@ -50,51 +45,28 @@
 
 
 <div class="content container">
-    <div class="reg col-lg-7 col-md-7 visible-lg visible-md">
+    <div class="inputBox reg col-lg-7 col-md-7 col-sm-12 col-xs-12">
         <sec:authorize access="!isAuthenticated()">
-            <form:form action="/register" commandName="user">
-                <c:if test="${param.register == 'success'}">
-                    <div class="alert alert-success">
-                        Registered successfully
-                    </div>
-                </c:if>
-                <c:if test="${param.register == 'failed'}">
-                    <div class="alert alert-danger">
-                        Register failed
-                    </div>
-                </c:if>
-                <c:if test="${param.register == 'exist'}">
-                    <div class="alert alert-danger">
-                        Such user already exists
-                    </div>
-                </c:if>
+            <form>
+                <div id="messageRegistration"></div>
                 <h2 class="form-signin-heading">Studet Registration</h2>
-                <form:input path="name" cssClass="form-control" placeholder="Name"/>
-                <form:input path="email" cssClass="form-control" placeholder="Email address"/>
-                <form:password path="password" cssClass="form-control" placeholder="Password"/>
-                <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
-            </form:form>
+                <input type="text" id="name" class="form-control" placeholder="Name"/>
+                <input type="text" id="email" class="form-control" placeholder="Email address"/>
+                <input type="password" id="password" class="form-control" placeholder="Password"/>
+                <button id="buttonRegistration" class="btn btn-lg btn-primary btn-block">Register</button>
+            </form>
         </sec:authorize>
     </div>
 
 
     <div class="inputBox col-lg-4 col-md-4 col-sm-12 col-xs-12">
         <sec:authorize access="!isAuthenticated()">
-            <form action="/j_spring_security_check" method="post">
-                <c:if test="${param.error != null}">
-                    <div class="alert alert-danger">
-                        Invalid username or password.
-                    </div>
-                </c:if>
-                <c:if test="${param.logout != null}">
-                    <div class="alert alert-success">
-                        You have been logged out.
-                    </div>
-                </c:if>
+            <form>
+                <div id="messageSignIn"></div>
                 <h2 class="form-signin-heading">Please sign in</h2>
-                <input type="text" class="form-control" name="j_username" placeholder="Email address" required>
-                <input type="password" class="form-control" name="j_password" placeholder="Password" required>
-                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+                <input id="j_username" type="text" class="form-control" name="j_username" placeholder="Email address" required>
+                <input id="j_password" type="password" class="form-control" name="j_password" placeholder="Password" required>
+                <button id="buttonSignIn" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
             </form>
         </sec:authorize>
         <sec:authorize access="isAuthenticated()">
@@ -102,7 +74,13 @@
                 <p>Your login: <sec:authentication property="principal.username"/></p>
                 <p><sec:authentication property="principal.authorities"/></p>
             </div>
-            <p><a class="btn btn-lg btn-danger" href="<c:url value="/logout" />" role="button">Logout</a></p>
+            <p><a id="buttonLogout" class="btn btn-lg btn-danger" href="/logout" role="button">Logout</a></p>
+            <p>
+                <form id = "photoUpload" method="post" action="uploadPhoto" enctype="multipart/form-data">
+                    Photo to upload: <input type="file" name="photo" accept="image/jpeg"><br />
+                    <input type="submit" value="Upload"/>
+                </form>
+            </p>
         </sec:authorize>
     </div>
 </div>
@@ -147,4 +125,8 @@
 </footer>
 
 </body>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="/resources/js/register.js"></script>
+<script src="/resources/js/login.js"></script>
+<script src="/resources/js/logout.js"></script>
 </html>

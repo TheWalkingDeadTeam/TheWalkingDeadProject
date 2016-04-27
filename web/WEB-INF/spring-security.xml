@@ -10,6 +10,7 @@
     <global-method-security pre-post-annotations="enabled"/>
     <http use-expressions="true">
         <csrf disabled="true"/>
+        <intercept-url pattern="/error" access="permitAll" />
         <intercept-url pattern="/admin**" access="hasRole('ROLE_ADMIN')"/>
         <intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
         <access-denied-handler error-page="/403"/>
@@ -21,9 +22,9 @@
     </http>
 
 
-    <authentication-manager>
+    <authentication-manager id="authenticationManager">
         <authentication-provider user-service-ref="UserDetailsServiceImpl">
-            <password-encoder hash="md5"/>
+            <password-encoder hash="bcrypt"/>
         </authentication-provider>
     </authentication-manager>
 
