@@ -10,7 +10,7 @@ import java.util.List;
  * Created by Rangar on 24.04.2016.
  */
 public interface GenericDAO<T extends Identified, PK extends Serializable> {
-    public T create() throws DAOException;
+    public T create(T object) throws DAOException;
     public T persist(T object) throws DAOException;
     public T read(PK key) throws DAOException;
     public void update(T object) throws DAOException;
