@@ -21,4 +21,8 @@ public class ListType implements Identified<Integer> {
     public void setName(String name) {
         this.name = name;
     }
+
+    public ListType(String name){
+        this.name = name;
+    }
 }
