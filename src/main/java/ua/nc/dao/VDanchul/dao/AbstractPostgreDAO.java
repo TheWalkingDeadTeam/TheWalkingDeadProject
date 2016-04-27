@@ -21,11 +21,15 @@ public abstract class AbstractPostgreDAO<T extends Identified<PK>, PK extends In
 
     public abstract String getUpdateQuery();
 
+    public abstract String getAllQuery();
+
     protected abstract List<T> parseResultSet(ResultSet rs) throws DAOException;
 
     protected abstract void prepareStatementForInsert(PreparedStatement statement, T object) throws DAOException;
 
     protected abstract void prepareStatementForUpdate(PreparedStatement statement, T object) throws DAOException;
+
+    protected abstract void prepareStatementForSelect(PreparedStatement statement, T object) throws DAOException;
 
     @Override
     public T persist(T object) throws DAOException {
@@ -40,8 +44,9 @@ public abstract class AbstractPostgreDAO<T extends Identified<PK>, PK extends In
         } catch (Exception e) {
             throw new DAOException(e);
         }
-        sql = getSelectQuery() + " WHERE id = " + object.getID() + ";";
+        sql = getSelectQuery();
         try (PreparedStatement statement = connectionPool.getConnection().prepareStatement(sql)) {
+            prepareStatementForSelect(statement, object);
             ResultSet rs = statement.executeQuery();
             List<T> list = parseResultSet(rs);
             if ((list == null) || (list.size() != 1)) {
@@ -58,7 +63,6 @@ public abstract class AbstractPostgreDAO<T extends Identified<PK>, PK extends In
     public T read(PK key) throws DAOException {
         List<T> list;
         String sql = getSelectQuery();
-        sql += " WHERE id = ?";
         try (PreparedStatement statement = connectionPool.getConnection().prepareStatement(sql)) {
             statement.setInt(1, (int)key);
             ResultSet rs = statement.executeQuery();
@@ -78,8 +82,8 @@ public abstract class AbstractPostgreDAO<T extends Identified<PK>, PK extends In
     @Override
     public void update(T object) throws DAOException {
         String sql = getUpdateQuery();
-        try (PreparedStatement statement = connectionPool.getConnection().prepareStatement(sql);) {
-            prepareStatementForUpdate(statement, object); // заполнение аргументов запроса оставим на совесть потомков
+        try (PreparedStatement statement = connectionPool.getConnection().prepareStatement(sql)) {
+            prepareStatementForUpdate(statement, object);
             int count = statement.executeUpdate();
             if (count != 1) {
                 throw new DAOException("On update modify more then 1 record: " + count);
@@ -92,7 +96,7 @@ public abstract class AbstractPostgreDAO<T extends Identified<PK>, PK extends In
     @Override
     public List<T> getAll() throws DAOException {
         List<T> list;
-        String sql = getSelectQuery();
+        String sql = getAllQuery();
         try (PreparedStatement statement = connectionPool.getConnection().prepareStatement(sql)) {
             ResultSet rs = statement.executeQuery();
             list = parseResultSet(rs);
