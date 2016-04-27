@@ -5,7 +5,7 @@ package ua.nc.dao.VDanchul.entities;
  */
 public class FieldType implements Identified<Integer>{
     private int ID;
-    public String name;
+    private String name;
 
     @Override
     public Integer getID() {
@@ -13,4 +13,12 @@ public class FieldType implements Identified<Integer>{
     }
 
     protected void setID(int id) { this.ID = id;  }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

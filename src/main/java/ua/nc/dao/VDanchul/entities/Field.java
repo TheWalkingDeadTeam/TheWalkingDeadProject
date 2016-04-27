@@ -5,11 +5,12 @@ package ua.nc.dao.VDanchul.entities;
  */
 public class Field implements Identified<Integer>{
     private int ID;
-    public int cesID;
-    public String name;
-    public int fieldTypeID;
-    public boolean multipleChoice;
-    public int listTypeID;
+    private int cesID;
+    private String name;
+    private int fieldTypeID;
+    private boolean multipleChoice;
+    private int orderNum;
+    private int listTypeID;
 
     @Override
     public Integer getID() {
@@ -18,5 +19,53 @@ public class Field implements Identified<Integer>{
 
     protected void setID(int id){
         this.ID = id;
+    }
+
+    public int getCesID() {
+        return cesID;
+    }
+
+    public void setCesID(int cesID) {
+        this.cesID = cesID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getFieldTypeID() {
+        return fieldTypeID;
+    }
+
+    public void setFieldTypeID(int fieldTypeID) {
+        this.fieldTypeID = fieldTypeID;
+    }
+
+    public boolean isMultipleChoice() {
+        return multipleChoice;
+    }
+
+    public void setMultipleChoice(boolean multipleChoice) {
+        this.multipleChoice = multipleChoice;
+    }
+
+    public int getListTypeID() {
+        return listTypeID;
+    }
+
+    public void setListTypeID(int listTypeID) {
+        this.listTypeID = listTypeID;
+    }
+
+    public int getOrderNum() {
+        return orderNum;
+    }
+
+    public void setOrderNum(int orderNum) {
+        this.orderNum = orderNum;
     }
 }
