@@ -5,9 +5,9 @@ package ua.nc.dao.VDanchul.entities;
  */
 public class ListValue implements Identified<Integer> {
     private int ID;
-    public int listTypeID;
-    public double valueDouble;
-    public String valueText;
+    private int listTypeID;
+    private double valueDouble;
+    private String valueText;
 
     @Override
     public Integer getID() {
@@ -15,4 +15,28 @@ public class ListValue implements Identified<Integer> {
     }
 
     protected void setID(int id) { this.ID = id;  }
+
+    public int getListTypeID() {
+        return listTypeID;
+    }
+
+    public void setListTypeID(int listTypeID) {
+        this.listTypeID = listTypeID;
+    }
+
+    public double getValueDouble() {
+        return valueDouble;
+    }
+
+    public void setValueDouble(double valueDouble) {
+        this.valueDouble = valueDouble;
+    }
+
+    public String getValueText() {
+        return valueText;
+    }
+
+    public void setValueText(String valueText) {
+        this.valueText = valueText;
+    }
 }
