@@ -116,7 +116,9 @@ CREATE TABLE Field (
   Name varchar(20) NOT NULL,
   Field_Type_ID int NOT NULL references Field_Type(Field_Type_ID) ON DELETE RESTRICT ON UPDATE CASCADE,
   Multiple_Choice bool NOT NULL,
-  List_ID int references List(List_ID) ON DELETE RESTRICT ON UPDATE CASCADE
+  Order_Num int NOT NULL CHECK (Order_Num > 0),
+  List_ID int references List(List_ID) ON DELETE RESTRICT ON UPDATE CASCADE,
+  UNIQUE (CES_ID, Order_Num)
 );
 
 CREATE TABLE Field_Value (
