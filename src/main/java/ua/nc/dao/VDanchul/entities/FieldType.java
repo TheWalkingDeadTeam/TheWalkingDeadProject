@@ -21,4 +21,8 @@ public class FieldType implements Identified<Integer>{
     public void setName(String name) {
         this.name = name;
     }
+
+    public FieldType(String name){
+        this.name = name;
+    }
 }

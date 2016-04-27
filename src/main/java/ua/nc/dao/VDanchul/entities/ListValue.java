@@ -16,11 +16,11 @@ public class ListValue implements Identified<Integer> {
 
     protected void setID(int id) { this.ID = id;  }
 
-    public int getListTypeID() {
+    public int getListID() {
         return listTypeID;
     }
 
-    public void setListTypeID(int listTypeID) {
+    public void setListID(int listTypeID) {
         this.listTypeID = listTypeID;
     }
 
@@ -37,6 +37,12 @@ public class ListValue implements Identified<Integer> {
     }
 
     public void setValueText(String valueText) {
+        this.valueText = valueText;
+    }
+
+    public ListValue(int listTypeID, double valueDouble, String valueText){
+        this.listTypeID = listTypeID;
+        this.valueDouble = valueDouble;
         this.valueText = valueText;
     }
 }

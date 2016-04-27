@@ -61,4 +61,12 @@ public class FieldValue  {
         this.valueDate = valueDate;
     }
 
+    public FieldValue(int fieldID ,int applicationID, String valueText, double valueDouble, Date valueDate, int listValueID){
+        this.fieldID = fieldID;
+        this.applicationID = applicationID;
+        this.valueText = valueText;
+        this.valueDouble = valueDouble;
+        this.valueDate = valueDate;
+        this.listValueID = listValueID;
+    }
 }
