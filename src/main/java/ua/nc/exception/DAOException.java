@@ -1,9 +1,10 @@
-package ua.nc.dao.exception;
+package ua.nc.exception;
 
 /**
  * Created by Pavel on 22.04.2016.
  */
 public class DAOException extends Exception {
+
     public DAOException() {
     }
 

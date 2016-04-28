@@ -1,13 +1,15 @@
-package ua.nc.service;
+package ua.nc.service.serviceImpl;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import ua.nc.dao.RoleDAO;
 import ua.nc.dao.UserDAO;
-import ua.nc.dao.enums.DataBaseType;
-import ua.nc.dao.exception.DAOException;
-import ua.nc.dao.factory.DAOFactory;
+import ua.nc.factory.DAOFactory;
+import ua.nc.factory.type.DataBaseType;
+import ua.nc.exception.DAOException;
 import ua.nc.entity.Role;
 import ua.nc.entity.User;
+import ua.nc.service.MailService;
+import ua.nc.service.UserService;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -26,7 +28,7 @@ public class UserServiceImpl implements UserService {
         User user = null;
         try {
             user = userDAO.findByEmail(email);
-            user.setRoles(roleDAO.findByEmail(email));
+            user.setRoles(roleDAO.findAllByEmail(email));
         } catch (DAOException e) {
             System.out.println("DB exception");
         }

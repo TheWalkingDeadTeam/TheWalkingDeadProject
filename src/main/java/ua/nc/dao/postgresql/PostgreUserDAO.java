@@ -1,9 +1,8 @@
 package ua.nc.dao.postgresql;
 
-import ua.nc.dao.AppSetting;
 import ua.nc.dao.UserDAO;
-import ua.nc.dao.exception.DAOException;
-import ua.nc.dao.pool.ConnectionPool;
+import ua.nc.exception.DAOException;
+import ua.nc.pool.ConnectionPool;
 import ua.nc.entity.User;
 
 import java.sql.Connection;
@@ -17,12 +16,6 @@ import java.sql.SQLException;
  */
 public class PostgreUserDAO extends UserDAO {
     /*    private static final Logger LOGGER = Logger.getLogger(PostgreUserDAO.class);*/
-    private final ConnectionPool connectionPool;
-
-    public PostgreUserDAO(ConnectionPool connectionPool) {
-        this.connectionPool = connectionPool;
-    }
-
     /**
      * @param email
      * @return
@@ -30,13 +23,13 @@ public class PostgreUserDAO extends UserDAO {
      */
     @Override
     public User findByEmail(String email) throws DAOException {
-        String sql = AppSetting.get("user.findByEmail");
+        String sql = null;// = AppSetting.get("user.findByEmail");
         User user = null;
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
-            connection = connectionPool.getConnection();
+            connection = ConnectionPool.getConnection();
             statement = connection.prepareStatement(sql);
             statement.setString(1, email);
             resultSet = statement.executeQuery();
@@ -47,7 +40,7 @@ public class PostgreUserDAO extends UserDAO {
             user.setEmail(resultSet.getString("email"));
             user.setPassword(resultSet.getString("password"));
             System.out.println(user.getName());
-        } catch (SQLException e) {
+        } catch (Exception e) {
             System.out.println("User with " + email + " not find in DB");
             throw new DAOException(e);
         } finally {
@@ -57,7 +50,7 @@ public class PostgreUserDAO extends UserDAO {
                 if (statement != null)
                     statement.close();
                 if (connection != null)
-                    connectionPool.putConnection(connection);
+                   connection.close();
             } catch (Exception e) {
                 throw new DAOException(e);
             }
@@ -67,18 +60,18 @@ public class PostgreUserDAO extends UserDAO {
 
     @Override
     public void createUser(User user) throws DAOException {
-        String sql = AppSetting.get("user.createUser");
+        String sql = null;// = AppSetting.get("user.createUser");
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
-            connection = connectionPool.getConnection();
+            connection = ConnectionPool.getConnection();
             statement = connection.prepareStatement(sql);
             statement.setString(1, user.getName());
             statement.setString(2, user.getEmail());
             statement.setString(3, user.getPassword());
             statement.executeUpdate();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             System.out.println("User with name" + user.getName() + "  not created");
             throw new DAOException(e);
         } finally {
@@ -88,7 +81,7 @@ public class PostgreUserDAO extends UserDAO {
                 if (statement != null)
                     statement.close();
                 if (connection != null)
-                    connectionPool.putConnection(connection);
+                    connection.close();
             } catch (Exception e) {
                 throw new DAOException(e);
             }

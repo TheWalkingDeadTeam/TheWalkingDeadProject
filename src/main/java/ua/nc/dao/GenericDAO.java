@@ -1,6 +1,6 @@
 package ua.nc.dao;
 
-import ua.nc.dao.exception.DAOException;
+import ua.nc.exception.DAOException;
 
 import java.io.Serializable;
 
@@ -21,4 +21,6 @@ public abstract class GenericDAO<T, PK extends Serializable> {
 
     public abstract T update(T entity) throws DAOException;
 
-    public abstract void delete(T entity) throws DAOException;}
+    public abstract void delete(T entity) throws DAOException;
+
+}

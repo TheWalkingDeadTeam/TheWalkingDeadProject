@@ -1,28 +1,25 @@
-package ua.nc.service;
+package ua.nc.service.serviceImpl;
 
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Service;
 import ua.nc.dao.MailDAO;
-import ua.nc.dao.enums.DataBaseType;
-import ua.nc.dao.exception.DAOException;
-import ua.nc.dao.factory.DAOFactory;
+import ua.nc.factory.DAOFactory;
+import ua.nc.factory.type.DataBaseType;
+import ua.nc.exception.DAOException;
 import ua.nc.entity.Mail;
 import ua.nc.entity.User;
+import ua.nc.service.MailService;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.concurrent.ScheduledFuture;
 
 /**
  * Created by Alexander Haliy on 23.04.2016.
