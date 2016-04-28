@@ -1,4 +1,6 @@
-package ua.nc.dao.VDanchul.entities;
+package ua.nc.entity.profile;
+
+import ua.nc.entity.Identified;
 
 /**
  * Created by Rangar on 24.04.2016.

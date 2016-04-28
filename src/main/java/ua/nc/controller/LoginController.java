@@ -1,5 +1,6 @@
 package ua.nc.controller;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -38,6 +39,7 @@ import java.util.Set;
  */
 @Controller
 public class LoginController implements HandlerExceptionResolver {
+    private final Logger log = Logger.getLogger(LoginController.class);
     @Autowired
     @Qualifier("authenticationManager")
     protected AuthenticationManager authenticationManager;
@@ -67,15 +69,15 @@ public class LoginController implements HandlerExceptionResolver {
         UserDetailsService userDetailsService = new UserDetailsServiceImpl();
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
         try {
-        token.setDetails(userDetailsService.loadUserByUsername(user.getEmail()));
+            token.setDetails(userDetailsService.loadUserByUsername(user.getEmail()));
             Authentication auth = authenticationManager.authenticate(token);
             SecurityContextHolder.getContext().setAuthentication(auth);
-            System.out.println("Sign in successful with email " + user.getEmail());
+            log.info("Sign in successful with email " + user.getEmail());
         } catch (BadCredentialsException e) {
-            System.out.println("Authorization deny " + user.getEmail() + " has another password");
+            log.warn("Authorization deny " + user.getEmail() + " has another password");
             errors.add(new ValidationError("signin", "Invalid username or password"));
         } catch (UsernameNotFoundException e) {
-            System.out.println("Authorization deny email" + user.getEmail() + " not found");
+            log.warn("Authorization deny email" + user.getEmail() + " not found");
             errors.add(new ValidationError("signin", "Invalid username or password"));
         }
         return jsonResponse;
@@ -93,11 +95,11 @@ public class LoginController implements HandlerExceptionResolver {
             if (userService.getUser(user.getEmail()) == null) {
                 User registeredUser = userService.createUser(user);
                 if (registeredUser == null) {
-                    System.out.println("Register failed " + user.getEmail());
-                    errors.add(new ValidationError("register","Register failed"));
+                    log.warn("Register failed " + user.getEmail());
+                    errors.add(new ValidationError("register", "Register failed"));
                 }
             } else {
-                System.out.println("User " + user.getEmail() + " already exists");
+                log.warn("User " + user.getEmail() + " already exists");
                 errors.add(new ValidationError("user", "Such user already exists"));
             }
         }

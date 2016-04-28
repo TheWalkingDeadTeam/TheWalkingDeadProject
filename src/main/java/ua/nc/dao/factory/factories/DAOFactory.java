@@ -1,6 +1,6 @@
-package ua.nc.dao.VDanchul.factories;
+package ua.nc.dao.factory.factories;
 
-import ua.nc.dao.VDanchul.dao.GenericDAO;
+import ua.nc.dao.GenericDAO;
 import ua.nc.dao.exception.DAOException;
 
 /**

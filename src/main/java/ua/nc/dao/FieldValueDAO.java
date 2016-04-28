@@ -1,6 +1,6 @@
-package ua.nc.dao.VDanchul.dao;
+package ua.nc.dao;
 
-import ua.nc.dao.VDanchul.entities.FieldValue;
+import ua.nc.entity.profile.FieldValue;
 
 import java.util.List;
 

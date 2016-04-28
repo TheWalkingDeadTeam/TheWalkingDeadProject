@@ -3,8 +3,8 @@ package ua.nc.dao.postgresql;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 import ua.nc.dao.MailDAO;
-import ua.nc.exception.DAOException;
-import ua.nc.pool.ConnectionPool;
+import ua.nc.dao.exception.DAOException;
+import ua.nc.dao.pool.ConnectionPool;
 import ua.nc.entity.Mail;
 
 import java.sql.*;
@@ -17,7 +17,7 @@ import java.util.List;
 @Repository
 public class PostgreMailDAO extends MailDAO {
 
-    private static final Logger LOGGER = Logger.getLogger(PostgreMailDAO.class);
+    private static final Logger log = Logger.getLogger(PostgreMailDAO.class);
 
     /*
     SQl Queries
@@ -40,6 +40,13 @@ public class PostgreMailDAO extends MailDAO {
     private Connection connection;
     private PreparedStatement preparedStatement;
     private ResultSet rs;
+    private final ConnectionPool connectionPool;
+
+
+    public PostgreMailDAO(ConnectionPool connectionPool) {
+        this.connectionPool = connectionPool;
+    }
+
     /**
      * Retrieves mail by id
      *
@@ -47,11 +54,11 @@ public class PostgreMailDAO extends MailDAO {
      * @return mail entity
      * @throws DAOException
      */
-    @Override
+
     public Mail get(Integer id) throws DAOException {
         Mail mail = null;
         try {
-            connection = ConnectionPool.getConnection();
+            connection = connectionPool.getConnection();
             preparedStatement = connection.prepareStatement(SQL_FIND_MAIL_BY_ID);
             preparedStatement.setInt(1, id);
             rs = preparedStatement.executeQuery();
@@ -60,8 +67,8 @@ public class PostgreMailDAO extends MailDAO {
                 mail.setBodyTemplate(rs.getString(1));
                 mail.setHeadTemplate(rs.getString(2));
             }
-        } catch (Exception e) {
-            LOGGER.error(GET_NOTIFICATION, e);
+        } catch (SQLException e) {
+            log.error(GET_NOTIFICATION, e);
             throw new DAOException(e);
         } finally {
             try {
@@ -72,7 +79,7 @@ public class PostgreMailDAO extends MailDAO {
                     preparedStatement.close();
                 }
                 if (connection != null) {
-                   connection.close();
+                    connectionPool.putConnection(connection);
                 }
             } catch (SQLException e) {
                 throw new DAOException(e);
@@ -88,10 +95,10 @@ public class PostgreMailDAO extends MailDAO {
      * @return generated key
      * @throws DAOException
      */
-    @Override
+
     public Mail create(Mail entity) throws DAOException {
         try {
-            connection = ConnectionPool.getConnection();
+            connection = connectionPool.getConnection();
             preparedStatement = connection.prepareStatement(SQL_CREATE_MAIL, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, entity.getBodyTemplate());
             preparedStatement.setString(2, entity.getHeadTemplate());
@@ -100,8 +107,8 @@ public class PostgreMailDAO extends MailDAO {
             rs.next();
             int id = rs.getInt(1);
             entity.setId(id);
-        } catch (Exception e) {
-            LOGGER.error(CREATE_NOTIFICATION, e);
+        } catch (SQLException e) {
+            log.error(CREATE_NOTIFICATION, e);
             throw new DAOException(e);
         } finally {
             try {
@@ -110,7 +117,7 @@ public class PostgreMailDAO extends MailDAO {
                     preparedStatement.close();
                 }
                 if (connection != null) {
-                    connection.close();
+                    connectionPool.putConnection(connection);
                 }
             } catch (SQLException e) {
                 throw new DAOException(e);
@@ -119,23 +126,24 @@ public class PostgreMailDAO extends MailDAO {
         return entity;
     }
 
+
     /**
      * Update mail entity in DataBase with new mail entity template
      *
      * @param entity update
      * @throws DAOException
      */
-    @Override
+
     public Mail update(Mail entity) throws DAOException {
         try {
-            connection = ConnectionPool.getConnection();
+            connection = connectionPool.getConnection();
             preparedStatement = connection.prepareStatement(SQL_UPDATE_MAIL);
             preparedStatement.setString(1, entity.getBodyTemplate());
             preparedStatement.setString(2, entity.getHeadTemplate());
             preparedStatement.setInt(3, entity.getId());
             preparedStatement.executeUpdate();
-        } catch (Exception e) {
-            LOGGER.error(UPDATE_NOTIFICATION, e);
+        } catch (SQLException e) {
+            log.error(UPDATE_NOTIFICATION, e);
             throw new DAOException(e);
         } finally {
             try {
@@ -143,7 +151,7 @@ public class PostgreMailDAO extends MailDAO {
                     preparedStatement.close();
                 }
                 if (connection != null) {
-                    connection.close();
+                    connectionPool.putConnection(connection);
                 }
             } catch (SQLException e) {
                 throw new DAOException(e);
@@ -151,6 +159,8 @@ public class PostgreMailDAO extends MailDAO {
         }
         return entity;
     }
+
+
 
 
     /**
@@ -159,15 +169,15 @@ public class PostgreMailDAO extends MailDAO {
      * @param mail to be deleted
      * @throws DAOException
      */
-    @Override
+
     public void delete(Mail mail) throws DAOException {
         try {
-            connection = ConnectionPool.getConnection();
+            connection = connectionPool.getConnection();
             preparedStatement = connection.prepareStatement(SQL_DELETE_MAIL);
             preparedStatement.setInt(1, mail.getId());
             preparedStatement.executeUpdate();
-        } catch (Exception e) {
-            LOGGER.error(DELETE_NOTIFICATION, e);
+        } catch (SQLException e) {
+            log.error(DELETE_NOTIFICATION, e);
             throw new DAOException(e);
         } finally {
             try {
@@ -175,7 +185,7 @@ public class PostgreMailDAO extends MailDAO {
                     preparedStatement.close();
                 }
                 if (connection != null) {
-                    connection.close();
+                    connectionPool.putConnection(connection);
                 }
             } catch (SQLException e) {
                 throw new DAOException(e);
@@ -195,7 +205,7 @@ public class PostgreMailDAO extends MailDAO {
     public List<Mail> getByHeader(String header) throws DAOException {
         List<Mail> mails = new ArrayList<>();
         try {
-            connection = ConnectionPool.getConnection();
+            connection = connectionPool.getConnection();
             preparedStatement = connection.prepareStatement("");
             preparedStatement.setString(1, header);
             rs = preparedStatement.executeQuery();
@@ -207,7 +217,7 @@ public class PostgreMailDAO extends MailDAO {
                 mail.setHeadTemplate(rs.getString(3));
                 mails.add(mail);
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new DAOException();
         } finally {
             try {
@@ -218,7 +228,7 @@ public class PostgreMailDAO extends MailDAO {
                     preparedStatement.close();
                 }
                 if (connection != null) {
-                    connection.close();
+                    connectionPool.putConnection(connection);
                 }
             } catch (SQLException e) {
                 throw new DAOException(e);

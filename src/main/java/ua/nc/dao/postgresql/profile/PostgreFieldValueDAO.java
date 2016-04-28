@@ -1,13 +1,8 @@
-package ua.nc.dao.VDanchul.dao.specific;
+package ua.nc.dao.postgresql.profile;
 
-import ua.nc.dao.VDanchul.dao.AbstractPostgreDAO;
-import ua.nc.dao.VDanchul.dao.FieldValueDAO;
-import ua.nc.dao.VDanchul.entities.FieldValue;
-import ua.nc.dao.exception.DAOException;
-import ua.nc.dao.pool.ConnectionPool;
+import ua.nc.dao.FieldValueDAO;
+import ua.nc.entity.profile.FieldValue;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.List;
 
 /**

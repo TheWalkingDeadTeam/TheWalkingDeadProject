@@ -1,10 +1,10 @@
-package ua.nc.dao.VDanchul.dao;
+package ua.nc.dao.postgresql;
 
-import ua.nc.dao.VDanchul.entities.Identified;
+import ua.nc.dao.GenericDAO;
+import ua.nc.entity.Identified;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.dao.pool.ConnectionPool;
 
-import java.io.Serializable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.List;

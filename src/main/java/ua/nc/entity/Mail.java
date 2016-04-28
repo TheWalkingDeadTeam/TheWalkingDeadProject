@@ -3,7 +3,7 @@ package ua.nc.entity;
 /**
  * Created by Alexander on 24.04.2016.
  */
-public class Mail {
+public class Mail implements Identified<Integer> {
     private Integer id;
     private String bodyTemplate;
     private String headTemplate;
@@ -30,5 +30,10 @@ public class Mail {
 
     public void setHeadTemplate(String headTemplate) {
         this.headTemplate = headTemplate;
+    }
+
+    @Override
+    public Integer getID() {
+        return null;
     }
 }

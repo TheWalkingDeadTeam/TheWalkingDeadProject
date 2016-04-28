@@ -1,9 +1,11 @@
-package ua.nc.dao.VDanchul.entities;
+package ua.nc.entity.profile;
+
+import ua.nc.entity.Identified;
 
 /**
  * Created by Rangar on 24.04.2016.
  */
-public class Field implements Identified<Integer>{
+public class Field implements Identified<Integer> {
     private int ID;
     private int cesID;
     private String name;

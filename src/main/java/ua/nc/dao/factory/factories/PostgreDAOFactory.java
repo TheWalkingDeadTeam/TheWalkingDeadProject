@@ -1,8 +1,8 @@
-package ua.nc.dao.VDanchul.factories;
+package ua.nc.dao.factory.factories;
 
-import ua.nc.dao.VDanchul.dao.GenericDAO;
-import ua.nc.dao.VDanchul.dao.specific.PostgreFieldDAO;
-import ua.nc.dao.VDanchul.entities.Field;
+import ua.nc.dao.GenericDAO;
+import ua.nc.dao.postgresql.profile.PostgreFieldDAO;
+import ua.nc.entity.profile.Field;
 import ua.nc.dao.enums.DataBaseType;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.dao.pool.ConnectionPool;

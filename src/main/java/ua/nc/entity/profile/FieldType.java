@@ -1,9 +1,11 @@
-package ua.nc.dao.VDanchul.entities;
+package ua.nc.entity.profile;
+
+import ua.nc.entity.Identified;
 
 /**
  * Created by Rangar on 24.04.2016.
  */
-public class ListType implements Identified<Integer> {
+public class FieldType implements Identified<Integer> {
     private int ID;
     private String name;
 
@@ -22,7 +24,7 @@ public class ListType implements Identified<Integer> {
         this.name = name;
     }
 
-    public ListType(String name){
+    public FieldType(String name){
         this.name = name;
     }
 }

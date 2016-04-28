@@ -1,25 +1,24 @@
-package ua.nc.dao.VDanchul.dao.specific;
+package ua.nc.dao.postgresql.profile;
 
-import ua.nc.dao.VDanchul.dao.AbstractPostgreDAO;
-import ua.nc.dao.VDanchul.entities.FieldType;
+import ua.nc.dao.postgresql.AbstractPostgreDAO;
+import ua.nc.entity.profile.ListType;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.dao.pool.ConnectionPool;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Created by Rangar on 26.04.2016.
  */
-public class PostgreFieldTypeDAO extends AbstractPostgreDAO<FieldType, Integer> {
-    public PostgreFieldTypeDAO(ConnectionPool connectionPool){
+public class PostgreListDAO extends AbstractPostgreDAO<ListType, Integer> {
+    public PostgreListDAO(ConnectionPool connectionPool){
         super(connectionPool);
     }
 
-    private class PersistFieldType extends FieldType{
-        public PersistFieldType(String name) {
+    private class PersistListType extends ListType {
+        public PersistListType(String name) {
             super(name);
         }
 
@@ -30,30 +29,30 @@ public class PostgreFieldTypeDAO extends AbstractPostgreDAO<FieldType, Integer> 
 
     @Override
     public String getSelectQuery() {
-        return "SELECT * FROM field_type WHERE field_type.field_type_id = ?;";
+        return "SELECT * FROM list WHERE list.list_id = ?;";
     }
 
     @Override
     public String getCreateQuery() {
-        return "INSERT INTO field_type (name) VALUES (?);";
+        return "INSERT INTO list (name) VALUES (?);";
     }
 
     @Override
     public String getUpdateQuery() {
-        return "UPDATE field_type SET field_type.name = ? WHERE field_type.field_type_id = ?;";
+        return "UPDATE list SET list.name = ? WHERE list.list_id = ?;";
     }
 
     @Override
     public String getAllQuery() {
-        return "SELECT * FROM field_type";
+        return "SELECT * FROM list";
     }
 
     @Override
-    protected List<FieldType> parseResultSet(ResultSet rs) throws DAOException {
-        LinkedList<FieldType> result = new LinkedList<>();
+    protected java.util.List<ListType> parseResultSet(ResultSet rs) throws DAOException {
+        LinkedList<ListType> result = new LinkedList<>();
         try {
             while (rs.next()) {
-                PersistFieldType lt = new PersistFieldType(rs.getString("name"));
+                PersistListType lt = new PersistListType(rs.getString("name"));
                 lt.setID(rs.getInt("list_id"));
                 result.add(lt);
             }
@@ -64,7 +63,7 @@ public class PostgreFieldTypeDAO extends AbstractPostgreDAO<FieldType, Integer> 
     }
 
     @Override
-    protected void prepareStatementForInsert(PreparedStatement statement, FieldType object) throws DAOException {
+    protected void prepareStatementForInsert(PreparedStatement statement, ListType object) throws DAOException {
         try {
             statement.setString(1, object.getName());
         } catch (Exception e) {
@@ -73,7 +72,7 @@ public class PostgreFieldTypeDAO extends AbstractPostgreDAO<FieldType, Integer> 
     }
 
     @Override
-    protected void prepareStatementForUpdate(PreparedStatement statement, FieldType object) throws DAOException {
+    protected void prepareStatementForUpdate(PreparedStatement statement, ListType object) throws DAOException {
         try {
             statement.setString(1, object.getName());
             statement.setInt(2, object.getID());
@@ -83,7 +82,7 @@ public class PostgreFieldTypeDAO extends AbstractPostgreDAO<FieldType, Integer> 
     }
 
     @Override
-    protected void prepareStatementForSelect(PreparedStatement statement, FieldType object) throws DAOException {
+    protected void prepareStatementForSelect(PreparedStatement statement, ListType object) throws DAOException {
         try {
             statement.setInt(1, object.getID());
         } catch (Exception e) {
@@ -92,7 +91,7 @@ public class PostgreFieldTypeDAO extends AbstractPostgreDAO<FieldType, Integer> 
     }
 
     @Override
-    public FieldType create(FieldType object) throws DAOException {
+    public ListType create(ListType object) throws DAOException {
         return persist(object);
     }
 }

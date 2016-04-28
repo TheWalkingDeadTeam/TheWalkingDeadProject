@@ -1,4 +1,4 @@
-package ua.nc.dao.VDanchul.entities;
+package ua.nc.entity;
 
 import java.io.Serializable;
 

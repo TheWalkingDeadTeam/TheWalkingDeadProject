@@ -1,7 +1,7 @@
-package ua.nc.dao.VDanchul.dao.specific;
+package ua.nc.dao.postgresql.profile;
 
-import ua.nc.dao.VDanchul.dao.AbstractPostgreDAO;
-import ua.nc.dao.VDanchul.entities.Field;
+import ua.nc.dao.postgresql.AbstractPostgreDAO;
+import ua.nc.entity.profile.Field;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.dao.pool.ConnectionPool;
 
