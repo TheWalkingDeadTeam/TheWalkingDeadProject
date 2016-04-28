@@ -29,7 +29,7 @@
     </authentication-manager>
 
     <beans:bean id="UserDetailsServiceImpl"
-                class="ua.nc.service.UserDetailsServiceImpl">
+                class="ua.nc.service.user.UserDetailsServiceImpl">
     </beans:bean>
 
 </beans:beans>
