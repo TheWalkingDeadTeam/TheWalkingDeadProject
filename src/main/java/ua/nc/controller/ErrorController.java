@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class ErrorController {
     @RequestMapping(value = {"/error", "/403"}, method = RequestMethod.GET)
     public String login(Model model) {
-        return "/WEB-INF/jsp/error.jsp";
+        return "error";
     }
 
 }

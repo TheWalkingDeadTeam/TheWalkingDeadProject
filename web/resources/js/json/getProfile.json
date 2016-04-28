@@ -1,0 +1,172 @@
+{
+  "name": "Baraccck",
+  "surname": "Obama",
+  "phoneNumber": "+382281488666",
+  "mail": "barack.obi@weed.black",
+  "university": {
+    "values": [
+      "ghetto",
+      "street"
+    ],
+    "selected": "ghetto"
+  },
+  "faculty": "NC",
+  "department": "spsks",
+  "specialty": "Mr. President",
+  "multiplyQuestions": [{
+    "title": "Why have you chosen our training centre?:",
+    "questionId": "interestId",
+    "allValues": [
+      "New knowledge",
+      "Work in NetCracker",
+      "Research work",
+      "Traineeship/Practice"
+    ],
+    "checkedValues": [
+      "Work in NetCracker",
+      "Research work"
+    ]
+  }, {
+    "title": "Skills you are interested in:",
+    "questionId": "skillsId",
+    "allValues": [
+      "Developing",
+      "QA",
+      "Business Analyse",
+      "Telecommunication",
+      "Marketing",
+      "Technical Support",
+      "Selling"
+    ],
+    "checkedValues": [
+      "Developing",
+      "QA"
+    ]
+  }],
+  "singleQuestions": [{
+    "title": "When do you can start work?",
+    "questionId": "startWorkId",
+    "allValues": [
+      "After graduation",
+      "After end of studying in training centre",
+      "During studying"
+    ],
+    "selectedValue": "During studying"
+  },
+    {
+      "title": "How many hours in a week can you work?",
+      "questionId": "howManyHoursId",
+      "allValues": [
+        "<10",
+        "10-15",
+        "15-20",
+        "20-25",
+        "25-30",
+        "30-35",
+        "Full day"
+      ],
+      "selectedValue": "20-25"
+    },
+    {
+      "title": "English level",
+      "questionId": "englishId",
+      "allValues": [
+        "Basic",
+        "Pre-intermediate",
+        "Intermediate",
+        "Upper-intermediate",
+        "Advance"
+      ],
+      "selectedValue": "Intermediate"
+    }
+  ],
+  "averageMark": "3",
+  "programingLanguages": [{
+    "id": "javaId",
+    "name": "Java",
+    "assessment": "1"
+  }, {
+    "id": "scriptId",
+    "name": "JavaScript",
+    "assessment": "2"
+  }, {
+      "id": "javaId",
+      "name": "C#",
+      "assessment": "1"
+  }, {
+      "id": "pythonId",
+      "name": "Python",
+      "assessment": "1"
+  }, {
+    "id": "cppId",
+    "name": "C++",
+    "assessment": "1"
+  }, {
+    "id": "sqlId",
+    "name": "SQL",
+    "assessment": "1"
+  }],
+  "knowledge": [{
+    "id": "oopID",
+    "name": "OOP",
+    "assessment": "1"
+  }, {
+    "id": "netId",
+    "name": "Networks",
+    "assessment": "2"
+  }, {
+    "id": "guiId",
+    "name": "GUI",
+    "assessment": "1"
+  }, {
+    "id": "webId",
+    "name": "Web",
+    "assessment": "1"
+  }, {
+    "id": "algId",
+    "name": "Algorithms",
+    "assessment": "1"
+  }, {
+    "id": "dbId",
+    "name": "Database",
+    "assessment": "1"
+  }, {
+    "id": "softArchId",
+    "name": "Software Architect",
+    "assessment": "1"
+  }, {
+    "id": "sysprogramId",
+    "name": "System programming",
+    "assessment": "1"
+  }],
+
+  "course": {
+    "values": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6"
+    ],
+    "selected": "6"
+  },
+  "additionalLang": "ukr, rus, china",
+  "portfolio": "dsadadasdadsad",
+  "whyYou": "dsa",
+  "foreignPrograms": "dfsad",
+  "hobbies": "dsada",
+  "singleQuestions2": [
+    {
+      "title": "Where you found information about us?",
+      "questionId": "whereFoundId",
+      "allValues": [
+        "From advertisement in university",
+        "From advertisement in Internet",
+        "From friends"
+      ],
+        "selectedValue": "From friends"
+    }
+  ]
+
+}

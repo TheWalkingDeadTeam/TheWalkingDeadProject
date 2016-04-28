@@ -23,7 +23,7 @@ public class LoginController {
 
     @RequestMapping(value = {"/", "/login"}, method = RequestMethod.GET)
     public String login(Model model) {
-        return "/WEB-INF/jsp/login.jsp";
+        return "login";
     }
 
     @RequestMapping(value = {"/register"}, method = RequestMethod.POST)
@@ -38,6 +38,16 @@ public class LoginController {
         } else {
             return "redirect:/login?register=exist";
         }
+    }
+
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    public String testCommand(Model model){
+        System.out.println("Before");
+        userService.findUsersByName("Alex");
+        System.out.println("After");
+        userService.delete(35);
+        userService.findUsersByName("Alex");
+        return "test";
     }
 
 }
