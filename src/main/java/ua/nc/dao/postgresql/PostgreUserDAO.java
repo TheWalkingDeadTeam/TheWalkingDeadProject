@@ -1,5 +1,6 @@
 package ua.nc.dao.postgresql;
 
+import org.apache.log4j.Logger;
 import ua.nc.dao.AppSetting;
 import ua.nc.dao.UserDAO;
 import ua.nc.dao.exception.DAOException;
@@ -15,8 +16,9 @@ import java.sql.SQLException;
 /**
  * Created by Pavel on 21.04.2016.
  */
+
 public class PostgreUserDAO extends UserDAO {
-    /*    private static final Logger LOGGER = Logger.getLogger(PostgreUserDAO.class);*/
+    private static final Logger log = Logger.getLogger(PostgreUserDAO.class);
     private final ConnectionPool connectionPool;
 
     public PostgreUserDAO(ConnectionPool connectionPool) {

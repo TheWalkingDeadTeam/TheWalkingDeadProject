@@ -43,7 +43,7 @@ public class PostgreRoleDAO extends RoleDAO {
             role.setId(resultSet.getInt("role_id"));
             role.setName(resultSet.getString("name"));
         } catch (SQLException e) {
-            System.out.println("Role" + name + "  not found");
+            System.out.println("UserRoles" + name + "  not found");
             throw new DAOException(e);
         } finally {
             try {

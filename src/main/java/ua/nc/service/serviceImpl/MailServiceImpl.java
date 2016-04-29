@@ -17,6 +17,7 @@ import ua.nc.dao.exception.DAOException;
 import ua.nc.dao.factory.DAOFactory;
 import ua.nc.entity.Mail;
 import ua.nc.entity.User;
+import ua.nc.service.MailService;
 
 import java.text.DateFormat;
 import java.text.ParseException;

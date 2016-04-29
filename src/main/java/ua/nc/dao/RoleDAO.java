@@ -1,6 +1,6 @@
 package ua.nc.dao;
 
-import ua.nc.dao.exception.DAOException;
+import ua.nc.exception.DAOException;
 import ua.nc.entity.Role;
 import ua.nc.entity.User;
 
@@ -12,7 +12,7 @@ import java.util.Set;
 public abstract class RoleDAO {
     public abstract Role findByName(String name) throws DAOException;
 
-    public abstract Set<Role> findByEmail(String email) throws DAOException;
+    public abstract Set<Role> findAllByEmail(String email) throws DAOException;
 
     public abstract void setRoleToUser(Set<Role> roles, User user) throws DAOException;
 }
