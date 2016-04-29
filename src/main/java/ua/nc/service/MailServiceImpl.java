@@ -5,10 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Service;
 import ua.nc.dao.MailDAO;
@@ -22,7 +19,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.concurrent.ScheduledFuture;
 
 /**
  * Created by Alexander Haliy on 23.04.2016.
@@ -37,7 +33,7 @@ public class MailServiceImpl implements MailService {
     private ThreadPoolTaskScheduler scheduler;
     private ThreadPoolTaskScheduler schedulerMassDeliveryService;
     private static final int POOL_SIZE = 2;
-    private static final int POOL_SIZE_SCHEDULER = 10;
+    private static final int POOL_SIZE_SCHEDULER = 2;
 
     public MailServiceImpl() {
         schedulerMassDeliveryService = new ThreadPoolTaskScheduler();
@@ -91,7 +87,6 @@ public class MailServiceImpl implements MailService {
 
 
     public void sendMail(String address, String header, String body) {
-
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         Properties properties = getMailProperties();
         mailSender.setProtocol("smtp");
@@ -104,7 +99,7 @@ public class MailServiceImpl implements MailService {
         message.setTo(address);
         message.setSubject(header);
         message.setText(body);
-        AsynchronousSender(message, mailSender);
+        asynchronousSender(message, mailSender);
         //mailSender.send(message);
     }
 
@@ -114,7 +109,7 @@ public class MailServiceImpl implements MailService {
      * @param message
      * @param mailSender
      */
-    public void AsynchronousSender(final SimpleMailMessage message, final MailSender mailSender) {
+    public void asynchronousSender(final SimpleMailMessage message, final MailSender mailSender) {
         scheduler.execute(new Runnable() {
             @Override
             public void run() {

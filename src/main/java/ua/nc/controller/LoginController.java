@@ -2,6 +2,12 @@ package ua.nc.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,10 +32,7 @@ import ua.nc.validator.Validator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -58,8 +61,8 @@ public class LoginController implements HandlerExceptionResolver {
     }
 
     @RequestMapping(value = "/security_check ", method = RequestMethod.POST, produces = "application/json")
-    public
     @ResponseBody
+    public
     JSONResponse authentication(@RequestBody User user) {
         JSONResponse jsonResponse = new JSONResponse();
         Set<ValidationError> errors = new LinkedHashSet<>();
@@ -133,6 +136,23 @@ public class LoginController implements HandlerExceptionResolver {
         }
         return "redirect:/login?photo=success";
     }
+
+
+//    @RequestMapping(value = "/stuff/{stuffId}", method = RequestMethod.GET)
+//    public ResponseEntity<InputStreamResource> downloadStuff(@PathVariable int stuffId)
+//            throws IOException {
+//        String fullPath = stuffService.figureOutFileNameFor(stuffId);
+//        File file = new File(fullPath);
+//
+//        HttpHeaders respHeaders = new HttpHeaders();
+//        respHeaders.setContentType("application/pdf");
+//        respHeaders.setContentLength(12345678);
+//        respHeaders.setContentDispositionFormData("attachment", "fileNameIwant.pdf");
+//
+//        InputStreamResource isr = new InputStreamResource(new FileInputStream(file));
+//        return new ResponseEntity<InputStreamResource>(isr, respHeaders, HttpStatus.OK);
+//    }
+
 
     private class JSONResponse {
         private Set<ValidationError> errors;
