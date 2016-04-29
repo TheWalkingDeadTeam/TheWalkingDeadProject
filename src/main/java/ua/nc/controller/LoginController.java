@@ -1,5 +1,6 @@
 package ua.nc.controller;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -18,6 +19,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 import ua.nc.entity.User;
+import ua.nc.service.PhotoService;
+import ua.nc.service.PhotoServiceImpl;
 import ua.nc.service.user.UserDetailsServiceImpl;
 import ua.nc.service.user.UserService;
 import ua.nc.service.user.UserServiceImpl;
@@ -27,10 +30,8 @@ import ua.nc.validator.Validator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
+import java.util.Base64;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -114,26 +115,28 @@ public class LoginController implements HandlerExceptionResolver {
                 return "redirect:/login?photo=wrong";
             }
             try {
-                byte[] photoBytes = photo.getBytes();
-
-                String resHome = System.getProperty("catalina.home");
                 UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
                         .getPrincipal();
                 String userName = userDetails.getUsername();
                 int userID = userService.getUser(userName).getId();
-                File dir = new File(resHome + File.separator + "photos" + File.separator + userID);
-                if (!dir.exists()) {
-                    dir.mkdirs();
-                }
-                File localFile = new File(dir.getAbsolutePath() + File.separator + "photo");
-                BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(localFile));
-                stream.write(photoBytes);
-                stream.close();
+                PhotoService photoService = new PhotoServiceImpl();
+                photoService.uploadPhoto(photo,userID);
             } catch (IOException e) {
                 return "redirect:/login?photo=exception";
             }
         }
         return "redirect:/login?photo=success";
+    }
+
+    @ResponseBody
+    @RequestMapping(value="/getPhoto")
+    public byte[] getPhoto(){
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+        String userName = userDetails.getUsername();
+        int userID = userService.getUser(userName).getId();
+        return new PhotoServiceImpl().getPhotoById(userID);
+
     }
 
     private class JSONResponse {
