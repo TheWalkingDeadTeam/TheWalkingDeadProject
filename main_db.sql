@@ -24,7 +24,7 @@ CREATE TABLE System_User_Status (
 
 CREATE TABLE System_User (
   System_User_ID serial PRIMARY KEY,
-  Email varchar(100) NOT NULL,
+  Email varchar(100) NOT NULL UNIQUE,
   Password char(32) NOT NULL,
   Name varchar(30) NOT NULL,
   Surname varchar(30) NOT NULL,
@@ -64,9 +64,9 @@ CREATE TABLE Course_Enrollment_Session (
   End_Interviewing_Date date CHECK(End_Interviewing_Date > Start_Interviewing_Date),
   Quota int NOT NULL CHECK (Quota > 0),
   CES_Status_ID int NOT NULL references CES_Status(CES_Status_ID)  ON DELETE RESTRICT ON UPDATE CASCADE,
-  Reminders int NOT NULL CHECK (Reminders > 0),
-  Interviewing_Time_Person int NOT NULL CHECK (Interviewing_Time_Person > 0),
-  Interviewing_Time_Day int NOT NULL CHECK (Interviewing_Time_Day > 0)
+  Reminders int CHECK (Reminders > 0),
+  Interviewing_Time_Person int CHECK (Interviewing_Time_Person > 0),
+  Interviewing_Time_Day int CHECK (Interviewing_Time_Day > 0)
 );
 
 CREATE TABLE Interviewer_Participation (
@@ -116,7 +116,9 @@ CREATE TABLE Field (
   Name varchar(20) NOT NULL,
   Field_Type_ID int NOT NULL references Field_Type(Field_Type_ID) ON DELETE RESTRICT ON UPDATE CASCADE,
   Multiple_Choice bool NOT NULL,
-  List_ID int references List(List_ID) ON DELETE RESTRICT ON UPDATE CASCADE
+  Order_Num int NOT NULL CHECK (Order_Num > 0),
+  List_ID int references List(List_ID) ON DELETE RESTRICT ON UPDATE CASCADE,
+  UNIQUE (CES_ID, Order_Num)
 );
 
 CREATE TABLE Field_Value (
