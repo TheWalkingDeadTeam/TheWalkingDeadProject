@@ -18,7 +18,10 @@ import ua.nc.entity.User;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Properties;
 
 /**
  * Created by Alexander Haliy on 23.04.2016.
@@ -33,7 +36,7 @@ public class MailServiceImpl implements MailService {
     private ThreadPoolTaskScheduler scheduler;
     private ThreadPoolTaskScheduler schedulerMassDeliveryService;
     private static final int POOL_SIZE = 2;
-    private static final int POOL_SIZE_SCHEDULER = 2;
+    private static final int POOL_SIZE_SCHEDULER = 10;
 
     public MailServiceImpl() {
         schedulerMassDeliveryService = new ThreadPoolTaskScheduler();
@@ -87,6 +90,7 @@ public class MailServiceImpl implements MailService {
 
 
     public void sendMail(String address, String header, String body) {
+
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         Properties properties = getMailProperties();
         mailSender.setProtocol("smtp");
@@ -99,7 +103,7 @@ public class MailServiceImpl implements MailService {
         message.setTo(address);
         message.setSubject(header);
         message.setText(body);
-        asynchronousSender(message, mailSender);
+        AsynchronousSender(message, mailSender);
         //mailSender.send(message);
     }
 
@@ -109,7 +113,7 @@ public class MailServiceImpl implements MailService {
      * @param message
      * @param mailSender
      */
-    public void asynchronousSender(final SimpleMailMessage message, final MailSender mailSender) {
+    public void AsynchronousSender(final SimpleMailMessage message, final MailSender mailSender) {
         scheduler.execute(new Runnable() {
             @Override
             public void run() {

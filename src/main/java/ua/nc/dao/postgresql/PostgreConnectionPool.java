@@ -1,8 +1,8 @@
 package ua.nc.dao.postgresql;
 
 import org.postgresql.ds.PGPoolingDataSource;
-import ua.nc.dao.pool.ConnectionPool;
 import ua.nc.dao.exception.DAOException;
+import ua.nc.dao.pool.ConnectionPool;
 
 import java.sql.Connection;
 import java.sql.SQLException;

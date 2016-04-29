@@ -16,9 +16,10 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Netcracker</title>
     <link rel="icon" type="image/png" sizes="32x32" href="/resources/images/ico.png"/>
-    <link rel="stylesheet" type="text/css" href="/resources/files/reset.css"/>
-    <link rel="stylesheet" type="text/css" href="/resources/files/bootstrap.css"/>
-    <link rel="stylesheet" type="text/css" href="/resources/files/styles.css"/>
+    <link rel="stylesheet" type="text/css" href="/resources/css/reset.css"/>
+    <link rel="stylesheet" type="text/css" href="/resources/css/styles.css"/>
+    <link rel="stylesheet" type="text/css" href="/resources/css/registration.css" />
+    <link rel="stylesheet" type="text/css" href="/resources/bootstrap/css/bootstrap.css" />
 </head>
 
 <body id="document">
@@ -45,47 +46,63 @@
 
 
 <div class="content container">
-    <div class="inputBox reg col-lg-7 col-md-7 col-sm-12 col-xs-12">
+    <div class="reg registration">
+        <div class="layout"></div>
         <sec:authorize access="!isAuthenticated()">
-            <form>
+            <form id="user">
                 <div id="messageRegistration"></div>
-                <h2 class="form-signin-heading">Studet Registration</h2>
-                <input type="text" id="name" class="form-control" placeholder="Name"/>
-                <input type="text" id="email" class="form-control" placeholder="Email address"/>
-                <input type="password" id="password" class="form-control" placeholder="Password"/>
+                <div class="row container-fluid reg-head">
+                    <div class="col-lg-6 col-md-8 col-sm-9 col-xs-9">
+                        <h2 class="form-signin-heading">Student Registration</h2>
+                    </div>
+                    <div class="col-lg-6 col-md-4 col-sm-3 col-xs-3 ">
+                        <i class="material-icons closeico"><span class="closebtn">clear</span></i>
+                    </div>
+                </div>
+                <input id="name" name="name" class="form-control" placeholder="Name" type="text" value="">
+                <div class="correct-name"></div>
+                <input id="surename" name="surename" class="form-control" placeholder="Surename" type="text" value="">
+                <div class="correct-surename"></div>
+                <input id="email" name="email" class="form-control" placeholder="Email address" type="text" value="">
+                <div class="correct-email"></div>
+                <input id="password" name="password" class="form-control" placeholder="Password" type="password" value="">
+                <div class="correct-password"></div>
                 <button id="buttonRegistration" class="btn btn-lg btn-primary btn-block">Register</button>
             </form>
         </sec:authorize>
     </div>
 
+    <div class="row">
 
 
-
-
-
-    <div class="inputBox col-lg-4 col-md-4 col-sm-12 col-xs-12">
-        <sec:authorize access="!isAuthenticated()">
-            <form>
-                <div id="messageSignIn"></div>
-                <h2 class="form-signin-heading">Please sign in</h2>
-                <input id="j_username" type="text" class="form-control" name="j_username" placeholder="Email address" required>
-                <input id="j_password" type="password" class="form-control" name="j_password" placeholder="Password" required>
-                <button id="buttonSignIn" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-            </form>
-        </sec:authorize>
-        <sec:authorize access="isAuthenticated()">
-            <div class="alert alert-info" role="alert">
-                <p>Your login: <sec:authentication property="principal.username"/></p>
-                <p><sec:authentication property="principal.authorities"/></p>
-            </div>
-            <p><a id="buttonLogout" class="btn btn-lg btn-danger" href="/logout" role="button">Logout</a></p>
-            <p>
+        <div class="inputBox col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <sec:authorize access="!isAuthenticated()">
+                <form>
+                    <div id="messageSignIn"></div>
+                    <h2 class="form-signin-heading">Please sign in</h2>
+                    <input id="j_username" type="text" class="form-control" name="j_username" placeholder="Email address" required>
+                    <input id="j_password" type="password" class="form-control" name="j_password" placeholder="Password" required>
+                    <button id="buttonSignIn" class="btn btn-lg btn-primary btn-block signbtn" type="submit">Sign in</button>
+                    <button type="button" class="btn btn-lg btn-primary btn-block regbut">Registration</button>
+                </form>
+            </sec:authorize>
+            <sec:authorize access="isAuthenticated()">
+                <div class="alert alert-info" role="alert">
+                    <p>Your login: <sec:authentication property="principal.username"/></p>
+                    <p><sec:authentication property="principal.authorities"/></p>
+                </div>
+                <p><a id="buttonLogout" class="btn btn-lg btn-danger" href="/logout" role="button">Logout</a></p>
+                <p>
                 <form id = "photoUpload" method="post" action="uploadPhoto" enctype="multipart/form-data">
                     Photo to upload: <input type="file" name="photo" accept="image/jpeg"><br />
                     <input type="submit" value="Upload"/>
                 </form>
-            </p>
-        </sec:authorize>
+                </p>
+            </sec:authorize>
+        </div>
+        <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+            <img class='img-responsive' src='/resources/images/main.jpg'>
+        </div>
     </div>
 </div>
 
@@ -130,7 +147,8 @@
 
 </body>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
-<script src="/resources/js/register.js"></script>
 <script src="/resources/js/login.js"></script>
 <script src="/resources/js/logout.js"></script>
+<script src="/resources/bootstrap/js/bootstrap.js"></script>
+<script src="/resources/js/registration.js"></script>
 </html>

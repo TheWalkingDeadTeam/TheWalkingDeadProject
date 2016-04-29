@@ -1,4 +1,4 @@
-package ua.nc.service;
+package ua.nc.service.user;
 
 import ua.nc.entity.User;
 
