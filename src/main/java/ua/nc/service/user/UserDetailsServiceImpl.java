@@ -1,4 +1,4 @@
-package ua.nc.service;
+package ua.nc.service.user;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,8 +21,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userService.getUser(email);
-        Set<GrantedAuthority> roles = new HashSet<GrantedAuthority>();
-        for (Role role: user.getRoles()) {
+        if (user == null) {
+            throw new UsernameNotFoundException("User with email " + email + " not found");
+        }
+        Set<GrantedAuthority> roles = new HashSet();
+        for (Role role : user.getRoles()) {
             roles.add(new SimpleGrantedAuthority(role.getName()));
         }
         UserDetails userDetails = new org.springframework.security.core.userdetails

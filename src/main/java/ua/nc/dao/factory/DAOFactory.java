@@ -1,5 +1,6 @@
 package ua.nc.dao.factory;
 
+import ua.nc.dao.MailDAO;
 import ua.nc.dao.RoleDAO;
 import ua.nc.dao.UserDAO;
 import ua.nc.dao.enums.DataBaseType;
@@ -20,7 +21,9 @@ public abstract class DAOFactory {
         }
     }
 
-    public abstract UserDAO getUserDAO(/*Role role*/);
+    public abstract UserDAO getUserDAO();
 
     public abstract RoleDAO getRoleDAO();
+
+    public abstract MailDAO getMailDAO();
 }

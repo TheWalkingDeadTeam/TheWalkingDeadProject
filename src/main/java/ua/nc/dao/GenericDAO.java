@@ -1,43 +1,18 @@
 package ua.nc.dao;
 
-import org.apache.log4j.Logger;
+import ua.nc.entity.Identified;
 import ua.nc.dao.exception.DAOException;
-import ua.nc.dao.pool.ConnectionPool;
-import ua.nc.entity.User;
 
 import java.io.Serializable;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.List;
 
 /**
- * Created by Pavel on 21.04.2016.
+ * Created by Rangar on 24.04.2016.
  */
-public abstract class GenericDAO<T, PK extends Serializable> {
-
-    private static final Logger LOGGER = Logger.getLogger(GenericDAO.class);
-
-    public abstract T get(int id) throws DAOException, SQLException;
-
-    public abstract int create(User user) throws DAOException;
-
-    public abstract void update(User user) throws DAOException;
-
-    public abstract void delete(int id) throws DAOException;
-
-    public void closeConnStmt(ConnectionPool connectionPool, Connection connection, PreparedStatement preparedStatement, ResultSet resultSet) {
-        try {
-            if (resultSet != null)
-                resultSet.close();
-            if (preparedStatement != null)
-                preparedStatement.close();
-            if (connection != null)
-                connectionPool.putConnection(connection);
-        } catch (SQLException e) {
-            LOGGER.error(e);
-        } catch (DAOException e) {
-            LOGGER.error(e);
-        }
-    }
+public interface GenericDAO<T extends Identified, PK extends Serializable> {
+    public T create(T object) throws DAOException;
+    public T persist(T object) throws DAOException;
+    public T read(PK key) throws DAOException;
+    public void update(T object) throws DAOException;
+    public List<T> getAll() throws DAOException;
 }

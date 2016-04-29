@@ -1,195 +1,170 @@
-$(document).ready(function () {
-    $('form').submit(formSubmitHandler);
+(function () {
 
-    getDataForProfile();
-});
+    var requestData;
 
-function getDataForProfile() {
-    $.ajax({
-            method: 'GET',
-            url: 'resources/js/json/getProfile.json'
-            // url: 'resources/js/json/getEmptyProfile.json'
-        })
-        .done(function (data) {
-            handleProfileResponse(data);
-        });
-}
+    $(document).ready(function () {
 
-function formSubmitHandler(e) {
-    e.preventDefault();
-
-    var requestData = {
-        programingLanguages: [],
-        knowledge: [],
-        multiplyQuestions: {},
-        singleQuestions: {},
-        singleQuestions2: {},
-        name: $('input[name=name]').val(),
-        surname: $('input[name=surname]').val(),
-        phoneNumber: $('input[name=tel]').val(),
-        mail: $('input[name=email]').val(),
-        university: $('#university').val(),
-        faculty: $('input[name=faculty]').val(),
-        department: $('input[name=department]').val(),
-        specialty: $('input[name=specialty]').val(),
-        course: $('#course').val(),
-        averageMark: $('input[name=averageMark]').val(),
-        portfolio: $('input[name=portfolio]').val(),
-        additionalLang: $('input[name=additionalLang]').val(),
-        whyYou: $('input[name=whyYou]').val(),
-        foreignPrograms: $('input[name=foreignPrograms]').val(),
-        hobbies: $('input[name=hobbies]').val(),
-        personalAgree: $('input[name=personalAgree]').val()
-    };
-
-    var programingLangList = $('#programingLangList');
-    var knowledgeList = $('#knowledgeList');
-    var multiplyQuestions = $('#multiplyQuestions');
-    var singleQuestions = $('#singleQuestions');
-    var singleQuestions2 = $('#singleQuestions2');
-
-
-    programingLangList.find('input').each(function (i, item) {
-        requestData.programingLanguages.push({
-            id: $(item).attr('name'),
-            assessment: $(item).val()
-        });
-    });
-    knowledgeList.find('input').each(function (i, item) {
-        requestData.knowledge.push({
-            id: $(item).attr('name'),
-            assessment: $(item).val()
-        });
-    });
-
-    singleQuestions.find('input:checked').each(function (i, item) {
-        requestData.singleQuestions[$(item).attr('name')] = $(item).val();
-    });
-    singleQuestions2.find('input:checked').each(function (i, item) {
-        requestData.singleQuestions2[$(item).attr('name')] = $(item).val();
-    });
-
-    multiplyQuestions.find('input:checked').each(function (i, item) {
-        if (requestData.multiplyQuestions[$(item).attr('name')]) {
-            requestData.multiplyQuestions[$(item).attr('name')].push($(item).val())
-        } else {
-            requestData.multiplyQuestions[$(item).attr('name')] = [$(item).val()];
-        }
-    });
-
-    $.ajax({
-            method: 'POST',
+        $.ajax({
+            type: 'get',
+            url: 'resources/json/myJSON.json' /*"/profile"*/,
+            dataType: 'json',
             contentType: "application/json",
-            url: 'profile',
-            data: JSON.stringify(requestData)
-        })
-        .done(function (data) {
-            console.log(data);
-        });
-}
+            success: function (response) {
+                if (response.fields.length) {
+                    requestData = response;
+                    response.fields.forEach(function (item, i) {
+                        typeSwitcher(item, i, '#fields');
+                    });
+                    $('#fields').append('<button type=\"submit\" form=\"fields\" value=\"Submit\">' + 'Save' + '</button>');
+                }
 
-function handleProfileResponse(data) {
-    if (data.name) {
-        renderProfile(data);
-    } else {
-        renderEmptyProfile(data);
+            },
+            error: function (jqXHR, exception) {
+                window.location.href = "/error"
+            }
+        });
+
+        $('#fields').submit(function () {
+            event.preventDefault();
+            $.ajax ({
+                    method: 'POST',
+                    contentType: "application/json",
+                    url: 'profile',
+                    data: JSON.stringify(requestData)
+                })
+                .done( function(data) {
+                    console.log(data);
+                })
+        });
+    });
+
+    function typeSwitcher(item, i, divname) {
+        if (!item.multiple) {
+            switch (item.type) {
+                case 'number':
+                    $('<div id=\"block'+i+'\">').appendTo($(divname));
+                    $('<label>').attr({for: item.id}).text(item.name + ' ').appendTo($('#block' + i));
+                    var attributes = {type: 'number', id: item.id, min: '0', max: '10', value: item.value[0].value};
+                    $('<input>')
+                        .attr(attributes)
+                        .attr('ng-model', i )
+                        .appendTo($('#block' + i))
+                        .bind('input', function(){
+                            requestData['fields'][$(this).attr('ng-model')].value[0].value = $(this).val();
+                        });
+                    break;
+                case 'radio':
+                    $('<div id=\"block'+i+'\">').appendTo($(divname));
+                    $('<span>').text(item.name + ': ').appendTo($('#block' + i));
+                    item.value.forEach ( function (item_value, j) {
+                        var isChecked = item_value.value ? 'checked' : '',
+                            attribures = {type: 'radio', id: item_value.id, name: item.id};
+                        if (isChecked) {
+                            attribures.checked = isChecked;
+                        }
+                        $('<label>').attr({for: item_value.id}).text(' ' + item_value.name).appendTo($('#block' + i));
+                        $('<input>')
+                            .attr(attribures)
+                            .attr('ng-model', i)
+                            .appendTo($('#block' + i))
+                            .on('change', function () {
+                                var updatedRadios = requestData.fields[$(this).attr('ng-model')].value.map(function (item) {
+                                    if(item.id == this.id) {
+                                        item.value = true;
+                                        return item;
+                                    } else {
+                                        item.value = false;
+                                        return item;
+                                    }
+                                }, this);
+
+                                requestData.fields[$(this).attr('ng-model')].value = updatedRadios;
+
+                            });
+                    })
+                    break;
+                case 'text':
+                    $('<div id=\"block'+i+'\">').appendTo($(divname));
+                    $('<label>').attr({for: item.id}).text(item.name + ' ').appendTo($('#block' + i));
+                    $('<input>')
+                        .attr({type: 'text', id: item.id, value: item.value[0].value})
+                        .attr('ng-model', i)
+                        .appendTo($('#block' + i))
+                        .bind('input', function(){
+                            requestData['fields'][$(this).attr('ng-model')].value[0].value = $(this).val();
+                        });
+                    break;
+                case 'tel':
+                    $('<div id=\"block'+i+'\">').appendTo($(divname));
+                    $('<label>').attr({for: item.id}).text(item.name + ' ').appendTo($('#block' + i));
+                    $('<input>')
+                        .attr({type: 'tel', id: item.id, value: item.value[0].value})
+                        .attr('ng-model', i)
+                        .appendTo($('#block' + i))
+                        .bind('input', function(){
+                            requestData['fields'][$(this).attr('ng-model')].value[0].value = $(this).val();
+                        });
+                    break;
+                case 'select':
+                    $('<div id=\"block'+i+'\">').appendTo($(divname));
+                    $('<span>').attr({for: item.id}).text(item.name + ' ').appendTo($('#block' + i));
+                    $('<select>').attr({type: 'select', id: item.id}).attr('ng-model', i).appendTo($('#block' + i));
+                    $('#' + item.id).append('<option ' + 'disabled' + '>' + 'University' + '</option>');
+                    item.value.forEach( function (item_value, j) {
+                        var isSelected = item_value.value ? 'selected' : '';
+                        $('#' + item.id)
+                            .append('<option id="' + item_value.id + '" value="' + item_value.name + '" ' + isSelected +'>' + item_value.name + '</option>')
+                            .on('change', function () {
+                                var updatedSelect = requestData.fields[$(this).attr('ng-model')].value.map(function (item) {
+                                    if(item.name == this.value) {
+                                        item.value = true;
+                                        return item;
+                                    } else {
+                                        item.value = false;
+                                        return item;
+                                    }
+                                }, this);
+
+                                requestData.fields[$(this).attr('ng-model')].value = updatedSelect;
+                            });
+                    })
+                    break;
+                case 'textarea':
+                    $('<div id=\"block'+i+'\">').appendTo($(divname));
+                    $('<span>').attr({for: item.id}).text(item.name + ' ').appendTo($('#block' + i));
+                    $('<textarea>')
+                        .attr({id: item.id, cols: 40, rows: 4})
+                        .attr('ng-model', i)
+                        .appendTo($('#block' + i))
+                        .bind('input', function(){
+                            requestData['fields'][$(this).attr('ng-model')].value[0].value = $(this).val();
+                        });
+                    $('#' + item.id).val(item.value[0].value);
+                    break;
+            }
+        } else if (item.multiple) {
+            switch (item.type) {
+                case 'checkbox':
+                    $('<div id=\"block'+i+'\">').appendTo($(divname));
+                    $('<span>').text(item.name + ': ').appendTo($('#block' + i));
+                    item.value.forEach ( function (item_value, j) {
+                        var isChecked = item_value.value ? 'checked' : '',
+                            attribures = {type: 'checkbox', id: item_value.id, value: item_value.value/*what value?*/};
+                        if (isChecked) {
+                            attribures.checked = isChecked;
+                        }
+                        $('<label>').attr({for: item_value.id}).text(' ' + item_value.name).appendTo($('#block' + i));
+                        $('<input>')
+                            .attr(attribures)
+                            .attr('ng-model', i)
+                            .appendTo($('#block' + i))
+                            .on('change', function(){
+                                requestData.fields[$(this).attr('ng-model')].value[j].value = this.checked;
+                            });
+                    });
+                    break;
+            }
+        }
     }
-}
-function renderEmptyProfile(data) {
-    var programingLangList = $('#programingLangList');
-    var universitySelect = $('#universitySelect');
-    var course = $('#course');
-    var knowledgeList = $('#knowledgeList');
+})();
 
-    appendOptionToSelect(universitySelect, data.university);
-    appendOptionToSelect(course, data.course);
-    appendItemsToList(programingLangList, data.programingLanguages);
-    appendItemsToList(knowledgeList, data.knowledge);
-}
-
-function renderProfile(data) {
-    var name = $('input[name=name]');
-    var surname = $('input[name=surname]');
-    var tel = $('input[name=tel]');
-    var email = $('input[name=email]');
-    var programingLangList = $('#programingLangList');
-    var knowledgeList = $('#knowledgeList');
-    var multiplyQuestions = $('#multiplyQuestions');
-    var singleQuestions = $('#singleQuestions');
-    var singleQuestions2 = $('#singleQuestions2');
-    var universitySelect = $('#university');
-    var faculty = $('input[name=faculty]');
-    var department = $('input[name=department]');
-    var specialty = $('input[name=specialty]');
-    var course = $('#course');
-    var averageMark = $('input[name=averageMark]');
-    var portfolio = $('input[name=portfolio]');
-    var additionalLang = $('input[name=additionalLang]');
-    var whyYou = $('input[name=whyYou]');
-    var foreignPrograms = $('input[name=foreignPrograms]');
-    var hobbies = $('input[name=hobbies]');
-    var personalAgree = $('input[name=personalAgree]');
-
-    name.val(data.name);
-    surname.val(data.surname);
-    tel.val(data.phoneNumber);
-    email.val(data.mail);
-    faculty.val(data.faculty);
-    department.val(data.department);
-    specialty.val(data.specialty);
-    averageMark.val(data.averageMark);
-    portfolio.val(data.portfolio);
-    additionalLang.val(data.additionalLang);
-    whyYou.val(data.whyYou);
-    foreignPrograms.val(data.foreignPrograms);
-    hobbies.val(data.hobbies);
-    personalAgree.val(data.personalAgree);
-
-    appendOptionToSelect(universitySelect, data.university);
-    appendOptionToSelect(course, data.course);
-    appendItemsToList(programingLangList, data.programingLanguages);
-    appendItemsToList(knowledgeList, data.knowledge);
-    appendMultiplyItemsToList(multiplyQuestions, data.multiplyQuestions);
-    appendSingleItemsToList(singleQuestions, data.singleQuestions);
-    appendSingleItemsToList(singleQuestions2, data.singleQuestions2);
-}
-
-function appendOptionToSelect(element, options) {
-    options.values.forEach(function (item) {
-        var isSelected = options.selected === item ? 'selected' : '';
-
-        $(element).append($('<option ' + isSelected + '>' + item + '</option>'));
-    })
-}
-
-function appendItemsToList(element, options) {
-    options.forEach(function (item) {
-        $(element).append($('<li><label>' + item.name + ' <input name="' + item.id + '" type="number" min="0" max="10" value="' + item.assessment + '"></label></li>'))
-    })
-}
-
-function appendMultiplyItemsToList(element, options) {
-    options.forEach(function (item) {
-        var questionsItem = $('<li><span>' + item.title + '</span></li>');
-
-        item.allValues.forEach(function (qItem) {
-            var isCheked = ~item.checkedValues.indexOf(qItem) ? 'checked' : '';
-            var questionItem = $('<span> ' + qItem + ': <input type="checkbox" name="' + item.questionId + '" value="' + qItem + '"' + isCheked + '></span> ');
-            questionsItem.append(questionItem);
-        });
-        $(element).append(questionsItem);
-    })
-}
-
-function appendSingleItemsToList(element, options) {
-    options.forEach(function (item) {
-        var questionsItem = $('<li><span>' + item.title + '</span></li>');
-
-        item.allValues.forEach(function (qItem) {
-            var isChecked = item.selectedValue === qItem ? 'checked' : '';
-            var questionItem = $('<span> ' + qItem + ': <input type="radio" name="' + item.questionId + '" value="' + qItem + '"' + isChecked + '></span> ');
-            questionsItem.append(questionItem);
-        });
-        $(element).append(questionsItem);
-    })
-}

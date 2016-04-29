@@ -1,79 +1,71 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Neltarion
-  Date: 23.04.2016
-  Time: 15:42
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Profile page</title>
-
+    <title>Profile</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Netcracker</title>
     <link rel="icon" type="image/png" sizes="32x32" href="/resources/images/ico.png"/>
-    <link rel="stylesheet" type="text/css" href="/resources/files/reset.css"/>
-    <link rel="stylesheet" type="text/css" href="/resources/files/bootstrap.css"/>
-    <link rel="stylesheet" type="text/css" href="/resources/files/styles.css"/>
+    <link rel="stylesheet" type="text/css" href="/resources/css/reset.css"/>
+    <link rel="stylesheet" type="text/css" href="/resources/css/styles.css"/>
+    <link rel="stylesheet" type="text/css" href="/resources/bootstrap/css/bootstrap.css" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
-<h1>PROFILE</h1>
-<sec:authorize access="isAuthenticated()">
-    <div>
-        <form id="profileForm">
-            <div><label>Name <input name="name" type="text" maxlength="50"></label></div>
-            <div><label>Surname <input name="surname" type="text" maxlength="50"></label></div>
-            <div><label>Phone <input name="tel" type="tel"></label></div>
-            <div><label>Email <input name="email" type="email" maxlength="100"></label></div>
-            <div><label>University <select id="university" name="university">
-                <option value="" disabled selected>University:</option>
-            </select></label></div>
-            <div><label>Faculty <input name="faculty" type="text" maxlength="50"></label></div>
-            <div><label>Department <input name="department" type="text" maxlength="100"></label></div>
-            <div><label>Specialty <input name="specialty" type="text" maxlength="100"></label></div>
-            <div><label>Graduation year <input name="graduationyear" type="date" ></label></div>
-            <div><label>Course: <select id="course" name="course">
-                <option value="" disabled selected>Course:</option>
-            </select></label></div>
-            <div><label>Knowledge of Programming languages:
-                <ul id="programingLangList">
-                        <%--<li><label>Name<input name="" type="number"></label></li> --%>
-                </ul>
-            </label></div>
-            <div><label>Other knowledge:
-                <ul id="knowledgeList">
-                        <%--<li><label>Name<input name="" type="number"></label></li> --%>
-                </ul>
-            </label></div>
-            <div>
-                <ul id="multiplyQuestions">
-                        <%--<li><label>Phrase<input name="" type="number"></label></li> --%>
-                </ul>
-            </div>
-            <div>
-                <ul id="singleQuestions">
-                        <%--<li><label>Phrase<input name="" type="number"></label></li> --%>
-                </ul>
-            </div>
-            <div><label>Additional languages <input name="additionalLang" type="text" maxlength="100"></label></div>
-            <div><label>Average mark during study in university <input name="averageMark" type="number" min="0" max="5"></label></div>
-            <div><label>Portfolio <input name="portfolio" type="textarea" maxlength="1000"></label></div>
-            <div><label>Why should we take you? <input name="whyYou" type="textarea" maxlength="1000"></label></div>
-            <div><label>Participation in foreign student programs <input name="foreignPrograms" type="textarea" maxlength="1000"></label></div>
-            <div><label>Your hobbies <input name="hobbies" type="textarea" maxlength="1000"></label></div>
-            <div>
-                <ul id="singleQuestions2">
-                        <%--<li><label>Phrase<input name="" type="number"></label></li> --%>
-                </ul>
-            </div>
-            <div><label>I agree to have my personal information proceeded <input name="personalAgree" type="checkbox"></label></div>
 
-            <button type="submit">SAVE</button>
-        </form>
+<header class="header">
+    <div class="container-fluid navbar headerTop">
+        <a href="#"><img class="col-lg-4 col-md-4 col-sm-9 col-xs-12" src="/resources/images/logo.png" alt="logo"/></a>
+
     </div>
-</sec:authorize>
-<script src="resources/js/vendor/jquery-2.2.3.min.js"></script>
-<script src="resources/js/profile.js"></script>
+    <div class="col-lg-12 col-md-12 hidden-sm hidden-xs">
+        <div class="container-fluid navbar-inner navigation">
+            <a class="col-lg-4 col-md-4" href="#"><p>Home</p></a>
+            <a class="col-lg-4 col-md-4" href="#"><p>Information</p></a>
+            <a class="col-lg-4 col-md-4" href="#"><p>Contacts</p></a>
+        </div>
+    </div>
+</header>
+
+<form id="fields"></form>
+
+
+<footer class="footer container-fluid">
+    <div class="footerLg container visible-md visible-lg">
+        <img class="col-lg-3 col-lg-3 col-sm-3" src="/resources/images/logo-gray.png"/>
+        <div class="col-lg-8 col-md-8 col-lg-offset-1 col-lg-offset-1 col-md-offset-1">
+            <div class="footerLgText col-lg-3 col-md-3 col-lg-offset-1 col-md-offset-1">
+                <p>Univercity Office Park III</p>
+                <p>95 Sawyer Road</p>
+                <p>Waltham, MA 02453 USA</p>
+                <p>1-781-419-3300</p>
+            </div>
+            <div class="footerLgText col-lg-3 col-md-3 col-lg-offset-1 col-md-offset-1">
+                <p>Facebook /NetcrackerTech</p>
+                <p>Twitter @NetcrackerTech</p>
+                <p>LikedIn /netcracker</p>
+            </div>
+            <div class="footerLgText col-lg-3 col-md-3 col-lg-offset-1 col-md-offset-1">
+                <p>Privacy Policy</p>
+                <p>Terms of Use</p>
+                <p>Sitemap</p>
+            </div>
+        </div>
+    </div>
+    <div class="footerSm row visible-sm visible-xs">
+        <img class="col-sm-5 visible-sm" src="/resources/images/logo-gray.png"/>
+        <div class="footerSmText col-sm-7 col-xs-12">
+            <div class="col-sm-8 col-xs-6">
+                <a class="col-sm-6 col-xs-7" href="#"><p>Courses Info</p></a>
+                <a class="col-sm-6 col-xs-7" href="#"><p>Contacts</p></a>
+            </div>
+            <div class="col-sm-4 col-xs-3 pull-right">
+                <p>Privacy Policy</p>
+                <p>Terms of Use</p>
+                <p>Sitemap</p>
+            </div>
+        </div>
+    </div>
+</footer>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="/resources/js/profile.js" ></script>
 </body>
 </html>

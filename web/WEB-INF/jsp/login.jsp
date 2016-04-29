@@ -16,12 +16,11 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Netcracker</title>
     <link rel="icon" type="image/png" sizes="32x32" href="/resources/images/ico.png"/>
-    <link rel="stylesheet" type="text/css" href="/resources/files/reset.css"/>
-    <link rel="stylesheet" type="text/css" href="/resources/files/bootstrap.css"/>
-    <link rel="stylesheet" type="text/css" href="/resources/files/styles.css"/>
-    <link rel="stylesheet" type="text/css" href="/resources/files/registration.css" />
+    <link rel="stylesheet" type="text/css" href="/resources/css/reset.css"/>
+    <link rel="stylesheet" type="text/css" href="/resources/css/styles.css"/>
+    <link rel="stylesheet" type="text/css" href="/resources/css/registration.css" />
+    <link rel="stylesheet" type="text/css" href="/resources/bootstrap/css/bootstrap.css" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
 </head>
 
 <body id="document">
@@ -54,21 +53,21 @@
             <form id="user">
                 <div id="messageRegistration"></div>
                 <div class="row container-fluid reg-head">
-                <div class="col-lg-6 col-md-8 col-sm-9 col-xs-9">
-                    <h2 class="form-signin-heading">Student Registration</h2>
-                </div>
-                <div class="col-lg-6 col-md-4 col-sm-3 col-xs-3 ">
-                    <i class="material-icons closeico"><span class="closebtn">clear</span></i>
-                </div>
+                    <div class="col-lg-6 col-md-8 col-sm-9 col-xs-9">
+                        <h2 class="form-signin-heading">Student Registration</h2>
+                    </div>
+                    <div class="col-lg-6 col-md-4 col-sm-3 col-xs-3 ">
+                        <i class="material-icons closeico"><span class="closebtn">highlight_off</span></i>
+                    </div>
                 </div>
                 <input id="name" name="name" class="form-control" placeholder="Name" type="text" value="">
-                    <div class="correct-name"></div>
-                <input id="surename" name="surename" class="form-control" placeholder="Surename" type="text" value="">
-                    <div class="correct-surename"></div>
+                <div class="correct-name"></div>
+                <input id="surname" name="surname" class="form-control" placeholder="Surname" type="text" value="">
+                <div class="correct-surname"></div>
                 <input id="email" name="email" class="form-control" placeholder="Email address" type="text" value="">
-                    <div class="correct-email"></div>
+                <div class="correct-email"></div>
                 <input id="password" name="password" class="form-control" placeholder="Password" type="password" value="">
-                    <div class="correct-password"></div>
+                <div class="correct-password"></div>
                 <button id="buttonRegistration" class="btn btn-lg btn-primary btn-block">Register</button>
             </form>
         </sec:authorize>
@@ -95,10 +94,10 @@
                 </div>
                 <p><a id="buttonLogout" class="btn btn-lg btn-danger" href="/logout" role="button">Logout</a></p>
                 <p>
-                    <form id = "photoUpload" method="post" action="uploadPhoto" enctype="multipart/form-data">
-                        Photo to upload: <input type="file" name="photo" accept="image/jpeg"><br />
-                        <input type="submit" value="Upload"/>
-                    </form>
+                <form id = "photoUpload" method="post" action="uploadPhoto" enctype="multipart/form-data">
+                    Photo to upload: <input type="file" name="photo" accept="image/jpeg"><br />
+                    <input type="submit" value="Upload"/>
+                </form>
                 </p>
             </sec:authorize>
         </div>
@@ -149,8 +148,8 @@
 
 </body>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
-<script src="/resources/js/register.js"></script>
 <script src="/resources/js/login.js"></script>
 <script src="/resources/js/logout.js"></script>
-<script src="/resources/js/registration.js" charset="utf-8"></script>
+<script src="/resources/bootstrap/js/bootstrap.js"></script>
+<script src="/resources/js/registration.js"></script>
 </html>

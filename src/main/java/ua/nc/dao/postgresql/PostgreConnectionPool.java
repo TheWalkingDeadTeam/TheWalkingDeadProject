@@ -1,28 +1,27 @@
 package ua.nc.dao.postgresql;
 
 import org.postgresql.ds.PGPoolingDataSource;
-import ua.nc.dao.exception.DAOException;
 import ua.nc.dao.pool.ConnectionPool;
+import ua.nc.dao.exception.DAOException;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
- * Created by Pavel on 18.04.2016.
+ * Created by Pavel on 25.04.2016.
  */
 public class PostgreConnectionPool extends ConnectionPool {
 
-    private static PostgreConnectionPool instance;
+    private static volatile PostgreConnectionPool instance;
     private PGPoolingDataSource dataSource;
 
-    public PostgreConnectionPool() {
+    private PostgreConnectionPool() {
         dataSource = new PGPoolingDataSource();
         dataSource.setServerName("130.211.149.11");
         dataSource.setDatabaseName("wd");
         dataSource.setUser("postgres");
         dataSource.setPassword("netcrackerpwd");
     }
-
 
     public static PostgreConnectionPool getInstance() {
         PostgreConnectionPool localInstance = instance;
@@ -37,8 +36,7 @@ public class PostgreConnectionPool extends ConnectionPool {
         return localInstance;
     }
 
-
-    public Connection getConnection() throws SQLException, DAOException {
+    public Connection getConnection() throws DAOException {
         Connection connection = null;
         try {
             connection = dataSource.getConnection();
@@ -49,7 +47,7 @@ public class PostgreConnectionPool extends ConnectionPool {
     }
 
 
-    public void putConnection(Connection connection) throws SQLException, DAOException {
+    public void putConnection(Connection connection) throws DAOException {
         try {
             connection.close();
         } catch (SQLException e) {
