@@ -1,9 +1,9 @@
 package ua.nc.dao.postgresql.profile;
 
 import ua.nc.dao.AbstractPostgreDAO;
-import ua.nc.entity.profile.FieldType;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.dao.pool.ConnectionPool;
+import ua.nc.entity.profile.FieldType;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,7 +18,7 @@ public class PostgreFieldTypeDAO extends AbstractPostgreDAO<FieldType, Integer> 
         super(connectionPool);
     }
 
-    private class PersistFieldType extends FieldType{
+    private class PersistFieldType extends FieldType {
         public PersistFieldType(String name) {
             super(name);
         }

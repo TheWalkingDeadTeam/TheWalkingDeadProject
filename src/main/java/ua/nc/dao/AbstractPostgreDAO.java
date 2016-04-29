@@ -1,8 +1,8 @@
 package ua.nc.dao;
 
-import ua.nc.entity.Identified;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.dao.pool.ConnectionPool;
+import ua.nc.entity.Identified;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

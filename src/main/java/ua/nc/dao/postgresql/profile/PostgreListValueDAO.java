@@ -1,9 +1,9 @@
 package ua.nc.dao.postgresql.profile;
 
 import ua.nc.dao.AbstractPostgreDAO;
-import ua.nc.entity.profile.ListValue;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.dao.pool.ConnectionPool;
+import ua.nc.entity.profile.ListValue;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
