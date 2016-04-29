@@ -14,4 +14,15 @@ public class AdminController {
         return "admin";
     }
 
+    /**
+     * Method for view student list from admin controle panale
+     * UC 7
+     * @return page with students data
+     */
+    @RequestMapping(value = {"/students"}, method = RequestMethod.GET)
+    public String studentsView() {
+
+        return "adminStudView";
+    }
+
 }
