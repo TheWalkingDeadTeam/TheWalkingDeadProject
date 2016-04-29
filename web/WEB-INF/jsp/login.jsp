@@ -20,6 +20,7 @@
     <link rel="stylesheet" type="text/css" href="/resources/css/styles.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/css/registration.css" />
     <link rel="stylesheet" type="text/css" href="/resources/bootstrap/css/bootstrap.css" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 
 <body id="document">
@@ -56,13 +57,13 @@
                         <h2 class="form-signin-heading">Student Registration</h2>
                     </div>
                     <div class="col-lg-6 col-md-4 col-sm-3 col-xs-3 ">
-                        <i class="material-icons closeico"><span class="closebtn">clear</span></i>
+                        <i class="material-icons closeico"><span class="closebtn">highlight_off</span></i>
                     </div>
                 </div>
                 <input id="name" name="name" class="form-control" placeholder="Name" type="text" value="">
                 <div class="correct-name"></div>
-                <input id="surename" name="surename" class="form-control" placeholder="Surename" type="text" value="">
-                <div class="correct-surename"></div>
+                <input id="surname" name="surname" class="form-control" placeholder="Surname" type="text" value="">
+                <div class="correct-surname"></div>
                 <input id="email" name="email" class="form-control" placeholder="Email address" type="text" value="">
                 <div class="correct-email"></div>
                 <input id="password" name="password" class="form-control" placeholder="Password" type="password" value="">

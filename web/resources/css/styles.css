@@ -62,7 +62,7 @@
 	
 	margin-top: 5px;
 	margin-left: 5px;
-	overflow: hiden;
+	overflow: hidden;
 }
 /* CONTENT */
 .content {
@@ -77,6 +77,10 @@
 .inputBox {
 	text-align: center;	
 	margin-top: 40px;
+	margin-bottom: 15px;
+}
+.inputBox input{
+	margin-bottom: 5px;
 }
 .inputBox h2 {
 	margin-bottom: 20px;

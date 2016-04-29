@@ -100,5 +100,74 @@
         "value": false
       }
     ]
+  },
+  {
+    "id": 14,
+    "name": "Phone number",
+    "type": "tel",
+    "multiple": false,
+    "orderNum": 14,
+    "value": [
+      {
+        "id": "",
+        "name": "",
+        "value": "+380662281488"
+      }
+    ]
+  },
+  {
+    "id": 15,
+    "name": "University",
+    "type": "select",
+    "multiple": false,
+    "orderNum": 15,
+    "value": [
+      {
+        "id": 151,
+        "name": "KPI",
+        "orderNum": 1,
+        "value": false
+      },
+      {
+        "id": 152,
+        "name": "KNEU",
+        "orderNum": 2,
+        "value": false
+      },
+      {
+        "id": 153,
+        "name": "ghetto",
+        "orderNum": 3,
+        "value": true
+      }
+    ]
+  },
+  {
+    "id": 16,
+    "name": "Text field here",
+    "type": "text",
+    "multiple": false,
+    "orderNum": 16,
+    "value": [
+      {
+        "id": "",
+        "name": "",
+        "value": "allahu akbar"
+      }
+    ]
+  },
+  {
+    "id": 17,
+    "name": "Kak dela bratishka?",
+    "type": "textarea",
+    "multiple": false,
+    "orderNum": 17,
+    "value": [
+      {
+        "id": "",
+        "name": "",
+        "value": "Меня твои истории просто доебали уже, я уже не могу их слушать, блядь. Одна история охуительней другой просто, блядь. Про говно, блядь, про какую-то хуйню, молофью. Чё ты несёшь-то вообще? Ты можешь за… (Смеётся.) Шишка, блядь, встанет — возбудимся, блядь. Чего, блядь? Про что несёт? Вообще охуеть."
+      }
+    ]
   }
 ]}
