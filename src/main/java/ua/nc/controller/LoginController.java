@@ -1,5 +1,6 @@
 package ua.nc.controller;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -24,6 +25,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 import ua.nc.entity.User;
+import ua.nc.service.PhotoService;
+import ua.nc.service.PhotoServiceImpl;
 import ua.nc.service.user.UserDetailsServiceImpl;
 import ua.nc.service.user.UserService;
 import ua.nc.service.user.UserServiceImpl;
@@ -34,6 +37,7 @@ import ua.nc.validator.Validator;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.util.Base64;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -63,8 +67,8 @@ public class LoginController implements HandlerExceptionResolver {
     }
 
     @RequestMapping(value = "/security_check ", method = RequestMethod.POST, produces = "application/json")
-    @ResponseBody
     public
+    @ResponseBody
     JSONResponse authentication(@RequestBody User user) {
         JSONResponse jsonResponse = new JSONResponse();
         Set<ValidationError> errors = new LinkedHashSet<>();
@@ -124,14 +128,8 @@ public class LoginController implements HandlerExceptionResolver {
                         .getPrincipal();
                 String userName = userDetails.getUsername();
                 int userID = userService.getUser(userName).getId();
-                File dir = new File(resHome + File.separator + "photos" + File.separator + userID);
-                if (!dir.exists()) {
-                    dir.mkdirs();
-                }
-                File localFile = new File(dir.getAbsolutePath() + File.separator + "photo");
-                BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(localFile));
-                stream.write(photoBytes);
-                stream.close();
+                PhotoService photoService = new PhotoServiceImpl();
+                photoService.uploadPhoto(photo,userID);
             } catch (IOException e) {
                 return "redirect:/login?photo=exception";
             }
@@ -139,22 +137,16 @@ public class LoginController implements HandlerExceptionResolver {
         return "redirect:/login?photo=success";
     }
 
+    @ResponseBody
+    @RequestMapping(value="/getPhoto")
+    public byte[] getPhoto(){
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+        String userName = userDetails.getUsername();
+        int userID = userService.getUser(userName).getId();
+        return new PhotoServiceImpl().getPhotoById(userID);
 
-//    @RequestMapping(value = "/stuff/{stuffId}", method = RequestMethod.GET)
-//    public ResponseEntity<InputStreamResource> downloadStuff(@PathVariable int stuffId)
-//            throws IOException {
-//        String fullPath = stuffService.figureOutFileNameFor(stuffId);
-//        File file = new File(fullPath);
-//
-//        HttpHeaders respHeaders = new HttpHeaders();
-//        respHeaders.setContentType("application/pdf");
-//        respHeaders.setContentLength(12345678);
-//        respHeaders.setContentDispositionFormData("attachment", "fileNameIwant.pdf");
-//
-//        InputStreamResource isr = new InputStreamResource(new FileInputStream(file));
-//        return new ResponseEntity<InputStreamResource>(isr, respHeaders, HttpStatus.OK);
-//    }
-
+    }
 
     private class JSONResponse {
         private Set<ValidationError> errors;
