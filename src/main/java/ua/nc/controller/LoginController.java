@@ -1,5 +1,7 @@
 package ua.nc.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -27,6 +29,7 @@ import ua.nc.entity.User;
 import ua.nc.service.user.UserDetailsServiceImpl;
 import ua.nc.service.user.UserService;
 import ua.nc.service.user.UserServiceImpl;
+import ua.nc.validator.PasswordValidator;
 import ua.nc.validator.RegistrationValidator;
 import ua.nc.validator.ValidationError;
 import ua.nc.validator.Validator;
@@ -64,8 +67,7 @@ public class LoginController implements HandlerExceptionResolver {
 
     @RequestMapping(value = "/security_check ", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public
-    JSONResponse authentication(@RequestBody User user) {
+    public JSONResponse authentication(@RequestBody User user) {
         JSONResponse jsonResponse = new JSONResponse();
         Set<ValidationError> errors = new LinkedHashSet<>();
         jsonResponse.setErrors(errors);
@@ -156,6 +158,11 @@ public class LoginController implements HandlerExceptionResolver {
 //    }
 
 
+
+
+
+
+
     private class JSONResponse {
         private Set<ValidationError> errors;
 
@@ -167,5 +174,6 @@ public class LoginController implements HandlerExceptionResolver {
             this.errors = errors;
         }
     }
+
 
 }

@@ -1,17 +1,19 @@
 /**
- * Created by Pavel on 25.04.2016.
+ * Created by Alexander on 30.04.2016.
  */
+
+
 $(document).ready(function () {
-    $("#buttonSignIn").click(function () {
-        event.preventDefault(); 
+    
+    $("#buttonChangePassword").click(function () {
+        event.preventDefault();
         $.ajax({
             type: 'post',
-            url: '/security_check',
+            url: '/changePassword',
             dataType: 'json',
             contentType: "application/json",
             data: JSON.stringify({
-                email: $('#j_username').val(),
-                password: $('#j_password').val(),
+                password: $('#changePassword').val(),
             }),
             success: function (response) {
                 if (response.errors.length) {
@@ -19,14 +21,21 @@ $(document).ready(function () {
                     for (var i in response.errors) {
                         errors_out += response.errors[i].errorMessage + "</br>"
                     }
-                    $('#messageRegistration')
+                    $('#messageCheckPassword')
                         .removeClass()
                         .empty();
-                    $('#messageSignIn')
+                    $('#messageCheckPassword')
                         .addClass('alert alert-danger')
                         .html(errors_out);
-                    $('#j_password').val("");
+                    $('#password').val("");
                 } else {
+                    $('#messageCheckPassword')
+                        .removeClass()
+                        .empty();
+                    $('#messageRegistration')
+                        .addClass('alert alert-success')
+                        .html('Password changed successfully');
+
                     window.location.href = window.location.href;
                 }
             },
@@ -36,3 +45,4 @@ $(document).ready(function () {
         });
     });
 });
+

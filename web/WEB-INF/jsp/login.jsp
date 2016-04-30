@@ -18,8 +18,8 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/resources/images/ico.png"/>
     <link rel="stylesheet" type="text/css" href="/resources/css/reset.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/css/styles.css"/>
-    <link rel="stylesheet" type="text/css" href="/resources/css/registration.css" />
-    <link rel="stylesheet" type="text/css" href="/resources/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="/resources/css/registration.css"/>
+    <link rel="stylesheet" type="text/css" href="/resources/bootstrap/css/bootstrap.css"/>
 </head>
 
 <body id="document">
@@ -65,24 +65,42 @@
                 <div class="correct-surename"></div>
                 <input id="email" name="email" class="form-control" placeholder="Email address" type="text" value="">
                 <div class="correct-email"></div>
-                <input id="password" name="password" class="form-control" placeholder="Password" type="password" value="">
+                <input id="password" name="password" class="form-control" placeholder="Password" type="password"
+                       value="">
                 <div class="correct-password"></div>
                 <button id="buttonRegistration" class="btn btn-lg btn-primary btn-block">Register</button>
             </form>
         </sec:authorize>
     </div>
 
+
     <div class="row">
 
 
         <div class="inputBox col-lg-4 col-md-4 col-sm-12 col-xs-12">
+
+            <sec:authorize access="isAuthenticated()">
+                <div class="alert alert-info" role="alert">
+                <div id="messageCheckPassword"></div>
+                <form>
+                    <input id="changePassword" name="password" class="form-control" placeholder="Password" type="text"
+                           value="">
+                    <button id="buttonChangePassword" class="btn btn-lg btn-primary btn-block changebtn">ChangePassword</button>
+                </form>
+                 </div>
+            </sec:authorize>
+
+
             <sec:authorize access="!isAuthenticated()">
                 <form>
                     <div id="messageSignIn"></div>
                     <h2 class="form-signin-heading">Please sign in</h2>
-                    <input id="j_username" type="text" class="form-control" name="j_username" placeholder="Email address" required>
-                    <input id="j_password" type="password" class="form-control" name="j_password" placeholder="Password" required>
-                    <button id="buttonSignIn" class="btn btn-lg btn-primary btn-block signbtn" type="submit">Sign in</button>
+                    <input id="j_username" type="text" class="form-control" name="j_username"
+                           placeholder="Email address" required>
+                    <input id="j_password" type="password" class="form-control" name="j_password" placeholder="Password"
+                           required>
+                    <button id="buttonSignIn" class="btn btn-lg btn-primary btn-block signbtn" type="submit">Sign in
+                    </button>
                     <button type="button" class="btn btn-lg btn-primary btn-block regbut">Registration</button>
                 </form>
             </sec:authorize>
@@ -93,8 +111,8 @@
                 </div>
                 <p><a id="buttonLogout" class="btn btn-lg btn-danger" href="/logout" role="button">Logout</a></p>
                 <p>
-                <form id = "photoUpload" method="post" action="uploadPhoto" enctype="multipart/form-data">
-                    Photo to upload: <input type="file" name="photo" accept="image/jpeg"><br />
+                <form id="photoUpload" method="post" action="uploadPhoto" enctype="multipart/form-data">
+                    Photo to upload: <input type="file" name="photo" accept="image/jpeg"><br/>
                     <input type="submit" value="Upload"/>
                 </form>
                 </p>
@@ -147,6 +165,7 @@
 
 </body>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="/resources/js/changePassword.js"></script>
 <script src="/resources/js/login.js"></script>
 <script src="/resources/js/logout.js"></script>
 <script src="/resources/bootstrap/js/bootstrap.js"></script>

@@ -8,18 +8,28 @@
            http://www.springframework.org/schema/security/spring-security.xsd">
 
     <global-method-security pre-post-annotations="enabled"/>
+
     <http use-expressions="true">
         <csrf disabled="true"/>
-        <intercept-url pattern="/error" access="permitAll" />
+        <intercept-url pattern="/error" access="permitAll"/>
         <intercept-url pattern="/admin**" access="hasRole('ROLE_ADMIN')"/>
         <intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
         <access-denied-handler error-page="/403"/>
-        <form-login login-page="/login" login-processing-url="/j_spring_security_check"
-                    authentication-failure-url="/login?error" default-target-url="/login"
-                    username-parameter="j_username" password-parameter="j_password"/>
+
+        <form-login login-page="/login"
+                    login-processing-url="/j_spring_security_check"
+                    username-parameter="j_username" password-parameter="j_password"
+                    authentication-failure-url="/login?error"
+                    authentication-success-handler-ref="authenticationSuccessHandler"
+        />
+
         <logout logout-url="/logout" logout-success-url="/login?logout"
                 invalidate-session="true"/>
     </http>
+
+    <beans:bean id="authenticationSuccessHandler" class="ua.nc.security.AuthenticationHandler">
+
+    </beans:bean>
 
 
     <authentication-manager id="authenticationManager">

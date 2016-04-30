@@ -11,4 +11,6 @@ public abstract class UserDAO {
 
     public abstract void createUser(User user) throws DAOException;
 
+    public abstract void updateUser(User user) throws DAOException;
+
 }
