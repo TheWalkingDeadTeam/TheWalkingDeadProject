@@ -1,26 +1,18 @@
 package ua.nc.dao;
 
-import ua.nc.exception.DAOException;
+import ua.nc.entity.Identified;
+import ua.nc.dao.exception.DAOException;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
- * Created by Pavel on 21.04.2016.
+ * Created by Rangar on 24.04.2016.
  */
-public abstract class GenericDAO<T, PK extends Serializable> {
-    /**
-     * Basic CRUD operations
-     * @param entity stub
-     * @return
-     * @throws DAOException
-     */
-
-    public abstract T create(T entity) throws DAOException;
-
-    public abstract T get(PK id) throws DAOException;
-
-    public abstract T update(T entity) throws DAOException;
-
-    public abstract void delete(T entity) throws DAOException;
-
+public interface GenericDAO<T extends Identified, PK extends Serializable> {
+    public T create(T object) throws DAOException;
+    public T persist(T object) throws DAOException;
+    public T read(PK key) throws DAOException;
+    public void update(T object) throws DAOException;
+    public List<T> getAll() throws DAOException;
 }

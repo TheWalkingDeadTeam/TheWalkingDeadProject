@@ -1,6 +1,6 @@
 package ua.nc.dao;
 
-import ua.nc.exception.DAOException;
+import ua.nc.dao.exception.DAOException;
 import ua.nc.entity.User;
 
 /**

@@ -1,10 +1,11 @@
 package ua.nc.dao.postgresql.profile;
 
-import ua.nc.dao.postgresql.AbstractPostgreDAO;
+import ua.nc.dao.AbstractPostgreDAO;
 import ua.nc.entity.profile.Field;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.dao.pool.ConnectionPool;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.LinkedList;
@@ -14,8 +15,8 @@ import java.util.List;
  * Created by Rangar on 24.04.2016.
  */
 public class PostgreFieldDAO extends AbstractPostgreDAO<Field, Integer> {
-    public PostgreFieldDAO(ConnectionPool connectionPool){
-        super(connectionPool);
+    public PostgreFieldDAO(Connection connection){
+        super(connection);
     }
 
     private class PersistField extends Field {

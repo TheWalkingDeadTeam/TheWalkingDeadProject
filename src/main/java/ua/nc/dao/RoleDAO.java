@@ -1,6 +1,6 @@
 package ua.nc.dao;
 
-import ua.nc.exception.DAOException;
+import ua.nc.dao.exception.DAOException;
 import ua.nc.entity.Role;
 import ua.nc.entity.User;
 
@@ -15,4 +15,6 @@ public abstract class RoleDAO {
     public abstract Set<Role> findAllByEmail(String email) throws DAOException;
 
     public abstract void setRoleToUser(Set<Role> roles, User user) throws DAOException;
+
+    public abstract Set<Role> findByEmail(String email);
 }

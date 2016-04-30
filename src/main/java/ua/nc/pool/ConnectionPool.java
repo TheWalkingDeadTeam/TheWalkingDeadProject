@@ -1,6 +1,6 @@
 package ua.nc.pool;
 
-import ua.nc.exception.DataSourceException;
+import ua.nc.dao.exception.DataSourceException;
 
 
 import javax.naming.Context;
