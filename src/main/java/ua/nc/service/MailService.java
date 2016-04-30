@@ -9,6 +9,11 @@ import java.util.List;
  * Created by Alexander on 23.04.2016.
  */
 public interface MailService {
+    public List<Mail> getAllMails();
+
+    public void updateMail(Mail mail);
+
+    public void deleteMail(Mail mail);
 
     public Mail getMail(Integer id);
 

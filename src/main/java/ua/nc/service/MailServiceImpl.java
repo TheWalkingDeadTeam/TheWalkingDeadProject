@@ -1,5 +1,6 @@
 package ua.nc.service;
 
+import org.apache.commons.logging.Log;
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.MailSender;
@@ -129,9 +130,10 @@ public class MailServiceImpl implements MailService {
     /**
      * Massive delivery service for async mailing
      * Everything you need is to put time
+     *
      * @param dateDelivery specific date mail to be send
-     * @param users who will get invitation
-     * @param mail template
+     * @param users        who will get invitation
+     * @param mail         template
      */
     public void massDelivery(String dateDelivery, final List<User> users, final Mail mail) {
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -159,6 +161,35 @@ public class MailServiceImpl implements MailService {
         }, new Date());
     }
 
+
+    @Override
+    public List<Mail> getAllMails() {
+        List<Mail> mails = new ArrayList<>();
+        try {
+            mails = mailDAO.getAll();
+        } catch (DAOException e) {
+            LOGGER.error("Can't retrieve all mail", e);
+        }
+        return mails;
+    }
+
+    @Override
+    public void updateMail(Mail mail) {
+        try {
+            mailDAO.update(mail);
+        } catch (DAOException e) {
+            LOGGER.error("Can't update mail", e);
+        }
+    }
+
+    @Override
+    public void deleteMail(Mail mail) {
+        try {
+            mailDAO.delete(mail);
+        } catch (DAOException e) {
+            LOGGER.error("Can't delete mail", e);
+        }
+    }
 
     /**
      * Retrieve mail by id
