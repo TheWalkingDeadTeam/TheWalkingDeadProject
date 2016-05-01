@@ -3,7 +3,6 @@ package ua.nc.dao.postgresql.profile;
 import ua.nc.dao.AbstractPostgreDAO;
 import ua.nc.entity.profile.ListType;
 import ua.nc.dao.exception.DAOException;
-import ua.nc.dao.pool.ConnectionPool;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
