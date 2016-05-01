@@ -31,8 +31,12 @@
 
         <thead>
         <tr>
+            <!--<td>-->
+            <!--<input type="checkbox" >-->
+            <!--</td>-->
             <td>
-                <input type="checkbox" ng-model="master">
+                <!--<input type="checkbox" ng-model="master">-->
+                <input type="checkbox" ng-model="selectedAll" ng-click="checkAll()">
             </td>
             <td>
                 <a href="#" ng-click="sortType = 'id'; sortReverse = !sortReverse">
@@ -86,22 +90,28 @@
         </tr>
         </thead>
 
-        <tbody >
+        <tbody>
         <tr ng-repeat="ch in students | orderBy:sortType:sortReverse | filter:searchFiltr">
-            <td><input type="checkbox" ng-checked="master" ng-model="data.multipleSelect"></td>
+            <td><input type="checkbox" checklist-model="stud.students" checklist-value="ch.id"></td>
+            <!--<td><input type="checkbox" ng-checked="master" ng-model="stud.students" ng-value="ch.id"></td>-->
             <td>{{ch.id}}</td>
             <td>{{ch.name}} {{ch.surname}}</td>
             <td>{{ch.university}}</td>
             <td>{{ch.devMark}}</td>
             <td>{{ch.hrMark}}</td>
             <td ng-style="{opacity:0.5,'background-color':'{{ch.color}}'}"></td>
-            <td >{{ch.isActive == 1 ? "Active" : "Inactive"}}</td>
+            <td>{{ch.isActive == 1 ? "Active" : "Inactive"}}</td>
 
         </tr>
         </tbody>
-        <tt>multipleSelect = {{data.multipleSelect}}</tt>
+        <!--<tt>multipleSelect = {{data.multipleSelect}}</tt>-->
     </table>
-</div>
+
+
+
+
+
+
 
 <%--<table border="1">--%>
 <%--<tr>--%>
