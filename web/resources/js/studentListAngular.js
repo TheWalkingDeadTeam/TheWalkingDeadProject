@@ -9,8 +9,19 @@ angular.module('app', ['checklist-model'])
         $scope.sortType     = 'name'; // set the default sort type
         $scope.sortReverse  = false;  // set the default sort order
         $scope.searchFiltr   = '';
-        $scope.data = {
-            multipleSelect:[],
+        $scope.stud = {
+            students: []
+        };
+        $scope.checkAll = function() {
+            if ($scope.selectedAll){
+                $scope.stud.students = $scope.students.map(function(item) { return item.id; });
+                $scope.selectdAll = true;
+            }
+            else {
+                $scope.selectdAll = false;
+                $scope.stud.students = [];
+            }
+
         };
     }]);
 
