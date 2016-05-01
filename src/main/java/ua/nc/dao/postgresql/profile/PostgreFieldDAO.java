@@ -1,22 +1,37 @@
 package ua.nc.dao.postgresql.profile;
 
 import ua.nc.dao.AbstractPostgreDAO;
+import ua.nc.dao.FieldDAO;
 import ua.nc.entity.profile.Field;
 import ua.nc.dao.exception.DAOException;
-import ua.nc.dao.pool.ConnectionPool;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Rangar on 24.04.2016.
  */
-public class PostgreFieldDAO extends AbstractPostgreDAO<Field, Integer> {
+public class PostgreFieldDAO extends AbstractPostgreDAO<Field, Integer> implements FieldDAO{
     public PostgreFieldDAO(Connection connection){
         super(connection);
+    }
+
+    private static final String getFieldsForCESQuery = "SELECT * FROM field f " +
+            "JOIN ces_field cf ON f.field_id = cf.field_id WHERE cf.ces_id = ?";
+
+    @Override
+    public List<Field> getFieldsForCES(Integer ces_id) throws DAOException {
+        List<Field> result;
+        try (PreparedStatement statement = connection.prepareStatement(getFieldsForCESQuery)) {
+            statement.setInt(1, ces_id);
+            result = parseResultSet(statement.executeQuery());
+        } catch (Exception e) {
+            throw new DAOException(e);
+        }
+        return result;
     }
 
     private class PersistField extends Field {
@@ -51,7 +66,7 @@ public class PostgreFieldDAO extends AbstractPostgreDAO<Field, Integer> {
 
     @Override
     protected List<Field> parseResultSet(ResultSet rs) throws DAOException {
-        LinkedList<Field> result = new LinkedList<>();
+        List<Field> result = new ArrayList<>();
         try {
             while (rs.next()) {
                 PersistField field = new PersistField(rs.getInt("ces_id"), rs.getString("name"),
