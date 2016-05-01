@@ -46,7 +46,7 @@ public class ProfileField {
         this.orderNum = orderNum;
     }
 
-    public boolean isMultipleChoice() {
+    public boolean getMultipleChoice() {
         return multipleChoice;
     }
 

@@ -6,13 +6,13 @@ import ua.nc.entity.Identified;
  * Created by Rangar on 24.04.2016.
  */
 public class Field implements Identified<Integer> {
-    private int ID;
+    private Integer ID;
     private int cesID;
     private String name;
     private int fieldTypeID;
     private boolean multipleChoice;
     private int orderNum;
-    private int listTypeID;
+    private Integer listTypeID;
 
     @Override
     public Integer getID() {
@@ -55,11 +55,11 @@ public class Field implements Identified<Integer> {
         this.multipleChoice = multipleChoice;
     }
 
-    public int getListTypeID() {
+    public Integer getListTypeID() {
         return listTypeID;
     }
 
-    public void setListTypeID(int listTypeID) {
+    public void setListTypeID(Integer listTypeID) {
         this.listTypeID = listTypeID;
     }
 
