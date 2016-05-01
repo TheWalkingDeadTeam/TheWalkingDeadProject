@@ -16,14 +16,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import ua.nc.entity.User;
 import ua.nc.service.PhotoService;
 import ua.nc.service.PhotoServiceImpl;
 import ua.nc.service.user.UserDetailsServiceImpl;
 import ua.nc.service.user.UserService;
 import ua.nc.service.user.UserServiceImpl;
+import ua.nc.validator.PhotoValidator;
 import ua.nc.validator.RegistrationValidator;
 import ua.nc.validator.ValidationError;
 import ua.nc.validator.Validator;
@@ -45,15 +48,20 @@ public class LoginController implements HandlerExceptionResolver {
     @Qualifier("authenticationManager")
     protected AuthenticationManager authenticationManager;
 
+    private final UserService userService = new UserServiceImpl();
+    private final PhotoService photoService = new PhotoServiceImpl();
+
     @Override
     public ModelAndView resolveException(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) {
         if (e instanceof MaxUploadSizeExceededException) {
-            return new ModelAndView("redirect:/login?photo=toobig");
+            ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
+            Set<ValidationError> errors = new LinkedHashSet<>();
+            errors.add(new ValidationError("photo", "File is too big"));
+            modelAndView.addObject("errors",errors);
+            return modelAndView;
         }
         return new ModelAndView("redirect:/login");
     }
-
-    private final UserService userService = new UserServiceImpl();
 
     @RequestMapping(value = {"/", "/login"}, method = RequestMethod.GET)
     public String login() {
@@ -107,25 +115,29 @@ public class LoginController implements HandlerExceptionResolver {
         return jsonResponse;
     }
 
-    @RequestMapping(value = {"/uploadPhoto"}, method = RequestMethod.POST)
-    public String uploadPhoto(@RequestParam("photo") MultipartFile photo) {
-        if (!photo.isEmpty()) {
-            if (!(photo.getOriginalFilename().endsWith(".jpg") || photo.getOriginalFilename().endsWith(".jpeg") ||
-                    photo.getOriginalFilename().endsWith(".png"))) {
-                return "redirect:/login?photo=wrong";
-            }
+    @RequestMapping(value = {"/uploadPhoto"}, method = RequestMethod.POST,produces = "application/json")
+    public
+    @ResponseBody
+    JSONResponse uploadPhoto(@RequestParam("photo") MultipartFile photo) {
+        JSONResponse jsonResponse = new JSONResponse();
+        Validator validator = new PhotoValidator();
+        Set<ValidationError> errors = validator.validate(photo);
+        if (errors.isEmpty()) {
             try {
                 UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
                         .getPrincipal();
                 String userName = userDetails.getUsername();
                 int userID = userService.getUser(userName).getId();
-                PhotoService photoService = new PhotoServiceImpl();
-                photoService.uploadPhoto(photo,userID);
+                photoService.uploadPhoto(photo, userID);
             } catch (IOException e) {
-                return "redirect:/login?photo=exception";
+                errors.add(new ValidationError("photo", "Something went wrong"));
             }
         }
-        return "redirect:/login?photo=success";
+        for(ValidationError error: errors){
+            System.out.println(error.getErrorMessage());
+        }
+        jsonResponse.setErrors(errors);
+        return jsonResponse;
     }
 
     @ResponseBody
@@ -135,8 +147,7 @@ public class LoginController implements HandlerExceptionResolver {
                 .getPrincipal();
         String userName = userDetails.getUsername();
         int userID = userService.getUser(userName).getId();
-        return new PhotoServiceImpl().getPhotoById(userID);
-
+        return photoService.getPhotoById(userID);
     }
 
     private class JSONResponse {
