@@ -1,9 +1,9 @@
 package ua.nc.dao.postgresql.profile;
 
 import ua.nc.dao.AbstractPostgreDAO;
+import ua.nc.dao.ListValueDAO;
 import ua.nc.entity.profile.ListValue;
 import ua.nc.dao.exception.DAOException;
-import ua.nc.dao.pool.ConnectionPool;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,9 +14,23 @@ import java.util.List;
 /**
  * Created by Rangar on 26.04.2016.
  */
-public class PostgreListValueDAO extends AbstractPostgreDAO<ListValue, Integer> {
+public class PostgreListValueDAO extends AbstractPostgreDAO<ListValue, Integer> implements ListValueDAO {
     public PostgreListValueDAO(Connection connection){
         super(connection);
+    }
+
+    private static String getAllListListValueQuery = "SELECT * FROM list_value WHERE list_id = ?";
+
+    @Override
+    public List<ListValue> getAllListListValue(Integer list_id) throws DAOException {
+        List<ListValue> result;
+        try (PreparedStatement statement = connection.prepareStatement(getAllListListValueQuery)){
+            statement.setInt(1, list_id);
+            result = parseResultSet(statement.executeQuery());
+        } catch (Exception e) {
+            throw new DAOException(e);
+        }
+        return result;
     }
 
     private class PersistListValue extends ListValue {
