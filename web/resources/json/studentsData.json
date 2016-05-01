@@ -1,44 +1,82 @@
 [
   {
-    "name": "TEST",
-    "email": "orci@luctusetultrices.co.uk",
-    "phone": "798-0149",
-    "address": "7560 Ligula. Road"
+    "id": "1",
+    "name": "Abc",
+    "surname": "Petrov",
+    "isActive": "1",
+    "university": "KPI",
+    "devMark": 10,
+    "hrMark": 5,
+    "color": "blue"
   },
   {
-    "name": "ARTEM",
-    "email": "",
-    "phone": "1-280-259-7547",
-    "address": "P.O. Box 376, 8820 At Avenue"
+    "id": "7",
+    "name": "TEST2",
+    "surname": "Petrov",
+    "isActive": "0",
+    "university": "NAU",
+    "devMark": 15,
+    "hrMark": 10,
+    "color": "yellow"
   },
   {
-    "name": "PLZ",
-    "email": "non.enim.commodo@Fusce.com",
-    "phone": "1-870-298-7936",
-    "address": ""
+    "id": "8",
+    "name": "TEST1",
+    "surname": "Petrov",
+    "isActive": "1",
+    "university": "NAU",
+    "devMark": 15,
+    "hrMark": 10,
+    "color": "yellow"
   },
   {
-    "name": "ROBOTAI",
-    "email": "magna.tellus@dolor.com",
-    "phone": "1-537-673-1024",
-    "address": "1654 Sem Ave"
+    "id": "2",
+    "name": "Bcd",
+    "surname": "Petrov",
+    "isActive": "1",
+    "university": "KPI",
+    "devMark": 10,
+    "hrMark": 85,
+    "color": "green"
   },
   {
-    "name": "Nayda",
-    "email": "orci.adipiscing@Nunc.com",
-    "phone": "1-398-890-6994",
-    "address": "112-9766 Tempus Avenue"
+    "id": "3",
+    "name": "Cde",
+    "surname": "Petrov",
+    "isActive": "1",
+    "university": "KPI",
+    "devMark": 20,
+    "hrMark": 55,
+    "color": "red"
   },
   {
-    "name": "Eugenia",
-    "email": "lacinia.orci@rutrumjusto.com",
-    "phone": "147-4244",
-    "address": "625-7238 Sed Ave"
+    "id": "4",
+    "name": "Def",
+    "surname": "Petrov",
+    "isActive": "1",
+    "university": "NAU",
+    "devMark": 15,
+    "hrMark": 10,
+    "color": "yellow"
   },
   {
-    "name": "Ora",
-    "email": "egestas.a@Duiselementum.org",
-    "phone": "1-873-737-1875",
-    "address": "P.O. Box 254, 1068 Nam Street"
+    "id": "5",
+    "name": "Efj",
+    "surname": "Petrov",
+    "isActive": "0",
+    "university": "KNEU",
+    "devMark": 30,
+    "hrMark": 20,
+    "color": "green"
+  },
+  {
+    "id": "6",
+    "name": "test",
+    "surname": "Petrov",
+    "isActive": "0",
+    "university": "NAU",
+    "devMark": 45,
+    "hrMark": 90,
+    "color": "green"
   }
 ]
