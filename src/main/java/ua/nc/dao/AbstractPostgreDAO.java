@@ -2,7 +2,6 @@ package ua.nc.dao;
 
 import ua.nc.entity.Identified;
 import ua.nc.dao.exception.DAOException;
-import ua.nc.dao.pool.ConnectionPool;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,7 +12,7 @@ import java.util.List;
  * Created by Rangar on 24.04.2016.
  */
 public abstract class AbstractPostgreDAO<T extends Identified<PK>, PK extends Integer> implements GenericDAO<T, PK> {
-    private Connection connection;
+    protected Connection connection;
 
     public abstract String getSelectQuery();
 
