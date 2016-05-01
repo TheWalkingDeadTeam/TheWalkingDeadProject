@@ -108,53 +108,48 @@
     </table>
 
 
-
-
-
-
-
-<%--<table border="1">--%>
-<%--<tr>--%>
-<%--<th>--%>
-<%--<button ng-click="order('isActive')">isActive</button>--%>
-<%--<span class="sortorder" ng-show="predicate === 'idActive'" ng-class="{reverse:reverse}"></span>--%>
-<%--</th>--%>
-<%--<th>--%>
-<%--<button ng-click="order('id')">Id</button>--%>
-<%--<span class="sortorder" ng-show="predicate === 'id'" ng-class="{reverse:reverse}"></span>--%>
-<%--</th>--%>
-<%--<th>--%>
-<%--<button ng-click="order('name')">Name</button>--%>
-<%--<span class="sortorder" ng-show="predicate === 'name'" ng-class="{reverse:reverse}"></span>--%>
-<%--</th>--%>
-<%--<th>--%>
-<%--<button ng-click="order('university')">University</button>--%>
-<%--<span class="sortorder" ng-show="predicate === 'university'" ng-class="{reverse:reverse}"></span>--%>
-<%--</th>--%>
-<%--<th>--%>
-<%--<button ng-click="order('devMark')">Dev Assesment</button>--%>
-<%--<span class="sortorder" ng-show="predicate === 'devMark'" ng-class="{reverse:reverse}"></span>--%>
-<%--</th>--%>
-<%--<th>--%>
-<%--<button ng-click="order('hrMark')">HR Asessment</button>--%>
-<%--<span class="sortorder" ng-show="predicate === 'hrMark'" ng-class="{reverse:reverse}"></span>--%>
-<%--</th>--%>
-<%--<th>--%>
-<%--<button ng-click="order('color')">color</button>--%>
-<%--<span class="sortorder" ng-show="predicate === 'color'" ng-class="{reverse:reverse}"></span>--%>
-<%--</th>--%>
-<%--</tr>--%>
-<%--<tr ng-repeat="ch in students | orderBy:predicate:reverse | filter: searchKeyword ">--%>
-<%--<td><input type="checkbox" ng-model="ch.isActive" checklist-value="ch" ng-true-value="'1'" ng-false-value="'0'">--%>
-<%--box = {{ch.isActive}}</td>--%>
-<%--<td>{{ch.id}}</td>--%>
-<%--<td>{{ch.name}} {{ch.surname}}</td>--%>
-<%--<td>{{ch.university}}</td>--%>
-<%--<td>{{ch.devMark}}</td>--%>
-<%--<td>{{ch.hrMark}}</td>--%>
-<%--<td><div ng-style="{'background-color':'{{ch.color}}'}"></div></td>--%>
-<%--</tr>--%>
-<%--</table>--%>
+    <%--<table border="1">--%>
+    <%--<tr>--%>
+    <%--<th>--%>
+    <%--<button ng-click="order('isActive')">isActive</button>--%>
+    <%--<span class="sortorder" ng-show="predicate === 'idActive'" ng-class="{reverse:reverse}"></span>--%>
+    <%--</th>--%>
+    <%--<th>--%>
+    <%--<button ng-click="order('id')">Id</button>--%>
+    <%--<span class="sortorder" ng-show="predicate === 'id'" ng-class="{reverse:reverse}"></span>--%>
+    <%--</th>--%>
+    <%--<th>--%>
+    <%--<button ng-click="order('name')">Name</button>--%>
+    <%--<span class="sortorder" ng-show="predicate === 'name'" ng-class="{reverse:reverse}"></span>--%>
+    <%--</th>--%>
+    <%--<th>--%>
+    <%--<button ng-click="order('university')">University</button>--%>
+    <%--<span class="sortorder" ng-show="predicate === 'university'" ng-class="{reverse:reverse}"></span>--%>
+    <%--</th>--%>
+    <%--<th>--%>
+    <%--<button ng-click="order('devMark')">Dev Assesment</button>--%>
+    <%--<span class="sortorder" ng-show="predicate === 'devMark'" ng-class="{reverse:reverse}"></span>--%>
+    <%--</th>--%>
+    <%--<th>--%>
+    <%--<button ng-click="order('hrMark')">HR Asessment</button>--%>
+    <%--<span class="sortorder" ng-show="predicate === 'hrMark'" ng-class="{reverse:reverse}"></span>--%>
+    <%--</th>--%>
+    <%--<th>--%>
+    <%--<button ng-click="order('color')">color</button>--%>
+    <%--<span class="sortorder" ng-show="predicate === 'color'" ng-class="{reverse:reverse}"></span>--%>
+    <%--</th>--%>
+    <%--</tr>--%>
+    <%--<tr ng-repeat="ch in students | orderBy:predicate:reverse | filter: searchKeyword ">--%>
+    <%--<td><input type="checkbox" ng-model="ch.isActive" checklist-value="ch" ng-true-value="'1'" ng-false-value="'0'">--%>
+    <%--box = {{ch.isActive}}</td>--%>
+    <%--<td>{{ch.id}}</td>--%>
+    <%--<td>{{ch.name}} {{ch.surname}}</td>--%>
+    <%--<td>{{ch.university}}</td>--%>
+    <%--<td>{{ch.devMark}}</td>--%>
+    <%--<td>{{ch.hrMark}}</td>--%>
+    <%--<td><div ng-style="{'background-color':'{{ch.color}}'}"></div></td>--%>
+    <%--</tr>--%>
+    <%--</table>--%>
 </div>
 </body>
 </html>
