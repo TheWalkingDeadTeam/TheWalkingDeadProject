@@ -10,11 +10,9 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
-
 <header class="header">
     <div class="container-fluid navbar headerTop">
         <a href="#"><img class="col-lg-4 col-md-4 col-sm-9 col-xs-12" src="/resources/images/logo.png" alt="logo"/></a>
-
     </div>
     <div class="col-lg-12 col-md-12 hidden-sm hidden-xs">
         <div class="container-fluid navbar-inner navigation">

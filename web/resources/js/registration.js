@@ -78,7 +78,7 @@ $( document ).ready(function() {
 					}else if(/([^a-zA-Zа-яА-ЯёЁ'\s-])/.test(innerText)){
 						errorMsg = errorMsg + 'Incorrect name';
 					}else if(!/^.{2,30}$/.test(innerText)){
-						errorMsg = errorMsg + 'Incorrect name';
+						errorMsg = errorMsg + 'Name should have from 2 to 30 symbols';
 					};
 
 					$('.correct-name').text(errorMsg);
@@ -164,6 +164,9 @@ $( document ).ready(function() {
 					$('#messageRegistration')
 						.removeClass()
 						.empty();
+					$('#messageSignIn')
+						.removeClass()
+						.empty();
 					$('.registration')
 						.fadeOut(300);
 					$('#messageSignIn')
@@ -178,19 +181,6 @@ $( document ).ready(function() {
 			}
 		});
 	});
-
-	// function fillError(item) {
-	// 	for (var i in response.errors) {
-	// 		errors_out += response.errors[i].errorMessage + "</br>"
-	// 	}
-	// 	$('#messageRegistration')
-	// 		.removeClass()
-	// 		.empty();
-	// 	$('#messageSignIn')
-	// 		.addClass('alert alert-danger')
-	// 		.html(errors_out);
-	// 	$('#j_password').val("");
-	// }
 
 });
 
