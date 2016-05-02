@@ -54,9 +54,9 @@ public class PostgreListTypeDAO extends AbstractPostgreDAO<ListType, Integer> {
         List<ListType> result = new ArrayList<>();
         try {
             while (rs.next()) {
-                PersistListType lt = new PersistListType(rs.getString("name"));
-                lt.setID(rs.getInt("list_id"));
-                result.add(lt);
+                PersistListType listType = new PersistListType(rs.getString("name"));
+                listType.setID(rs.getInt("list_id"));
+                result.add(listType);
             }
         } catch (Exception e) {
             throw new DAOException(e);

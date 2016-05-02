@@ -68,10 +68,10 @@ public class PostgreListValueDAO extends AbstractPostgreDAO<ListValue, Integer> 
         List<ListValue> result = new ArrayList<>();
         try {
             while (rs.next()) {
-                PersistListValue lv = new PersistListValue(rs.getInt("list_value_id"),
+                PersistListValue listValue = new PersistListValue(rs.getInt("list_value_id"),
                         rs.getDouble("value_double"),rs.getString("value_text"));
-                lv.setListID(rs.getInt("list_id"));
-                result.add(lv);
+                listValue.setListID(rs.getInt("list_id"));
+                result.add(listValue);
             }
         } catch (Exception e) {
             throw new DAOException(e);
