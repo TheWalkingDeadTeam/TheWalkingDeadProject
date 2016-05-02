@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import ua.nc.dao.MailDAO;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.dao.factory.DAOFactory;
+import ua.nc.dao.factory.type.DataBaseType;
 import ua.nc.entity.Mail;
 import ua.nc.entity.User;
 
