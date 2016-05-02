@@ -14,6 +14,10 @@ public class Application implements Identified<Integer> {
         return null;
     }
 
+    protected void setID(int id){
+        this.ID = id;
+    }
+
     public int getCesID() {
         return cesID;
     }
