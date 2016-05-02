@@ -11,23 +11,68 @@ import java.util.List;
 /**
  * Created by Rangar on 24.04.2016.
  */
+
+/**
+ * Abstract class which provides basic CRUD using JDBC.
+ *
+ * @param <T>  object type
+ * @param <PK> primary key type
+ */
 public abstract class AbstractPostgreDAO<T extends Identified<PK>, PK extends Integer> implements GenericDAO<T, PK> {
     protected Connection connection;
 
+    /**
+     * Returns sql query for getting some object.
+     * <p/>
+     * SELECT * FROM [Table] WHERE id = ?
+     */
     public abstract String getSelectQuery();
 
+    /**
+     * Returns sql query for creating new row.
+     * <p/>
+     * INSERT INTO [Table] ([column, column, ...]) VALUES (?, ?, ...);
+     */
     public abstract String getCreateQuery();
 
+    /**
+     * Returns sql query for updating a row.
+     * <p/>
+     * UPDATE [Table] SET [column = ?, column = ?, ...] WHERE id = ?;
+     */
     public abstract String getUpdateQuery();
 
+    /**
+     * Returns sql query for getting all objects from a table.
+     * <p/>
+     * SELECT * FROM [Table]
+     */
     public abstract String getAllQuery();
 
+    /**
+     * Parsing ResultSet and returning list of objects corresponding to the value of the ResultSet.
+     */
     protected abstract List<T> parseResultSet(ResultSet rs) throws DAOException;
 
+    /**
+     * Sets insert query arguments in accordance with value object 'object' fields.
+     * @param statement  statement to prepare
+     * @param object object to use for operation
+     */
     protected abstract void prepareStatementForInsert(PreparedStatement statement, T object) throws DAOException;
 
+    /**
+     * Sets update query arguments in accordance with value object 'object' fields.
+     * @param statement  statement to prepare
+     * @param object object to use for operation
+     */
     protected abstract void prepareStatementForUpdate(PreparedStatement statement, T object) throws DAOException;
 
+    /**
+     * Sets select query arguments in accordance with object 'object' fields.
+     * @param statement  statement to prepare
+     * @param object object to use for operation
+     */
     protected abstract void prepareStatementForSelect(PreparedStatement statement, T object) throws DAOException;
 
     @Override
