@@ -16,7 +16,7 @@ import java.util.List;
 public class PostgreFieldValueDAO implements FieldValueDAO {
 
     private static final String getFieldValueByUserCESFieldQuery = "SELECT * FROM field_value WHERE Application_id = " +
-            "(SELECT Application_id from Application WHERE User_id = ? AND CES_id = ?) AND Field_id = ?";
+            "(SELECT Application_id from Application WHERE system_user_id = ? AND CES_id = ?) AND Field_id = ?";
     private static final String updateQuery = "UPDATE field_value " +
             "SET value_text = ?, value_double = ?, value_date = ? " +
             "WHERE Application_id = ? AND Field_id = ?";
@@ -24,7 +24,7 @@ public class PostgreFieldValueDAO implements FieldValueDAO {
             "(field_id, application_id, value_text, value_double, value_date, list_value_id) " +
             "VALUES (?, ?, ?, ?, ?, ?);";
     private static final String deleteQuery = "DELETE FROM field_value WHERE Application_id = " +
-            "(SELECT Application_id from Application WHERE User_id = ? AND CES_id = ?) AND Field_id = ?";
+            "(SELECT Application_id from Application WHERE system_user_id = ? AND CES_id = ?) AND Field_id = ?";
 
     private Connection connection;
 
