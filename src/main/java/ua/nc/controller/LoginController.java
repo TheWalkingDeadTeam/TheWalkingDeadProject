@@ -1,15 +1,8 @@
 package ua.nc.controller;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -36,8 +29,7 @@ import ua.nc.validator.Validator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
-import java.util.Base64;
+import java.io.IOException;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -129,7 +121,7 @@ public class LoginController implements HandlerExceptionResolver {
                 String userName = userDetails.getUsername();
                 int userID = userService.getUser(userName).getId();
                 PhotoService photoService = new PhotoServiceImpl();
-                photoService.uploadPhoto(photo,userID);
+                photoService.uploadPhoto(photo, userID);
             } catch (IOException e) {
                 return "redirect:/login?photo=exception";
             }
@@ -138,8 +130,8 @@ public class LoginController implements HandlerExceptionResolver {
     }
 
     @ResponseBody
-    @RequestMapping(value="/getPhoto")
-    public byte[] getPhoto(){
+    @RequestMapping(value = "/getPhoto")
+    public byte[] getPhoto() {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
         String userName = userDetails.getUsername();

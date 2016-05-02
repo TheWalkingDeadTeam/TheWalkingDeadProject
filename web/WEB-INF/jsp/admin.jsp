@@ -80,7 +80,7 @@
       </header>
       <div class="demo-drawer mdl-layout__drawer mdl-color--blue-grey-900 mdl-color-text--blue-grey-50">
         <header class="demo-drawer-header">
-          <img src="/resources/images/dog.png" class="demo-avatar">
+<%--          <img src="/resources/images/dogvk.png" class="demo-avatar">--%>
           <div class="demo-avatar-dropdown">
             <span>hello@example.com</span>
             <div class="mdl-layout-spacer"></div>
@@ -225,6 +225,7 @@
         </div>
       </main>
     </div>
+
       <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" style="position: fixed; left: -1000px; height: -1000px;">
         <defs>
           <mask id="piemask" maskContentUnits="objectBoundingBox">

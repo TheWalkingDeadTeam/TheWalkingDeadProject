@@ -41,12 +41,22 @@ public class UserServiceImpl implements UserService {
         user.setPassword(encoder.encode(user.getPassword()));
         Set<Role> roles = new HashSet<>();
         try {
-            roles.add(roleDAO.findByName("ROLE_STUDENT"));
-            for (Role role : roles)
-                System.out.println(role.getName());
+            for (Role role : user.getRoles()) {
+                roles.add(roleDAO.findByName(role.getName()));
+            }
             user.setRoles(roles);
             userDAO.createUser(user);
+/*            roles = new HashSet<>();
+            Role admin = new Role();
+            admin.setId(1);
+            admin.setName("ROLE_ADMIN");
+            Role hr = new Role();
+            admin.setId(2);
+            admin.setName("ROLE_HR");
+            roles.add(admin);
+            roles.add(hr);*/
             roleDAO.setRoleToUser(user.getRoles(), user);
+            System.out.println("User created");
             mailService.sendMail(user.getEmail(), "Registration", "Welcome " + user.getName() + " ! \n NetCracker[TheWalkingDeadTeam] ");
             return user;
         } catch (DAOException e) {
