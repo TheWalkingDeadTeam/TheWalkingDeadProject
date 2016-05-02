@@ -23,7 +23,9 @@
     </div>
 </header>
 
-<form id="fields"></form>
+<form id="fields">
+    <button id="buttonEnroll" type="submit" value="Enroll" href="/enroll" >Enroll</button>
+</form>
 
 
 <footer class="footer container-fluid">

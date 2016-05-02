@@ -10,15 +10,15 @@ import java.util.List;
  */
 public interface MailService {
 
-    public Mail getMail(Integer id);
+     Mail getMail(Integer id);
 
-    public void createMail(String header, String body);
+     void createMail(String header, String body);
 
-    public void sendMail(String address, Mail mail);
+     void sendMail(String address, Mail mail);
 
-    public void sendMail(String address, String header, String body);
+     void sendMail(String address, String header, String body);
 
-    public List<Mail> getByHeaderMailTemplate(String header);
+     List<Mail> getByHeaderMailTemplate(String header);
 
-    public void massDelivery(String dateDelivery, final List<User> users, final Mail mail);
+     void massDelivery(String dateDelivery, final List<User> users, final Mail mail);
 }

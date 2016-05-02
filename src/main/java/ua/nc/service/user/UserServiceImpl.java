@@ -47,7 +47,6 @@ public class UserServiceImpl implements UserService {
             user.setRoles(roles);
             userDAO.createUser(user);
             roleDAO.setRoleToUser(user.getRoles(), user);
-            System.out.println("User created");
             mailService.sendMail(user.getEmail(), "Registration", "Welcome " + user.getName() + " ! \n NetCracker[TheWalkingDeadTeam] ");
             return user;
         } catch (DAOException e) {

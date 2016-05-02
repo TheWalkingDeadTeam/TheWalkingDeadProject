@@ -92,7 +92,6 @@ public class PostgreRoleDAO extends RoleDAO {
     @Override
     public void setRoleToUser(Set<Role> roles, User user) throws DAOException {
         String sql = "INSERT INTO public.user_role(role_id, user_id) SELECT ?, user_id FROM public.user u WHERE u.email=?";
-        Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
@@ -102,7 +101,6 @@ public class PostgreRoleDAO extends RoleDAO {
                 statement.setInt(1, role.getId());
                 statement.setString(2, user.getEmail());
                 statement.addBatch();
-                System.out.println("Create prepstat " + role.getName());
             }
             statement.executeBatch();
             connection.commit();

@@ -1,4 +1,3 @@
-
 <%--
   Created by IntelliJ IDEA.
   User: Alexander
@@ -25,7 +24,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-title" content="Material Design Lite">
     <link rel="apple-touch-icon-precomposed" href="images/ios-desktop.png">
-    <link rel="stylesheet" type="text/css" href="/resources/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="/resources/bootstrap/css/bootstrap.css"/>
 
 
     <!-- Tile icon for Win8 (144x144 + tile color) -->
@@ -39,7 +38,8 @@
     <link rel="canonical" href="http://www.example.com/">
     -->
 
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.cyan-light_blue.min.css">
     <link rel="stylesheet" href="/resources/css/styles.css">
@@ -98,15 +98,23 @@
             </div>
         </header>
         <nav class="demo-navigation mdl-navigation mdl-color--blue-grey-800">
-            <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">schedule</i>Schedule Planning</a>
-            <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">inbox</i>Form Template</a>
-            <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">local_offer</i>Registration Period</a>
-            <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">people</i>View Student List</a>
-            <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">people</i>Interviewer List</a>
-            <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">people</i>Create Interviewer</a>
-            <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">mail</i>Edit Letter Templates</a>
+            <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons"
+                                                       role="presentation">schedule</i>Schedule Planning</a>
+            <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons"
+                                                       role="presentation">inbox</i>Form Template</a>
+            <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons"
+                                                       role="presentation">local_offer</i>Registration Period</a>
+            <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons"
+                                                       role="presentation">people</i>View Student List</a>
+            <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons"
+                                                       role="presentation">people</i>Interviewer List</a>
+            <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons"
+                                                       role="presentation">people</i>Create Interviewer</a>
+            <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons"
+                                                       role="presentation">mail</i>Edit Letter Templates</a>
             <div class="mdl-layout-spacer"></div>
-            <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">help_outline</i><span class="visuallyhidden">Help</span></a>
+            <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons"
+                                                       role="presentation">help_outline</i><span class="visuallyhidden">Help</span></a>
         </nav>
     </div>
 
@@ -114,40 +122,45 @@
     <main class="mdl-layout__content mdl-color--grey-100">
 
         <div class="container">
-            <div id="messageRegistration" class="col-lg-6 col-md-8 col-sm-9 col-xs-9">
-                <form>
-                    <div class="row container-fluid reg-head">
-                        <div class="col-lg-6 col-md-8 col-sm-9 col-xs-9">
-                            <h2 class="form-signin-heading">Interviewer Registration</h2>
+            <div class="reg registration">
+                <div class="col-lg-6 col-md-8 col-sm-9 col-xs-9">
+                    <div id="messageRegistration"></div>
+                    <form>
+                        <div class="row container-fluid reg-head">
+                            <div class="col-lg-6 col-md-8 col-sm-9 col-xs-9">
+                                <h2 class="form-signin-heading">Interviewer Registration</h2>
+                            </div>
                         </div>
-                    </div>
-                    <input id="name" name="name" class="form-control" placeholder="Name" type="text" value="">
-                    <div class="correct-name"></div>
-                    <input id="surename" name="surename" class="form-control" placeholder="Surename" type="text" value="">
-                    <div class="correct-surename"></div>
-                    <input id="email" name="email" class="form-control" placeholder="Email address" type="text" value="">
-                    <div class="correct-email"></div>
-                    <input id="password" name="password" class="form-control" placeholder="Password" type="password" value="">
-                    <div class="correct-password"></div>
-                    <button id="buttonRegistration" class="btn btn-lg btn-primary btn-block">Register</button>
-                </form>
-            </div>
-            <div class="col-lg-6 col-md-8 col-sm-9 col-xs-9">
-                <label class="checkbox">
-                    <input type="checkbox" id="checkbox_admin" value="ROLE_ADMIN"> Admin
-                </label>
-                <label class="checkbox">
-                    <input type="checkbox" id="checkbox_hr" value="ROLE_HR"> HR
-                </label>
-                <label class="checkbox">
-                    <input type="checkbox" id="checkbox_dev" value="ROLE_DEV"> Developer
-                </label>
-                <label class="checkbox">
-                    <input type="checkbox" id="checkbox_ba" value="ROLE_BA"> BA
-                </label>
+                        <input id="name" name="name" class="form-control" placeholder="Name" type="text" value="">
+                        <div class="correct-name"></div>
+                        <input id="surename" name="surename" class="form-control" placeholder="Surename" type="text"
+                               value="">
+                        <div class="correct-surename"></div>
+                        <input id="email" name="email" class="form-control" placeholder="Email address" type="text"
+                               value="">
+                        <div class="correct-email"></div>
+                        <input id="password" name="password" class="form-control" placeholder="Password" type="password"
+                               value="">
+                        <div class="correct-password"></div>
+                        <button id="buttonRegistration" class="btn btn-lg btn-primary btn-block">Register</button>
+                    </form>
+                </div>
+                <div class="col-lg-6 col-md-8 col-sm-9 col-xs-9">
+                    <label class="checkbox">
+                        <input type="checkbox" id="checkbox_admin" value="ROLE_ADMIN" class="roles"> Admin
+                    </label>
+                    <label class="checkbox">
+                        <input type="checkbox" id="checkbox_hr" value="ROLE_HR" class="roles"> HR
+                    </label>
+                    <label class="checkbox">
+                        <input type="checkbox" id="checkbox_dev" value="ROLE_DEV" class="roles"> Developer
+                    </label>
+                    <label class="checkbox">
+                        <input type="checkbox" id="checkbox_ba" value="ROLE_BA" class="roles"> BA
+                    </label>
+                </div>
             </div>
         </div>
-
     </main>
 </div>
 
