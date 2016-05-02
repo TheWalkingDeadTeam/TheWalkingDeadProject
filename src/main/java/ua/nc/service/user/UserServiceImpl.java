@@ -46,15 +46,6 @@ public class UserServiceImpl implements UserService {
             }
             user.setRoles(roles);
             userDAO.createUser(user);
-/*            roles = new HashSet<>();
-            Role admin = new Role();
-            admin.setId(1);
-            admin.setName("ROLE_ADMIN");
-            Role hr = new Role();
-            admin.setId(2);
-            admin.setName("ROLE_HR");
-            roles.add(admin);
-            roles.add(hr);*/
             roleDAO.setRoleToUser(user.getRoles(), user);
             System.out.println("User created");
             mailService.sendMail(user.getEmail(), "Registration", "Welcome " + user.getName() + " ! \n NetCracker[TheWalkingDeadTeam] ");
@@ -66,4 +57,5 @@ public class UserServiceImpl implements UserService {
 
 
     }
+
 }

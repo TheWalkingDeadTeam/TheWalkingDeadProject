@@ -61,7 +61,7 @@
                 </div>
                 <input id="name" name="name" class="form-control" placeholder="Name" type="text" value="">
                 <div class="correct-name"></div>
-                <input id="surename" name="surename" class="form-control" placeholder="Surname" type="text" value="">
+                <input id="surename" name="surename" class="form-control" placeholder="Surename" type="text" value="">
                 <div class="correct-surename"></div>
                 <input id="email" name="email" class="form-control" placeholder="Email address" type="text" value="">
                 <div class="correct-email"></div>
@@ -90,17 +90,15 @@
                 <div class="alert alert-info" role="alert">
                     <p>Your login: <sec:authentication property="principal.username"/></p>
                     <p><sec:authentication property="principal.authorities"/></p>
-                    <p><img id = "photo_img" src="/getPhoto" alt="User's photo" width = "100" height = "100" onError="this.src='/resources/images/user-photo.png'"/></p>
+                    <p><img src="/getPhoto" alt="User's photo" width = "100" height = "100" onError="this.src='/resources/images/user-photo.png'"/></p>
                 </div>
                 <p>
                     <a id="buttonLogout" class="btn btn-lg btn-danger" href="/logout" role="button">Logout</a>
                 </p>
                 <p>
-                <form id = "photo_form" type = post enctype="multipart/form-data">
-                    <div id = "photoMessages"></div>
-                    Photo to upload: <input type="file" id = "photo_input" name="photo_input" accept="image/*"><br />
-                    <button id = "photo_button" type="submit">Upload</button>
-                    <!--<input type="submit" value="Upload"/>-->
+                <form id = "photoUpload" method="post" action="uploadPhoto" enctype="multipart/form-data">
+                    Photo to upload: <input type="file" name="photo" accept="image/*"><br />
+                    <input type="submit" value="Upload"/>
                 </form>
                 </p>
             </sec:authorize>
@@ -152,7 +150,6 @@
 
 </body>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
-<script src="/resources/js/photo.js"></script>
 <script src="/resources/js/login.js"></script>
 <script src="/resources/js/logout.js"></script>
 <script src="/resources/bootstrap/js/bootstrap.js"></script>

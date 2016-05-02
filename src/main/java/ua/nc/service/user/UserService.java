@@ -12,10 +12,5 @@ public interface UserService {
 
     User createUser(User user);
 
-    User getUserById(int id);
-
-    List<User> findUsersByName(String name);
-
-    void delete(int id);
 
 }

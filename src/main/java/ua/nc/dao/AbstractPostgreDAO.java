@@ -108,7 +108,7 @@ public abstract class AbstractPostgreDAO<T extends Identified<PK>, PK extends In
         List<T> list;
         String sql = getSelectQuery();
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, (int)key);
+            statement.setInt(1, (Integer)key);
             ResultSet rs = statement.executeQuery();
             list = parseResultSet(rs);
         } catch (Exception e) {
