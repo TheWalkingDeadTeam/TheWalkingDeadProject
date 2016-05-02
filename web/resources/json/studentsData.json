@@ -1,8 +1,7 @@
 [
   {
-    "id": "1",
-    "name": "Abc",
-    "surname": "Petrov",
+    "id": 1,
+    "name": "Abc Ogurchik",
     "isActive": "1",
     "university": "KPI",
     "devMark": 10,
@@ -10,9 +9,8 @@
     "color": "blue"
   },
   {
-    "id": "7",
-    "name": "TEST2",
-    "surname": "Petrov",
+    "id": 7,
+    "name": "Bcd Ananas",
     "isActive": "0",
     "university": "NAU",
     "devMark": 15,
@@ -20,9 +18,8 @@
     "color": "yellow"
   },
   {
-    "id": "8",
-    "name": "TEST1",
-    "surname": "Petrov",
+    "id": 8,
+    "name": "TEST Apelsin",
     "isActive": "1",
     "university": "NAU",
     "devMark": 15,
@@ -30,9 +27,8 @@
     "color": "yellow"
   },
   {
-    "id": "2",
-    "name": "Bcd",
-    "surname": "Petrov",
+    "id": 2,
+    "name": "Bcd Kokos",
     "isActive": "1",
     "university": "KPI",
     "devMark": 10,
@@ -40,9 +36,8 @@
     "color": "green"
   },
   {
-    "id": "3",
-    "name": "Cde",
-    "surname": "Petrov",
+    "id": 3,
+    "name": "Test Abluko",
     "isActive": "1",
     "university": "KPI",
     "devMark": 20,
@@ -50,9 +45,8 @@
     "color": "red"
   },
   {
-    "id": "4",
-    "name": "Def",
-    "surname": "Petrov",
+    "id": 4,
+    "name": "Test Vishenka",
     "isActive": "1",
     "university": "NAU",
     "devMark": 15,
@@ -60,23 +54,156 @@
     "color": "yellow"
   },
   {
-    "id": "5",
-    "name": "Efj",
-    "surname": "Petrov",
+    "id": 5,
+    "name": "Efj Klubnika",
     "isActive": "0",
-    "university": "KNEU",
+    "university": "KNU",
     "devMark": 30,
     "hrMark": 20,
     "color": "green"
   },
   {
-    "id": "6",
-    "name": "test",
-    "surname": "Petrov",
+    "id": 6,
+    "name": "Efj Klubnika",
+    "isActive": "0",
+    "university": "KPI",
+    "devMark": 30,
+    "hrMark": 20,
+    "color": "green"
+  },
+  {
+    "id": 17,
+    "name": "Efj Klubnika",
+    "isActive": "0",
+    "university": "KNU",
+    "devMark": 30,
+    "hrMark": 100,
+    "color": "yellow"
+  },
+  {
+    "id": 18,
+    "name": "Efj Klubnika",
+    "isActive": "0",
+    "university": "KPI",
+    "devMark": 30,
+    "hrMark": 100,
+    "color": "yellow"
+  },
+  {
+    "id": 9,
+    "name": "Efj Klubnika",
+    "isActive": "0",
+    "university": "KPI",
+    "devMark": 30,
+    "hrMark": 100,
+    "color": "yellow"
+  },
+  {
+    "id": 10,
+    "name": "Efj Klubnika",
+    "isActive": "0",
+    "university": "KNU",
+    "devMark": 30,
+    "hrMark": 20,
+    "color": "red"
+  },
+  {
+    "id": 11,
+    "name": "Efj Klubnika",
+    "isActive": "0",
+    "university": "KPI",
+    "devMark": 30,
+    "hrMark": 20,
+    "color": "red"
+  },
+  {
+    "id": 12,
+    "name": "Efj Klubnika",
+    "isActive": "0",
+    "university": "KPI",
+    "devMark": 30,
+    "hrMark": 20,
+    "color": "red"
+  },
+  {
+    "id": 13,
+    "name": "Efj Klubnika",
+    "isActive": "0",
+    "university": "KPI",
+    "devMark": 30,
+    "hrMark": 20,
+    "color": "blue"
+  },
+  {
+    "id": 14,
+    "name": "Efj Klubnika",
+    "isActive": "0",
+    "university": "KPI",
+    "devMark": 30,
+    "hrMark": 20,
+    "color": "blue"
+  },
+  {
+    "id": 15,
+    "name": "Efj Klubnika",
+    "isActive": "0",
+    "university": "KPI",
+    "devMark": 30,
+    "hrMark": 20,
+    "color": "blue"
+  },
+  {
+    "id": 16,
+    "name": "Test Morkovka",
     "isActive": "0",
     "university": "NAU",
     "devMark": 45,
     "hrMark": 90,
     "color": "green"
+  },
+  {
+    "id": 19,
+    "name": "Efj Klubnika",
+    "isActive": "0",
+    "university": "KPI",
+    "devMark": 30,
+    "hrMark": 20,
+    "color": "blue"
+  },
+  {
+    "id": 20,
+    "name": "Efj Klubnika",
+    "isActive": "0",
+    "university": "KPI",
+    "devMark": 30,
+    "hrMark": 20,
+    "color": "blue"
+  },
+  {
+    "id": 21,
+    "name": "Efj Klubnika",
+    "isActive": "0",
+    "university": "KPI",
+    "devMark": 30,
+    "hrMark": 20,
+    "color": "blue"
+  },
+  {
+    "id": 22,
+    "name": "Efj Klubnika",
+    "isActive": "0",
+    "university": "KPI",
+    "devMark": 30,
+    "hrMark": 20,
+    "color": "blue"
+  },
+  {
+    "id": 23,
+    "name": "Efj Klubnika",
+    "isActive": "0",
+    "university": "KPI",
+    "devMark": 30,
+    "hrMark": 20,
+    "color": "blue"
   }
 ]

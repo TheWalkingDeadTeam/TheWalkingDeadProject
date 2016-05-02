@@ -28,6 +28,9 @@
     <button ng-click="rejectStud()">
         Reject
     </button>
+    <button ng-click="saveChanges()">
+        Save
+    </button>
     <table class="table table-bordered table-striped">
 
         <thead>
@@ -98,7 +101,7 @@
         <tr ng-repeat="ch in students | orderBy:sortType:sortReverse | filter:searchFiltr">
             <td><input type="checkbox" checklist-model="dataStudents.studId" checklist-value="ch.id"></td>
             <td>{{ch.id}}</td>
-            <td><a href="/list/{{ch.id}}"><span>{{ch.name}} {{ch.surname}}</span></a> </td>
+            <td><a href="/list/{{ch.id}}">{{ch.name}}</a> </td>
             <td>{{ch.university}}</td>
             <td>{{ch.devMark}}</td>
             <td>{{ch.hrMark}}</td>
