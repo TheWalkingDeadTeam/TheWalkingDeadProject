@@ -1,0 +1,104 @@
+[
+  {
+    "id": 1,
+    "name": "Sql level",
+    "odrer_num": 2,
+    "multiple": false,
+    "mandatory": false,
+    "type": "number",
+    "value": [
+      {
+        "id": "",
+        "name": "",
+        "value": 5
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Java level",
+    "odrer_num": 1,
+    "multiple": false,
+    "mandatory": false,
+    "type": "number",
+    "value": [
+      {
+        "id": "",
+        "name": "",
+        "value": 9
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "name": "Your interests",
+    "type": "checkbox",
+    "multiple": true,
+    "orderNum": 11,
+    "value": [
+      {
+        "id": 111,
+        "name": "Research",
+        "orderNum": "1",
+        "value": false
+      },
+      {
+        "id": 112,
+        "name": "Practice",
+        "orderNum": 2,
+        "value": true
+      },
+      {
+        "id": 113,
+        "name": "new knowledge",
+        "orderNum": 3,
+        "value": true
+      },
+      {
+        "id": 114,
+        "name": "work in NetCracker",
+        "orderNum": 4,
+        "value": false
+      }
+    ]
+  },
+  {
+    "id": 13,
+    "name": "Where have you found information about us?",
+    "type": "radio",
+    "multiple": false,
+    "orderNum": 13,
+    "value": [
+      {
+        "id": 131,
+        "name": "vk",
+        "orderNum": 1,
+        "value": true
+      },
+      {
+        "id": 132,
+        "name": "facebook",
+        "orderNum": 2,
+        "value": false
+      },
+      {
+        "id": 133,
+        "name": "ourSite",
+        "orderNum": 3,
+        "value": false
+      },
+      {
+        "id": 134,
+        "name": "otherPeople",
+        "orderNum": 4,
+        "value": false
+      },
+      {
+        "id": 135,
+        "name": "tv",
+        "orderNum": 5,
+        "value": false
+      }
+    ]
+  }
+]

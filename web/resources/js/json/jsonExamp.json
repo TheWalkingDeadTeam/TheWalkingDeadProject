@@ -1,0 +1,350 @@
+[
+  {
+    "id": 1,
+    "name": "Name",
+    "type": "String",
+    "orderNum": 1,
+    "value": "Barack"
+  },
+  {
+    "id": 2,
+    "name": "Surname",
+    "orderNum": 2,
+    "type": "String",
+    "value": "Obama"
+  },
+  {
+    "id": 3,
+    "name": "Email",
+    "orderNum": 3,
+    "type": "email",
+    "value": "barak.obi@weed.black"
+  },
+  {
+    "id": 4,
+    "name": "PhoneNumber",
+    "orderNum": 4,
+    "type": "tel",
+    "isMultiple": false,
+    "value": "8-800-555-35-35"
+  },
+  {
+    "id": 5,
+    "name": "Your university",
+    "type": "List",
+    "isMultiple": false,
+    "orderNum": 5,
+    "univer1": {
+      "id": 51,
+      "name": "KPI",
+      "orderNum": 1,
+      "type": "Boolean",
+      "value": true
+    },
+    "univer2": {
+      "id": 52,
+      "name": "NAU",
+      "orderNum": 2,
+      "type": "Boolean",
+      "value": false
+    },
+    "univer3": {
+      "id": 53,
+      "name": "KNEU",
+      "orderNum": 3,
+      "type": "Boolean",
+      "value": false
+    },
+    "other": {
+      "id": 54,
+      "name": "Other",
+      "orderNum": 4,
+      "type": "Boolean",
+      "value": false
+    }
+  },
+  {
+    "id": 6,
+    "name": "Faculty",
+    "orderNum": 6,
+    "type": "String",
+    "isMultiple": false,
+    "value": "NC"
+  },
+  {
+    "id": 7,
+    "name": "Department",
+    "orderNum": 7,
+    "type": "String",
+    "isMultiple": false,
+    "value": "NC"
+  },
+  {
+    "id": 8,
+    "name": "Specialty",
+    "orderNum": 8,
+    "type": "String",
+    "isMultiple": false,
+    "value": "NC"
+  },
+  {
+    "id": 9,
+    "name": "Graduation year",
+    "orderNum": 9,
+    "type": "Date",
+    "isMultiple": false,
+    "value": 2000
+  },
+  {
+    "id": 10,
+    "name": "Course",
+    "type": "Integer",
+    "isMultiple": false,
+    "orderNum": 10,
+    "course1": {
+      "id": 101,
+      "name": "1",
+      "type": "Integer",
+      "orderNum": 1,
+      "value": false
+    },
+    "course2": {
+      "id": 102,
+      "name": "2",
+      "type": "Integer",
+      "orderNum": 2,
+      "value": false
+    },
+    "course3": {
+      "id": 103,
+      "name": "3",
+      "type": "Integer",
+      "orderNum": 3,
+      "value": false
+    },
+    "course4": {
+      "id": 104,
+      "name": "4",
+      "type": "Integer",
+      "orderNum": 4,
+      "value": false
+    },
+    "course5": {
+      "id": 105,
+      "name": "5",
+      "type": "Integer",
+      "orderNum": 5,
+      "value": true
+    },
+    "course6": {
+      "id": 106,
+      "name": "6",
+      "type": "Integer",
+      "orderNum": 6,
+      "value": false
+    }
+  },
+  {
+    "id": 11,
+    "name": "Your interests",
+    "type": "List",
+    "isMultiple": true,
+    "orderNum": 11,
+    "interest1": {
+      "id": 111,
+      "name": "Research",
+      "orderNum": "1",
+      "type": "Boolean",
+      "value": false
+    },
+    "interest2": {
+      "id": 112,
+      "name": "Practice",
+      "orderNum": 2,
+      "type": "Boolean",
+      "value": false
+    },
+    "interest3": {
+      "id": 113,
+      "name": "new knowledge",
+      "orderNum": 3,
+      "type": "Boolean",
+      "value": true
+    },
+    "interest4": {
+      "id": 114,
+      "name": "work in NetCracker",
+      "orderNum": 4,
+      "type": "Boolean",
+      "value": false
+    }
+  },
+  {
+    "id": 12,
+    "name": "Your hobbies",
+    "type": "List",
+    "isMultiple": true,
+    "orderNum": 12,
+    "hobbie1": {
+      "id": 121,
+      "name": "football",
+      "orderNum": 1,
+      "type": "Boolean",
+      "value": false
+    },
+    "hobbie2": {
+      "id": 122,
+      "name": "rugby",
+      "orderNum": 2,
+      "type": "Boolean",
+      "value": false
+    },
+    "hobbie3": {
+      "id": 123,
+      "name": "sleeping",
+      "orderNum": 3,
+      "type": "Boolean",
+      "value": true
+    },
+    "hobbie4": {
+      "id": 124,
+      "name": "drinking",
+      "orderNum": 4,
+      "type": "Boolean",
+      "value": false
+    }
+  },
+  {
+    "id": 13,
+    "name": "Where have you found information about us?",
+    "type": "List",
+    "isMultiple": false,
+    "orderNum": 13,
+    "source1": {
+      "id": 131,
+      "name": "vk",
+      "orderNum": 1,
+      "type": "Boolean",
+      "value": true
+    },
+    "source2": {
+      "id": 132,
+      "name": "facebook",
+      "orderNum": 2,
+      "type": "Boolean",
+      "value": false
+    },
+    "source3": {
+      "id": 133,
+      "name": "ourSite",
+      "orderNum": 3,
+      "type": "Boolean",
+      "value": false
+    },
+    "source4": {
+      "id": 134,
+      "name": "otherPeople",
+      "orderNum": 4,
+      "type": "Boolean",
+      "value": false
+    },
+    "source5": {
+      "id": 135,
+      "name": "tv",
+      "orderNum": 5,
+      "type": "Boolean",
+      "value": false
+    }
+  },
+  {
+    "id": 14,
+    "name": "Java",
+    "orderNum": 14,
+    "type": "Integer",
+    "isMultiple": false,
+    "value": 5
+  },
+  {
+    "id": 15,
+    "name": "JavaScript",
+    "orderNum": 15,
+    "type": "Integer",
+    "isMultiple": false,
+    "value": 5
+  },
+  {
+    "id": 16,
+    "name": "C#",
+    "orderNum": 16,
+    "type": "Integer",
+    "isMultiple": false,
+    "value": 5
+  },
+  {
+    "id": 17,
+    "name": "Python",
+    "orderNum": 17,
+    "type": "Integer",
+    "isMultiple": false,
+    "value": 5
+  },
+  {
+    "id": 18,
+    "name": "Ruby",
+    "orderNum": 18,
+    "type": "Integer",
+    "isMultiple": false,
+    "value": 5
+  },
+  {
+    "id": 19,
+    "name": "C++",
+    "orderNum": 19,
+    "type": "Integer",
+    "isMultiple": false,
+    "value": 5
+  },
+  {
+    "id": 19,
+    "name": "SQL",
+    "orderNum": 19,
+    "type": "Integer",
+    "isMultiple": false,
+    "value": 5
+  },
+  {
+    "id": 20,
+    "name": "English level",
+    "type": "List",
+    "isMultiple": false,
+    "orderNum": 20,
+    "englishLevel1": {
+      "id": 201,
+      "name": "Basic",
+      "orderNum": 1,
+      "type": "Boolean",
+      "value": true
+    },
+    "englishLevel2": {
+      "id": 202,
+      "name": "Pre-Intermdeiate",
+      "orderNum": 2,
+      "type": "Boolean",
+      "value": false
+    },
+    "englishLevel3": {
+      "id": 203,
+      "name": "Intermediate",
+      "orderNum": 3,
+      "type": "Boolean",
+      "value": false
+    },
+    "other": {
+      "id": 204,
+      "name": "Upper-intermediate",
+      "orderNum": 4,
+      "type": "Boolean",
+      "value": false
+    }
+  }
+]
