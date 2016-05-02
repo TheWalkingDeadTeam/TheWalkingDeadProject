@@ -1,5 +1,6 @@
 package ua.nc.controller;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -7,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import ua.nc.entity.profile.Profile;
 import ua.nc.service.ProfileService;
+import ua.nc.service.UserDetailsImpl;
 import ua.nc.validator.ProfileValidator;
 import ua.nc.validator.ValidationError;
 import ua.nc.validator.Validator;
@@ -43,7 +45,10 @@ public class ProfileController {
         Validator validator = new ProfileValidator();
         errors = validator.validate(profile);
         if (errors.isEmpty()) {
-            profileService.setProfile(profile);
+            profileService.setProfile((UserDetailsImpl) SecurityContextHolder
+                    .getContext()
+                    .getAuthentication()
+                    .getPrincipal(),profile);
         }
         return errors;
     }

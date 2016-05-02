@@ -6,7 +6,7 @@ import java.util.List;
  * Created by Rangar on 28.04.2016.
  */
 public class ProfileField {
-    private String ID;
+    private int ID;
     private String fieldName;
     private int orderNum;
     private boolean multipleChoice;
@@ -22,11 +22,11 @@ public class ProfileField {
         this.values = values;
     }
 
-    public String getID() {
+    public int getID() {
         return ID;
     }
 
-    public void setID(String ID) {
+    public void setID(int ID) {
         this.ID = ID;
     }
 
@@ -46,7 +46,7 @@ public class ProfileField {
         this.orderNum = orderNum;
     }
 
-    public boolean isMultipleChoice() {
+    public boolean getMultipleChoice() {
         return multipleChoice;
     }
 
