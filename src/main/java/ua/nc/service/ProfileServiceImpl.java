@@ -31,6 +31,7 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public Profile getProfile(UserDetailsImpl userDetails, int cesID) throws DAOException {
+        boolean flagApplied = isApplied(userDetails.getID(), cesID);
         Profile result = new Profile();
         List<ProfileField> profileFields = new ArrayList<>();
         List<Field> fields = fieldDAO.getFieldsForCES(cesID);
@@ -43,7 +44,7 @@ public class ProfileServiceImpl implements ProfileService {
             profileField.setFieldType(fieldTypeDAO.read(field.getFieldTypeID()).getName());
             List<ProfileFieldValue> tempValues = new ArrayList<>();
             if(field.getListTypeID() == null){
-                if(!isApplied(userDetails.getID(), cesID)){
+                if(!flagApplied){
                     tempValues.add(new ProfileFieldValue());
                     profileField.setValues(tempValues);
                 } else {
@@ -68,11 +69,16 @@ public class ProfileServiceImpl implements ProfileService {
                     ProfileFieldValue temp = new ProfileFieldValue();
                     temp.setID(listValue.getID().toString());
                     temp.setFieldValueName(listValue.getValueText());
-                    if (isApplied(userDetails.getID(), cesID)) {
+                    if (flagApplied) {
+                        boolean matched = false;
                         for (FieldValue fieldValue : fieldValues) {
                             if (listValue.getID().equals(fieldValue.getListValueID())) {
                                 temp.setValue(Boolean.TRUE.toString());
+                                matched = true;
                             }
+                        }
+                        if (!matched){
+                            temp.setValue(Boolean.FALSE.toString());
                         }
                     } else {
                         temp.setValue(Boolean.FALSE.toString());
