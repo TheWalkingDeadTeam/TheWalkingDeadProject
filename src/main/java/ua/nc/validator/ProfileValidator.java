@@ -18,27 +18,33 @@ public class ProfileValidator implements Validator {
         errors = new LinkedHashSet<>();
         Profile profile = (Profile) obj;
         List<ProfileField> fields = profile.getFields();
-        ProfileField field = null;
+        ProfileField profileField = null;
         Iterator<ProfileField> profileFieldIterator = fields.iterator();
-        while (profileFieldIterator.hasNext()){
-            field = profileFieldIterator.next();
-            ValidationError validationError = validateField(field);
-            if(validationError!=null){
-             errors.add(validationError);
+        while (profileFieldIterator.hasNext()) {
+            ValidationError validationError = null;
+            profileField = profileFieldIterator.next();
+            if (profileField.isMultipleChoice()) {
+                validationError = validateMultipleChoiceField(profileField, 1, 3);
+            }else {
+                validationError = validateNotMultipleChoiceField(profileField);
             }
+            if (validationError != null) {
+                    errors.add(validationError);
+                }
+            }
+            return errors;
         }
-        return errors;
-    }
-
-    private ValidationError validateField(ProfileField field){
+    private ValidationError validateNotMultipleChoiceField(ProfileField profileField){
         ValidationError validationError = null;
 
-
-
-
-
-
-
+        return validationError;
+    }
+    private ValidationError validateMultipleChoiceField (ProfileField profileField, int min, int max){
+        ValidationError validationError = null;
+        int size = profileField.getValues().size();
+        if (size<min || size>max ) {
+        validationError = new ValidationError(profileField.getFieldName(),"You should choose from 2 to 4 values");
+        }
         return validationError;
     }
 }
