@@ -3,6 +3,7 @@ package ua.nc.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * Created by Pavel on 18.04.2016.
@@ -23,6 +24,13 @@ public class AdminController {
     public String studentsView() {
 
         return "adminStudView";
+    }
+    @RequestMapping(value = "/students", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    void profileFields() {
+        System.out.println("URAAA");
+
     }
 
 }

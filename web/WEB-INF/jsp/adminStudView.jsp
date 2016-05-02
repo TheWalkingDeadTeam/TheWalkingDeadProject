@@ -18,24 +18,20 @@
     </form>
 
 
-    <button ng-click="">
+    <button ng-click="activateStud()">
         Activate
     </button>
-    <button ng-click="">
+    <button ng-click="deactivateStud()">
         Deactivate
     </button>
-    <button href="#" ng-click="">
+    <button ng-click="rejectStud()">
         Reject
     </button>
     <table class="table table-bordered table-striped">
 
         <thead>
         <tr>
-            <!--<td>-->
-            <!--<input type="checkbox" >-->
-            <!--</td>-->
             <td>
-                <!--<input type="checkbox" ng-model="master">-->
                 <input type="checkbox" ng-model="selectedAll" ng-click="checkAll()">
             </td>
             <td>
@@ -81,6 +77,13 @@
                 </a>
             </td>
             <td>
+                <a href="#" ng-click="sortType = 'color'; sortReverse = !sortReverse">
+                    Description
+                    <span ng-show="sortType == 'color' && !sortReverse" class="fa fa-caret-down"></span>
+                    <span ng-show="sortType == 'color' && sortReverse" class="fa fa-caret-up"></span>
+                </a>
+            </td>
+            <td>
                 <a href="#" ng-click="sortType = 'isActive'; sortReverse = !sortReverse">
                     Active
                     <span ng-show="sortType == 'isActive' && !sortReverse" class="fa fa-caret-down"></span>
@@ -92,64 +95,24 @@
 
         <tbody>
         <tr ng-repeat="ch in students | orderBy:sortType:sortReverse | filter:searchFiltr">
-            <td><input type="checkbox" checklist-model="stud.students" checklist-value="ch.id"></td>
-            <!--<td><input type="checkbox" ng-checked="master" ng-model="stud.students" ng-value="ch.id"></td>-->
+            <td><input type="checkbox" checklist-model="dataStudents.studId" checklist-value="ch.id"></td>
             <td>{{ch.id}}</td>
             <td>{{ch.name}} {{ch.surname}}</td>
             <td>{{ch.university}}</td>
             <td>{{ch.devMark}}</td>
             <td>{{ch.hrMark}}</td>
             <td ng-style="{opacity:0.5,'background-color':'{{ch.color}}'}"></td>
+            <td>{{ch.color == "red" ? "Reject" :
+                  ch.color == "green" ? "On course" :
+                  ch.color == "blue" ? "On job" : "Thinking"}}</td>
             <td>{{ch.isActive == 1 ? "Active" : "Inactive"}}</td>
 
         </tr>
         </tbody>
-        <!--<tt>multipleSelect = {{data.multipleSelect}}</tt>-->
+        <tt>multipleSelect = {{dataStudents.studId}}</tt>
     </table>
 
 
-    <%--<table border="1">--%>
-    <%--<tr>--%>
-    <%--<th>--%>
-    <%--<button ng-click="order('isActive')">isActive</button>--%>
-    <%--<span class="sortorder" ng-show="predicate === 'idActive'" ng-class="{reverse:reverse}"></span>--%>
-    <%--</th>--%>
-    <%--<th>--%>
-    <%--<button ng-click="order('id')">Id</button>--%>
-    <%--<span class="sortorder" ng-show="predicate === 'id'" ng-class="{reverse:reverse}"></span>--%>
-    <%--</th>--%>
-    <%--<th>--%>
-    <%--<button ng-click="order('name')">Name</button>--%>
-    <%--<span class="sortorder" ng-show="predicate === 'name'" ng-class="{reverse:reverse}"></span>--%>
-    <%--</th>--%>
-    <%--<th>--%>
-    <%--<button ng-click="order('university')">University</button>--%>
-    <%--<span class="sortorder" ng-show="predicate === 'university'" ng-class="{reverse:reverse}"></span>--%>
-    <%--</th>--%>
-    <%--<th>--%>
-    <%--<button ng-click="order('devMark')">Dev Assesment</button>--%>
-    <%--<span class="sortorder" ng-show="predicate === 'devMark'" ng-class="{reverse:reverse}"></span>--%>
-    <%--</th>--%>
-    <%--<th>--%>
-    <%--<button ng-click="order('hrMark')">HR Asessment</button>--%>
-    <%--<span class="sortorder" ng-show="predicate === 'hrMark'" ng-class="{reverse:reverse}"></span>--%>
-    <%--</th>--%>
-    <%--<th>--%>
-    <%--<button ng-click="order('color')">color</button>--%>
-    <%--<span class="sortorder" ng-show="predicate === 'color'" ng-class="{reverse:reverse}"></span>--%>
-    <%--</th>--%>
-    <%--</tr>--%>
-    <%--<tr ng-repeat="ch in students | orderBy:predicate:reverse | filter: searchKeyword ">--%>
-    <%--<td><input type="checkbox" ng-model="ch.isActive" checklist-value="ch" ng-true-value="'1'" ng-false-value="'0'">--%>
-    <%--box = {{ch.isActive}}</td>--%>
-    <%--<td>{{ch.id}}</td>--%>
-    <%--<td>{{ch.name}} {{ch.surname}}</td>--%>
-    <%--<td>{{ch.university}}</td>--%>
-    <%--<td>{{ch.devMark}}</td>--%>
-    <%--<td>{{ch.hrMark}}</td>--%>
-    <%--<td><div ng-style="{'background-color':'{{ch.color}}'}"></div></td>--%>
-    <%--</tr>--%>
-    <%--</table>--%>
 </div>
 </body>
 </html>
