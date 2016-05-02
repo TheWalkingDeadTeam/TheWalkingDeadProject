@@ -1,7 +1,8 @@
 <!doctype html>
-<html ng-app="app">
+<html ng-app="studentView">
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-route.js"></script>
     <script src="../../resources/js/studentListAngular.js"></script>
     <script src="http://vitalets.github.io/checklist-model/checklist-model.js"></script>
     <link rel="stylesheet" type="text/css" href="/resources/css/reset.css"/>
@@ -97,7 +98,7 @@
         <tr ng-repeat="ch in students | orderBy:sortType:sortReverse | filter:searchFiltr">
             <td><input type="checkbox" checklist-model="dataStudents.studId" checklist-value="ch.id"></td>
             <td>{{ch.id}}</td>
-            <td>{{ch.name}} {{ch.surname}}</td>
+            <td><a href="/list/{{ch.id}}"><span>{{ch.name}} {{ch.surname}}</span></a> </td>
             <td>{{ch.university}}</td>
             <td>{{ch.devMark}}</td>
             <td>{{ch.hrMark}}</td>

@@ -1,8 +1,29 @@
 /**
  * Created by creed on 01.05.16.
  */
-angular.module('app', ['checklist-model'])
-    .controller("StudentCtrl", ["$scope", "$http", function ($scope, $http) {
+
+var studentView = angular.module('studentView', ['checklist-model', 'ngRoute', 'phonecatControllers']);
+
+studentView.config(['$routeProvider',
+    function($routeProvider) {
+        $routeProvider.
+        when('/students', {
+            templateUrl: 'adminStudView.jsp',
+            controller: 'StudentCtrl'
+        }).
+        when('/students/:studentId', {
+            templateUrl: 'studentProfile.html',
+            controller: 'StudentDetailCtrl'
+        }).
+        otherwise({
+            redirectTo: 'error.jsp'
+        });
+    }]);
+
+var phonecatControllers = angular.module('phonecatControllers', []);
+
+
+phonecatControllers.controller("StudentCtrl", ["$scope", "$http", function ($scope, $http) {
         $http.get('resources/json/studentsData.json').success(function (data) {
             $scope.students = data;
         });
@@ -66,6 +87,13 @@ angular.module('app', ['checklist-model'])
         }
 
     }]);
+
+
+phonecatControllers.controller('StudentDetailCtrl', ['$scope', '$http', '$routeParams',
+    function($scope, $http, $routeParams) {
+        $scope.studentId = $routeParams.studentId;
+    }]);
+
 
 it('should change state', function () {
     var value1 = element(by.binding('h.isActive'));
