@@ -7,7 +7,9 @@ import ua.nc.dao.exception.DAOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by Rangar on 26.04.2016.
@@ -49,7 +51,7 @@ public class PostgreListTypeDAO extends AbstractPostgreDAO<ListType, Integer> {
 
     @Override
     protected java.util.List<ListType> parseResultSet(ResultSet rs) throws DAOException {
-        LinkedList<ListType> result = new LinkedList<>();
+        List<ListType> result = new ArrayList<>();
         try {
             while (rs.next()) {
                 PersistListType lt = new PersistListType(rs.getString("name"));

@@ -7,7 +7,7 @@ import ua.nc.dao.exception.DAOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -50,7 +50,7 @@ public class PostgreFieldTypeDAO extends AbstractPostgreDAO<FieldType, Integer> 
 
     @Override
     protected List<FieldType> parseResultSet(ResultSet rs) throws DAOException {
-        LinkedList<FieldType> result = new LinkedList<>();
+        List<FieldType> result = new ArrayList<>();
         try {
             while (rs.next()) {
                 PersistFieldType lt = new PersistFieldType(rs.getString("name"));
