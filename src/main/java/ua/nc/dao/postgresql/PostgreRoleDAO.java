@@ -20,21 +20,19 @@ import java.util.Set;
  */
 public class PostgreRoleDAO extends RoleDAO {
     /*    private static final Logger LOGGER = Logger.getLogger(PostgreRoleDAO.class);*/
-    private final ConnectionPool connectionPool;
+    private final Connection connection;
 
-    public PostgreRoleDAO(ConnectionPool connectionPool) {
-        this.connectionPool = connectionPool;
+    public PostgreRoleDAO(Connection connection) {
+        this.connection = connection;
     }
 
     @Override
     public Role findByName(String name) throws DAOException {
         String sql = AppSetting.get("role.findByName");
         Role role = null;
-        Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
-            connection = connectionPool.getConnection();
             statement = connection.prepareStatement(sql);
             statement.setString(1, name);
             resultSet = statement.executeQuery();
@@ -51,8 +49,6 @@ public class PostgreRoleDAO extends RoleDAO {
                     resultSet.close();
                 if (statement != null)
                     statement.close();
-                if (connection != null)
-                    connectionPool.putConnection(connection);
             } catch (Exception e) {
                 throw new DAOException(e);
             }
@@ -64,11 +60,9 @@ public class PostgreRoleDAO extends RoleDAO {
     public Set<Role> findByEmail(String email) throws DAOException {
         String sql = AppSetting.get("role.findByEmail");
         Set<Role> roles = new HashSet<>();
-        Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
-            connection = connectionPool.getConnection();
             statement = connection.prepareStatement(sql);
             statement.setString(1, email);
             resultSet = statement.executeQuery();
@@ -88,8 +82,6 @@ public class PostgreRoleDAO extends RoleDAO {
                     resultSet.close();
                 if (statement != null)
                     statement.close();
-                if (connection != null)
-                    connectionPool.putConnection(connection);
             } catch (Exception e) {
                 throw new DAOException(e);
             }
@@ -104,7 +96,6 @@ public class PostgreRoleDAO extends RoleDAO {
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
-            connection = connectionPool.getConnection();
             connection.setAutoCommit(false);
             statement = connection.prepareStatement(sql);
             for (Role role : roles) {
@@ -124,8 +115,6 @@ public class PostgreRoleDAO extends RoleDAO {
                     resultSet.close();
                 if (statement != null)
                     statement.close();
-                if (connection != null)
-                    connectionPool.putConnection(connection);
             } catch (Exception e) {
                 throw new DAOException(e);
             }

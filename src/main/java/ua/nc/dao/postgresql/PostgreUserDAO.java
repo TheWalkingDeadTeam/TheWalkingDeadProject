@@ -17,10 +17,10 @@ import java.sql.SQLException;
  */
 public class PostgreUserDAO extends UserDAO {
     /*    private static final Logger LOGGER = Logger.getLogger(PostgreUserDAO.class);*/
-    private final ConnectionPool connectionPool;
+    private final Connection connection;
 
-    public PostgreUserDAO(ConnectionPool connectionPool) {
-        this.connectionPool = connectionPool;
+    public PostgreUserDAO(Connection connection) {
+        this.connection = connection;
     }
 
     /**
@@ -32,11 +32,9 @@ public class PostgreUserDAO extends UserDAO {
     public User findByEmail(String email) throws DAOException {
         String sql = AppSetting.get("user.findByEmail");
         User user = null;
-        Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
-            connection = connectionPool.getConnection();
             statement = connection.prepareStatement(sql);
             statement.setString(1, email);
             resultSet = statement.executeQuery();
@@ -56,8 +54,6 @@ public class PostgreUserDAO extends UserDAO {
                     resultSet.close();
                 if (statement != null)
                     statement.close();
-                if (connection != null)
-                    connectionPool.putConnection(connection);
             } catch (Exception e) {
                 throw new DAOException(e);
             }
@@ -68,11 +64,9 @@ public class PostgreUserDAO extends UserDAO {
     @Override
     public void createUser(User user) throws DAOException {
         String sql = AppSetting.get("user.createUser");
-        Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
-            connection = connectionPool.getConnection();
             statement = connection.prepareStatement(sql);
             statement.setString(1, user.getName());
             statement.setString(2, user.getEmail());
@@ -87,8 +81,6 @@ public class PostgreUserDAO extends UserDAO {
                     resultSet.close();
                 if (statement != null)
                     statement.close();
-                if (connection != null)
-                    connectionPool.putConnection(connection);
             } catch (Exception e) {
                 throw new DAOException(e);
             }

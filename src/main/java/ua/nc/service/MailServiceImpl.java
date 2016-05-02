@@ -32,7 +32,7 @@ import java.util.Properties;
 public class MailServiceImpl implements MailService {
     private static final Logger LOGGER = Logger.getLogger(MailServiceImpl.class);
     private DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
-    private MailDAO mailDAO = daoFactory.getMailDAO();
+    private MailDAO mailDAO = daoFactory.getMailDAO(daoFactory.getConnection());
     private ThreadPoolTaskScheduler scheduler;
     private ThreadPoolTaskScheduler schedulerMassDeliveryService;
     private static final int POOL_SIZE = 2;

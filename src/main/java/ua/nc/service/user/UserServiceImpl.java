@@ -19,8 +19,8 @@ import java.util.Set;
  */
 public class UserServiceImpl implements UserService {
     private DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
-    private UserDAO userDAO = daoFactory.getUserDAO();
-    private RoleDAO roleDAO = daoFactory.getRoleDAO();
+    private UserDAO userDAO = daoFactory.getUserDAO(daoFactory.getConnection());
+    private RoleDAO roleDAO = daoFactory.getRoleDAO(daoFactory.getConnection());
     private MailService mailService = new MailServiceImpl();
 
     @Override
