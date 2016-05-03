@@ -3,14 +3,12 @@ package ua.nc.controller;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import ua.nc.entity.profile.Profile;
-import org.apache.log4j.Logger;
-import org.springframework.stereotype.Controller;
+
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import ua.nc.entity.Role;
+
 import ua.nc.entity.User;
 import ua.nc.service.user.UserService;
 import ua.nc.service.user.UserServiceImpl;
@@ -20,6 +18,7 @@ import ua.nc.validator.Validator;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
+
 /**
  * Created by Pavel on 18.04.2016.
  */
@@ -33,6 +32,7 @@ public class AdminController {
     public String login() {
         return "admin";
     }
+
     @RequestMapping(value = {"/register"}, method = RequestMethod.POST, produces = "application/json")
     public
     @ResponseBody
@@ -61,8 +61,7 @@ public class AdminController {
     }
 
     /**
-     * Method for view student list from admin controle panale
-     * UC 7
+     * Method for view student list from admin controle panale UC 7
      *
      * @return page with students data
      */
@@ -71,8 +70,11 @@ public class AdminController {
 
         return "admin-stud-view";
     }
+
     @RequestMapping(value = {"/students/list"}, method = RequestMethod.GET, produces = "application/json")
-    public @ResponseBody String studentsGetJSON() {
+    public
+    @ResponseBody
+    String studentsGetJSON() {
 
 
         return "[{\n" +
@@ -83,6 +85,33 @@ public class AdminController {
                 "    \"devMark\": 10,\n" +
                 "    \"hrMark\": 5,\n" +
                 "    \"color\": \"blue\"\n" +
+                "  },\n" +
+                "  {\n" +
+                "    \"id\": 7,\n" +
+                "    \"name\": \"Bcd Ananas\",\n" +
+                "    \"isActive\": \"0\",\n" +
+                "    \"university\": \"NAU\",\n" +
+                "    \"devMark\": 15,\n" +
+                "    \"hrMark\": 10,\n" +
+                "    \"color\": \"yellow\"\n" +
+                "  },\n" +
+                "  {\n" +
+                "    \"id\": 8,\n" +
+                "    \"name\": \"TEST Apelsin\",\n" +
+                "    \"isActive\": \"1\",\n" +
+                "    \"university\": \"NAU\",\n" +
+                "    \"devMark\": 15,\n" +
+                "    \"hrMark\": 10,\n" +
+                "    \"color\": \"yellow\"\n" +
+                "  },\n" +
+                "  {\n" +
+                "    \"id\": 2,\n" +
+                "    \"name\": \"Bcd Kokos\",\n" +
+                "    \"isActive\": \"1\",\n" +
+                "    \"university\": \"KPI\",\n" +
+                "    \"devMark\": 10,\n" +
+                "    \"hrMark\": 85,\n" +
+                "    \"color\": \"green\"\n" +
                 "  }]";
 
     }
@@ -97,7 +126,7 @@ public class AdminController {
 
     @RequestMapping(value = "/students/{id}", method = RequestMethod.GET, produces = "application/json")
     public String getStudentById(@ModelAttribute("id") Integer id) {
-        return "redirect:/profile/"+id;
+        return "redirect:/profile/" + id;
     }
 
 }

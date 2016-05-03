@@ -91,7 +91,7 @@
             <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">schedule</i>Schedule Planning</a>
             <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">inbox</i>Form Template</a>
             <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">local_offer</i>Registration Period</a>
-            <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">people</i>View Student List</a>
+            <a class="mdl-navigation__link" href="/admin/students"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">people</i>View Student List</a>
             <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">people</i>Interviewer List</a>
             <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">people</i>Create Interviewer</a>
             <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">mail</i>Edit Letter Templates</a>
@@ -160,7 +160,7 @@
                         You are able to view student list
                     </div>
                     <div class="mdl-card__actions mdl-card--border">
-                        <a href="#" class="mdl-button mdl-js-button mdl-js-ripple-effect">View Student List</a>
+                        <a href="/admin/students" class="mdl-button mdl-js-button mdl-js-ripple-effect">View Student List</a>
                     </div>
                 </div>
                 <div class="demo-separator mdl-cell--1-col"></div>
