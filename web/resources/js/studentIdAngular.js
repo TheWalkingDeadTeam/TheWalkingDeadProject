@@ -2,7 +2,7 @@
  * Created by creed on 01.05.16.
  */
 
-var studentView = angular.module('studentView', ['checklist-model', 'ngRoute', 'phonecatControllers']);
+var studentView = angular.module('studentViewId', ['checklist-model', 'ngRoute', 'phonecatControllers']);
 
 studentView.config(['$routeProvider',
     function ($routeProvider) {
@@ -20,14 +20,18 @@ studentView.config(['$routeProvider',
 var phonecatControllers = angular.module('phonecatControllers', []);
 
 
-phonecatControllers.controller("StudentCtrl", ["$scope", "$http","$rootElement", function ($scope, $http,$rootElement) {
-    $http.get('resources/json/studentsData.json').success(function (data) {
-        $scope.students = data;
-    });
-
-    // $http.get('/students/list').success(function (data) {
+phonecatControllers.controller("StudentCtrlId", ["$scope", "$http","$rootElement", function ($scope, $http,$rootElement) {
+    // $http.get('resources/json/studentsData.json').success(function (data) {
     //     $scope.students = data;
     // });
+
+    $http.get('/students/id/',{
+        params:{
+         id : 1
+        }
+        }).success(function (data) {
+        $scope.students = data;
+    });
 
 
     $scope.sortType = 'id';

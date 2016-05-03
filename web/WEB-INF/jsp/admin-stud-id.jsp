@@ -1,9 +1,9 @@
 <!doctype html>
-<html ng-app="studentView">
+<html ng-app="studentViewId">
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-route.js"></script>
-    <script src="../../resources/js/studentListAngular.js"></script>
+    <script src="../../resources/js/studentIdAngular.js"></script>
     <script src="http://vitalets.github.io/checklist-model/checklist-model.js"></script>
     <link rel="stylesheet" type="text/css" href="/resources/css/reset.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/css/styles.css"/>
@@ -12,7 +12,7 @@
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<div ng-controller="StudentCtrl">
+<div ng-controller="StudentCtrlId">
     <form>
         <div class="input-group-addon"><i></i></div>
         <input type="text" class="form-control" placeholder="Search" ng-model="searchFiltr">
@@ -94,7 +94,7 @@
         <tr ng-repeat="ch in students | orderBy:sortType:sortReverse | filter:searchFiltr">
             <td><input type="checkbox" checklist-model="dataStudents.studId" checklist-value="ch.id"></td>
             <td>{{ch.id}}</td>
-            <td><a href="/list/{{ch.id}}">{{ch.name}}</a> </td>
+            <td><a href="/students/{{ch.id}}" target="_blanks">{{ch.name}}</a> </td>
             <td>{{ch.university}}</td>
             <td>{{ch.devMark}}</td>
             <td>{{ch.hrMark}}</td>

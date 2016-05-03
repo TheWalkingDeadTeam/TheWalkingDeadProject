@@ -1,16 +1,8 @@
 package ua.nc.controller;
 
-import com.fasterxml.jackson.databind.util.JSONPObject;
-import jdk.nashorn.api.scripting.JSObject;
-import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import org.springframework.web.bind.annotation.*;
+import ua.nc.entity.profile.Profile;
 
 /**
  * Created by Pavel on 18.04.2016.
@@ -31,13 +23,22 @@ public class AdminController {
     @RequestMapping(value = {"/students"}, method = RequestMethod.GET)
     public String studentsView() {
 
-        return "adminStudView";
+        return "admin-stud-view";
     }
     @RequestMapping(value = {"/students/list"}, method = RequestMethod.GET, produces = "application/json")
     public @ResponseBody String studentsGetJSON() {
 
 
-        return "";
+        return "[{\n" +
+                "    \"id\": 1,\n" +
+                "    \"name\": \"Abc Ogurchik\",\n" +
+                "    \"isActive\": \"1\",\n" +
+                "    \"university\": \"KPI\",\n" +
+                "    \"devMark\": 10,\n" +
+                "    \"hrMark\": 5,\n" +
+                "    \"color\": \"blue\"\n" +
+                "  }]";
+
     }
 
     @RequestMapping(value = "/students", method = RequestMethod.POST)
@@ -46,6 +47,11 @@ public class AdminController {
     void profileFields() {
         System.out.println("URAAA");
 
+    }
+
+    @RequestMapping(value = "/students/{id}", method = RequestMethod.GET, produces = "application/json")
+    public String getStudentById(@ModelAttribute("id") Integer id) {
+        return "redirect:/profile/"+id;
     }
 
 }
