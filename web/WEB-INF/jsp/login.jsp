@@ -90,11 +90,14 @@
                 <div class="alert alert-info" role="alert">
                     <p>Your login: <sec:authentication property="principal.username"/></p>
                     <p><sec:authentication property="principal.authorities"/></p>
+                    <p><img src="/getPhoto" alt="User's photo" width = "100" height = "100" onError="this.src='/resources/images/user-photo.png'"/></p>
                 </div>
-                <p><a id="buttonLogout" class="btn btn-lg btn-danger" href="/logout" role="button">Logout</a></p>
+                <p>
+                    <a id="buttonLogout" class="btn btn-lg btn-danger" href="/logout" role="button">Logout</a>
+                </p>
                 <p>
                 <form id = "photoUpload" method="post" action="uploadPhoto" enctype="multipart/form-data">
-                    Photo to upload: <input type="file" name="photo" accept="image/jpeg"><br />
+                    Photo to upload: <input type="file" name="photo" accept="image/*"><br />
                     <input type="submit" value="Upload"/>
                 </form>
                 </p>

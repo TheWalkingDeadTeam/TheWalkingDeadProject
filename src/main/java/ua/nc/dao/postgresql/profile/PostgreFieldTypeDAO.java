@@ -1,24 +1,24 @@
 package ua.nc.dao.postgresql.profile;
 
 import ua.nc.dao.AbstractPostgreDAO;
-import ua.nc.dao.exception.DAOException;
-import ua.nc.dao.pool.ConnectionPool;
 import ua.nc.entity.profile.FieldType;
+import ua.nc.dao.exception.DAOException;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Rangar on 26.04.2016.
  */
 public class PostgreFieldTypeDAO extends AbstractPostgreDAO<FieldType, Integer> {
-    public PostgreFieldTypeDAO(ConnectionPool connectionPool){
-        super(connectionPool);
+    public PostgreFieldTypeDAO(Connection connection){
+        super(connection);
     }
 
-    private class PersistFieldType extends FieldType {
+    private class PersistFieldType extends FieldType{
         public PersistFieldType(String name) {
             super(name);
         }
@@ -50,12 +50,12 @@ public class PostgreFieldTypeDAO extends AbstractPostgreDAO<FieldType, Integer> 
 
     @Override
     protected List<FieldType> parseResultSet(ResultSet rs) throws DAOException {
-        LinkedList<FieldType> result = new LinkedList<>();
+        List<FieldType> result = new ArrayList<>();
         try {
             while (rs.next()) {
-                PersistFieldType lt = new PersistFieldType(rs.getString("name"));
-                lt.setID(rs.getInt("list_id"));
-                result.add(lt);
+                PersistFieldType fieldType = new PersistFieldType(rs.getString("name"));
+                fieldType.setID(rs.getInt("list_id"));
+                result.add(fieldType);
             }
         } catch (Exception e) {
             throw new DAOException(e);

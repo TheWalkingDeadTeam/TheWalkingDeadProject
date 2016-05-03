@@ -1,21 +1,36 @@
 package ua.nc.dao.postgresql.profile;
 
 import ua.nc.dao.AbstractPostgreDAO;
-import ua.nc.dao.exception.DAOException;
-import ua.nc.dao.pool.ConnectionPool;
+import ua.nc.dao.ListValueDAO;
 import ua.nc.entity.profile.ListValue;
+import ua.nc.dao.exception.DAOException;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Rangar on 26.04.2016.
  */
-public class PostgreListValueDAO extends AbstractPostgreDAO<ListValue, Integer> {
-    public PostgreListValueDAO(ConnectionPool connectionPool){
-        super(connectionPool);
+public class PostgreListValueDAO extends AbstractPostgreDAO<ListValue, Integer> implements ListValueDAO {
+    public PostgreListValueDAO(Connection connection){
+        super(connection);
+    }
+
+    private static String getAllListListValueQuery = "SELECT * FROM list_value WHERE list_id = ?";
+
+    @Override
+    public List<ListValue> getAllListListValue(Integer list_id) throws DAOException {
+        List<ListValue> result;
+        try (PreparedStatement statement = connection.prepareStatement(getAllListListValueQuery)){
+            statement.setInt(1, list_id);
+            result = parseResultSet(statement.executeQuery());
+        } catch (Exception e) {
+            throw new DAOException(e);
+        }
+        return result;
     }
 
     private class PersistListValue extends ListValue {
@@ -50,13 +65,13 @@ public class PostgreListValueDAO extends AbstractPostgreDAO<ListValue, Integer> 
 
     @Override
     protected List<ListValue> parseResultSet(ResultSet rs) throws DAOException {
-        LinkedList<ListValue> result = new LinkedList<>();
+        List<ListValue> result = new ArrayList<>();
         try {
             while (rs.next()) {
-                PersistListValue lv = new PersistListValue(rs.getInt("list_value_id"),
+                PersistListValue listValue = new PersistListValue(rs.getInt("list_value_id"),
                         rs.getDouble("value_double"),rs.getString("value_text"));
-                lv.setListID(rs.getInt("list_id"));
-                result.add(lv);
+                listValue.setListID(rs.getInt("list_id"));
+                result.add(listValue);
             }
         } catch (Exception e) {
             throw new DAOException(e);

@@ -11,6 +11,10 @@ import java.util.Collection;
 public class UserDetailsImpl extends User {
     private Integer id;
 
+    public Integer getID() {
+        return id;
+    }
+
     public UserDetailsImpl(Integer id, String username, String password, Collection<? extends GrantedAuthority> authorities) {
         super(username, password, authorities);
         this.id = id;

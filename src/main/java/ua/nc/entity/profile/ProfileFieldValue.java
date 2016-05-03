@@ -4,15 +4,15 @@ package ua.nc.entity.profile;
  * Created by Rangar on 28.04.2016.
  */
 public class ProfileFieldValue {
-    private int ID;
+    private String ID;
     private String fieldValueName;
     private String value;
 
-    public int getID() {
+    public String getID() {
         return ID;
     }
 
-    public void setID(int ID) {
+    public void setID(String ID) {
         this.ID = ID;
     }
 

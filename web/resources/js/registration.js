@@ -48,7 +48,7 @@ $( document ).ready(function() {
 					}
 
 					$('.correct-password').text(errorMsg);
-				}else if(elem.is('#surename')){
+				}else if(elem.is('#surname')){
 
 					if( !/^([A-ZА-ЯЁ][a-zа-яё'-]+\s?)+$/.test(innerText) ){
 						errorMsg = errorMsg + 'Need a capital letter;';
@@ -61,7 +61,7 @@ $( document ).ready(function() {
 					if(!/^.{2,30}$/.test(innerText)){
 						errorMsg = errorMsg + 'Incorrect letter\'s number;';
 					};
-					$('.correct-surename').text(errorMsg);
+					$('.correct-surname').text(errorMsg);
 				};
 				buttonEnable();
 		};
@@ -78,7 +78,7 @@ $( document ).ready(function() {
 					}else if(/([^a-zA-Zа-яА-ЯёЁ'\s-])/.test(innerText)){
 						errorMsg = errorMsg + 'Incorrect name';
 					}else if(!/^.{2,30}$/.test(innerText)){
-						errorMsg = errorMsg + 'Incorrect name';
+						errorMsg = errorMsg + 'Name should have from 2 to 30 symbols';
 					};
 
 					$('.correct-name').text(errorMsg);
@@ -97,14 +97,14 @@ $( document ).ready(function() {
 				var elem = $('#password');
 				var innerText = elem.val();
 
-					if (!/^.{6,20}$/.test(innerText)){
-						errorMsg = errorMsg + 'Incorrect symbols number';
+					if (!/^.{6,32}$/.test(innerText)){
+						errorMsg = errorMsg + 'Password should have from 6 to 32 symbols';
 					}
 
 					$('.correct-password').text(errorMsg);
 					errorMsg = '';
 
-				var elem = $('#surename');
+				var elem = $('#surname');
 				var innerText = elem.val();
 
 					if( !/^([A-ZА-ЯЁ][a-zа-яё'-]+\s?)+$/.test(innerText) ){
@@ -118,13 +118,13 @@ $( document ).ready(function() {
 					if(!/^.{2,30}$/.test(innerText)){
 						errorMsg = errorMsg + 'Incorrect letter\'s number;';
 					};
-					$('.correct-surename').text(errorMsg);
+					$('.correct-surname').text(errorMsg);
 
 					buttonEnable();
 		};
 		// start validation
 		function buttonEnable(){
-			if($('.correct-name').text() == '' && $('.correct-password').text() == '' && $('.correct-email').text() == '' && $('.correct-surename').text() == ''){
+			if($('.correct-name').text() == '' && $('.correct-password').text() == '' && $('.correct-email').text() == '' && $('.correct-surname').text() == ''){
 				$('#user button').prop('disabled', false);
 			}else{
 				$('#user button').prop('disabled', true);
@@ -148,7 +148,32 @@ $( document ).ready(function() {
 			}),
 			success: function (response) {
 				if (response.errors.length) {
-					response.errors.forEach(item);
+					var errors_out = "";
+					// response.errors.forEach(item, i);
+					for (var i in response.errors) {
+						errors_out += response.errors[i].errorMessage + "</br>"
+					}
+					$('#messageRegistration')
+						.removeClass()
+						.empty();
+					$('#messageRegistration')
+						.addClass('alert alert-danger')
+						.html(errors_out);
+					$('#j_password').val("");
+				} else {
+					$('#messageRegistration')
+						.removeClass()
+						.empty();
+					$('#messageSignIn')
+						.removeClass()
+						.empty();
+					$('.registration')
+						.fadeOut(300);
+					$('#messageSignIn')
+						.addClass('alert alert-success')
+						.html('Registered successfully');
+					$('.registration input')
+						.val("");
 				}
 			},
 			error: function (jqXHR, exception) {
@@ -157,8 +182,5 @@ $( document ).ready(function() {
 		});
 	});
 
-	function fillError(item) {
-		//toDo
-	}
-
 });
+
