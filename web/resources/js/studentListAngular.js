@@ -21,13 +21,13 @@ var phonecatControllers = angular.module('phonecatControllers', []);
 
 
 phonecatControllers.controller("StudentCtrl", ["$scope", "$http","$rootElement", function ($scope, $http,$rootElement) {
-    $http.get('resources/json/studentsData.json').success(function (data) {
-        $scope.students = data;
-    });
-
-    // $http.get('/students/list').success(function (data) {
+    // $http.get('resources/json/studentsData.json').success(function (data) {
     //     $scope.students = data;
     // });
+
+    $http.get('students/list').success(function (data) {
+        $scope.students = data;
+    });
 
 
     $scope.sortType = 'id';
@@ -54,7 +54,7 @@ phonecatControllers.controller("StudentCtrl", ["$scope", "$http","$rootElement",
             type: 'activate',
             values: $scope.dataStudents.studId
         };
-        var res = $http.post('/students', dataObj);
+        var res = $http.post('students', dataObj);
         res.success(function (data, status, headers, config) {
             $scope.message = data;
         });
@@ -67,7 +67,7 @@ phonecatControllers.controller("StudentCtrl", ["$scope", "$http","$rootElement",
             type: 'deactivate',
             values: $scope.dataStudents.studId
         };
-        var res = $http.post('/students', dataObj);
+        var res = $http.post('students', dataObj);
         res.success(function (data, status, headers, config) {
             $scope.message = data;
         });
@@ -80,7 +80,7 @@ phonecatControllers.controller("StudentCtrl", ["$scope", "$http","$rootElement",
             type: 'reject',
             values: $scope.dataStudents.studId
         };
-        var res = $http.post('/students', dataObj);
+        var res = $http.post('students', dataObj);
         res.success(function (data, status, headers, config) {
             $scope.message = data;
         });
@@ -93,7 +93,7 @@ phonecatControllers.controller("StudentCtrl", ["$scope", "$http","$rootElement",
         var dataObj = {
             type: urlt.toString()
         };
-        var res = $http.post('/students', dataObj);
+        var res = $http.post('students', dataObj);
         res.success(function (data, status, headers, config) {
             $scope.message = data;
         });
