@@ -20,4 +20,5 @@ public class UserDetailsImpl extends User {
         super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
         this.id = id;
     }
+
 }

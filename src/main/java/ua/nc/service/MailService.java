@@ -17,7 +17,7 @@ public interface MailService {
 
     public Mail getMail(Integer id);
 
-    public void createMail(String header, String body);
+    public Mail createMail(String header, String body);
 
     public void sendMail(String address, Mail mail);
 

@@ -57,15 +57,18 @@ public class MailServiceImpl implements MailService {
      * @param body
      */
     @Override
-    public void createMail(String header, String body) {
+    public Mail createMail(String header, String body) {
         Mail mail = null;
         try {
+            mail = new Mail();
             mail.setHeadTemplate(header);
             mail.setBodyTemplate(body);
-            mailDAO.create(mail);
+            Mail newCreated= mailDAO.create(mail);
+            System.out.println(newCreated.getId());
         } catch (DAOException e) {
             LOGGER.error("Bad Happened", e);
         }
+        return mail;
     }
 
     /**

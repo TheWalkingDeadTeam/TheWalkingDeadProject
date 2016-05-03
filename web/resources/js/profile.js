@@ -31,8 +31,8 @@ $(document).ready(function () {
 
 function typeSwitcher(item, i, divname) {
     if (!item.multiple) {
-        console.log('Single value');
-        switch (item.type) {
+            console.log('Single value');
+            switch (item.type) {
             case 'number':
                 console.log('this is a number => ' + item.type);
                 $('<div id=\"block'+i+'\">').appendTo($(divname));

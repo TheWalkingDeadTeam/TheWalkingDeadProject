@@ -13,7 +13,7 @@ $(document).ready(function () {
             dataType: 'json',
             contentType: "application/json",
             data: JSON.stringify({
-                password: $('#changePassword').val(),
+                password: $('#changePassword').val()
             }),
             success: function (response) {
                 if (response.errors.length) {
