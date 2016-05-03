@@ -81,13 +81,6 @@
                 </a>
             </td>
             <td>
-                <a href="#" ng-click="sortType = 'color'; sortReverse = !sortReverse">
-                    Description
-                    <span ng-show="sortType == 'color' && !sortReverse" class="fa fa-caret-down"></span>
-                    <span ng-show="sortType == 'color' && sortReverse" class="fa fa-caret-up"></span>
-                </a>
-            </td>
-            <td>
                 <a href="#" ng-click="sortType = 'isActive'; sortReverse = !sortReverse">
                     Active
                     <span ng-show="sortType == 'isActive' && !sortReverse" class="fa fa-caret-down"></span>
@@ -105,15 +98,15 @@
             <td>{{ch.university}}</td>
             <td>{{ch.devMark}}</td>
             <td>{{ch.hrMark}}</td>
-            <td ng-style="{opacity:0.5,'background-color':'{{ch.color}}'}"></td>
-            <td>{{ch.color == "red" ? "Reject" :
-                  ch.color == "green" ? "On course" :
-                  ch.color == "blue" ? "On job" : "Thinking"}}</td>
+            <td ng-style="{opacity:0.5,'background-color':'{{ch.color}}'}" title="
+            {{ch.color == 'red' ? 'Reject' :
+            ch.color == 'green' ? 'On course' :
+            ch.color == 'blue' ? 'On job' : 'Thinking'}}"></td>
             <td>{{ch.isActive == 1 ? "Active" : "Inactive"}}</td>
 
         </tr>
         </tbody>
-        <tt>multipleSelect = {{dataStudents.studId}}</tt>
+        <tt>multipleSelect = {{students.length}}</tt>
     </table>
 
 

@@ -5,17 +5,14 @@
 var studentView = angular.module('studentView', ['checklist-model', 'ngRoute', 'phonecatControllers']);
 
 studentView.config(['$routeProvider',
-    function($routeProvider) {
-        $routeProvider.
-        when('/students', {
+    function ($routeProvider) {
+        $routeProvider.when('/students', {
             templateUrl: 'adminStudView.jsp',
             controller: 'StudentCtrl'
-        }).
-        when('/students/:studentId', {
+        }).when('/students/:studentId', {
             templateUrl: 'studentProfile.html',
             controller: 'StudentDetailCtrl'
-        }).
-        otherwise({
+        }).otherwise({
             redirectTo: 'error.jsp'
         });
     }]);
@@ -24,68 +21,74 @@ var phonecatControllers = angular.module('phonecatControllers', []);
 
 
 phonecatControllers.controller("StudentCtrl", ["$scope", "$http", function ($scope, $http) {
-        $http.get('resources/json/studentsData.json').success(function (data) {
-            $scope.students = data;
-        });
-        $scope.sortType = 'name';
-        $scope.sortReverse = false;
-        $scope.searchFiltr = '';
-        $scope.dataStudents = {
-            studId: []
-        };
-        $scope.checkAll = function () {
-            if ($scope.selectedAll) {
-                $scope.dataStudents.studId = $scope.students.map(function (item) {
-                    return item.id;
-                });
-                $scope.selectdAll = true;
-            }
-            else {
-                $scope.selectdAll = false;
-                $scope.dataStudents.studId = [];
-            }
+    // $http.get('resources/json/studentsData.json').success(function (data) {
+    //     $scope.students = data;
+    // });
 
-        };
-        $scope.activateStud = function () {
-            var dataObj = {
-                type: 'activate',
-                values: $scope.dataStudents.studId
-            }
-            var res = $http.post('/students', dataObj);
-            res.success(function (data, status, headers, config) {
-                $scope.message = data;
+    $http.get('/students/list').success(function (data) {
+        $scope.students = data;
+    });
+
+
+    $scope.sortType = 'id';
+    $scope.sortReverse = false;
+    $scope.searchFiltr = '';
+    $scope.dataStudents = {
+        studId: []
+    };
+    $scope.checkAll = function () {
+        if ($scope.selectedAll) {
+            $scope.dataStudents.studId = $scope.students.map(function (item) {
+                return item.id;
             });
-            res.error(function (data, status, headers, config) {
-                alert("failure message: " + JSON.stringify({data: data}));
-            });
+            $scope.selectdAll = true;
         }
-        $scope.deactivateStud = function () {
-            var dataObj = {
-                type: 'deactivate',
-                values: $scope.dataStudents.studId
-            }
-            var res = $http.post('/students', dataObj);
-            res.success(function (data, status, headers, config) {
-                $scope.message = data;
-            });
-            res.error(function (data, status, headers, config) {
-                alert("failure message: " + JSON.stringify({data: data}));
-            });
+        else {
+            $scope.selectdAll = false;
+            $scope.dataStudents.studId = [];
         }
-        $scope.rejectStud = function () {
-            var dataObj = {
-                type: 'reject',
-                values: $scope.dataStudents.studId
-            }
-            var res = $http.post('/students', dataObj);
-            res.success(function (data, status, headers, config) {
-                $scope.message = data;
-            });
-            res.error(function (data, status, headers, config) {
-                alert("failure message: " + JSON.stringify({data: data}));
-            });
+
+    };
+    $scope.activateStud = function () {
+        var dataObj = {
+            type: 'activate',
+            values: $scope.dataStudents.studId
         }
-        $scope.saveChanges = function () {
+        var res = $http.post('/students', dataObj);
+        res.success(function (data, status, headers, config) {
+            $scope.message = data;
+        });
+        res.error(function (data, status, headers, config) {
+            alert("failure message: " + JSON.stringify({data: data}));
+        });
+    }
+    $scope.deactivateStud = function () {
+        var dataObj = {
+            type: 'deactivate',
+            values: $scope.dataStudents.studId
+        }
+        var res = $http.post('/students', dataObj);
+        res.success(function (data, status, headers, config) {
+            $scope.message = data;
+        });
+        res.error(function (data, status, headers, config) {
+            alert("failure message: " + JSON.stringify({data: data}));
+        });
+    }
+    $scope.rejectStud = function () {
+        var dataObj = {
+            type: 'reject',
+            values: $scope.dataStudents.studId
+        }
+        var res = $http.post('/students', dataObj);
+        res.success(function (data, status, headers, config) {
+            $scope.message = data;
+        });
+        res.error(function (data, status, headers, config) {
+            alert("failure message: " + JSON.stringify({data: data}));
+        });
+    }
+    $scope.saveChanges = function () {
         var dataObj = {
             type: 'save',
         }
@@ -98,11 +101,11 @@ phonecatControllers.controller("StudentCtrl", ["$scope", "$http", function ($sco
         });
     }
 
-    }]);
+}]);
 
 
 phonecatControllers.controller('StudentDetailCtrl', ['$scope', '$http', '$routeParams',
-    function($scope, $http, $routeParams) {
+    function ($scope, $http, $routeParams) {
         $scope.studentId = $routeParams.studentId;
     }]);
 

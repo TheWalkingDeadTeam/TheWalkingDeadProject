@@ -1,9 +1,16 @@
 package ua.nc.controller;
 
+import com.fasterxml.jackson.databind.util.JSONPObject;
+import jdk.nashorn.api.scripting.JSObject;
+import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 /**
  * Created by Pavel on 18.04.2016.
@@ -25,6 +32,12 @@ public class AdminController {
     public String studentsView() {
 
         return "adminStudView";
+    }
+    @RequestMapping(value = {"/students/list"}, method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody String studentsGetJSON() {
+
+
+        return "";
     }
 
     @RequestMapping(value = "/students", method = RequestMethod.POST)
