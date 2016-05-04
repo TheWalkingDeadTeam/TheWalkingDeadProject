@@ -32,21 +32,25 @@ import java.util.Properties;
 @Service("mailService")
 public class MailServiceImpl implements MailService {
     private static final Logger LOGGER = Logger.getLogger(MailServiceImpl.class);
+    private static final int MILLIS_PER_HOUR = 1000 * 60 * 60;
     private DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
     private MailDAO mailDAO = daoFactory.getMailDAO();
-    private ThreadPoolTaskScheduler scheduler;
-    private ThreadPoolTaskScheduler schedulerMassDeliveryService;
+    private static ThreadPoolTaskScheduler scheduler;
+    private static ThreadPoolTaskScheduler schedulerMassDeliveryService;
     private static final int POOL_SIZE = 2;
     private static final int POOL_SIZE_SCHEDULER = 10;
 
-    public MailServiceImpl() {
-        schedulerMassDeliveryService = new ThreadPoolTaskScheduler();
+    static {
         scheduler = new ThreadPoolTaskScheduler();
         schedulerMassDeliveryService = new ThreadPoolTaskScheduler();
         scheduler.setPoolSize(POOL_SIZE);
         schedulerMassDeliveryService.setPoolSize(POOL_SIZE_SCHEDULER);
         scheduler.initialize();
         schedulerMassDeliveryService.initialize();
+    }
+
+    public MailServiceImpl() {
+
     }
 
     /**
@@ -63,7 +67,7 @@ public class MailServiceImpl implements MailService {
             mail = new Mail();
             mail.setHeadTemplate(header);
             mail.setBodyTemplate(body);
-            Mail newCreated= mailDAO.create(mail);
+            Mail newCreated = mailDAO.create(mail);
             System.out.println(newCreated.getId());
         } catch (DAOException e) {
             LOGGER.error("Bad Happened", e);
@@ -162,6 +166,22 @@ public class MailServiceImpl implements MailService {
                 }
             }
         }, new Date());
+    }
+
+    @Override
+    public void sendInterviewReminders(List<Date> interviewDates, int studentHours, int devHours, int hrHours,
+                                       int baHours, Mail InterviewerMail, Mail IntervieweeMail) {
+        int studentMillis = studentHours * MILLIS_PER_HOUR;
+        int devMillis = devHours * MILLIS_PER_HOUR;
+        int hrMillis = hrHours * MILLIS_PER_HOUR;
+        int baMillis = baHours * MILLIS_PER_HOUR;
+
+        for (Date interviewDate : interviewDates) {
+            massDelivery(new Date(interviewDate.getTime() + studentMillis).toString(), new ArrayList<User>(), IntervieweeMail);
+            massDelivery(new Date(interviewDate.getTime() + devMillis).toString(), new ArrayList<User>(), InterviewerMail);
+            massDelivery(new Date(interviewDate.getTime() + hrMillis).toString(), new ArrayList<User>(), InterviewerMail);
+            massDelivery(new Date(interviewDate.getTime() + baMillis).toString(), new ArrayList<User>(), InterviewerMail);
+        }
     }
 
 
