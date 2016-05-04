@@ -24,6 +24,7 @@ public class AdminController {
     public @ResponseBody CES getCES(@RequestBody CES ces) {
         return ces;
     }
+
     @RequestMapping(value = {"/cesSettings"}, method = RequestMethod.GET)
     public String cesPage() {
         return "cesSettings";

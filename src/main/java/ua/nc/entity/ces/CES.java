@@ -15,6 +15,9 @@ public class CES {
     private Calendar endInterviewingDate;
     private Integer quota;
     private Integer reminders;
+    private Integer statusId;
+    private Integer interviewTimeForPerson;
+    private Integer interviewTimeForDay;
 
     public Integer getStatusId() {
         return statusId;
@@ -24,9 +27,6 @@ public class CES {
         this.statusId = statusId;
     }
 
-    private Integer statusId;
-    private Integer interviewTimeForPerson;
-    private Integer interviewTimeForDay;
 
     public Integer getId() {
         return id;
