@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Created by Ермоленко on 01.05.2016.
  */
-public class CES {
+public class CES implements Identified<Integer>{
     private Integer id;
     private Integer year;
     private Calendar startRegistrationDate;
@@ -28,14 +28,6 @@ public class CES {
         this.statusId = statusId;
         this.interviewTimeForPerson = interviewTimeForPerson;
         this.interviewTimeForDay = interviewTimeForDay;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public Integer getStatusId() {
@@ -116,6 +108,15 @@ public class CES {
 
     public void setInterviewTimeForDay(Integer interviewTimeForDay) {
         this.interviewTimeForDay = interviewTimeForDay;
+    }
+
+    @Override
+    public Integer getID() {
+        return id;
+    }
+
+    protected void setID(int id){
+        this.id = id;
     }
 }
 
