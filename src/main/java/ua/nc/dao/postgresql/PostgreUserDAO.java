@@ -94,4 +94,9 @@ public class PostgreUserDAO extends UserDAO {
             }
         }
     }
+
+    @Override
+    public User updateUser(User user) throws DAOException {
+        return user;
+    }
 }

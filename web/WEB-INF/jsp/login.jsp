@@ -46,10 +46,11 @@
 
 
 <div class="content container">
+
     <div class="reg registration">
         <div class="layout"></div>
-        <sec:authorize access="!isAuthenticated()">
-            <form id="user">
+        <sec:authorize access="!isAuthenticated()" url="/register">
+            <form id="user" action="/register">
                 <div id="messageRegistration"></div>
                 <div class="row container-fluid reg-head">
                     <div class="col-lg-6 col-md-8 col-sm-9 col-xs-9">
@@ -72,9 +73,27 @@
         </sec:authorize>
     </div>
 
+    <div class="recovery registration">
+        <div class="layout"></div>
+        <sec:authorize access="!isAuthenticated()" url="/passwordRecovery">
+            <form id="user" action="/passwordRecovery">
+                <div id="passwordRecovery"></div>
+                <div class="row container-fluid recovery-head">
+                    <div class="col-lg-6 col-md-8 col-sm-9 col-xs-9">
+                        <h2 class="form-signin-heading">Password recovery</h2>
+                    </div>
+                    <div class="col-lg-6 col-md-4 col-sm-3 col-xs-3 ">
+                        <i class="material-icons closeico"><span class="closebtn">clear</span></i>
+                    </div>
+                </div>
+                <input id="userEmail" name="email" class="form-control" placeholder="Email address" type="text" value="">
+                <div class="correct-email"></div>
+                <button id="buttonSend" class="btn btn-lg btn-primary btn-block">Send request</button>
+            </form>
+        </sec:authorize>
+    </div>
+
     <div class="row">
-
-
         <div class="inputBox col-lg-4 col-md-4 col-sm-12 col-xs-12">
             <sec:authorize access="!isAuthenticated()">
                 <form>
@@ -83,6 +102,7 @@
                     <input id="j_username" type="text" class="form-control" name="j_username" placeholder="Email address" required>
                     <input id="j_password" type="password" class="form-control" name="j_password" placeholder="Password" required>
                     <button id="buttonSignIn" class="btn btn-lg btn-primary btn-block signbtn" type="submit">Sign in</button>
+                    <button type="button" class="btn btn-lg btn-primary btn-block recoverybtn">Forgot password?</button>
                     <button type="button" class="btn btn-lg btn-primary btn-block regbut">Registration</button>
                 </form>
             </sec:authorize>
