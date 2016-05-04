@@ -1,3 +1,4 @@
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%--
   Created by IntelliJ IDEA.
   User: Neltarion
@@ -38,7 +39,10 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="">Home</a></li>
                     <li><a href="">Information</a></li>
-                    <li><a href="">Contacts</a></li>
+<sec:authorize access="hasRole('ROLE_STUDENT')">
+
+<li><a href="/profile">Profile</a></li>
+    </sec:authorize>
                     <li><a href="/logout">Logout</a></li>
                 </ul>
             </div>
@@ -67,6 +71,7 @@
                 <span>Ivan</span>
                 <span>Ivanovich</span>
                 <span>ivanovivanovich@gmail.com</span>
+                <jsp:include page="change-password.jsp"/>
             </div>
         </div>
     </div>
@@ -111,7 +116,7 @@
         </div>
     </div>
 </footer>
-
+<script src="/resources/js/changePassword.js"></script>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 </body>
 </html>

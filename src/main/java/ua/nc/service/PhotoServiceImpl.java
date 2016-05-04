@@ -14,7 +14,6 @@ public class PhotoServiceImpl implements PhotoService {
 
     @Override
     public void uploadPhoto(MultipartFile photo, int userID) throws IOException{
-
         byte[] photoBytes = photo.getBytes();
         File dir = new File(PHOTOS_HOME + File.separator + userID);
         if (!dir.exists()) {
@@ -36,7 +35,6 @@ public class PhotoServiceImpl implements PhotoService {
         catch (IOException ex) {
             System.out.println(ex.toString());
         }
-
         return fileByteArray;
     }
 }

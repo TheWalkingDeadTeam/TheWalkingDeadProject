@@ -6,7 +6,8 @@
     $(document).ready(function () {
         $.ajax({
             type: 'get',
-            url: "/profile/" + id,
+          /*  url: "/profile/" + id,*/
+            url: "/resources/json/myJSON.json",
             dataType: 'json',
             contentType: "application/json",
             success: function (response) {

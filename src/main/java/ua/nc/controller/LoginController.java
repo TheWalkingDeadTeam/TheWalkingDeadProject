@@ -8,6 +8,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
@@ -68,10 +69,8 @@ public class LoginController implements HandlerExceptionResolver {
     @RequestMapping(value = "/security_check ", method = RequestMethod.POST, produces = "application/json")
     public
     @ResponseBody
-    JSONResponse authentication(@RequestBody User user) {
-        JSONResponse jsonResponse = new JSONResponse();
+    Set<ValidationError> authentication(@RequestBody User user) {
         Set<ValidationError> errors = new LinkedHashSet<>();
-        jsonResponse.setErrors(errors);
         UserDetailsService userDetailsService = new UserDetailsServiceImpl();
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
         try {
@@ -86,17 +85,15 @@ public class LoginController implements HandlerExceptionResolver {
             log.warn("Authorization deny email" + user.getEmail() + " not found");
             errors.add(new ValidationError("signin", "Invalid username or password"));
         }
-        return jsonResponse;
+        return errors;
     }
 
     @RequestMapping(value = {"/register"}, method = RequestMethod.POST, produces = "application/json")
     public
     @ResponseBody
-    JSONResponse registerUser(@RequestBody User user) {
-        JSONResponse jsonResponse = new JSONResponse();
+    Set<ValidationError> registerUser(@RequestBody User user) {
         Validator validator = new RegistrationValidator();
         Set<ValidationError> errors = validator.validate(user);
-        jsonResponse.setErrors(errors);
         if (errors.isEmpty()) {
             if (userService.getUser(user.getEmail()) == null) {
                 User registeredUser = userService.createUser(user);
@@ -109,21 +106,22 @@ public class LoginController implements HandlerExceptionResolver {
                 errors.add(new ValidationError("user", "Such user already exists"));
             }
         }
-        return jsonResponse;
+        return errors;
     }
 
     @RequestMapping(value = {"/uploadPhoto"}, method = RequestMethod.POST, produces = "application/json")
     public
     @ResponseBody
-    JSONResponse uploadPhoto(@RequestParam("photo") MultipartFile photo) {
-        JSONResponse jsonResponse = new JSONResponse();
+    Set<ValidationError> uploadPhoto(@RequestParam("photo") MultipartFile photo) {
         Validator validator = new PhotoValidator();
         Set<ValidationError> errors = validator.validate(photo);
         if (errors.isEmpty()) {
             try {
-                photoService.uploadPhoto(photo, ((UserDetailsImpl) SecurityContextHolder.getContext()
-                        .getAuthentication()
-                        .getPrincipal()).getID());
+                UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
+                        .getPrincipal();
+                String usernameName = userDetails.getUsername();
+                User user = userService.getUser(usernameName);
+                photoService.uploadPhoto(photo, user.getId());
             } catch (IOException e) {
                 errors.add(new ValidationError("photo", "Something went wrong"));
             }
@@ -131,27 +129,17 @@ public class LoginController implements HandlerExceptionResolver {
         for (ValidationError error : errors) {
             System.out.println(error.getErrorMessage());
         }
-        jsonResponse.setErrors(errors);
-        return jsonResponse;
+        return errors;
     }
 
     @ResponseBody
     @RequestMapping(value = "/getPhoto")
     public byte[] getPhoto() {
-        return photoService.getPhotoById(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
-                .getPrincipal()).getID());
-    }
-
-    private class JSONResponse {
-        private Set<ValidationError> errors;
-
-        public Set<ValidationError> getErrors() {
-            return errors;
-        }
-
-        public void setErrors(Set<ValidationError> errors) {
-            this.errors = errors;
-        }
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+        String usernameName = userDetails.getUsername();
+        User user = userService.getUser(usernameName);
+        return photoService.getPhotoById(user.getId());
     }
 
 }

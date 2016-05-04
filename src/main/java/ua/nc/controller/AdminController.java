@@ -42,7 +42,7 @@ public class AdminController {
     @ResponseBody
     Set<ValidationError> registerUser(@RequestBody User user) {
         Validator validator = new RegistrationValidator();
-        Set<ValidationError> errors = new LinkedHashSet<>();
+        Set<ValidationError> errors = validator.validate(user);
         if (errors.isEmpty()) {
             if (userService.getUser(user.getEmail()) == null) {
 

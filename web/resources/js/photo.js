@@ -16,10 +16,10 @@ $(document).ready(function () {
             dataType: 'json',
             success: function(response){
 
-                if(response.errors.length){
+                if(response.length){
                     var errors_out = "";
-                    for (var i in response.errors) {
-                        errors_out += response.errors[i].errorMessage + "</br>"
+                    for (var i in response) {
+                        errors_out += response[i].errorMessage + "</br>"
                     }
                     $('#photoMessages')
                         .addClass('alert alert-danger')
@@ -30,10 +30,13 @@ $(document).ready(function () {
                     $("#photo_img").attr('src','/getPhoto');
                 }
             },
-            error: function(){
+ /*           error: function(){
                 $('#photoMessages')
                     .addClass('alert alert-danger')
                     .html('No file specified');
+            }*/
+            error: function (jqXHR, exception) {
+                console.log(exception)
             }
         });
     });
