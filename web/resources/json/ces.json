@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "name": "Year",
+    "odrer_num": 1,
+    "value": 2016
+  },
+  {
+    "id": 2,
+    "name": "Quota",
+    "odrer_num": 2,
+    "value": 2016
+  },
+  {
+    "id": 3,
+    "name": "Reminders",
+    "odrer_num": 3,
+    "value": 2016
+  },
+  {
+    "id": 4,
+    "name": "Status",
+    "odrer_num": 4,
+    "value": "planned"
+  },
+  {
+    "id": 5,
+    "name": "Start registration date",
+    "odrer_num": 5,
+    "value": "2016-05-10T00:00:00.000Z"
+  },
+  {
+    "id": 6,
+    "name": "End registration date",
+    "odrer_num": 2,
+    "value": "2016-05-15T00:00:00.000Z"
+  },
+  {
+    "id": 7,
+    "name": "Start interviewing date",
+    "odrer_num": 2,
+    "value": "2016-05-17T00:00:00.000Z"
+  },
+  {
+    "id": 8,
+    "name": "End interviewing date",
+    "odrer_num": 2,
+    "value": "2016-05-20T00:00:00.000Z"
+  },
+  {
+    "id": 9,
+    "name": "Time for person",
+    "odrer_num": 2,
+    "value": 10
+  },
+  {
+    "id": 10,
+    "name": "Time for date",
+    "odrer_num": 2,
+    "value": 8
+  }
+]

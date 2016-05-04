@@ -1,0 +1,13 @@
+{
+  "id" : 1,
+  "year" : 2016,
+  "startRegistrationDate": "2016-05-10T00:00:00.000Z",
+  "endRegistrationDate": "2016-05-15T00:00:00.000Z",
+  "startInterviewingDate": "2016-05-17T00:00:00.000Z",
+  "endInterviewingDate": "2016-05-20T00:00:00.000Z",
+  "quota": 100,
+  "reminders": 72,
+  "interviewTimeForPerson": 10,
+  "interviewTimeForDay": 8,
+  "status" : {"id" : 2, "name" : "Blee" }
+}

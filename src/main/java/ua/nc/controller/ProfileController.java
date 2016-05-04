@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import ua.nc.entity.profile.Profile;
 import ua.nc.service.ProfileService;
 import ua.nc.validator.ProfileValidator;
