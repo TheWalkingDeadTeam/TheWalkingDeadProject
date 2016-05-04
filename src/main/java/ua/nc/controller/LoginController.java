@@ -1,6 +1,5 @@
 package ua.nc.controller;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -9,20 +8,19 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import ua.nc.entity.User;
 import ua.nc.service.PhotoService;
 import ua.nc.service.PhotoServiceImpl;
+import ua.nc.service.UserDetailsImpl;
 import ua.nc.service.user.UserDetailsServiceImpl;
 import ua.nc.service.user.UserService;
 import ua.nc.service.user.UserServiceImpl;
@@ -33,8 +31,7 @@ import ua.nc.validator.Validator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
-import java.util.Base64;
+import java.io.IOException;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -57,7 +54,7 @@ public class LoginController implements HandlerExceptionResolver {
             ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
             Set<ValidationError> errors = new LinkedHashSet<>();
             errors.add(new ValidationError("photo", "File is too big"));
-            modelAndView.addObject("errors",errors);
+            modelAndView.addObject("errors", errors);
             return modelAndView;
         }
         return new ModelAndView("redirect:/login");
@@ -115,7 +112,7 @@ public class LoginController implements HandlerExceptionResolver {
         return jsonResponse;
     }
 
-    @RequestMapping(value = {"/uploadPhoto"}, method = RequestMethod.POST,produces = "application/json")
+    @RequestMapping(value = {"/uploadPhoto"}, method = RequestMethod.POST, produces = "application/json")
     public
     @ResponseBody
     JSONResponse uploadPhoto(@RequestParam("photo") MultipartFile photo) {
@@ -124,16 +121,14 @@ public class LoginController implements HandlerExceptionResolver {
         Set<ValidationError> errors = validator.validate(photo);
         if (errors.isEmpty()) {
             try {
-                UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
-                        .getPrincipal();
-                String userName = userDetails.getUsername();
-                int userID = userService.getUser(userName).getId();
-                photoService.uploadPhoto(photo, userID);
+                photoService.uploadPhoto(photo, ((UserDetailsImpl) SecurityContextHolder.getContext()
+                        .getAuthentication()
+                        .getPrincipal()).getID());
             } catch (IOException e) {
                 errors.add(new ValidationError("photo", "Something went wrong"));
             }
         }
-        for(ValidationError error: errors){
+        for (ValidationError error : errors) {
             System.out.println(error.getErrorMessage());
         }
         jsonResponse.setErrors(errors);
@@ -141,13 +136,10 @@ public class LoginController implements HandlerExceptionResolver {
     }
 
     @ResponseBody
-    @RequestMapping(value="/getPhoto")
-    public byte[] getPhoto(){
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
-                .getPrincipal();
-        String userName = userDetails.getUsername();
-        int userID = userService.getUser(userName).getId();
-        return photoService.getPhotoById(userID);
+    @RequestMapping(value = "/getPhoto")
+    public byte[] getPhoto() {
+        return photoService.getPhotoById(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal()).getID());
     }
 
     private class JSONResponse {

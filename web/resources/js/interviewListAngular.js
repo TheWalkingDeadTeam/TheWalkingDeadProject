@@ -22,7 +22,7 @@ phonecatControllers.controller("interCtrl", ["$scope", "$http","$rootElement", f
     //     $scope.interviewer = data;
     // });
 
-    $http.get('interview/list').success(function (data) {
+    $http.get('interviewers/list').success(function (data) {
         $scope.interviewer = data;
     });
 

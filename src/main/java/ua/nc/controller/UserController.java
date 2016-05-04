@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import ua.nc.entity.User;
+import ua.nc.service.UserDetailsImpl;
 import ua.nc.service.user.UserService;
 import ua.nc.service.user.UserServiceImpl;
 import ua.nc.validator.PasswordValidator;
@@ -39,7 +40,7 @@ public class UserController {
     @ResponseBody
     public Set<ValidationError> changePassword(@RequestBody String password) {
         Validator validator = new PasswordValidator();
-        Set<ValidationError> errors = validator.validate(password);
+        Set<ValidationError> errors = null;
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
         String usernameName = userDetails.getUsername();
@@ -49,7 +50,7 @@ public class UserController {
             JsonNode node = objectMapper.readValue(password, JsonNode.class);
             JsonNode passwordNode = node.get("password");
             password = passwordNode.asText();
-            System.out.println(password);
+            errors = validator.validate(password);
         } catch (IOException e) {
             log.error("Failed to parse", e);
         }
@@ -59,7 +60,6 @@ public class UserController {
             log.warn("User  pass word can't be changed ");
             errors.add(new ValidationError("userPassword", "Pass change error"));
         }
-        System.out.println(errors.size());
         return errors;
     }
 

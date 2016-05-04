@@ -34,7 +34,7 @@ public class MailServiceImpl implements MailService {
     private static final Logger LOGGER = Logger.getLogger(MailServiceImpl.class);
     private static final int MILLIS_PER_HOUR = 1000 * 60 * 60;
     private DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
-    private MailDAO mailDAO = daoFactory.getMailDAO();
+    private MailDAO mailDAO = daoFactory.getMailDAO(daoFactory.getConnection());
     private static ThreadPoolTaskScheduler scheduler;
     private static ThreadPoolTaskScheduler schedulerMassDeliveryService;
     private static final int POOL_SIZE = 2;

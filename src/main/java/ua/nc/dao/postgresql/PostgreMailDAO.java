@@ -188,7 +188,6 @@ public class PostgreMailDAO extends MailDAO {
     public List<Mail> getAll() throws DAOException {
         List<Mail> mails = new ArrayList<>();
         try {
-            connection = connectionPool.getConnection();
             preparedStatement = connection.prepareStatement(SQL_GET_ALL);
             ResultSet rs = preparedStatement.executeQuery();
             Mail mail;
@@ -206,9 +205,6 @@ public class PostgreMailDAO extends MailDAO {
                 if (rs != null) rs.close();
                 if (preparedStatement != null) {
                     preparedStatement.close();
-                }
-                if (connection != null) {
-                    connectionPool.putConnection(connection);
                 }
             } catch (SQLException e) {
                 throw new DAOException(e);

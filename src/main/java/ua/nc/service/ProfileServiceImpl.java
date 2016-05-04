@@ -208,4 +208,9 @@ public class ProfileServiceImpl implements ProfileService {
             //toDo FIX2
         }
     }
+
+    @Override
+    public Profile getProfile(Integer id) {
+        return null;
+    }
 }

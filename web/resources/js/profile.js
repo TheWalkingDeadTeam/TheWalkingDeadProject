@@ -1,12 +1,12 @@
 (function () {
 
     var requestData;
+    var id =  $(location).attr('search');
 
     $(document).ready(function () {
-
         $.ajax({
             type: 'get',
-            url: 'resources/json/myJSON.json' /*"/profile"*/,
+            url: "/profile/" + id,
             dataType: 'json',
             contentType: "application/json",
             success: function (response) {

@@ -1,6 +1,7 @@
 package ua.nc.controller;
 
 import org.apache.log4j.Logger;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,6 +11,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import ua.nc.entity.User;
+import ua.nc.entity.profile.Profile;
+import ua.nc.service.ProfileService;
+import ua.nc.service.ProfileServiceImpl;
 import ua.nc.service.user.UserService;
 import ua.nc.service.user.UserServiceImpl;
 import ua.nc.validator.RegistrationValidator;
@@ -63,7 +67,7 @@ public class AdminController {
     /**
      * Method for view student list from admin controle panale UC 7
      *
-     * @return page with interviewer data
+     * @return page with students data
      */
     @RequestMapping(value = {"/students"}, method = RequestMethod.GET)
     public String studentsView() {
@@ -79,60 +83,43 @@ public class AdminController {
 
         return "[{\n" +
                 "    \"id\": 1,\n" +
-                "    \"name\": \"Abc\",\n" +
-                "    \"surname\" : \"Ogurchik\",\n" +
+                "    \"name\": \"Abc Ogurchik\",\n" +
                 "    \"isActive\": \"1\",\n" +
                 "    \"university\": \"KPI\",\n" +
                 "    \"devMark\": 10,\n" +
                 "    \"hrMark\": 5,\n" +
                 "    \"color\": \"blue\"\n" +
-                "  },{\n" +
+                "  },\n" +
+                "  {\n" +
+                "    \"id\": 7,\n" +
+                "    \"name\": \"Bcd Ananas\",\n" +
+                "    \"isActive\": \"0\",\n" +
+                "    \"university\": \"NAU\",\n" +
+                "    \"devMark\": 15,\n" +
+                "    \"hrMark\": 10,\n" +
+                "    \"color\": \"yellow\"\n" +
+                "  },\n" +
+                "  {\n" +
+                "    \"id\": 8,\n" +
+                "    \"name\": \"TEST Apelsin\",\n" +
+                "    \"isActive\": \"1\",\n" +
+                "    \"university\": \"NAU\",\n" +
+                "    \"devMark\": 15,\n" +
+                "    \"hrMark\": 10,\n" +
+                "    \"color\": \"yellow\"\n" +
+                "  },\n" +
+                "  {\n" +
                 "    \"id\": 2,\n" +
-                "    \"name\": \"Abc\",\n" +
-                "    \"surname\" : \"Ogurchik\",\n" +
+                "    \"name\": \"Bcd Kokos\",\n" +
                 "    \"isActive\": \"1\",\n" +
                 "    \"university\": \"KPI\",\n" +
                 "    \"devMark\": 10,\n" +
-                "    \"hrMark\": 5,\n" +
-                "    \"color\": \"blue\"\n" +
-                "  },{\n" +
-                "    \"id\": 3,\n" +
-                "    \"name\": \"Abc\",\n" +
-                "    \"surname\" : \"Ogurchik\",\n" +
-                "    \"isActive\": \"1\",\n" +
-                "    \"university\": \"KPI\",\n" +
-                "    \"devMark\": 10,\n" +
-                "    \"hrMark\": 5,\n" +
-                "    \"color\": \"blue\"\n" +
-                "  },{\n" +
-                "    \"id\": 4,\n" +
-                "    \"name\": \"Abc\",\n" +
-                "    \"surname\" : \"Ogurchik\",\n" +
-                "    \"isActive\": \"1\",\n" +
-                "    \"university\": \"KPI\",\n" +
-                "    \"devMark\": 10,\n" +
-                "    \"hrMark\": 5,\n" +
-                "    \"color\": \"blue\"\n" +
-                "  },{\n" +
-                "    \"id\": 5,\n" +
-                "    \"name\": \"Abc\",\n" +
-                "    \"surname\" : \"Ogurchik\",\n" +
-                "    \"isActive\": \"1\",\n" +
-                "    \"university\": \"KPI\",\n" +
-                "    \"devMark\": 10,\n" +
-                "    \"hrMark\": 5,\n" +
-                "    \"color\": \"blue\"\n" +
+                "    \"hrMark\": 85,\n" +
+                "    \"color\": \"green\"\n" +
                 "  }]";
 
     }
 
-    @RequestMapping(value = "/students", method = RequestMethod.POST)
-    public
-    @ResponseBody
-    void profileFields() {
-
-
-    }
 
     @RequestMapping(value = "/students/{id}", method = RequestMethod.GET, produces = "application/json")
     public String getStudentById(@ModelAttribute("id") Integer id) {
@@ -144,13 +131,12 @@ public class AdminController {
      *
      * @return page with interviewer data
      */
-    @RequestMapping(value = {"/interview"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/interviewers"}, method = RequestMethod.GET)
     public String interviewView() {
-
         return "admin-iter-view";
     }
 
-    @RequestMapping(value = {"/interview/list"}, method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = {"/interviewers/list"}, method = RequestMethod.GET, produces = "application/json")
     public
     @ResponseBody
     String interviewGetJSON() {
@@ -195,15 +181,8 @@ public class AdminController {
                 "  }]";
 
     }
-    @RequestMapping(value = "/interview", method = RequestMethod.POST)
-    public
-    @ResponseBody
-    void activateDeactivateInterviwer() {
 
 
-    }
-
-
-    @RequestMapping(value = {"/mail"}, method = RequestMethod.GET)
-    public String mail(){return "mail";}
+    @RequestMapping(value = {"/mail-template"}, method = RequestMethod.GET)
+    public String mail(){return "admin-mail-template";}
 }

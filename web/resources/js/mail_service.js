@@ -10,7 +10,7 @@ App.factory('MailService', ['$http', '$q', function($http, $q){
     return {
 
         fetchAllMails: function() {
-            return $http.get('http://localhost:8080/mails/')
+            return $http.get('/mails/')
                 .then(
                     function(response){
                         return response.data;

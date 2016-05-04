@@ -19,8 +19,8 @@ import java.util.Set;
  */
 public class UserServiceImpl implements UserService {
     private DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
-    private UserDAO userDAO = daoFactory.getUserDAO();
-    private RoleDAO roleDAO = daoFactory.getRoleDAO();
+    private UserDAO userDAO = daoFactory.getUserDAO(daoFactory.getConnection());
+    private RoleDAO roleDAO = daoFactory.getRoleDAO(daoFactory.getConnection());
     private MailService mailService;
 
     @Override
@@ -65,7 +65,6 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public void changePassword(User user, String password) {
-        System.out.println(password);
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         user.setPassword(encoder.encode(password));
         try {

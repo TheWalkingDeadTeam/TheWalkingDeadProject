@@ -41,9 +41,8 @@ public class ProfileController {
     }
 
     @RequestMapping(value = "/profile", method = RequestMethod.POST)
-    public
     @ResponseBody
-    Set<ValidationError> profileFields(@RequestBody Profile profile) {
+    public Set<ValidationError> profileFields(@RequestBody Profile profile) {
         Set<ValidationError> errors;
         Validator validator = new ProfileValidator();
         errors = validator.validate(profile);
