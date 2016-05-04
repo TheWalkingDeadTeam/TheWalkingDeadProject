@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User recoverPass(User user) {
-        String testPassword = RandomStringUtils.random(10);
+        String testPassword = RandomStringUtils.randomAlphanumeric(10);
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         try {
             user.setPassword(encoder.encode(testPassword));
