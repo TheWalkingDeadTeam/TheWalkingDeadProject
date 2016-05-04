@@ -2,13 +2,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>AngularJS $http Example</title>
+    <title>Mailing</title>
     <style>
         .mailhead.ng-valid {
             background-color: lightgreen;
         }
         .mailhead.ng-dirty.ng-invalid-required {
-            background-color: red;
+            background-color: #ff9777;
         }
         .mailhead.ng-dirty.ng-invalid-minlength {
             background-color: yellow;
@@ -17,7 +17,7 @@
             background-color: lightgreen;
         }
         .mailbody.ng-dirty.ng-invalid-required {
-            background-color: red;
+            background-color: #ff9777;
         }
         .mailbody.ng-dirty.ng-invalid-email {
             background-color: yellow;

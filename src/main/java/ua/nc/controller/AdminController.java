@@ -185,4 +185,7 @@ public class AdminController {
 
     @RequestMapping(value = {"/mail-template"}, method = RequestMethod.GET)
     public String mail(){return "admin-mail-template";}
+
+    @RequestMapping(value = {"/scheduler"},method = RequestMethod.GET)
+    public String scheduler(){return "scheduler";}
 }
