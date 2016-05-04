@@ -20,7 +20,7 @@
                     $('#agreement').append('<label for="agree">' + "I agree to have my personal information been proceeded " + '</label>');
                     $('<input>').attr({id: "agree", type: "checkbox"}).appendTo('#agreement');
                     $('#agree').on('click', enableSave);
-                    $('#fields').append('<button id="save" type=\"submit\" form=\"fields\" value=\"Submit\" disabled="disabled">' + 'Save' + '</button>');
+                    // $('#fields').append('<button id="save" type=\"submit\" form=\"fields\" value=\"Submit\" disabled="disabled">' + 'Save' + '</button>');
                 }
 
             },

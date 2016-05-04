@@ -183,16 +183,3 @@ $( document ).ready(function() {
 	});
 
 });
-
-// {
-// 	"errors": [
-// 	{
-// 		"field": "email",
-// 		"errorMessage": "Enter correct email"
-// 	},
-// 	{
-// 		"field": "password",
-// 		"errorMessage": "Password length should be between 6 and 32 "
-// 	}
-// ]
-// }

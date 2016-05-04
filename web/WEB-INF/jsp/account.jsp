@@ -1,34 +1,30 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: Neltarion
+  Date: 04.05.2016
+  Time: 14:26
+  To change this template use File | Settings | File Templates.
+--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <html>
 <head>
-    <title>Profile</title>
+    <title>Account Information</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="icon" type="image/png" sizes="32x32" href="/resources/images/ico.png"/>
-    <%--<link rel="stylesheet" type="text/css" href="/resources/css/reset.css"/>--%>
-    <%--<link rel="stylesheet" type="text/css" href="/resources/css/styles.css"/>--%>
-    <%--<link rel="stylesheet" type="text/css" href="/resources/bootstrap/css/bootstrap.css"/>--%>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
     <link rel="icon" type="image/png" sizes="32x32" href="/images/ico.png">
     <link rel="stylesheet" type="text/css" href="resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="resources/css/style.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="resources/css/media.css" rel="stylesheet">
     <script src="resources/bootstrap/js/jquery-2.2.2.min.js" defer></script>
     <script src="resources/bootstrap/js/bootstrap.min.js" defer></script>
-    <%--<style type="text/css">--%>
-    <%--/*<img src='images/logo.png' alt="Brand" class="header-img">*/--%>
-    <%--/*<img src='images/error.gif' class="img-responsive profile-photo">*/--%>
-    <%--/*<img class='img-responsive' src="images/logo-gray.png">*/--%>
 </head>
 <body>
 <header>
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed button-header" data-toggle='collapse'
-                        data-target='#collapsed-menu' aria-expanded="false">
-                    <span class="icon-bar"></span>
+                <button type="button" class="navbar-toggle collapsed button-header" data-toggle='collapse' data-target='#collapsed-menu' aria-expanded="false">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
@@ -40,10 +36,9 @@
             </div>
             <div id='collapsed-menu' class='navbar-collapse collapse'>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="/profile/{id}">Home</a></li>
+                    <li><a href="">Home</a></li>
                     <li><a href="">Information</a></li>
                     <li><a href="">Contacts</a></li>
-                    <li><a href="/changePassword">Change password</a></li>
                     <li><a href="/logout">Logout</a></li>
                 </ul>
             </div>
@@ -51,24 +46,19 @@
     </nav>
 </header>
 
-<sec:authorize access="isAuthenticated()">
-
+<form id="accountForm">
     <div class="container-fluid  smprofile">
         <div class="row">
-            <div class="col-lg-offset-3 col-lg-1 col-md-offset-2 col-md-2 col-sm-offset-2 col-sm-3 col-xs-4 ">
+            <div class=" col-lg-3 col-md-4 col-sm-4 col-xs-12 ">
                 <img id="photo_img" src="/getPhoto" alt="User's photo" width="100" height="100"
                      onError="this.src='/resources/images/user-photo.png'" class="profile-photo">
-            </div>
-            <div class='col-lg-3 col-md-3 col-sm-7 col-xs-8'>
                 <form id="photo_form" type=post enctype="multipart/form-data">
                     <div id="photoMessages"></div>
-                    <span>Photo to upload:</span>
-                    <label for='photo_input' class='file_upload'/>
-                        <input type="file" id="photo_input" name=" photo_input" accept="image/*">
-                        <button id="photo_button" type="submit">Upload</button>
+                    Photo to upload: <input type="file" id="photo_input" name=" photo_input" accept="image/*"><br/>
+                    <button id="photo_button" type="submit">Upload</button>
                 </form>
             </div>
-            <div class="col-lg-offset-0 col-lg-1 col-md-offset-0 col-md-2 col-sm-offset-2 col-sm-3 col-xs-4">
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4">
                 <h4>Name:</h4>
                 <h4>Surname:</h4>
                 <h4>E-mail:</h4>
@@ -80,17 +70,7 @@
             </div>
         </div>
     </div>
-    </div>
-
-    <form id="fields">
-            <%--<br>--%>
-    </form>
-    <sec:authorize access="hasRole('ROLE_STUDENT')">
-        <button id="save" type="submit" form="fields" value="Submit" disabled="disabled">Save</button>
-    </sec:authorize>
-
-
-</sec:authorize>
+</form>
 
 
 <footer class="footer container-fluid">
@@ -133,8 +113,5 @@
 </footer>
 
 <script src="http://code.jquery.com/jquery-latest.js"></script>
-<script src="/resources/js/profile.js"></script>
-<script src="/resources/js/photo.js"></script>
-
 </body>
 </html>

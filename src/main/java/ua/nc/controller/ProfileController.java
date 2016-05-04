@@ -1,11 +1,11 @@
 package ua.nc.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import ua.nc.entity.profile.Profile;
 import ua.nc.service.ProfileService;
 import ua.nc.validator.ProfileValidator;
@@ -33,6 +33,17 @@ public class ProfileController {
 
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
     public String profile() {
+        return "profile";
+    }
+
+//    @RequestMapping(value="/profile/#{id}", method = RequestMethod.GET)
+//    public @ResponseBody Profile getProfileById (@ModelAttribute Integer id) {
+////        return profileService.getProfileById(id);
+//    }
+
+
+    @RequestMapping(value="/profile/#{id}", method = RequestMethod.GET)
+    public String getProfileById (@PathVariable(value = "id") String  id) {
         return "profile";
     }
 

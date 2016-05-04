@@ -13,6 +13,8 @@
         <intercept-url pattern="/error" access="permitAll" />
         <intercept-url pattern="/admin**" access="hasRole('ROLE_ADMIN')"/>
         <intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
+        <intercept-url pattern="/profile/**" access="hasAnyRole('ROLE_ADMIN', 'ROLE_STUDENT', 'ROLE_DEV', 'ROLE_BA', 'ROLE_HR')"/>
+        <intercept-url pattern="/profile**" access="hasAnyRole('ROLE_ADMIN', 'ROLE_STUDENT', 'ROLE_DEV', 'ROLE_BA', 'ROLE_HR')"/>
         <access-denied-handler error-page="/403"/>
         <form-login login-page="/login" login-processing-url="/j_spring_security_check"
                     authentication-failure-url="/login?error" default-target-url="/login"
