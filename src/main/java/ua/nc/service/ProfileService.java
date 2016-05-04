@@ -13,5 +13,5 @@ import java.util.List;
  */
 public interface ProfileService {
     Profile getProfile(UserDetailsImpl userDetails, int cesID) throws DAOException;
-    void setProfile(UserDetailsImpl userDetails, int cesID, Profile profile) throws DAOException, SQLException;
+    void setProfile(UserDetailsImpl userDetails, Profile profile) throws DAOException;
 }

@@ -1,4 +1,4 @@
-package ua.nc.dao.factory.type;
+package ua.nc.dao.enums;
 
 /**
  * Created by Pavel on 22.04.2016.

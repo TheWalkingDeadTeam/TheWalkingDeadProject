@@ -3,9 +3,9 @@ package ua.nc.service.user;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import ua.nc.dao.RoleDAO;
 import ua.nc.dao.UserDAO;
+import ua.nc.dao.enums.DataBaseType;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.dao.factory.DAOFactory;
-import ua.nc.dao.factory.type.DataBaseType;
 import ua.nc.entity.Role;
 import ua.nc.entity.User;
 import ua.nc.service.MailService;
@@ -19,8 +19,8 @@ import java.util.Set;
  */
 public class UserServiceImpl implements UserService {
     private DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
-    private UserDAO userDAO = daoFactory.getUserDAO();
-    private RoleDAO roleDAO = daoFactory.getRoleDAO();
+    private UserDAO userDAO = daoFactory.getUserDAO(daoFactory.getConnection());
+    private RoleDAO roleDAO = daoFactory.getRoleDAO(daoFactory.getConnection());
     private MailService mailService = new MailServiceImpl();
 
     @Override
@@ -41,9 +41,9 @@ public class UserServiceImpl implements UserService {
         user.setPassword(encoder.encode(user.getPassword()));
         Set<Role> roles = new HashSet<>();
         try {
-            roles.add(roleDAO.findByName("ROLE_STUDENT"));
-            for (Role role : roles)
-                System.out.println(role.getName());
+            for (Role role : user.getRoles()) {
+                roles.add(roleDAO.findByName(role.getName()));
+            }
             user.setRoles(roles);
             userDAO.createUser(user);
             roleDAO.setRoleToUser(user.getRoles(), user);
@@ -56,4 +56,5 @@ public class UserServiceImpl implements UserService {
 
 
     }
+
 }

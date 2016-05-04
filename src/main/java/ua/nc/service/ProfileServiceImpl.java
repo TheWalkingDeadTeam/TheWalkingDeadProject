@@ -2,9 +2,9 @@ package ua.nc.service;
 
 
 import ua.nc.dao.*;
+import ua.nc.dao.enums.DataBaseType;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.dao.factory.DAOFactory;
-import ua.nc.dao.factory.type.DataBaseType;
 import ua.nc.dao.postgresql.PostgreApplicationDAO;
 import ua.nc.dao.postgresql.profile.PostgreFieldValueDAO;
 import ua.nc.entity.Application;
@@ -133,20 +133,19 @@ public class ProfileServiceImpl implements ProfileService {
         return result;
     }
 
-    private boolean isApplied(int userID, int cesID){
+    private boolean isApplied(int userID, int cesID) throws DAOException {
         Application resultSet = applicationDAO.getApplicationByUserCES(userID, cesID);
         if (resultSet == null){
-              return false;
+            return false;
         } else {
             return true;
         }
 
     }
 
-    private void createProfile(Profile profile, int userID, int cesID) throws DAOException, SQLException {
-        Connection connection = null;
+    private void createProfile(Profile profile, int userID, int cesID) throws DAOException {
+        Connection connection = daoFactory.getConnection();
         try {
-            // take from pool
             connection.setAutoCommit(false);
             applicationDAO = new PostgreApplicationDAO(connection);
             Application application = applicationDAO.create(new Application(userID, cesID));
@@ -156,13 +155,18 @@ public class ProfileServiceImpl implements ProfileService {
                 fieldValueDAO.create(fieldValue);
             }
         } catch (Exception e) {
-            connection.rollback();
+            try {
+                connection.rollback();
+                connection.close();
+            } catch (SQLException exp) {
+                throw  new DAOException(exp);
+            }
             throw new DAOException(e);
         }
     }
 
-    private void updateProfile(Profile profile, int userID, int cesID) throws SQLException, DAOException {
-        Connection connection = null; // take from pool
+    private void updateProfile(Profile profile, int userID, int cesID) throws DAOException {
+        Connection connection = daoFactory.getConnection();
         try {
             connection.setAutoCommit(false);
             applicationDAO = new PostgreApplicationDAO(connection);
@@ -183,13 +187,19 @@ public class ProfileServiceImpl implements ProfileService {
                 }
             }
         } catch (Exception e) {
-            connection.rollback();
+            try {
+                connection.rollback();
+                connection.close();
+            } catch (SQLException exp) {
+                throw  new DAOException(exp);
+            }
             throw new DAOException(e);
         }
     }
 
     @Override
-    public void setProfile(UserDetailsImpl userDetails, int cesID, Profile profile) throws DAOException, SQLException {
+    public void setProfile(UserDetailsImpl userDetails, Profile profile) throws DAOException {
+        int cesID = 0;
         if (isApplied(userDetails.getID(), cesID)){
             updateProfile(profile, userDetails.getID(), cesID);
         } else {

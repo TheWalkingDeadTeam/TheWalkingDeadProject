@@ -30,6 +30,7 @@ public class PostgreApplicationDAO extends AbstractPostgreDAO<Application, Integ
     }
 
     public static final String getApplicationByUserCES = "SELECT * FROM Application WHERE system_user_id = ? AND ces_id = ?";
+    public static final String getAllCESApplicationsQuery = "SELECT * FROM Application WHERE ces_id = ?";
 
     @Override
     public String getSelectQuery() {
@@ -103,6 +104,18 @@ public class PostgreApplicationDAO extends AbstractPostgreDAO<Application, Integ
             statement.setInt(1, user_id);
             statement.setInt(2, ces_id);
             result = parseResultSet(statement.executeQuery()).iterator().next();
+        } catch (Exception e) {
+            throw new DAOException(e);
+        }
+        return result;
+    }
+
+    @Override
+    public List<Application> getAllCESApplications(Integer ces_id) throws DAOException {
+        List<Application> result;
+        try (PreparedStatement statement = connection.prepareStatement(getAllCESApplicationsQuery)) {
+            statement.setInt(1, ces_id);
+            result = parseResultSet(statement.executeQuery());
         } catch (Exception e) {
             throw new DAOException(e);
         }
