@@ -7,7 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!doctype html>
-<html lang="en" ng-app="studentView">
+<html lang="en" ng-app="interView">
 <head>
 
     <meta charset="utf-8">
@@ -58,7 +58,7 @@
     </style>
 </head>
 <body>
-<div ng-controller="StudentCtrl"
+<div ng-controller="interCtrl"
      class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
     <header class="demo-header mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600">
         <div class="mdl-layout__header-row">
@@ -135,9 +135,6 @@
             <button ng-click="deactivateStud()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
                 Deactivate
             </button>
-            <button ng-click="rejectStud()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
-                Reject
-            </button>
             <button ng-click="saveChanges()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
                 Save
             </button>
@@ -163,38 +160,17 @@
                         </a>
                     </td>
                     <td>
-                        <a href="#" ng-click="sortType = 'name'; sortReverse = !sortReverse">
-                            Surname
-                            <span ng-show="sortType == 'name' && !sortReverse" class="fa fa-caret-down"></span>
-                            <span ng-show="sortType == 'name' && sortReverse" class="fa fa-caret-up"></span>
-                        </a>
-                    </td>
-                    <td>
                         <a href="#" ng-click="sortType = 'university'; sortReverse = !sortReverse">
-                            University
+                            Surname
                             <span ng-show="sortType == 'university' && !sortReverse" class="fa fa-caret-down"></span>
                             <span ng-show="sortType == 'university' && sortReverse" class="fa fa-caret-up"></span>
                         </a>
                     </td>
                     <td>
                         <a href="#" ng-click="sortType = 'devMark'; sortReverse = !sortReverse">
-                            Dev Assesment
+                            Role
                             <span ng-show="sortType == 'devMark' && !sortReverse" class="fa fa-caret-down"></span>
                             <span ng-show="sortType == 'devMark' && sortReverse" class="fa fa-caret-up"></span>
-                        </a>
-                    </td>
-                    <td>
-                        <a href="#" ng-click="sortType = 'hrMark'; sortReverse = !sortReverse">
-                            HR Assesment
-                            <span ng-show="sortType == 'hrMark' && !sortReverse" class="fa fa-caret-down"></span>
-                            <span ng-show="sortType == 'hrMark' && sortReverse" class="fa fa-caret-up"></span>
-                        </a>
-                    </td>
-                    <td>
-                        <a href="#" ng-click="sortType = 'color'; sortReverse = !sortReverse">
-                            Color
-                            <span ng-show="sortType == 'color' && !sortReverse" class="fa fa-caret-down"></span>
-                            <span ng-show="sortType == 'color' && sortReverse" class="fa fa-caret-up"></span>
                         </a>
                     </td>
                     <td>
@@ -208,18 +184,12 @@
                 </thead>
 
                 <tbody>
-                <tr ng-repeat="ch in students | orderBy:sortType:sortReverse | filter:searchFilt">
-                    <td><input type="checkbox" checklist-model="dataStudents.studId" checklist-value="ch.id"></td>
+                <tr ng-repeat="ch in interviewer | orderBy:sortType:sortReverse | filter:searchFilt">
+                    <td><input type="checkbox" checklist-model="dataInterviewer.interId" checklist-value="ch.id"></td>
                     <td>{{ch.id}}</td>
-                    <td><a href="/profile/{{ch.id}}" target="_blanks">{{ch.name}}</a></td>
-                    <td><a href="/profile/{{ch.id}}" target="_blanks">{{ch.surname}}</a></td>
-                    <td>{{ch.university}}</td>
-                    <td>{{ch.devMark}}</td>
-                    <td>{{ch.hrMark}}</td>
-                    <td ng-style="{opacity:0.5,'background-color':'{{ch.color}}'}" title="
-            {{ch.color == 'red' ? 'Reject' :
-            ch.color == 'green' ? 'On course' :
-            ch.color == 'blue' ? 'On job' : 'Thinking'}}"></td>
+                    <td>{{ch.name}}</td>
+                    <td>{{ch.surname}}</td>
+                    <td>{{ch.role}}</td>
                     <td>{{ch.isActive == 1 ? "Active" : "Inactive"}}</td>
 
                 </tr>
@@ -238,7 +208,7 @@
 <script src="/resources/bootstrap/js/bootstrap.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-route.js"></script>
-<script src="../../resources/js/studentListAngular.js"></script>
+<script src="../../resources/js/interviewListAngular.js"></script>
 <script src="http://vitalets.github.io/checklist-model/checklist-model.js"></script>
 </body>
 

@@ -63,7 +63,7 @@ public class AdminController {
     /**
      * Method for view student list from admin controle panale UC 7
      *
-     * @return page with students data
+     * @return page with interviewer data
      */
     @RequestMapping(value = {"/students"}, method = RequestMethod.GET)
     public String studentsView() {
@@ -79,39 +79,49 @@ public class AdminController {
 
         return "[{\n" +
                 "    \"id\": 1,\n" +
-                "    \"name\": \"Abc Ogurchik\",\n" +
+                "    \"name\": \"Abc\",\n" +
+                "    \"surname\" : \"Ogurchik\",\n" +
                 "    \"isActive\": \"1\",\n" +
                 "    \"university\": \"KPI\",\n" +
                 "    \"devMark\": 10,\n" +
                 "    \"hrMark\": 5,\n" +
                 "    \"color\": \"blue\"\n" +
-                "  },\n" +
-                "  {\n" +
-                "    \"id\": 7,\n" +
-                "    \"name\": \"Bcd Ananas\",\n" +
-                "    \"isActive\": \"0\",\n" +
-                "    \"university\": \"NAU\",\n" +
-                "    \"devMark\": 15,\n" +
-                "    \"hrMark\": 10,\n" +
-                "    \"color\": \"yellow\"\n" +
-                "  },\n" +
-                "  {\n" +
-                "    \"id\": 8,\n" +
-                "    \"name\": \"TEST Apelsin\",\n" +
-                "    \"isActive\": \"1\",\n" +
-                "    \"university\": \"NAU\",\n" +
-                "    \"devMark\": 15,\n" +
-                "    \"hrMark\": 10,\n" +
-                "    \"color\": \"yellow\"\n" +
-                "  },\n" +
-                "  {\n" +
+                "  },{\n" +
                 "    \"id\": 2,\n" +
-                "    \"name\": \"Bcd Kokos\",\n" +
+                "    \"name\": \"Abc\",\n" +
+                "    \"surname\" : \"Ogurchik\",\n" +
                 "    \"isActive\": \"1\",\n" +
                 "    \"university\": \"KPI\",\n" +
                 "    \"devMark\": 10,\n" +
-                "    \"hrMark\": 85,\n" +
-                "    \"color\": \"green\"\n" +
+                "    \"hrMark\": 5,\n" +
+                "    \"color\": \"blue\"\n" +
+                "  },{\n" +
+                "    \"id\": 3,\n" +
+                "    \"name\": \"Abc\",\n" +
+                "    \"surname\" : \"Ogurchik\",\n" +
+                "    \"isActive\": \"1\",\n" +
+                "    \"university\": \"KPI\",\n" +
+                "    \"devMark\": 10,\n" +
+                "    \"hrMark\": 5,\n" +
+                "    \"color\": \"blue\"\n" +
+                "  },{\n" +
+                "    \"id\": 4,\n" +
+                "    \"name\": \"Abc\",\n" +
+                "    \"surname\" : \"Ogurchik\",\n" +
+                "    \"isActive\": \"1\",\n" +
+                "    \"university\": \"KPI\",\n" +
+                "    \"devMark\": 10,\n" +
+                "    \"hrMark\": 5,\n" +
+                "    \"color\": \"blue\"\n" +
+                "  },{\n" +
+                "    \"id\": 5,\n" +
+                "    \"name\": \"Abc\",\n" +
+                "    \"surname\" : \"Ogurchik\",\n" +
+                "    \"isActive\": \"1\",\n" +
+                "    \"university\": \"KPI\",\n" +
+                "    \"devMark\": 10,\n" +
+                "    \"hrMark\": 5,\n" +
+                "    \"color\": \"blue\"\n" +
                 "  }]";
 
     }
@@ -120,7 +130,7 @@ public class AdminController {
     public
     @ResponseBody
     void profileFields() {
-        System.out.println("URAAA");
+
 
     }
 
@@ -128,5 +138,70 @@ public class AdminController {
     public String getStudentById(@ModelAttribute("id") Integer id) {
         return "redirect:/profile/" + id;
     }
+
+    /**
+     * Method for view interview list from admin controlle panel
+     *
+     * @return page with interviewer data
+     */
+    @RequestMapping(value = {"/interview"}, method = RequestMethod.GET)
+    public String interviewView() {
+
+        return "admin-iter-view";
+    }
+
+    @RequestMapping(value = {"/interview/list"}, method = RequestMethod.GET, produces = "application/json")
+    public
+    @ResponseBody
+    String interviewGetJSON() {
+
+
+        return "[{\n" +
+                "    \"id\": 1,\n" +
+                "    \"name\": \"Abc\",\n" +
+                "    \"surname\" : \"Ogurchik\",\n" +
+                "    \"isActive\": \"1\",\n" +
+                "    \"role\" : \"Admin\"\n" +
+                "  },{\n" +
+                "    \"id\": 2,\n" +
+                "    \"name\": \"Abc\",\n" +
+                "    \"surname\" : \"Ogurchik\",\n" +
+                "    \"isActive\": \"1\",\n" +
+                "    \"role\" : \"Admin\"\n" +
+                "  },{\n" +
+                "    \"id\": 3,\n" +
+                "    \"name\": \"Abc\",\n" +
+                "    \"surname\" : \"Ogurchik\",\n" +
+                "    \"isActive\": \"1\",\n" +
+                "    \"role\" : \"Admin\"\n" +
+                "  },{\n" +
+                "    \"id\": 4,\n" +
+                "    \"name\": \"Abc\",\n" +
+                "    \"surname\" : \"Ogurchik\",\n" +
+                "    \"isActive\": \"1\",\n" +
+                "    \"role\" : \"Admin\"\n" +
+                "  },{\n" +
+                "    \"id\": 5,\n" +
+                "    \"name\": \"Abc\",\n" +
+                "    \"surname\" : \"Ogurchik\",\n" +
+                "    \"isActive\": \"1\",\n" +
+                "    \"role\" : \"Admin\"\n" +
+                "  },{\n" +
+                "    \"id\": 6,\n" +
+                "    \"name\": \"Abc\",\n" +
+                "    \"surname\" : \"Ogurchik\",\n" +
+                "    \"isActive\": \"1\",\n" +
+                "    \"role\" : \"Admin\"\n" +
+                "  }]";
+
+    }
+    @RequestMapping(value = "/interview", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    void activateDeactivateInterviwer() {
+
+
+    }
+
 
 }
