@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User recoverPassword(User user) {
+    public User recoverPass(User user) {
         String testPassword = RandomStringUtils.random(10);
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         try {

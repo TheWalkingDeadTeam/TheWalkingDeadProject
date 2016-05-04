@@ -10,5 +10,5 @@ public interface UserService {
 
     User createUser(User user);
 
-    User recoverPassword(User user);
+    User recoverPass(User user);
 }

@@ -147,7 +147,7 @@ public class LoginController implements HandlerExceptionResolver {
         Set<ValidationError> errors = validator.validate(user);
         jsonResponse.setErrors(errors);
         UserService userService = new UserServiceImpl();
-        User updatedUser = userService.recoverPassword(user);
+        User updatedUser = userService.recoverPass(user);
         if (errors.isEmpty()) {
             if (updatedUser == null || updatedUser.getEmail() == null
                     && user.getPassword() == null) {
