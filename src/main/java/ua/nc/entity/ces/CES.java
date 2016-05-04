@@ -15,7 +15,16 @@ public class CES {
     private Calendar endInterviewingDate;
     private Integer quota;
     private Integer reminders;
-    private List<Object> status;
+
+    public Integer getStatusId() {
+        return statusId;
+    }
+
+    public void setStatusId(Integer statusId) {
+        this.statusId = statusId;
+    }
+
+    private Integer statusId;
     private Integer interviewTimeForPerson;
     private Integer interviewTimeForDay;
 
@@ -81,16 +90,6 @@ public class CES {
 
     public void setReminders(Integer reminders) {
         this.reminders = reminders;
-    }
-
-    public CESStatus getStatus() {
-        CESStatus statusObj = new CESStatus((Integer) status.get(0), (String) status.get(1));
-        return statusObj;
-    }
-
-    public void setStatus(CESStatus statusObj) {
-        status.set(0, statusObj.getId());
-        status.set(1, statusObj.getName());
     }
 
     public Integer getInterviewTimeForPerson() {

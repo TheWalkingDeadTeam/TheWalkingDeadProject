@@ -31,7 +31,7 @@
 </header>
 <body ng-app="myApp" ng-controller="FormController as ctrl">
     <form id="CESfields" ng-submit="ctrl.save()">
-        <div>Year <input type="number" name="year" min="1986" max="2100" id="1" ng-model="ctrl.ces.year" required/></div>
+        <div>Year <input type="number" name="year" min="2016" max="2100" id="1" ng-model="ctrl.ces.year" required/></div>
         <div>Quota <input type="number" name="quota" id="2" min="1" ng-model="ctrl.ces.quota" required/></div>
         <div>Start registration date <input type="date" name="startRegistrationDate" ng-model="ctrl.ces.startRegistrationDate" id="3"required/></div>
         <div>End registration date <input type="date" name="endRegistrationDate" ng-model="ctrl.ces.endRegistrationDate" id="4"required/></div>

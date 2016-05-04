@@ -1,6 +1,6 @@
 package ua.nc.service.user;
 
-import org.apache.commons.lang3.RandomStringUtils;
+//import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import ua.nc.dao.RoleDAO;
 import ua.nc.dao.UserDAO;
@@ -60,10 +60,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User recoverPass(User user) {
-        String testPassword = RandomStringUtils.random(10);
+//        String testPassword = RandomStringUtils.random(10);
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         try {
-            user.setPassword(encoder.encode(testPassword));
+//            user.setPassword(encoder.encode(testPassword));
             userDAO.updateUser(user);
             mailService.sendMail(user.getEmail(), "Password recovery", "Welcome " + user.getName() + " ! \n NetCracker[TheWalkingDeadTeam] " + user.getPassword());
             return user;
