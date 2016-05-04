@@ -24,7 +24,7 @@
     float: right;
 }
 
-.registration #user{
+.registration #user, #stupidUser{
   position: relative;
   z-index: 320;
   background: white;

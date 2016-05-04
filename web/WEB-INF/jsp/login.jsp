@@ -76,7 +76,7 @@
     <div class="recovery registration">
         <div class="layout"></div>
         <sec:authorize access="!isAuthenticated()" url="/passwordRecovery">
-            <form id="user" action="/passwordRecovery">
+            <form id="stupidUser" action="/passwordRecovery">
                 <div id="passwordRecovery"></div>
                 <div class="row container-fluid recovery-head">
                     <div class="col-lg-6 col-md-8 col-sm-9 col-xs-9">
@@ -88,7 +88,7 @@
                 </div>
                 <input id="userEmail" name="email" class="form-control" placeholder="Email address" type="text" value="">
                 <div class="correct-email"></div>
-                <button id="buttonSend" class="btn btn-lg btn-primary btn-block">Send request</button>
+                <button id="buttonRecoverPassword" class="btn btn-lg btn-primary btn-block">Send request</button>
             </form>
         </sec:authorize>
     </div>
@@ -171,4 +171,5 @@
 <script src="/resources/js/logout.js"></script>
 <script src="/resources/bootstrap/js/bootstrap.js"></script>
 <script src="/resources/js/registration.js"></script>
+<script src="/resources/js/passwordRecovery.js"></script>
 </html>
