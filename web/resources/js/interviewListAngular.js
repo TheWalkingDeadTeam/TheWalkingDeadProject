@@ -2,13 +2,13 @@
  * Created by creed on 01.05.16.
  */
 
-var studentView = angular.module('studentView', ['checklist-model', 'ngRoute', 'phonecatControllers']);
+var studentView = angular.module('interView', ['checklist-model', 'ngRoute', 'phonecatControllers']);
 
 studentView.config(['$routeProvider',
     function ($routeProvider) {
-        $routeProvider.when('/students', {
-            templateUrl: 'admin-stud-view.jsp',
-            controller: 'StudentCtrl'
+        $routeProvider.when('/interview', {
+            templateUrl: 'admin-iter-view.jsp',
+            controller: 'interCtrl'
         }).otherwise({
             redirectTo: 'error.jsp'
         });
@@ -17,42 +17,42 @@ studentView.config(['$routeProvider',
 var phonecatControllers = angular.module('phonecatControllers', []);
 
 
-phonecatControllers.controller("StudentCtrl", ["$scope", "$http","$rootElement", function ($scope, $http,$rootElement) {
+phonecatControllers.controller("interCtrl", ["$scope", "$http","$rootElement", function ($scope, $http,$rootElement) {
     // $http.get('resources/json/studentsData.json').success(function (data) {
     //     $scope.interviewer = data;
     // });
 
-    $http.get('students/list').success(function (data) {
-        $scope.students = data;
+    $http.get('interview/list').success(function (data) {
+        $scope.interviewer = data;
     });
 
 
     $scope.sortType = 'id';
     $scope.sortReverse = false;
     $scope.searchFiltr = '';
-    $scope.dataStudents = {
-        studId: []
+    $scope.dataInterviewer = {
+        interId: []
     };
     $scope.checkAll = function () {
         if ($scope.selectedAll) {
-            $scope.dataStudents.studId = $scope.students.map(function (item) {
+            $scope.dataInterviewer.interId = $scope.interviewer.map(function (item) {
                 return item.id;
             });
             $scope.selectdAll = true;
         }
         else {
             $scope.selectdAll = false;
-            $scope.dataStudents.studId = [];
+            $scope.dataInterviewer.interId = [];
         }
 
     };
     $scope.activateStud = function () {
         var dataObj = {
             type: 'activate',
-            values: $scope.dataStudents.studId
+            values: $scope.dataInterviewer.interId
         };
-        if ($scope.dataStudents.studId.length != 0) {
-            var res = $http.post('students', dataObj);
+        if ($scope.dataInterviewer.interId.length != 0) {
+            var res = $http.post('interview', dataObj);
             res.success(function (data, status, headers, config) {
                 $scope.message = data;
             });
@@ -64,25 +64,10 @@ phonecatControllers.controller("StudentCtrl", ["$scope", "$http","$rootElement",
     $scope.deactivateStud = function () {
         var dataObj = {
             type: 'deactivate',
-            values: $scope.dataStudents.studId
+            values: $scope.dataInterviewer.interId
         };
-        if ($scope.dataStudents.studId.length != 0) {
-            var res = $http.post('students', dataObj);
-            res.success(function (data, status, headers, config) {
-                $scope.message = data;
-            });
-            res.error(function (data, status, headers, config) {
-                alert("failure message: " + JSON.stringify({data: data}));
-            });
-        }
-    };
-    $scope.rejectStud = function () {
-        var dataObj = {
-            type: 'reject',
-            values: $scope.dataStudents.studId
-        };
-        if ($scope.dataStudents.studId.length != 0) {
-            var res = $http.post('students', dataObj);
+        if ($scope.dataInterviewer.interId.length != 0) {
+            var res = $http.post('interview', dataObj);
             res.success(function (data, status, headers, config) {
                 $scope.message = data;
             });
@@ -96,7 +81,7 @@ phonecatControllers.controller("StudentCtrl", ["$scope", "$http","$rootElement",
             type: "save",
             values: []
         };
-        var res = $http.post('students', dataObj);
+        var res = $http.post('interview', dataObj);
         res.success(function (data, status, headers, config) {
             $scope.message = data;
         });
@@ -110,7 +95,7 @@ phonecatControllers.controller("StudentCtrl", ["$scope", "$http","$rootElement",
             type: "search",
             values:[$scope.searchFilt]
         };
-        var res = $http.post('students', dataObj);
+        var res = $http.post('interview', dataObj);
         res.success(function (data, status, headers, config) {
             $scope.message = data;
         });
