@@ -25,6 +25,7 @@
                 <ref bean="jsonMessageConverter"/>
             </list>
         </property>
+
     </bean>
 
 

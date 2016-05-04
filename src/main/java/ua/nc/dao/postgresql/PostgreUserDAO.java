@@ -17,11 +17,14 @@ import java.sql.SQLException;
  */
 public class PostgreUserDAO extends UserDAO {
     /*    private static final Logger LOGGER = Logger.getLogger(PostgreUserDAO.class);*/
-    private final Connection connection;
+    private final ConnectionPool connectionPool;
+    private static final String SQL_UPDATE_USER = "UPDATE public.user SET password = ? WHERE user_id = ?";
 
-    public PostgreUserDAO(Connection connection) {
-        this.connection = connection;
+
+    public PostgreUserDAO(ConnectionPool connectionPool) {
+        this.connectionPool = connectionPool;
     }
+
 
     /**
      * @param email
@@ -32,9 +35,11 @@ public class PostgreUserDAO extends UserDAO {
     public User findByEmail(String email) throws DAOException {
         String sql = AppSetting.get("user.findByEmail");
         User user = null;
+        Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
+            connection = connectionPool.getConnection();
             statement = connection.prepareStatement(sql);
             statement.setString(1, email);
             resultSet = statement.executeQuery();
@@ -54,6 +59,8 @@ public class PostgreUserDAO extends UserDAO {
                     resultSet.close();
                 if (statement != null)
                     statement.close();
+                if (connection != null)
+                    connectionPool.putConnection(connection);
             } catch (Exception e) {
                 throw new DAOException(e);
             }
@@ -64,9 +71,11 @@ public class PostgreUserDAO extends UserDAO {
     @Override
     public void createUser(User user) throws DAOException {
         String sql = AppSetting.get("user.createUser");
+        Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
+            connection = connectionPool.getConnection();
             statement = connection.prepareStatement(sql);
             statement.setString(1, user.getName());
             statement.setString(2, user.getEmail());
@@ -81,9 +90,46 @@ public class PostgreUserDAO extends UserDAO {
                     resultSet.close();
                 if (statement != null)
                     statement.close();
+                if (connection != null)
+                    connectionPool.putConnection(connection);
             } catch (Exception e) {
                 throw new DAOException(e);
             }
         }
     }
+
+
+    /**
+     * Updates user with new password
+     * @param user
+     * @throws DAOException
+     */
+    @Override
+    public void updateUser(User user) throws DAOException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+            connection = connectionPool.getConnection();
+            statement = connection.prepareStatement(SQL_UPDATE_USER);
+            statement.setString(1, user.getPassword());
+            statement.setInt(2, user.getId());
+            statement.executeUpdate();
+        } catch (SQLException e){
+            System.out.println("User:" + user.getName() + "  not updated");
+            throw  new DAOException(e);
+        }finally {
+            try {
+                if (resultSet != null)
+                    resultSet.close();
+                if (statement != null)
+                    statement.close();
+                if (connection != null)
+                    connectionPool.putConnection(connection);
+            } catch (Exception e) {
+                throw new DAOException(e);
+            }
+        }
+    }
+
 }

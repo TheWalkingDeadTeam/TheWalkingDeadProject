@@ -19,9 +19,9 @@ import java.util.Set;
  */
 public class UserServiceImpl implements UserService {
     private DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
-    private UserDAO userDAO = daoFactory.getUserDAO(daoFactory.getConnection());
-    private RoleDAO roleDAO = daoFactory.getRoleDAO(daoFactory.getConnection());
-    private MailService mailService = new MailServiceImpl();
+    private UserDAO userDAO = daoFactory.getUserDAO();
+    private RoleDAO roleDAO = daoFactory.getRoleDAO();
+    private MailService mailService;
 
     @Override
     public User getUser(String email) {
@@ -37,6 +37,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(User user) {
+        mailService = new MailServiceImpl();
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         user.setPassword(encoder.encode(user.getPassword()));
         Set<Role> roles = new HashSet<>();
@@ -57,4 +58,20 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    /**
+     * Change User password
+     * @param user
+     * @param password
+     */
+    @Override
+    public void changePassword(User user, String password) {
+        System.out.println(password);
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        user.setPassword(encoder.encode(password));
+        try {
+            userDAO.updateUser(user);
+        } catch (DAOException e) {
+            System.out.println("User password has not been modified");
+        }
+    }
 }

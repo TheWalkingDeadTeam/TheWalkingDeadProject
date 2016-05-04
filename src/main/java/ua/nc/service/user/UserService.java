@@ -2,8 +2,6 @@ package ua.nc.service.user;
 
 import ua.nc.entity.User;
 
-import java.util.List;
-
 /**
  * Created by Pavel on 18.04.2016.
  */
@@ -12,5 +10,5 @@ public interface UserService {
 
     User createUser(User user);
 
-
+    void changePassword(User user, String password);
 }

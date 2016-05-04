@@ -28,6 +28,7 @@ public class PostgreMailDAO extends MailDAO {
             "WHERE email_template_id = ?";
     private static final String SQL_DELETE_MAIL = "DELETE FROM public.email_template WHERE email_template_id = ?";
     private static final String SQL_GET_EMAILS_BY_HEADER = "SELECT * FROM public.email_template WHERE head_template = ?";
+    private static final String SQL_GET_ALL = "SELECT * FROM public.email_template";
 
     /**
      * Notifications for Logger
@@ -62,8 +63,9 @@ public class PostgreMailDAO extends MailDAO {
             rs = preparedStatement.executeQuery();
             mail = new Mail();
             while (rs.next()) {
-                mail.setBodyTemplate(rs.getString(1));
-                mail.setHeadTemplate(rs.getString(2));
+                mail.setId(id);
+                mail.setBodyTemplate(rs.getString(2));
+                mail.setHeadTemplate(rs.getString(3));
             }
         } catch (SQLException e) {
             LOGGER.error(GET_NOTIFICATION, e);
@@ -174,6 +176,45 @@ public class PostgreMailDAO extends MailDAO {
             }
         }
 
+    }
+
+    /**
+     * Get All mails from db
+     *
+     * @return
+     * @throws DAOException
+     */
+    @Override
+    public List<Mail> getAll() throws DAOException {
+        List<Mail> mails = new ArrayList<>();
+        try {
+            connection = connectionPool.getConnection();
+            preparedStatement = connection.prepareStatement(SQL_GET_ALL);
+            ResultSet rs = preparedStatement.executeQuery();
+            Mail mail;
+            while (rs.next()) {
+                mail = new Mail();
+                mail.setId(rs.getInt(1));
+                mail.setBodyTemplate(rs.getString(2));
+                mail.setHeadTemplate(rs.getString(3));
+                mails.add(mail);
+            }
+        } catch (SQLException e) {
+            throw new DAOException();
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (connection != null) {
+                    connectionPool.putConnection(connection);
+                }
+            } catch (SQLException e) {
+                throw new DAOException(e);
+            }
+        }
+        return mails;
     }
 
     /**

@@ -204,4 +204,6 @@ public class AdminController {
     }
 
 
+    @RequestMapping(value = {"/mail"}, method = RequestMethod.GET)
+    public String mail(){return "mail";}
 }

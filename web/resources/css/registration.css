@@ -10,6 +10,18 @@
     display: none;
 }
 
+.passwordChange{
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    background-color: rgba(80,80,80,0.85);
+    z-index: 300;
+    display: none;
+}
+
+
 
 .closebtn{
     color: rgb(110,150,190);

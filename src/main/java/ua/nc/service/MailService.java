@@ -3,22 +3,31 @@ package ua.nc.service;
 import ua.nc.entity.Mail;
 import ua.nc.entity.User;
 
+import java.util.Date;
 import java.util.List;
 
 /**
  * Created by Alexander on 23.04.2016.
  */
 public interface MailService {
+    public List<Mail> getAllMails();
 
-     Mail getMail(Integer id);
+    public void updateMail(Mail mail);
 
-     void createMail(String header, String body);
+    public void deleteMail(Mail mail);
 
-     void sendMail(String address, Mail mail);
+    public Mail getMail(Integer id);
 
-     void sendMail(String address, String header, String body);
+    public Mail createMail(String header, String body);
 
-     List<Mail> getByHeaderMailTemplate(String header);
+    public void sendMail(String address, Mail mail);
 
-     void massDelivery(String dateDelivery, final List<User> users, final Mail mail);
+    public void sendMail(String address, String header, String body);
+
+    public List<Mail> getByHeaderMailTemplate(String header);
+
+    public void massDelivery(String dateDelivery, final List<User> users, final Mail mail);
+
+    public void sendInterviewReminders(List<Date> interviewDates, int studentHours, int devHours, int hrHours,
+                                       int baHours, final Mail InterviewerMail, final Mail IntervieweeMail);
 }

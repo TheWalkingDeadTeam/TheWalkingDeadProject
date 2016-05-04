@@ -11,9 +11,9 @@
 <html>
 <head>
     <title>Error</title>
-    <link rel="stylesheet" type="text/css" href="/resources/files/reset.css" />
-    <link rel="stylesheet" type="text/css" href="/resources/files/bootstrap.css" />
-    <link rel="stylesheet" type="text/css" href="/resources/files/styles.css" />
+    <link rel="stylesheet" type="text/css" href="/resources/css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="/resources/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="/resources/css/styles.css" />
 </head>
 <body>
 <div class="text-center">

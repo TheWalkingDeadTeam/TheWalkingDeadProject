@@ -1,5 +1,6 @@
 package ua.nc.service;
 
+import org.apache.commons.logging.Log;
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.MailSender;
@@ -31,21 +32,25 @@ import java.util.Properties;
 @Service("mailService")
 public class MailServiceImpl implements MailService {
     private static final Logger LOGGER = Logger.getLogger(MailServiceImpl.class);
+    private static final int MILLIS_PER_HOUR = 1000 * 60 * 60;
     private DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
-    private MailDAO mailDAO = daoFactory.getMailDAO(daoFactory.getConnection());
-    private ThreadPoolTaskScheduler scheduler;
-    private ThreadPoolTaskScheduler schedulerMassDeliveryService;
+    private MailDAO mailDAO = daoFactory.getMailDAO();
+    private static ThreadPoolTaskScheduler scheduler;
+    private static ThreadPoolTaskScheduler schedulerMassDeliveryService;
     private static final int POOL_SIZE = 2;
     private static final int POOL_SIZE_SCHEDULER = 10;
 
-    public MailServiceImpl() {
-        schedulerMassDeliveryService = new ThreadPoolTaskScheduler();
+    static {
         scheduler = new ThreadPoolTaskScheduler();
         schedulerMassDeliveryService = new ThreadPoolTaskScheduler();
         scheduler.setPoolSize(POOL_SIZE);
         schedulerMassDeliveryService.setPoolSize(POOL_SIZE_SCHEDULER);
         scheduler.initialize();
         schedulerMassDeliveryService.initialize();
+    }
+
+    public MailServiceImpl() {
+
     }
 
     /**
@@ -56,15 +61,18 @@ public class MailServiceImpl implements MailService {
      * @param body
      */
     @Override
-    public void createMail(String header, String body) {
+    public Mail createMail(String header, String body) {
         Mail mail = null;
         try {
+            mail = new Mail();
             mail.setHeadTemplate(header);
             mail.setBodyTemplate(body);
-            mailDAO.create(mail);
+            Mail newCreated = mailDAO.create(mail);
+            System.out.println(newCreated.getId());
         } catch (DAOException e) {
             LOGGER.error("Bad Happened", e);
         }
+        return mail;
     }
 
     /**
@@ -129,9 +137,10 @@ public class MailServiceImpl implements MailService {
     /**
      * Massive delivery service for async mailing
      * Everything you need is to put time
+     *
      * @param dateDelivery specific date mail to be send
-     * @param users who will get invitation
-     * @param mail template
+     * @param users        who will get invitation
+     * @param mail         template
      */
     public void massDelivery(String dateDelivery, final List<User> users, final Mail mail) {
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -159,6 +168,51 @@ public class MailServiceImpl implements MailService {
         }, new Date());
     }
 
+    @Override
+    public void sendInterviewReminders(List<Date> interviewDates, int studentHours, int devHours, int hrHours,
+                                       int baHours, Mail InterviewerMail, Mail IntervieweeMail) {
+        int studentMillis = studentHours * MILLIS_PER_HOUR;
+        int devMillis = devHours * MILLIS_PER_HOUR;
+        int hrMillis = hrHours * MILLIS_PER_HOUR;
+        int baMillis = baHours * MILLIS_PER_HOUR;
+
+        for (Date interviewDate : interviewDates) {
+            massDelivery(new Date(interviewDate.getTime() + studentMillis).toString(), new ArrayList<User>(), IntervieweeMail);
+            massDelivery(new Date(interviewDate.getTime() + devMillis).toString(), new ArrayList<User>(), InterviewerMail);
+            massDelivery(new Date(interviewDate.getTime() + hrMillis).toString(), new ArrayList<User>(), InterviewerMail);
+            massDelivery(new Date(interviewDate.getTime() + baMillis).toString(), new ArrayList<User>(), InterviewerMail);
+        }
+    }
+
+
+    @Override
+    public List<Mail> getAllMails() {
+        List<Mail> mails = new ArrayList<>();
+        try {
+            mails = mailDAO.getAll();
+        } catch (DAOException e) {
+            LOGGER.error("Can't retrieve all mail", e);
+        }
+        return mails;
+    }
+
+    @Override
+    public void updateMail(Mail mail) {
+        try {
+            mailDAO.update(mail);
+        } catch (DAOException e) {
+            LOGGER.error("Can't update mail", e);
+        }
+    }
+
+    @Override
+    public void deleteMail(Mail mail) {
+        try {
+            mailDAO.delete(mail);
+        } catch (DAOException e) {
+            LOGGER.error("Can't delete mail", e);
+        }
+    }
 
     /**
      * Retrieve mail by id
