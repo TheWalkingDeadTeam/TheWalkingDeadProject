@@ -1,7 +1,14 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: IGOR
+  Date: 03.05.2016
+  Time: 15:36
+  To change this template use File | Settings | File Templates.
+--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Profile</title>
+    <title>Course enrollment session settings</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="icon" type="image/png" sizes="32x32" href="/resources/images/ico.png"/>
     <link rel="stylesheet" type="text/css" href="/resources/css/reset.css"/>
@@ -22,9 +29,22 @@
         </div>
     </div>
 </header>
+<body ng-app="myApp" ng-controller="FormController as ctrl">
+    <form id="CESfields" ng-submit="ctrl.save()">
+        <div>Year <input type="number" name="year" min="1986" max="2100" id="1" ng-model="ctrl.ces.year" required/></div>
+        <div>Quota <input type="number" name="quota" id="2" min="1" ng-model="ctrl.ces.quota" required/></div>
+        <div>Start registration date <input type="date" name="startRegistrationDate" ng-model="ctrl.ces.startRegistrationDate" id="3"required/></div>
+        <div>End registration date <input type="date" name="endRegistrationDate" ng-model="ctrl.ces.endRegistrationDate" id="4"required/></div>
+        <div>Start interviewing date <input type="date" name="startInterviewingDate" ng-model="ctrl.ces.startInterviewingDate" id="5"required/></div>
+        <div>End interviewing date <input type="date" name="endInterviewingDate" ng-model="ctrl.ces.endInterviewingDate" id="6"required/></div>
+        <div>Reminders <input type="number" name="reminders" id="7" ng-model="ctrl.ces.reminders"  required/></div>
+        <div>Interview time for person <input type="number" name="interviewTimeForPerson" id="8" ng-model="ctrl.ces.interviewTimeForPerson" required/></div>
+        <div>Interview time for day <input type="number" name="interviewTimeForDay" id="9" ng-model="ctrl.ces.interviewTimeForDay" required/></div>
+        <input type="submit" value="Save" id="11">
+    </form>
+    <script src = "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
 
-<form id="fields"></form>
-
+</body>
 
 <footer class="footer container-fluid">
     <div class="footerLg container visible-md visible-lg">
@@ -64,6 +84,7 @@
     </div>
 </footer>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
-<script src="/resources/js/profile.js" ></script>
+<script src="/resources/js/ces.js" ></script>
 </body>
 </html>
+
