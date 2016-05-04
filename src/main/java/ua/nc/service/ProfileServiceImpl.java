@@ -38,7 +38,7 @@ public class ProfileServiceImpl implements ProfileService {
         List<Field> fields = fieldDAO.getFieldsForCES(cesID);
         for(Field field : fields){
             ProfileField profileField = new ProfileField();
-            profileField.setID(field.getID());
+            profileField.setID(field.getId());
             profileField.setFieldName(field.getName());
             profileField.setOrderNum(field.getOrderNum());
             profileField.setMultipleChoice(field.getMultipleChoice());
@@ -50,7 +50,7 @@ public class ProfileServiceImpl implements ProfileService {
                     profileField.setValues(tempValues);
                 } else {
                     FieldValue fieldValue = fieldValueDAO.getFieldValueByUserCESField(
-                            userDetails.getID(), cesID, field.getID()).iterator().next();
+                            userDetails.getID(), cesID, field.getId()).iterator().next();
                     ProfileFieldValue pfValue = new ProfileFieldValue();
                     if (fieldValue.getValueText() != null) {
                         pfValue.setValue(fieldValue.getValueText());
@@ -65,15 +65,15 @@ public class ProfileServiceImpl implements ProfileService {
             } else {
                 List<ListValue> listValues = listValueDAO.getAllListListValue(field.getListTypeID());
                 List<FieldValue> fieldValues = fieldValueDAO.getFieldValueByUserCESField(
-                        userDetails.getID(), cesID, field.getID());
+                        userDetails.getID(), cesID, field.getId());
                 for (ListValue listValue : listValues){
                     ProfileFieldValue temp = new ProfileFieldValue();
-                    temp.setID(listValue.getID().toString());
+                    temp.setID(listValue.getId().toString());
                     temp.setFieldValueName(listValue.getValueText());
                     if (flagApplied) {
                         boolean matched = false;
                         for (FieldValue fieldValue : fieldValues) {
-                            if (listValue.getID().equals(fieldValue.getListValueID())) {
+                            if (listValue.getId().equals(fieldValue.getListValueID())) {
                                 temp.setValue(Boolean.TRUE.toString());
                                 matched = true;
                             }
@@ -151,7 +151,7 @@ public class ProfileServiceImpl implements ProfileService {
             connection.setAutoCommit(false);
             applicationDAO = new PostgreApplicationDAO(connection);
             Application application = applicationDAO.create(new Application(userID, cesID));
-            List<FieldValue> fieldValues = parseProfile(application.getID(), profile);
+            List<FieldValue> fieldValues = parseProfile(application.getId(), profile);
             fieldValueDAO = new PostgreFieldValueDAO(connection);
             for (FieldValue fieldValue : fieldValues) {
                 fieldValueDAO.create(fieldValue);
@@ -174,7 +174,7 @@ public class ProfileServiceImpl implements ProfileService {
             connection.setAutoCommit(false);
             applicationDAO = new PostgreApplicationDAO(connection);
             Application application = applicationDAO.getApplicationByUserCES(userID, cesID);
-            List<FieldValue> fieldValues = parseProfile(application.getID(), profile);
+            List<FieldValue> fieldValues = parseProfile(application.getId(), profile);
             List<Integer> multipleFields = new ArrayList<>();
             for (ProfileField profileField : profile.getFields()) {
                 if (profileField.getMultipleChoice()) {

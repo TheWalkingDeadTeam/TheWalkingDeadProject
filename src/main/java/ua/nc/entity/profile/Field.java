@@ -15,7 +15,7 @@ public class Field implements Identified<Integer> {
     private Integer listTypeID;
 
     @Override
-    public Integer getID() {
+    public Integer getId() {
         return ID;
     }
 

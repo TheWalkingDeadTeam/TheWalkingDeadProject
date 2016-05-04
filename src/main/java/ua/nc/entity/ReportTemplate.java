@@ -9,7 +9,7 @@ public class ReportTemplate implements Identified<Integer> {
     private String name;
 
     @Override
-    public Integer getID() {
+    public Integer getId() {
         return reportTemplateID;
     }
 

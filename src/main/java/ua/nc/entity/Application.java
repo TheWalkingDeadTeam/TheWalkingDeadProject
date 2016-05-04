@@ -10,7 +10,7 @@ public class Application implements Identified<Integer> {
     private Boolean rejected;
 
     @Override
-    public Integer getID() {
+    public Integer getId() {
         return null;
     }
 

@@ -3,7 +3,7 @@ package ua.nc.entity;
 /**
  * Created by Pavel on 03.05.2016.
  */
-public class CES {
+public class CES implements Identified<Integer>{
     private Integer id;
 
     public Integer getId() {

@@ -10,7 +10,7 @@ public class Feedback implements Identified<Integer> {
     private int interviewerID;
 
     @Override
-    public Integer getID() {
+    public Integer getId() {
         return null;
     }
 

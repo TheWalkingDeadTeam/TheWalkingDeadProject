@@ -8,14 +8,14 @@ import java.util.List;
 /**
  * Created by Alexander Haliy on 23.04.2016.
  */
-public abstract class MailDAO  {
+public interface MailDAO extends GenericDAO<Mail,Integer> {
     public abstract List<Mail> getByHeader(String header) throws DAOException;
 
     public abstract Mail create(Mail entity) throws DAOException;
 
     public abstract Mail get(Integer id) throws DAOException;
 
-    public abstract Mail update(Mail entity) throws DAOException;
+    public abstract void update(Mail entity) throws DAOException;
 
     public abstract void delete(Mail entity) throws DAOException;
 }

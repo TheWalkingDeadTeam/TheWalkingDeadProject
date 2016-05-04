@@ -76,7 +76,7 @@ public class PostgreFieldTypeDAO extends AbstractPostgreDAO<FieldType, Integer> 
     protected void prepareStatementForUpdate(PreparedStatement statement, FieldType object) throws DAOException {
         try {
             statement.setString(1, object.getName());
-            statement.setInt(2, object.getID());
+            statement.setInt(2, object.getId());
         } catch (Exception e) {
             throw new DAOException(e);
         }
@@ -85,7 +85,7 @@ public class PostgreFieldTypeDAO extends AbstractPostgreDAO<FieldType, Integer> 
     @Override
     protected void prepareStatementForSelect(PreparedStatement statement, FieldType object) throws DAOException {
         try {
-            statement.setInt(1, object.getID());
+            statement.setInt(1, object.getId());
         } catch (Exception e) {
             throw new DAOException(e);
         }

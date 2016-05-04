@@ -12,7 +12,7 @@ public class ListValue implements Identified<Integer> {
     private String valueText;
 
     @Override
-    public Integer getID() {
+    public Integer getId() {
         return ID;
     }
 

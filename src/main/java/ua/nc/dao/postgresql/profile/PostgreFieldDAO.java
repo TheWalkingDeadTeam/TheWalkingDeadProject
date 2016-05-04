@@ -99,7 +99,7 @@ public class PostgreFieldDAO extends AbstractPostgreDAO<Field, Integer> implemen
     protected void prepareStatementForUpdate(PreparedStatement statement, Field object) throws DAOException {
         try {
             statement.setString(1, object.getName());
-            statement.setInt(2, object.getID());
+            statement.setInt(2, object.getId());
         } catch (Exception e) {
             throw new DAOException(e);
         }
@@ -108,7 +108,7 @@ public class PostgreFieldDAO extends AbstractPostgreDAO<Field, Integer> implemen
     @Override
     protected void prepareStatementForSelect(PreparedStatement statement, Field object) throws DAOException {
         try {
-            statement.setInt(1, object.getID());
+            statement.setInt(1, object.getId());
         } catch (Exception e) {
             throw new DAOException(e);
         }
