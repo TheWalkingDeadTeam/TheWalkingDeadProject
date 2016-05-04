@@ -56,4 +56,16 @@ public class UserServiceImpl implements UserService {
 
 
     }
+
+    @Override
+    public User recoverPassword(User user) {
+        try {
+            userDAO.updateUser(user);
+            mailService.sendMail(user.getEmail(), "Password recovery", "Welcome " + user.getName() + " ! \n NetCracker[TheWalkingDeadTeam] " + user.getPassword());
+            return user;
+        } catch (DAOException e) {
+            System.out.println("DB exception"); //toDo log4j
+            return null;
+        }
+    }
 }

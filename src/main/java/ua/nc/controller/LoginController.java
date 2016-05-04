@@ -139,6 +139,26 @@ public class LoginController implements HandlerExceptionResolver {
         return "redirect:/login?photo=success";
     }
 
+    @RequestMapping(value = {"/passwordRecovery"}, method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public JSONResponse recoverPassword(@RequestBody User user) {
+        JSONResponse jsonResponse = new JSONResponse();
+        Validator validator = new RegistrationValidator();
+        Set<ValidationError> errors = validator.validate(user);
+        jsonResponse.setErrors(errors);
+        UserService userService = new UserServiceImpl();
+        User updatedUser = userService.recoverPassword(user);
+        if (errors.isEmpty()) {
+            if (updatedUser == null || updatedUser.getEmail() == null
+                    && user.getPassword() == null) {
+                log.warn("Password recovery failed " + user.getEmail());
+                errors.add(new ValidationError("password", "Recovery failed"));
+            }
+        }
+        return jsonResponse;
+    }
+
+
 
 //    @RequestMapping(value = "/stuff/{stuffId}", method = RequestMethod.GET)
 //    public ResponseEntity<InputStreamResource> downloadStuff(@PathVariable int stuffId)

@@ -9,4 +9,6 @@ public interface UserService {
     User getUser(String email);
 
     User createUser(User user);
+
+    User recoverPassword(User user);
 }
