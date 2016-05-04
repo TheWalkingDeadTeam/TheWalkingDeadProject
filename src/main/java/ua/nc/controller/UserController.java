@@ -59,6 +59,7 @@ public class UserController {
             log.warn("User  pass word can't be changed ");
             errors.add(new ValidationError("userPassword", "Pass change error"));
         }
+        System.out.println(errors.size());
         return errors;
     }
 

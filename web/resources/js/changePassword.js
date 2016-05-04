@@ -3,6 +3,8 @@
  */
 
 
+
+
 $(document).ready(function () {
     
     $("#buttonChangePassword").click(function () {
@@ -16,10 +18,10 @@ $(document).ready(function () {
                 password: $('#changePassword').val()
             }),
             success: function (response) {
-                if (response.errors.length) {
+                if (response.length) {
                     var errors_out = "";
-                    for (var i in response.errors) {
-                        errors_out += response.errors[i].errorMessage + "</br>"
+                    for (var i in response) {
+                        errors_out += response[i].errorMessage + "</br>"
                     }
                     $('#messageCheckPassword')
                         .removeClass()
@@ -32,11 +34,11 @@ $(document).ready(function () {
                     $('#messageCheckPassword')
                         .removeClass()
                         .empty();
-                    $('#messageRegistration')
+                    $('#messageCheckPassword')
                         .addClass('alert alert-success')
                         .html('Password changed successfully');
-
-                    window.location.href = window.location.href;
+                        console.log('Console');
+                   // window.location.href = window.location.href;
                 }
             },
             error: function (jqXHR, exception) {

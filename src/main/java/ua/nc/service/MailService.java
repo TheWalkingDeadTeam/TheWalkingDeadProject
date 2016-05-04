@@ -3,6 +3,7 @@ package ua.nc.service;
 import ua.nc.entity.Mail;
 import ua.nc.entity.User;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -26,4 +27,7 @@ public interface MailService {
     public List<Mail> getByHeaderMailTemplate(String header);
 
     public void massDelivery(String dateDelivery, final List<User> users, final Mail mail);
+
+    public void sendInterviewReminders(List<Date> interviewDates, int studentHours, int devHours, int hrHours,
+                                       int baHours, final Mail InterviewerMail, final Mail IntervieweeMail);
 }

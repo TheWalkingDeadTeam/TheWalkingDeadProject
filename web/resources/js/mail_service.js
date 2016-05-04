@@ -36,7 +36,7 @@ App.factory('MailService', ['$http', '$q', function($http, $q){
         },
 
         updateMail: function(mail, id){
-            return $http.put('http://localhost:8080/mails/'+id, mail)
+            return $http.post('http://localhost:8080/mails/'+id, mail)
                 .then(
                     function(response){
                         return response.data;
