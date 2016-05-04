@@ -31,15 +31,15 @@
 <body ng-app="myApp" class="ng-cloak">
 <div class="generic-container" ng-controller="MailController as ctrl">
     <div class="panel panel-default">
-        <div class="panel-heading"><span class="lead">Mail Registration Form </span></div>
+        <div class="panel-heading"><span class="lead">Mail Template Form </span></div>
         <div class="formcontainer">
             <form ng-submit="ctrl.submit()" name="myForm" class="form-horizontal">
                 <input type="hidden" ng-model="ctrl.mail.id" />
                 <div class="row">
                     <div class="form-group col-md-12">
-                        <label class="col-md-2 control-lable" for="file">Name</label>
+                        <label class="col-md-2 control-lable" for="file">Mail Header</label>
                         <div class="col-md-7">
-                            <input type="text" ng-model="ctrl.mail.headTemplate" name="mhead" class="mailhead form-control input-sm" placeholder="Enter your name" required ng-minlength="3"/>
+                            <input type="text" ng-model="ctrl.mail.headTemplate" name="mhead" class="mailhead form-control input-sm" placeholder="Enter mail2 header" required ng-minlength="3"/>
                             <div class="has-error" ng-show="myForm.$dirty">
                                 <span ng-show="myForm.mhead.$error.required">This is a required field</span>
                                 <span ng-show="myForm.mhead.$error.minlength">Minimum length required is 3</span>
@@ -54,7 +54,7 @@
                     <div class="form-group col-md-12">
                         <label class="col-md-2 control-lable" for="file">Mail Body</label>
                         <div class="col-md-7">
-                            <input type="text" ng-model="ctrl.mail.bodyTemplate" class="form-control input-sm" placeholder="Enter your Address. [This field is validation free]"/>
+                            <input type="text" ng-model="ctrl.mail.bodyTemplate" class="form-control input-sm" placeholder="Enter mail body"/>
                         </div>
                     </div>
                 </div>
