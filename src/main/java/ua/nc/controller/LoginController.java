@@ -72,6 +72,7 @@ public class LoginController implements HandlerExceptionResolver {
     public
     @ResponseBody
     JSONResponse authentication(@RequestBody User user) {
+
         JSONResponse jsonResponse = new JSONResponse();
         Set<ValidationError> errors = new LinkedHashSet<>();
         jsonResponse.setErrors(errors);
@@ -97,10 +98,13 @@ public class LoginController implements HandlerExceptionResolver {
     @ResponseBody
     JSONResponse registerUser(@RequestBody User user) {
         JSONResponse jsonResponse = new JSONResponse();
+        System.out.println("REGISTRATION");
         Validator validator = new RegistrationValidator();
         Set<ValidationError> errors = validator.validate(user);
         jsonResponse.setErrors(errors);
+        System.out.println("Bofore if");
         if (errors.isEmpty()) {
+            System.out.println("In if");
             if (userService.getUser(user.getEmail()) == null) {
                 User registeredUser = userService.createUser(user);
                 if (registeredUser == null) {

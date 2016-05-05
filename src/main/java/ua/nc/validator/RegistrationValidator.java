@@ -1,5 +1,7 @@
 package ua.nc.validator;
 
+import ua.nc.dao.enums.UserRoles;
+import ua.nc.entity.Role;
 import ua.nc.entity.User;
 
 import java.util.LinkedHashSet;
@@ -57,6 +59,23 @@ public class RegistrationValidator implements Validator {
         } else {
             errors.add(new ValidationError("password", "Password shouldn't be empty"));
         }
+        if (!(user.getRoles() != null && user.getRoles().isEmpty()))
+        for(Role role : user.getRoles()) {
+            if (!(contains(role.getName()))) {
+                errors.add(new ValidationError("roles", "Role not exist "));
+            }
+        } else {
+            errors.add(new ValidationError("roles", "No roles "));
+        }
+
         return errors;
     }
+    private Boolean contains(String string) {
+        for(UserRoles userRole : UserRoles.values()) {
+            if (userRole.name().equals(string))
+                return true;
+        }
+        return false;
+    }
 }
+

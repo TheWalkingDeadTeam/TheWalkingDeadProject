@@ -43,9 +43,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(User user) {
+        System.out.println("Create user service");
         Connection connection = daoFactory.getConnection();
         UserDAO userDAO = daoFactory.getUserDAO(connection);
         RoleDAO roleDAO = daoFactory.getRoleDAO(connection);
+        System.out.println("Create user service after dao");
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         user.setPassword(encoder.encode(user.getPassword()));
         Set<Role> roles = new HashSet<>();
@@ -54,7 +56,9 @@ public class UserServiceImpl implements UserService {
                 roles.add(roleDAO.findByName(role.getName()));
             }
             user.setRoles(roles);
+            System.out.println("Before creation");
             userDAO.createUser(user,user.getRoles());
+            System.out.println("After creation");
             //roleDAO.setRoleToUser(user.getRoles(), user);
             mailService.sendMail(user.getEmail(), "Registration", "Welcome " + user.getName() + " ! \n NetCracker[TheWalkingDeadTeam] ");
             return user;
@@ -64,7 +68,6 @@ public class UserServiceImpl implements UserService {
         } finally {
             daoFactory.putConnection(connection);
         }
-
 
     }
 
