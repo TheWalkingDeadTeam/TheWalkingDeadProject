@@ -5,8 +5,6 @@ import ua.nc.dao.*;
 import ua.nc.dao.enums.DataBaseType;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.dao.factory.DAOFactory;
-import ua.nc.dao.postgresql.PostgreApplicationDAO;
-import ua.nc.dao.postgresql.profile.PostgreFieldValueDAO;
 import ua.nc.entity.Application;
 import ua.nc.entity.CES;
 import ua.nc.entity.profile.*;
@@ -24,16 +22,14 @@ import java.util.List;
  */
 public class ProfileServiceImpl implements ProfileService {
     private DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
-    private FieldDAO fieldDAO;
-    private GenericDAO<FieldType, Integer> fieldTypeDAO;
-    private FieldValueDAO fieldValueDAO;
-    private ListValueDAO listValueDAO;
-    private ApplicationDAO applicationDAO;
-    private CESDAO cesDAO;
 
     @Override
     public Profile getProfile(UserDetailsImpl userDetails, int cesId) throws DAOException {
         Connection connection = daoFactory.getConnection();
+        FieldDAO fieldDAO = daoFactory.getFieldDAO(connection);
+        FieldTypeDAO fieldTypeDAO = daoFactory.getFieldTypeDAO(connection);
+        FieldValueDAO fieldValueDAO = daoFactory.getFieldValueDAO(connection);
+        ListValueDAO listValueDAO = daoFactory.getListValueDAO(connection);
         boolean flagApplied = isApplied(userDetails.getId(), cesId);
         Profile result = new Profile();
         List<ProfileField> profileFields = new ArrayList<>();
@@ -92,6 +88,11 @@ public class ProfileServiceImpl implements ProfileService {
             profileFields.add(profileField);
         }
         result.setFields(profileFields);
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return result;
     }
 
@@ -137,7 +138,14 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     private boolean isApplied(int userId, int cesId) throws DAOException {
+        Connection connection = daoFactory.getConnection();
+        ApplicationDAO applicationDAO = daoFactory.getApplicationDAO(connection);
         Application resultSet = applicationDAO.getApplicationByUserCES(userId, cesId);
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         if (resultSet == null){
             return false;
         } else {
@@ -150,10 +158,10 @@ public class ProfileServiceImpl implements ProfileService {
         Connection connection = daoFactory.getConnection();
         try {
             connection.setAutoCommit(false);
-            applicationDAO = new PostgreApplicationDAO(connection);
+            ApplicationDAO applicationDAO = daoFactory.getApplicationDAO(connection);
+            FieldValueDAO fieldValueDAO = daoFactory.getFieldValueDAO(connection);
             Application application = applicationDAO.create(new Application(userId, cesId));
             List<FieldValue> fieldValues = parseProfile(application.getId(), profile);
-            fieldValueDAO = new PostgreFieldValueDAO(connection);
             for (FieldValue fieldValue : fieldValues) {
                 fieldValueDAO.create(fieldValue);
             }
@@ -173,7 +181,8 @@ public class ProfileServiceImpl implements ProfileService {
         Connection connection = daoFactory.getConnection();
         try {
             connection.setAutoCommit(false);
-            applicationDAO = new PostgreApplicationDAO(connection);
+            ApplicationDAO applicationDAO = daoFactory.getApplicationDAO(connection);
+            FieldValueDAO fieldValueDAO = daoFactory.getFieldValueDAO(connection);
             Application application = applicationDAO.getApplicationByUserCES(userId, cesId);
             List<FieldValue> fieldValues = parseProfile(application.getId(), profile);
             List<Integer> multipleFields = new ArrayList<>();
@@ -204,6 +213,8 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public void setProfile(UserDetailsImpl userDetails, Profile profile) throws DAOException {
+        Connection connection = daoFactory.getConnection();
+        CESDAO cesDAO = daoFactory.getCESDAO(connection);
         CES ces = cesDAO.getCurrentCES();
         if (isApplied(userDetails.getId(), ces.getId())){
             updateProfile(profile, userDetails.getId(), ces.getId());
