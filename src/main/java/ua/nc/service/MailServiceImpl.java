@@ -32,13 +32,17 @@ import java.util.Properties;
 @Service("mailService")
 public class MailServiceImpl implements MailService {
     private static final Logger LOGGER = Logger.getLogger(MailServiceImpl.class);
-    private static final int MILLIS_PER_HOUR = 1000 * 60 * 60;
     private DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
     private MailDAO mailDAO = daoFactory.getMailDAO(daoFactory.getConnection());
     private static ThreadPoolTaskScheduler scheduler;
     private static ThreadPoolTaskScheduler schedulerMassDeliveryService;
     private static final int POOL_SIZE = 2;
     private static final int POOL_SIZE_SCHEDULER = 10;
+    private static final int MILLIS_PER_HOUR = 1000 * 60 * 60;
+    private static final int MILLIS_PER_DAY = MILLIS_PER_HOUR * 24;
+    private static final int MINUTES_PER_HOUR = 60;
+    private static final int INTERVIEWERS_PER_STUDENT = 2;
+
 
     static {
         scheduler = new ThreadPoolTaskScheduler();
@@ -258,6 +262,57 @@ public class MailServiceImpl implements MailService {
         mailProperties.put("mail.smtp.starttls.enable", "true");
         mailProperties.put("mail.smtp.debug", "true");
         return mailProperties;
+    }
+
+
+    @Override
+    public void sendInterviewReminders(List<Date> interviewDates, int reminderTime, Mail interviewerMail,
+                                       Mail studentsMail, List<User> interviewersList, List<User> studentsList) {
+        int reminderMillis = reminderTime * MILLIS_PER_HOUR;
+        int studentsPerDay = studentsList.size() / interviewDates.size() + 1;
+        int todaysFirstStudent = 0;
+        int todaysLastStudent = studentsPerDay;
+
+        for (Date interviewDate : interviewDates) {
+            List<User> todayStudents = studentsList.subList(todaysFirstStudent, Math.min(todaysLastStudent,
+                    studentsList.size()));
+            todaysFirstStudent = todaysLastStudent;
+            todaysLastStudent += studentsPerDay;
+            massDelivery(new Date(interviewDate.getTime() + reminderMillis).toString(), interviewersList,
+                    interviewerMail);
+            massDelivery(new Date(interviewDate.getTime() + reminderMillis).toString(), todayStudents, studentsMail);
+        }
+    }
+
+    @Override
+    public Date planSchedule(int hoursPerDay, Mail interviewerMail, Mail studentsMail) {
+        //stub,later should pull from DAO,not implemented yet
+        Date startDate = new Date();
+        //stub,later should pull from DAO,not implemented yet
+        int timePerStudent = 10;
+        //stub,later should pull from DAO,not implemented yet
+        int reminderTime = 24;
+        //stub,later should pull from DAO,not implemented yet
+        List<User> interviewersList = new ArrayList<>();
+        //stub,later should pull from DAO,not implemented yet
+        List<User> studentsList = new ArrayList<>();
+
+        int studentsAmount = studentsList.size();
+        int interviewersAmount = interviewersList.size();
+        Date endDate = new Date(startDate.getTime() + studentsAmount / (MINUTES_PER_HOUR / timePerStudent * hoursPerDay)
+                / interviewersAmount * INTERVIEWERS_PER_STUDENT);
+
+        List<Date> interviewDates = new ArrayList<>();
+        interviewDates.add(startDate);
+        long currentTime = startDate.getTime();
+        while (currentTime < endDate.getTime()) {
+            currentTime += MILLIS_PER_DAY;
+            interviewDates.add(startDate);
+        }
+
+        sendInterviewReminders(interviewDates, reminderTime, interviewerMail, studentsMail, interviewersList,
+                studentsList);
+        return endDate;
     }
 
 
