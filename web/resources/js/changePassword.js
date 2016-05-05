@@ -1,12 +1,21 @@
-/**
+    /**
  * Created by Alexander on 30.04.2016.
  */
-
-
-
-
 $(document).ready(function () {
-    
+    function ValidateForm() {
+        var elem = $('#password');
+        var innerText = elem.val();
+
+        if (!/^.{6,32}$/.test(innerText)) {
+            errorMsg = errorMsg + 'Password should have from 6 to 32 symbols';
+        }
+
+        $('.correct-password').text(errorMsg);
+        errorMsg = '';
+    }
+
+    $('.form-control').bind('input', ValidateForm);
+
     $("#buttonChangePassword").click(function () {
         event.preventDefault();
         $.ajax({
@@ -29,7 +38,7 @@ $(document).ready(function () {
                     $('#messageCheckPassword')
                         .addClass('alert alert-danger')
                         .html(errors_out);
-                    $('#password').val("");
+                    $('#changePassword').val("");
                 } else {
                     $('#messageCheckPassword')
                         .removeClass()
@@ -37,8 +46,7 @@ $(document).ready(function () {
                     $('#messageCheckPassword')
                         .addClass('alert alert-success')
                         .html('Password changed successfully');
-                        console.log('Console');
-                   // window.location.href = window.location.href;
+                    $('#changePassword').val("");
                 }
             },
             error: function (jqXHR, exception) {

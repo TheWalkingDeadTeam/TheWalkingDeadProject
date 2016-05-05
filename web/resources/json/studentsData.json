@@ -1,0 +1,19 @@
+[
+  {
+    "id": 1,
+    "name": "Abc",
+    "surname" : "Ogurchik",
+    "isActive": "1",
+    "university": "KPI",
+    "devMark": 10,
+    "hrMark": 5,
+    "color": "blue"
+  },
+  {
+    "id": 1,
+    "name": "Abc",
+    "surname" : "Ogurchik",
+    "isActive": "1",
+    "role" : "Admin"
+  }
+]

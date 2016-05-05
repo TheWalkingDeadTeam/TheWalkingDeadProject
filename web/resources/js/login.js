@@ -14,10 +14,10 @@ $(document).ready(function () {
                 password: $('#j_password').val(),
             }),
             success: function (response) {
-                if (response.errors.length) {
+                if (response.length) {
                     var errors_out = "";
-                    for (var i in response.errors) {
-                        errors_out += response.errors[i].errorMessage + "</br>"
+                    for (var i in response) {
+                        errors_out += response[i].errorMessage + "</br>"
                     }
                     $('#messageRegistration')
                         .removeClass()

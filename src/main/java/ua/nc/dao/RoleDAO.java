@@ -15,4 +15,5 @@ public abstract class RoleDAO {
     public abstract Set<Role> findByEmail(String email) throws DAOException;
 
     public abstract void setRoleToUser(Set<Role> roles, User user) throws DAOException;
+
 }

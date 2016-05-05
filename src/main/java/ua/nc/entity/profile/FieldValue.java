@@ -9,15 +9,15 @@ public class FieldValue  {
     private int fieldID;
     private int applicationID;
     private String valueText;
-    private double valueDouble;
+    private Double valueDouble;
     private Date valueDate;
-    private int listValueID;
+    private Integer listValueID;
 
-    public int getListValueID() {
+    public Integer getListValueID() {
         return listValueID;
     }
 
-    public void setListValueID(int listValueID) {
+    public void setListValueID(Integer listValueID) {
         this.listValueID = listValueID;
     }
 
@@ -45,11 +45,11 @@ public class FieldValue  {
         this.valueText = valueText;
     }
 
-    public double getValueDouble() {
+    public Double getValueDouble() {
         return valueDouble;
     }
 
-    public void setValueDouble(double valueDouble) {
+    public void setValueDouble(Double valueDouble) {
         this.valueDouble = valueDouble;
     }
 
@@ -61,7 +61,7 @@ public class FieldValue  {
         this.valueDate = valueDate;
     }
 
-    public FieldValue(int fieldID ,int applicationID, String valueText, double valueDouble, Date valueDate, int listValueID){
+    public FieldValue(int fieldID ,int applicationID, String valueText, Double valueDouble, Date valueDate, Integer listValueID){
         this.fieldID = fieldID;
         this.applicationID = applicationID;
         this.valueText = valueText;
