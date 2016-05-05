@@ -1,6 +1,6 @@
 package ua.nc.entity;
 
-import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -9,17 +9,17 @@ import java.util.List;
 public class CES implements Identified<Integer>{
     private Integer id;
     private Integer year;
-    private Calendar startRegistrationDate;
-    private Calendar endRegistrationDate;
-    private Calendar startInterviewingDate;
-    private Calendar endInterviewingDate;
+    private Date startRegistrationDate;
+    private Date endRegistrationDate;
+    private Date startInterviewingDate;
+    private Date endInterviewingDate;
     private Integer quota;
     private Integer reminders;
     private Integer statusId;
     private Integer interviewTimeForPerson;
     private Integer interviewTimeForDay;
 
-    public CES(Integer year, Calendar startRegistrationDate, Calendar endRegistrationDate, Integer quota, Integer reminders, Integer statusId,
+    public CES(Integer year, Date startRegistrationDate, Date endRegistrationDate, Integer quota, Integer reminders, Integer statusId,
                Integer interviewTimeForPerson, Integer interviewTimeForDay){
         this.year = year;
         this.startRegistrationDate = startRegistrationDate;
@@ -47,35 +47,35 @@ public class CES implements Identified<Integer>{
         this.year = year;
     }
 
-    public Calendar getStartRegistrationDate() {
+    public Date getStartRegistrationDate() {
         return startRegistrationDate;
     }
 
-    public void setStartRegistrationDate(Calendar startRegistrationDate) {
+    public void setStartRegistrationDate(Date startRegistrationDate) {
         this.startRegistrationDate = startRegistrationDate;
     }
 
-    public Calendar getEndRegistrationDate() {
+    public Date getEndRegistrationDate() {
         return endRegistrationDate;
     }
 
-    public void setEndRegistrationDate(Calendar endRegistrationDate) {
+    public void setEndRegistrationDate(Date endRegistrationDate) {
         this.endRegistrationDate = endRegistrationDate;
     }
 
-    public Calendar getStartInterviewingDate() {
+    public Date getStartInterviewingDate() {
         return startInterviewingDate;
     }
 
-    public void setStartInterviewingDate(Calendar startInterviewingDate) {
+    public void setStartInterviewingDate(Date startInterviewingDate) {
         this.startInterviewingDate = startInterviewingDate;
     }
 
-    public Calendar getEndInterviewingDate() {
+    public Date getEndInterviewingDate() {
         return endInterviewingDate;
     }
 
-    public void setEndInterviewingDate(Calendar endInterviewingDate) {
+    public void setEndInterviewingDate(Date endInterviewingDate) {
         this.endInterviewingDate = endInterviewingDate;
     }
 
