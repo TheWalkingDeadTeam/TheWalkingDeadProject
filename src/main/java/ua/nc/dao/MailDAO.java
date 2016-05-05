@@ -15,7 +15,7 @@ public interface MailDAO {
 
     Mail get(Integer id) throws DAOException;
 
-    Mail update(Mail entity) throws DAOException;
+    void update(Mail entity) throws DAOException;
 
     void delete(Mail entity) throws DAOException;
 

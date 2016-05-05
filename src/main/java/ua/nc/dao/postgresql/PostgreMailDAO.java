@@ -2,6 +2,7 @@ package ua.nc.dao.postgresql;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
+import ua.nc.dao.AbstractPostgreDAO;
 import ua.nc.dao.MailDAO;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.entity.Mail;
@@ -14,7 +15,7 @@ import java.util.List;
  * Created by Alexander on 22.04.2016.
  */
 @Repository
-public class PostgreMailDAO implements MailDAO {
+public class PostgreMailDAO  extends AbstractPostgreDAO<Mail,Integer> implements MailDAO{
 
     private static final Logger LOGGER = Logger.getLogger(PostgreMailDAO.class);
 
@@ -39,11 +40,10 @@ public class PostgreMailDAO implements MailDAO {
 
     private PreparedStatement preparedStatement;
     private ResultSet rs;
-    private final Connection connection;
 
 
     public PostgreMailDAO(Connection connection) {
-        this.connection = connection;
+        super(connection);
     }
 
     /**
@@ -119,6 +119,46 @@ public class PostgreMailDAO implements MailDAO {
     }
 
     @Override
+    public String getSelectQuery() {
+        return null;
+    }
+
+    @Override
+    public String getCreateQuery() {
+        return null;
+    }
+
+    @Override
+    public String getUpdateQuery() {
+        return null;
+    }
+
+    @Override
+    public String getAllQuery() {
+        return null;
+    }
+
+    @Override
+    protected List<Mail> parseResultSet(ResultSet rs) throws DAOException {
+        return null;
+    }
+
+    @Override
+    protected void prepareStatementForInsert(PreparedStatement statement, Mail object) throws DAOException {
+
+    }
+
+    @Override
+    protected void prepareStatementForUpdate(PreparedStatement statement, Mail object) throws DAOException {
+
+    }
+
+    @Override
+    protected void prepareStatementForSelect(PreparedStatement statement, Mail object) throws DAOException {
+
+    }
+
+    @Override
     public Mail persist(Mail object) throws DAOException {
         return null;
     }
@@ -155,11 +195,6 @@ public class PostgreMailDAO implements MailDAO {
                 throw new DAOException(e);
             }
         }
-    }
-
-    @Override
-    public List<Mail> getAll() throws DAOException {
-        return null;
     }
 
 

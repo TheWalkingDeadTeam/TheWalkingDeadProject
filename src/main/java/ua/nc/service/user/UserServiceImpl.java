@@ -80,12 +80,16 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public void changePassword(User user, String password) {
+        Connection connection = daoFactory.getConnection();
+        UserDAO userDAO = daoFactory.getUserDAO(connection);
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         user.setPassword(encoder.encode(password));
         try {
             userDAO.updateUser(user);
         } catch (DAOException e) {
             System.out.println("User password has not been modified");
+        } finally {
+            daoFactory.putConnection(connection);
         }
     }
 }

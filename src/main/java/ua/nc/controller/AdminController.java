@@ -26,6 +26,9 @@ import java.util.Set;
 /**
  * Created by Pavel on 18.04.2016.
  */
+/**
+ * Created by Pavel on 18.04.2016.
+ */
 @Controller
 @RequestMapping(value = "/admin")
 public class AdminController {
@@ -122,8 +125,8 @@ public class AdminController {
 
 
     @RequestMapping(value = "/students/{id}", method = RequestMethod.GET, produces = "application/json")
-    public String getStudentById(@ModelAttribute("id") Integer id) {
-        return "redirect:/profile/" + id;
+    public String getStudentById(@PathVariable("id") Integer id) {
+        return "redirect:/profile?" + id;
     }
 
     /**

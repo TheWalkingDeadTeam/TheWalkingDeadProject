@@ -31,6 +31,7 @@ public class PostgreUserDAO extends AbstractPostgreDAO<User, Integer> implements
     private final String FIND_BY_EMAIL = "SELECT * FROM public.user u WHERE u.email = ?";
     private final String CREATE_USER = "INSERT INTO public.user(name, email, password) VALUES (?, ?, ?)";
     private final String SET_ROLE_TO_USER = "INSERT INTO public.user_role(role_id, user_id) SELECT ?, user_id FROM public.user u WHERE u.email=?";
+    private static final String SQL_UPDATE_USER = "UPDATE public.user SET password = ? WHERE user_id = ?";
 
     @Override
     public User findByEmail(String email) throws DAOException {
@@ -187,12 +188,31 @@ public class PostgreUserDAO extends AbstractPostgreDAO<User, Integer> implements
     }
 
     /**
-     * @param email
-     * @return
+     * Updates user with new password
+     * @param user
      * @throws DAOException
      */
-
-
-
-
+    @Override
+    public void updateUser(User user) throws DAOException {
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+            statement = connection.prepareStatement(SQL_UPDATE_USER);
+            statement.setString(1, user.getPassword());
+            statement.setInt(2, user.getId());
+            statement.executeUpdate();
+        } catch (SQLException e){
+            System.out.println("User:" + user.getName() + "  not updated");
+            throw  new DAOException(e);
+        }finally {
+            try {
+                if (resultSet != null)
+                    resultSet.close();
+                if (statement != null)
+                    statement.close();
+            } catch (Exception e) {
+                throw new DAOException(e);
+            }
+        }
+    }
 }

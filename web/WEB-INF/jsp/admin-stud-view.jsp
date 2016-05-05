@@ -153,8 +153,8 @@
                 <tr ng-repeat="ch in students | orderBy:sortType:sortReverse | filter:searchFilt">
                     <td><input type="checkbox" checklist-model="dataStudents.studId" checklist-value="ch.id"></td>
                     <td ng-init="index=$index + 1">{{index}}</td>
-                    <td><a href="/profile/{{ch.id}}" target="_blanks">{{ch.name}}</a></td>
-                    <td><a href="/profile/{{ch.id}}" target="_blanks">{{ch.surname}}</a></td>
+                    <td><a href="/admin/students/{{ch.id}}" target="_blanks">{{ch.name}}</a></td>
+                    <td><a href="/admin/students/{{ch.id}}" target="_blanks">{{ch.surname}}</a></td>
                     <td>{{ch.university}}</td>
                     <td>{{ch.devMark}}</td>
                     <td>{{ch.hrMark}}</td>
