@@ -14,11 +14,11 @@ $( document ).ready(function() {
     });
     //popup
     // -------------------------------------------------------------------------------validation
-    $('.form-control').bind('input', ValidateForm);
+    $('.form-control').bind('input', ValidateRecoveryForm);
     // binding
 
 
-    function ValidateForm(){
+    function ValidateRecoveryForm(){
         var elem = $(this);
         var innerText = elem.val();
         var errorMsg = '';

@@ -67,20 +67,16 @@ public class LoginController implements HandlerExceptionResolver {
         return new ModelAndView("redirect:/login");
     }
 
-    private final UserService userService = new UserServiceImpl();
-
     @RequestMapping(value = {"/", "/login"}, method = RequestMethod.GET)
     public String login() {
         return "login";
     }
 
     @RequestMapping(value = "/security_check ", method = RequestMethod.POST, produces = "application/json")
-    @ResponseBody
     public
     @ResponseBody
     Set<ValidationError> authentication(@RequestBody User user) {
         Set<ValidationError> errors = new LinkedHashSet<>();
-        jsonResponse.setErrors(errors);
         UserDetailsService userDetailsService = new UserDetailsServiceImpl();
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
         try {
@@ -104,7 +100,6 @@ public class LoginController implements HandlerExceptionResolver {
     Set<ValidationError> registerUser(@RequestBody User user) {
         Validator validator = new RegistrationValidator();
         Set<ValidationError> errors = validator.validate(user);
-        jsonResponse.setErrors(errors);
         if (errors.isEmpty()) {
             if (userService.getUser(user.getEmail()) == null) {
                 User registeredUser = userService.createUser(user);
@@ -145,11 +140,9 @@ public class LoginController implements HandlerExceptionResolver {
 
     @RequestMapping(value = {"/passwordRecovery"}, method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    public JSONResponse recoverPassword(@RequestBody User user) {
-        JSONResponse jsonResponse = new JSONResponse();
+    public Set<ValidationError> recoverPassword(@RequestBody User user) {
         Validator validator = new RegistrationValidator();
         Set<ValidationError> errors = validator.validate(user);
-        jsonResponse.setErrors(errors);
         UserService userService = new UserServiceImpl();
         User updatedUser = userService.recoverPass(user);
         if (errors.isEmpty()) {
@@ -159,7 +152,7 @@ public class LoginController implements HandlerExceptionResolver {
                 errors.add(new ValidationError("password", "Recovery failed"));
             }
         }
-        return jsonResponse;
+        return errors;
     }
 
 
@@ -180,12 +173,7 @@ public class LoginController implements HandlerExceptionResolver {
 //    }
 
 
-    private class JSONResponse {
-        private Set<ValidationError> errors;
 
-        public Set<ValidationError> getErrors() {
-            return errors;
-        }
 
     @ResponseBody
     @RequestMapping(value = "/getPhoto")

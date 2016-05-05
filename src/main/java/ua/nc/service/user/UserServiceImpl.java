@@ -74,7 +74,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void changePassword(User user, String password) {
+        Connection connection = daoFactory.getConnection();
+        UserDAO userDAO = daoFactory.getUserDAO(connection);
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        user.setPassword(encoder.encode(password));
+        try {
+            userDAO.updateUser(user);
+        } catch (DAOException e) {
+            System.out.println("User password has not been modified");
+        } finally {
+            daoFactory.putConnection(connection);
+        }
+    }
+
+    @Override
     public User recoverPass(User user) {
+        Connection connection = daoFactory.getConnection();
+        UserDAO userDAO = daoFactory.getUserDAO(connection);
         String testPassword = RandomStringUtils.randomAlphanumeric(10);
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         try {
@@ -85,6 +102,8 @@ public class UserServiceImpl implements UserService {
         } catch (DAOException e) {
             System.out.println("DB exception"); //toDo log4j
             return null;
+        } finally {
+            daoFactory.putConnection(connection);
         }
     }
 }

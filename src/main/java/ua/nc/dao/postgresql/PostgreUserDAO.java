@@ -216,8 +216,5 @@ public class PostgreUserDAO extends AbstractPostgreDAO<User, Integer> implements
         }
     }
 
-    @Override
-    public User updateUser(User user) throws DAOException {
-        return user;
-    }
+
 }

@@ -47,7 +47,7 @@
 
 
 <div class="content container">
-    <div class="registration">
+    <div class="reg registration">
         <div class="layout"></div>
         <sec:authorize access="!isAuthenticated()">
             <form id="user">
@@ -74,9 +74,9 @@
         </sec:authorize>
     </div>
 
-    <div class="recovery registration">
+  <%--  <div class="recovery">
         <div class="layout"></div>
-        <sec:authorize access="!isAuthenticated()" url="/passwordRecovery">
+        <sec:authorize access="!isAuthenticated()">
             <form id="stupidUser" action="/passwordRecovery">
                 <div id="passwordRecovery"></div>
                 <div class="row container-fluid recovery-head">
@@ -92,7 +92,7 @@
                 <button id="buttonRecoverPassword" class="btn btn-lg btn-primary btn-block">Send request</button>
             </form>
         </sec:authorize>
-    </div>
+    </div>--%>
 
     <div class="row">
 
@@ -131,9 +131,7 @@
                     <p><img id = "photo_img" src="/getPhoto" alt="User's photo" width = "100" height = "100" onError="this.src='/resources/images/user-photo.png'"/></p>
                 </div>
                 <p><a id="buttonLogout" class="btn btn-lg btn-danger" href="/logout" role="button">Logout</a></p>
-                <p>
-                    <a id="buttonLogout" class="btn btn-lg btn-danger" href="/logout" role="button">Logout</a>
-                </p>
+
             </sec:authorize>
         </div>
         <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
@@ -188,5 +186,5 @@
 <script src="/resources/js/logout.js"></script>
 <script src="/resources/bootstrap/js/bootstrap.js"></script>
 <script src="/resources/js/registration.js"></script>
-<script src="/resources/js/passwordRecovery.js"></script>
+<%--<script src="/resources/js/passwordRecovery.js"></script>--%>
 </html>
