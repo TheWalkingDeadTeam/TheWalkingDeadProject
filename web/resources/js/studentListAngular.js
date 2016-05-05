@@ -17,7 +17,7 @@ studentView.config(['$routeProvider',
 var phonecatControllers = angular.module('phonecatControllers', []);
 
 
-phonecatControllers.controller("StudentCtrl", ["$scope", "$http","$rootElement", function ($scope, $http,$rootElement) {
+phonecatControllers.controller("StudentCtrl", ["$scope", "$http", "$rootElement", function ($scope, $http, $rootElement) {
     // $http.get('resources/json/studentsData.json').success(function (data) {
     //     $scope.interviewer = data;
     // });
@@ -108,7 +108,7 @@ phonecatControllers.controller("StudentCtrl", ["$scope", "$http","$rootElement",
     $scope.searchFiltr = function () {
         var dataObj = {
             type: "search",
-            values:[$scope.searchFilt]
+            values: [$scope.searchFilt]
         };
         var res = $http.post('students', dataObj);
         res.success(function (data, status, headers, config) {
@@ -119,7 +119,6 @@ phonecatControllers.controller("StudentCtrl", ["$scope", "$http","$rootElement",
         });
     }
 }]);
-
 
 
 it('should change state', function () {

@@ -3,7 +3,7 @@
  */
 $(document).ready(function () {
     $("#buttonSignIn").click(function () {
-        event.preventDefault(); 
+        event.preventDefault();
         $.ajax({
             type: 'post',
             url: '/security_check',

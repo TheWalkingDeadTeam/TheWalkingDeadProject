@@ -34,7 +34,7 @@ public class ProfileServiceImpl implements ProfileService {
         Profile result = new Profile();
         List<ProfileField> profileFields = new ArrayList<>();
         List<Field> fields = fieldDAO.getFieldsForCES(cesId);
-        for(Field field : fields){
+        for (Field field : fields) {
             ProfileField profileField = new ProfileField();
             profileField.setId(field.getId());
             profileField.setFieldName(field.getName());
@@ -42,8 +42,8 @@ public class ProfileServiceImpl implements ProfileService {
             profileField.setMultipleChoice(field.getMultipleChoice());
             profileField.setFieldType(fieldTypeDAO.read(field.getFieldTypeID()).getName());
             List<ProfileFieldValue> profileFieldValues = new ArrayList<>();
-            if(field.getListTypeID() == null){
-                if(!flagApplied){
+            if (field.getListTypeID() == null) {
+                if (!flagApplied) {
                     profileFieldValues.add(new ProfileFieldValue());
                     profileField.setValues(profileFieldValues);
                 } else {
@@ -64,7 +64,7 @@ public class ProfileServiceImpl implements ProfileService {
                 List<ListValue> listValues = listValueDAO.getAllListListValue(field.getListTypeID());
                 List<FieldValue> fieldValues = fieldValueDAO.getFieldValueByUserCESField(
                         userDetails.getId(), cesId, field.getId());
-                for (ListValue listValue : listValues){
+                for (ListValue listValue : listValues) {
                     ProfileFieldValue pfValue = new ProfileFieldValue();
                     pfValue.setId(listValue.getId().toString());
                     pfValue.setFieldValueName(listValue.getValueText());
@@ -76,7 +76,7 @@ public class ProfileServiceImpl implements ProfileService {
                                 matched = true;
                             }
                         }
-                        if (!matched){
+                        if (!matched) {
                             pfValue.setValue(Boolean.FALSE.toString());
                         }
                     } else {
@@ -122,11 +122,11 @@ public class ProfileServiceImpl implements ProfileService {
                 case "select":
                 case "checkbox":
                 case "radio":
-                    if (!profileField.getMultipleChoice()){
+                    if (!profileField.getMultipleChoice()) {
                         result.add(new FieldValue(profileField.getId(), applicationId, null,
                                 null, null, Integer.parseInt(profileField.getValues().get(0).getId())));
                     } else {
-                        for (ProfileFieldValue pfValue : profileField.getValues()){
+                        for (ProfileFieldValue pfValue : profileField.getValues()) {
                             result.add(new FieldValue(profileField.getId(), applicationId, null,
                                     null, null, Integer.parseInt(pfValue.getId())));
                         }
@@ -146,7 +146,7 @@ public class ProfileServiceImpl implements ProfileService {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        if (resultSet == null){
+        if (resultSet == null) {
             return false;
         } else {
             return true;
@@ -171,7 +171,7 @@ public class ProfileServiceImpl implements ProfileService {
                 connection.rollback();
                 connection.close();
             } catch (SQLException exp) {
-                throw  new DAOException(exp);
+                throw new DAOException(exp);
             }
             throw new DAOException(e);
         }
@@ -205,7 +205,7 @@ public class ProfileServiceImpl implements ProfileService {
                 connection.rollback();
                 connection.close();
             } catch (SQLException exp) {
-                throw  new DAOException(exp);
+                throw new DAOException(exp);
             }
             throw new DAOException(e);
         }
@@ -216,7 +216,7 @@ public class ProfileServiceImpl implements ProfileService {
         Connection connection = daoFactory.getConnection();
         CESDAO cesDAO = daoFactory.getCESDAO(connection);
         CES ces = cesDAO.getCurrentCES();
-        if (isApplied(userDetails.getId(), ces.getId())){
+        if (isApplied(userDetails.getId(), ces.getId())) {
             updateProfile(profile, userDetails.getId(), ces.getId());
         } else {
             createProfile(profile, userDetails.getId(), ces.getId());

@@ -1,5 +1,6 @@
 package ua.nc.dao.postgresql;
 
+import org.apache.log4j.Logger;
 import ua.nc.dao.*;
 import ua.nc.dao.enums.DataBaseType;
 import ua.nc.dao.exception.DAOException;
@@ -13,6 +14,7 @@ import java.sql.Connection;
  * Created by Pavel on 21.04.2016.
  */
 public class PostgreDAOFactory extends DAOFactory {
+    private final static Logger LOGGER = Logger.getLogger(PostgreDAOFactory.class);
     private static ConnectionPool connectionPool = ConnectionPool.getConnectionPool(DataBaseType.POSTGRESQL);
 
 
@@ -21,9 +23,9 @@ public class PostgreDAOFactory extends DAOFactory {
         Connection connection = null;
         try {
             connection = connectionPool.getConnection();
-            System.out.println("CONNECTION ESTABLISHED");
+            LOGGER.debug("CONNECTION ESTABLISHED");
         } catch (Exception e) {
-            System.out.println("GET CONNECTION");
+            LOGGER.debug("GET CONNECTION");
         }
         return connection;
     }
@@ -32,7 +34,7 @@ public class PostgreDAOFactory extends DAOFactory {
     public void putConnection(Connection connection) {
         try {
             connectionPool.putConnection(connection);
-        } catch (DAOException e){
+        } catch (DAOException e) {
 
         }
     }

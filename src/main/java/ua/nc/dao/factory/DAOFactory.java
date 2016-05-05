@@ -2,15 +2,7 @@ package ua.nc.dao.factory;
 
 import ua.nc.dao.*;
 import ua.nc.dao.enums.DataBaseType;
-import ua.nc.dao.exception.DAOException;
 import ua.nc.dao.postgresql.PostgreDAOFactory;
-import ua.nc.entity.CESStatus;
-import ua.nc.entity.Feedback;
-import ua.nc.entity.Interviewee;
-import ua.nc.entity.ReportTemplate;
-import ua.nc.entity.profile.FieldType;
-import ua.nc.entity.profile.ListType;
-import ua.nc.service.CESService;
 
 import java.sql.Connection;
 

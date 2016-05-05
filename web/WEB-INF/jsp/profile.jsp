@@ -90,7 +90,7 @@
         <%--</div>--%>
         <div id="fieldsCheck"></div>
         <button id="save" type="submit" form="fields" value="Submit" disabled="disabled">Save</button>
-        <button id="buttonEnroll" type="submit" value="Enroll" href="/enroll" >Enroll</button>
+        <button id="buttonEnroll" type="submit" value="Enroll" href="/enroll">Enroll</button>
     </sec:authorize>
 
 

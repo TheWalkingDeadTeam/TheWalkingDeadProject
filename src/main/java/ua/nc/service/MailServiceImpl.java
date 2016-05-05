@@ -32,12 +32,10 @@ import java.util.Properties;
 public class MailServiceImpl implements MailService {
     private static final Logger LOGGER = Logger.getLogger(MailServiceImpl.class);
     private static final int MILLIS_PER_HOUR = 1000 * 60 * 60;
-    private DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
-    private MailDAO mailDAO = daoFactory.getMailDAO(daoFactory.getConnection());
-    private static ThreadPoolTaskScheduler scheduler;
-    private static ThreadPoolTaskScheduler schedulerMassDeliveryService;
     private static final int POOL_SIZE = 2;
     private static final int POOL_SIZE_SCHEDULER = 10;
+    private static ThreadPoolTaskScheduler scheduler;
+    private static ThreadPoolTaskScheduler schedulerMassDeliveryService;
 
     static {
         scheduler = new ThreadPoolTaskScheduler();
@@ -47,6 +45,9 @@ public class MailServiceImpl implements MailService {
         scheduler.initialize();
         schedulerMassDeliveryService.initialize();
     }
+
+    private DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
+    private MailDAO mailDAO = daoFactory.getMailDAO(daoFactory.getConnection());
 
     public MailServiceImpl() {
 
@@ -67,9 +68,9 @@ public class MailServiceImpl implements MailService {
             mail.setHeadTemplate(header);
             mail.setBodyTemplate(body);
             Mail newCreated = mailDAO.create(mail);
-            System.out.println(newCreated.getId());
+            LOGGER.debug(newCreated.getId());
         } catch (DAOException e) {
-            LOGGER.error("Bad Happened", e);
+            LOGGER.warn("Mail not created ", e);
         }
         return mail;
     }
@@ -127,7 +128,7 @@ public class MailServiceImpl implements MailService {
                 try {
                     mailSender.send(message);
                 } catch (Exception e) {
-                    LOGGER.error("Failed to send", e);
+                    LOGGER.warn("Failed to send", e);
                 }
             }
         });
@@ -161,10 +162,10 @@ public class MailServiceImpl implements MailService {
                     }
 
                 } catch (Exception e) {
-                    LOGGER.error("Failed to send", e);
+                    LOGGER.warn("Failed to send email", e);
                 }
             }
-        }, new Date());
+        }, new Date(dateDelivery));
     }
 
     @Override

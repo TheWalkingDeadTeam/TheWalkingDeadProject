@@ -15,18 +15,8 @@ import java.util.List;
  * Created by Rangar on 02.05.2016.
  */
 public class PostgreReportTemplateDAO extends AbstractPostgreDAO<ReportTemplate, Integer> implements ReportTemplateDAO {
-    public PostgreReportTemplateDAO(Connection connection){
+    public PostgreReportTemplateDAO(Connection connection) {
         super(connection);
-    }
-
-    private class PersistReportTemplate extends ReportTemplate{
-        public PersistReportTemplate(String query, String name) {
-            super(query, name);
-        }
-
-        public void setId(int id) {
-            super.setId(id);
-        }
     }
 
     @Override
@@ -97,5 +87,15 @@ public class PostgreReportTemplateDAO extends AbstractPostgreDAO<ReportTemplate,
     @Override
     public ReportTemplate create(ReportTemplate object) throws DAOException {
         return persist(object);
+    }
+
+    private class PersistReportTemplate extends ReportTemplate {
+        public PersistReportTemplate(String query, String name) {
+            super(query, name);
+        }
+
+        public void setId(int id) {
+            super.setId(id);
+        }
     }
 }

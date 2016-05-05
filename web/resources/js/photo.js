@@ -6,7 +6,7 @@ $(document).ready(function () {
         event.preventDefault();
         var formData = new FormData();
         var photoData = $('input[type=file]')[0].files[0];
-        formData.append('photo',photoData);
+        formData.append('photo', photoData);
         $.ajax({
             url: '/uploadPhoto',
             type: 'post',
@@ -14,9 +14,9 @@ $(document).ready(function () {
             processData: false,
             contentType: false,
             dataType: 'json',
-            success: function(response){
+            success: function (response) {
 
-                if(response.length){
+                if (response.length) {
                     var errors_out = "";
                     for (var i in response) {
                         errors_out += response[i].errorMessage + "</br>"
@@ -25,16 +25,16 @@ $(document).ready(function () {
                         .addClass('alert alert-danger')
                         .html(errors_out);
                 }
-                else{
+                else {
                     $('#photoMessages').removeClass();
-                    $("#photo_img").attr('src','/getPhoto');
+                    $("#photo_img").attr('src', '/getPhoto');
                 }
             },
- /*           error: function(){
-                $('#photoMessages')
-                    .addClass('alert alert-danger')
-                    .html('No file specified');
-            }*/
+            /*           error: function(){
+             $('#photoMessages')
+             .addClass('alert alert-danger')
+             .html('No file specified');
+             }*/
             error: function (jqXHR, exception) {
                 console.log(exception)
             }

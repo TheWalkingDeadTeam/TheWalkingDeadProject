@@ -12,12 +12,16 @@ public class Interviewee implements Identified<Integer> {
     private Integer devFeedbackID;
     private Integer hrFeedbackID;
 
+    public Interviewee(int id) {
+        this.applicationID = id;
+    }
+
     @Override
     public Integer getId() {
         return applicationID;
     }
 
-    protected void setId(int id){
+    protected void setId(int id) {
         this.applicationID = id;
     }
 
@@ -51,9 +55,5 @@ public class Interviewee implements Identified<Integer> {
 
     public void setDevFeedbackID(Integer devFeedbackID) {
         this.devFeedbackID = devFeedbackID;
-    }
-
-    public Interviewee(int id){
-        this.applicationID = id;
     }
 }

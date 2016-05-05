@@ -15,22 +15,12 @@ import java.util.List;
  * Created by Rangar on 02.05.2016.
  */
 public class PostgreApplicationDAO extends AbstractPostgreDAO<Application, Integer> implements ApplicationDAO {
-    public  PostgreApplicationDAO(Connection connection){
-        super(connection);
-    }
-
-    private class PersistApplication extends Application{
-        public PersistApplication(int userID, int cesID) {
-            super(userID, cesID);
-        }
-
-        public void setId(int id) {
-            super.setId(id);
-        }
-    }
-
     public static final String getApplicationByUserCES = "SELECT * FROM Application WHERE system_user_id = ? AND ces_id = ?";
     public static final String getAllCESApplicationsQuery = "SELECT * FROM Application WHERE ces_id = ?";
+
+    public PostgreApplicationDAO(Connection connection) {
+        super(connection);
+    }
 
     @Override
     public String getSelectQuery() {
@@ -125,5 +115,15 @@ public class PostgreApplicationDAO extends AbstractPostgreDAO<Application, Integ
     @Override
     public Application create(Application object) throws DAOException {
         return persist(object);
+    }
+
+    private class PersistApplication extends Application {
+        public PersistApplication(int userID, int cesID) {
+            super(userID, cesID);
+        }
+
+        public void setId(int id) {
+            super.setId(id);
+        }
     }
 }

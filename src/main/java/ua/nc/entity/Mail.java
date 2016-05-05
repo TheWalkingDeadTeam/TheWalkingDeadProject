@@ -3,7 +3,7 @@ package ua.nc.entity;
 /**
  * Created by Alexander on 24.04.2016.
  */
-public class Mail implements Identified<Integer>{
+public class Mail implements Identified<Integer> {
     private Integer id;
     private String bodyTemplate;
     private String headTemplate;

@@ -12,15 +12,15 @@ import java.util.Set;
  */
 public class PhotoValidator implements Validator {
 
-    private final Set<String> PHOTO_TYPES = new HashSet<>(Arrays.asList(new String[]{"jpg","jpeg","png"}));
+    private final Set<String> PHOTO_TYPES = new HashSet<>(Arrays.asList(new String[]{"jpg", "jpeg", "png"}));
 
     @Override
     public Set<ValidationError> validate(Object obj) {
         Set<ValidationError> errors = new LinkedHashSet<>();
         MultipartFile photo = (MultipartFile) obj;
-        if (photo.isEmpty()){
-            errors.add(new ValidationError("photo","File is empty"));
-        }else {
+        if (photo.isEmpty()) {
+            errors.add(new ValidationError("photo", "File is empty"));
+        } else {
             String fileName = photo.getOriginalFilename();
             String[] splittedFileName = fileName.split("[,.]");
             if (!PHOTO_TYPES.contains(splittedFileName[splittedFileName.length - 1])) {

@@ -1,12 +1,11 @@
 package ua.nc.entity;
 
 import java.util.Calendar;
-import java.util.List;
 
 /**
  * Created by Ермоленко on 01.05.2016.
  */
-public class CES implements Identified<Integer>{
+public class CES implements Identified<Integer> {
     private Integer id;
     private Integer year;
     private Calendar startRegistrationDate;
@@ -20,7 +19,7 @@ public class CES implements Identified<Integer>{
     private Integer interviewTimeForDay;
 
     public CES(Integer year, Calendar startRegistrationDate, Calendar endRegistrationDate, Integer quota, Integer reminders, Integer statusId,
-               Integer interviewTimeForPerson, Integer interviewTimeForDay){
+               Integer interviewTimeForPerson, Integer interviewTimeForDay) {
         this.year = year;
         this.startRegistrationDate = startRegistrationDate;
         this.endRegistrationDate = endRegistrationDate;
@@ -116,7 +115,7 @@ public class CES implements Identified<Integer>{
         return id;
     }
 
-    protected void setId(int id){
+    protected void setId(int id) {
         this.id = id;
     }
 }

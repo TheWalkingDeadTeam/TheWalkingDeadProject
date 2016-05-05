@@ -2,7 +2,7 @@ $("#buttonRegistration").click(function () {
     var checkroles = [];
     $("input:checked").each(function () {
         checkroles.push({name: $(this).val()});    //toDO look after
-    }); 
+    });
     event.preventDefault();
     $.ajax({
         type: 'post',

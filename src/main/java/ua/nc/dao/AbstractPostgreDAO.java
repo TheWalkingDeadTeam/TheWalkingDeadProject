@@ -1,7 +1,7 @@
 package ua.nc.dao;
 
-import ua.nc.entity.Identified;
 import ua.nc.dao.exception.DAOException;
+import ua.nc.entity.Identified;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,6 +20,10 @@ import java.util.List;
  */
 public abstract class AbstractPostgreDAO<T extends Identified<PK>, PK extends Integer> implements GenericDAO<T, PK> {
     protected Connection connection;
+
+    public AbstractPostgreDAO(Connection connection) {
+        this.connection = connection;
+    }
 
     /**
      * Returns sql query for getting some object.
@@ -56,22 +60,25 @@ public abstract class AbstractPostgreDAO<T extends Identified<PK>, PK extends In
 
     /**
      * Sets insert query arguments in accordance with value object 'object' fields.
-     * @param statement  statement to prepare
-     * @param object object to use for operation
+     *
+     * @param statement statement to prepare
+     * @param object    object to use for operation
      */
     protected abstract void prepareStatementForInsert(PreparedStatement statement, T object) throws DAOException;
 
     /**
      * Sets update query arguments in accordance with value object 'object' fields.
-     * @param statement  statement to prepare
-     * @param object object to use for operation
+     *
+     * @param statement statement to prepare
+     * @param object    object to use for operation
      */
     protected abstract void prepareStatementForUpdate(PreparedStatement statement, T object) throws DAOException;
 
     /**
      * Sets select query arguments in accordance with object 'object' fields.
-     * @param statement  statement to prepare
-     * @param object object to use for operation
+     *
+     * @param statement statement to prepare
+     * @param object    object to use for operation
      */
     protected abstract void prepareStatementForSelect(PreparedStatement statement, T object) throws DAOException;
 
@@ -108,7 +115,7 @@ public abstract class AbstractPostgreDAO<T extends Identified<PK>, PK extends In
         List<T> list;
         String sql = getSelectQuery();
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, (Integer)key);
+            statement.setInt(1, (Integer) key);
             ResultSet rs = statement.executeQuery();
             list = parseResultSet(rs);
         } catch (Exception e) {
@@ -148,9 +155,5 @@ public abstract class AbstractPostgreDAO<T extends Identified<PK>, PK extends In
             throw new DAOException(e);
         }
         return list;
-    }
-
-    public AbstractPostgreDAO(Connection connection) {
-        this.connection = connection;
     }
 }

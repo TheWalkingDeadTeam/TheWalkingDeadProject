@@ -15,18 +15,8 @@ import java.util.List;
  * Created by Rangar on 04.05.2016.
  */
 public class PostgreCESStatusDAO extends AbstractPostgreDAO<CESStatus, Integer> implements CESStatusDAO {
-    public  PostgreCESStatusDAO(Connection connection){
+    public PostgreCESStatusDAO(Connection connection) {
         super(connection);
-    }
-
-    private class PersistCESStatus extends CESStatus{
-        public PersistCESStatus(String name) {
-            super(name);
-        }
-
-        public void setId(int id) {
-            super.setId(id);
-        }
     }
 
     @Override
@@ -95,5 +85,15 @@ public class PostgreCESStatusDAO extends AbstractPostgreDAO<CESStatus, Integer> 
     @Override
     public CESStatus create(CESStatus object) throws DAOException {
         return persist(object);
+    }
+
+    private class PersistCESStatus extends CESStatus {
+        public PersistCESStatus(String name) {
+            super(name);
+        }
+
+        public void setId(int id) {
+            super.setId(id);
+        }
     }
 }

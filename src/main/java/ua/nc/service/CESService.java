@@ -7,5 +7,6 @@ import ua.nc.entity.CES;
  */
 public interface CESService {
     CES getCurrentCES();
+
     void enroll(UserDetailsImpl userDetails);
 }

@@ -1,6 +1,7 @@
 package ua.nc.service.user;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import ua.nc.dao.RoleDAO;
 import ua.nc.dao.UserDAO;
@@ -20,6 +21,7 @@ import java.util.Set;
  * Created by Pavel on 18.04.2016.
  */
 public class UserServiceImpl implements UserService {
+    private final static Logger LOGGER = Logger.getLogger(UserServiceImpl.class);
     private DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
     //private UserDAO userDAO = daoFactory.getUserDAO(daoFactory.getConnection());
     // private RoleDAO roleDAO = daoFactory.getRoleDAO(daoFactory.getConnection());
@@ -35,7 +37,7 @@ public class UserServiceImpl implements UserService {
             user = userDAO.findByEmail(email);
             user.setRoles(roleDAO.findByEmail(email));
         } catch (DAOException e) {
-            System.out.println("DB exception");
+            LOGGER.info("User not found");
         } finally {
             daoFactory.putConnection(connection);
         }
@@ -44,11 +46,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(User user) {
-        System.out.println("Create user service");
         Connection connection = daoFactory.getConnection();
         UserDAO userDAO = daoFactory.getUserDAO(connection);
         RoleDAO roleDAO = daoFactory.getRoleDAO(connection);
-        System.out.println("Create user service after dao");
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         user.setPassword(encoder.encode(user.getPassword()));
         Set<Role> roles = new HashSet<>();
@@ -57,14 +57,12 @@ public class UserServiceImpl implements UserService {
                 roles.add(roleDAO.findByName(role.getName()));
             }
             user.setRoles(roles);
-            System.out.println("Before creation");
-            userDAO.createUser(user,user.getRoles());
-            System.out.println("After creation");
+            userDAO.createUser(user, user.getRoles());
             //roleDAO.setRoleToUser(user.getRoles(), user);
             mailService.sendMail(user.getEmail(), "Registration", "Welcome " + user.getName() + " ! \n NetCracker[TheWalkingDeadTeam] ");
             return user;
         } catch (DAOException e) {
-            System.out.println("DB exception"); //toDo log4j
+            LOGGER.warn("User hasn't been created");
             return null;
         } finally {
             daoFactory.putConnection(connection);
@@ -82,7 +80,7 @@ public class UserServiceImpl implements UserService {
         try {
             userDAO.updateUser(user);
         } catch (DAOException e) {
-            System.out.println("User password has not been modified");
+            LOGGER.info("User " + user.getEmail() + " password has not been modified");
         } finally {
             daoFactory.putConnection(connection);
         }
@@ -100,7 +98,7 @@ public class UserServiceImpl implements UserService {
             mailService.sendMail(user.getEmail(), "Password recovery", "Welcome " + user.getName() + " ! \n NetCracker[TheWalkingDeadTeam] " + user.getPassword());
             return user;
         } catch (DAOException e) {
-            System.out.println("DB exception"); //toDo log4j
+            LOGGER.info("Password recovery failed for user " + user.getEmail());
             return null;
         } finally {
             daoFactory.putConnection(connection);

@@ -1,12 +1,12 @@
 (function () {
 
     var requestData;
-    var id =  $(location).attr('search');
+    var id = $(location).attr('search');
 
     $(document).ready(function () {
         $.ajax({
             type: 'get',
-          /*  url: "/profile/" + id,*/
+            /*  url: "/profile/" + id,*/
             url: "/resources/json/myJSON.json",
             dataType: 'json',
             contentType: "application/json",
@@ -32,36 +32,36 @@
 
         $('#fields').submit(function () {
             event.preventDefault();
-            $.ajax ({
-                    method: 'POST',
-                    contentType: "application/json",
-                    url: 'profile',
-                    data: JSON.stringify(requestData)
-                })
+            $.ajax({
+                method: 'POST',
+                contentType: "application/json",
+                url: 'profile',
+                data: JSON.stringify(requestData)
+            })
         });
     });
 
 
     function enableSave() {
 
-            var empty = false;
-            $('#fields > input, select, textarea, text').each(function() {
-                if ($(this).val() == '') {
-                    empty = true;
-                }
-            });
-
-            if (empty || !$('#agree').is(':checked') || !checkCheckboxes()) {
-                $('#fieldsCheck').addClass('alert alert-danger').html('Please, fill each field and check Agree button');
-                $('#save').attr('disabled', 'disabled');
-            } else if (!empty && $('#agree').is(':checked') && checkCheckboxes())  {
-                $('#fieldsCheck').removeClass().empty();
-                $('#save').prop('disabled', false);
+        var empty = false;
+        $('#fields > input, select, textarea, text').each(function () {
+            if ($(this).val() == '') {
+                empty = true;
             }
+        });
+
+        if (empty || !$('#agree').is(':checked') || !checkCheckboxes()) {
+            $('#fieldsCheck').addClass('alert alert-danger').html('Please, fill each field and check Agree button');
+            $('#save').attr('disabled', 'disabled');
+        } else if (!empty && $('#agree').is(':checked') && checkCheckboxes()) {
+            $('#fieldsCheck').removeClass().empty();
+            $('#save').prop('disabled', false);
+        }
 
     }
 
-    function checkRadio () {
+    function checkRadio() {
 
         var radioGroup = $("[id^=radioBlock]").find('input');
 
@@ -73,7 +73,7 @@
         return false;
     }
 
-    function checkCheckboxes () {
+    function checkCheckboxes() {
 
         var group = $("[id^=checkBlock]").find('input');
 
@@ -90,23 +90,23 @@
         if (!item.multiple) {
             switch (item.type) {
                 case 'number':
-                    $('<div id=\"block'+i+'\">').appendTo($(divname));
+                    $('<div id=\"block' + i + '\">').appendTo($(divname));
                     $('<label>').attr({for: item.id}).text(item.name + ' ').appendTo($('#block' + i));
                     var attributes = {type: 'number', id: item.id, min: '0', max: '10', value: item.value[0].value};
                     attributes.required = "required";
                     $('<input>')
                         .attr(attributes)
-                        .attr('ng-model', i )
+                        .attr('ng-model', i)
                         .appendTo($('#block' + i))
-                        .bind('input', function(){
+                        .bind('input', function () {
                             requestData['fields'][$(this).attr('ng-model')].value[0].value = $(this).val();
                         });
                     break;
 
                 case 'radio':
-                    $('<div id=\"radioBlock'+i+'\">').appendTo($(divname));
+                    $('<div id=\"radioBlock' + i + '\">').appendTo($(divname));
                     $('<span>').text(item.name + ': ').appendTo($('#radioBlock' + i));
-                    item.value.forEach ( function (item_value, j) {
+                    item.value.forEach(function (item_value, j) {
                         var isChecked = item_value.value ? 'checked' : '',
                             attributes = {type: 'radio', id: item_value.id, name: item.id};
                         attributes.required = "required";
@@ -120,7 +120,7 @@
                             .appendTo($('#radioBlock' + i))
                             .on('change', function () {
                                 var updatedRadios = requestData.fields[$(this).attr('ng-model')].value.map(function (item) {
-                                    if(item.id == this.id) {
+                                    if (item.id == this.id) {
                                         item.value = true;
                                         return item;
                                     } else {
@@ -138,27 +138,35 @@
                 case 'text':
                     var attributes = {type: 'text', id: item.id, value: item.value[0].value};
                     attributes.required = "required";
-                    $('<div id=\"block'+i+'\">').appendTo($(divname));
+                    $('<div id=\"block' + i + '\">').appendTo($(divname));
                     $('<label>').attr({for: item.id}).text(item.name + ' ').appendTo($('#block' + i));
                     $('<input>')
                         .attr(attributes)
                         .attr('ng-model', i)
                         .appendTo($('#block' + i))
-                        .bind('input', function(){
+                        .bind('input', function () {
                             requestData['fields'][$(this).attr('ng-model')].value[0].value = $(this).val();
                         });
                     break;
                 case 'tel':
                     var pattern = "^\\+380\\d{9}$";
-                    var attributes = {type: 'tel', id: item.id, max: 13, min: 10, pattern: pattern, placeholder: "+380662281488", value: item.value[0].value};
+                    var attributes = {
+                        type: 'tel',
+                        id: item.id,
+                        max: 13,
+                        min: 10,
+                        pattern: pattern,
+                        placeholder: "+380662281488",
+                        value: item.value[0].value
+                    };
                     attributes.required = "required";
-                    $('<div id=\"block'+i+'\">').appendTo($(divname));
+                    $('<div id=\"block' + i + '\">').appendTo($(divname));
                     $('<label>').attr({for: item.id}).text(item.name + ' ').appendTo($('#block' + i));
                     $('<input>')
                         .attr(attributes)
                         .attr('ng-model', i)
                         .appendTo($('#block' + i))
-                        .bind('input', function(){
+                        .bind('input', function () {
                             requestData['fields'][$(this).attr('ng-model')].value[0].value = $(this).val();
                         });
                     break;
@@ -166,17 +174,17 @@
                 case 'select':
                     var attributes = {type: 'select', id: item.id};
                     attributes.required = "required";
-                    $('<div id=\"block'+i+'\">').appendTo($(divname));
+                    $('<div id=\"block' + i + '\">').appendTo($(divname));
                     $('<span>').attr({for: item.id}).text(item.name + ' ').appendTo($('#block' + i));
                     $('<select>').attr(attributes).attr('ng-model', i).appendTo($('#block' + i));
                     $('#' + item.id).append('<option ' + 'disabled' + '>' + 'University' + '</option>');
-                    item.value.forEach( function (item_value, j) {
+                    item.value.forEach(function (item_value, j) {
                         var isSelected = item_value.value ? 'selected' : '';
                         $('#' + item.id)
-                            .append('<option id="' + item_value.id + '" value="' + item_value.name + '" ' + isSelected +'>' + item_value.name + '</option>')
+                            .append('<option id="' + item_value.id + '" value="' + item_value.name + '" ' + isSelected + '>' + item_value.name + '</option>')
                             .on('change', function () {
                                 var updatedSelect = requestData.fields[$(this).attr('ng-model')].value.map(function (item) {
-                                    if(item.name == this.value) {
+                                    if (item.name == this.value) {
                                         item.value = true;
                                         return item;
                                     } else {
@@ -193,13 +201,13 @@
                 case 'textarea':
                     var attributes = {id: item.id, cols: 40, rows: 4};
                     attributes.required = "required";
-                    $('<div id=\"block'+i+'\">').appendTo($(divname));
+                    $('<div id=\"block' + i + '\">').appendTo($(divname));
                     $('<span>').attr({for: item.id}).text(item.name + ' ').appendTo($('#block' + i));
                     $('<textarea>')
                         .attr(attributes)
                         .attr('ng-model', i)
                         .appendTo($('#block' + i))
-                        .bind('input', function(){
+                        .bind('input', function () {
                             requestData['fields'][$(this).attr('ng-model')].value[0].value = $(this).val();
                         });
                     $('#' + item.id).val(item.value[0].value);
@@ -209,9 +217,9 @@
 
             switch (item.type) {
                 case 'checkbox':
-                    $('<div id=\"checkBlock'+i+'\">').appendTo($(divname));
+                    $('<div id=\"checkBlock' + i + '\">').appendTo($(divname));
                     $('<span>').text(item.name + ': ').appendTo($('#checkBlock' + i));
-                    item.value.forEach ( function (item_value, j) {
+                    item.value.forEach(function (item_value, j) {
                         var isChecked = item_value.value ? 'checked' : '',
                             attributes = {type: 'checkbox', id: item_value.id, value: item_value.value};
                         if (isChecked) {
@@ -222,7 +230,7 @@
                             .attr(attributes)
                             .attr('ng-model', i)
                             .appendTo($('#checkBlock' + i))
-                            .on('change', function(){
+                            .on('change', function () {
                                 enableSave()
                                 requestData.fields[$(this).attr('ng-model')].value[j].value = this.checked;
                             });

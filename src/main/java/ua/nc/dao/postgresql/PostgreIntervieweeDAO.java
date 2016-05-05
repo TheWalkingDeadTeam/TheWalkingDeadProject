@@ -15,7 +15,7 @@ import java.util.List;
  * Created by Rangar on 03.05.2016.
  */
 public class PostgreIntervieweeDAO extends AbstractPostgreDAO<Interviewee, Integer> implements IntervieweeDAO {
-    public  PostgreIntervieweeDAO(Connection connection){
+    public PostgreIntervieweeDAO(Connection connection) {
         super(connection);
     }
 

@@ -2,8 +2,8 @@ package ua.nc.dao.postgresql.profile;
 
 import ua.nc.dao.AbstractPostgreDAO;
 import ua.nc.dao.FieldTypeDAO;
-import ua.nc.entity.profile.FieldType;
 import ua.nc.dao.exception.DAOException;
+import ua.nc.entity.profile.FieldType;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,18 +15,8 @@ import java.util.List;
  * Created by Rangar on 26.04.2016.
  */
 public class PostgreFieldTypeDAO extends AbstractPostgreDAO<FieldType, Integer> implements FieldTypeDAO {
-    public PostgreFieldTypeDAO(Connection connection){
+    public PostgreFieldTypeDAO(Connection connection) {
         super(connection);
-    }
-
-    private class PersistFieldType extends FieldType{
-        public PersistFieldType(String name) {
-            super(name);
-        }
-
-        public void setId(int id) {
-            super.setId(id);
-        }
     }
 
     @Override
@@ -95,5 +85,15 @@ public class PostgreFieldTypeDAO extends AbstractPostgreDAO<FieldType, Integer> 
     @Override
     public FieldType create(FieldType object) throws DAOException {
         return persist(object);
+    }
+
+    private class PersistFieldType extends FieldType {
+        public PersistFieldType(String name) {
+            super(name);
+        }
+
+        public void setId(int id) {
+            super.setId(id);
+        }
     }
 }

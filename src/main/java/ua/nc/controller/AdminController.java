@@ -1,31 +1,21 @@
 package ua.nc.controller;
 
 import org.apache.log4j.Logger;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import ua.nc.entity.User;
-import ua.nc.entity.profile.Profile;
-import ua.nc.service.ProfileService;
-import ua.nc.service.ProfileServiceImpl;
 import ua.nc.service.user.UserService;
 import ua.nc.service.user.UserServiceImpl;
 import ua.nc.validator.RegistrationValidator;
 import ua.nc.validator.ValidationError;
 import ua.nc.validator.Validator;
 
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
  * Created by Pavel on 18.04.2016.
  */
+
 /**
  * Created by Pavel on 18.04.2016.
  */
@@ -187,5 +177,7 @@ public class AdminController {
 
 
     @RequestMapping(value = {"/mail-template"}, method = RequestMethod.GET)
-    public String mail(){return "admin-mail-template";}
+    public String mail() {
+        return "admin-mail-template";
+    }
 }

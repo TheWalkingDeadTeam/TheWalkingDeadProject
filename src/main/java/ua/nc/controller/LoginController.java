@@ -3,12 +3,6 @@ package ua.nc.controller;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -27,7 +21,6 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import ua.nc.entity.User;
 import ua.nc.service.PhotoService;
 import ua.nc.service.PhotoServiceImpl;
-import ua.nc.service.UserDetailsImpl;
 import ua.nc.service.user.UserDetailsServiceImpl;
 import ua.nc.service.user.UserService;
 import ua.nc.service.user.UserServiceImpl;
@@ -38,7 +31,7 @@ import ua.nc.validator.Validator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.IOException;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -48,12 +41,11 @@ import java.util.Set;
 @Controller
 public class LoginController implements HandlerExceptionResolver {
     private final Logger log = Logger.getLogger(LoginController.class);
+    private final UserService userService = new UserServiceImpl();
+    private final PhotoService photoService = new PhotoServiceImpl();
     @Autowired
     @Qualifier("authenticationManager")
     protected AuthenticationManager authenticationManager;
-
-    private final UserService userService = new UserServiceImpl();
-    private final PhotoService photoService = new PhotoServiceImpl();
 
     @Override
     public ModelAndView resolveException(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) {
@@ -156,7 +148,6 @@ public class LoginController implements HandlerExceptionResolver {
     }
 
 
-
 //    @RequestMapping(value = "/stuff/{stuffId}", method = RequestMethod.GET)
 //    public ResponseEntity<InputStreamResource> downloadStuff(@PathVariable int stuffId)
 //            throws IOException {
@@ -171,8 +162,6 @@ public class LoginController implements HandlerExceptionResolver {
 //        InputStreamResource isr = new InputStreamResource(new FileInputStream(file));
 //        return new ResponseEntity<InputStreamResource>(isr, respHeaders, HttpStatus.OK);
 //    }
-
-
 
 
     @ResponseBody

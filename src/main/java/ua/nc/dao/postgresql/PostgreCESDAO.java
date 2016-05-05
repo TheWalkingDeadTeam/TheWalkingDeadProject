@@ -15,21 +15,12 @@ import java.util.List;
 /**
  * Created by Rangar on 04.05.2016.
  */
-public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements CESDAO{
-    public  PostgreCESDAO(Connection connection){
+public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements CESDAO {
+    private static final String getCurrentCESQuery = "SELECT ces.CES_ID from CES ces JOIN ON CES_Status stat " +
+            "WHERE ces.CES_Status_ID = stat.CES_Status_ID AND stat.Name = 'Active'";
+
+    public PostgreCESDAO(Connection connection) {
         super(connection);
-    }
-
-    private class PersistCES extends CES{
-        public PersistCES(Integer year, Calendar startRegistrationDate, Calendar endRegistrationDate,Integer quota,
-                          Integer reminders, Integer statusId, Integer interviewTimeForPerson, Integer interviewTimeForDay) {
-            super(year, startRegistrationDate, endRegistrationDate,quota, reminders, statusId,
-                    interviewTimeForPerson, interviewTimeForDay);
-        }
-
-        public void setId(int id) {
-            super.setId(id);
-        }
     }
 
     @Override
@@ -102,9 +93,6 @@ public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements C
         }
     }
 
-    private static final String getCurrentCESQuery = "SELECT ces.CES_ID from CES ces JOIN ON CES_Status stat " +
-            "WHERE ces.CES_Status_ID = stat.CES_Status_ID AND stat.Name = 'Active'";
-
     @Override
     public CES getCurrentCES() throws DAOException {
         CES result;
@@ -129,5 +117,17 @@ public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements C
     @Override
     public CES create(CES object) throws DAOException {
         return persist(object);
+    }
+
+    private class PersistCES extends CES {
+        public PersistCES(Integer year, Calendar startRegistrationDate, Calendar endRegistrationDate, Integer quota,
+                          Integer reminders, Integer statusId, Integer interviewTimeForPerson, Integer interviewTimeForDay) {
+            super(year, startRegistrationDate, endRegistrationDate, quota, reminders, statusId,
+                    interviewTimeForPerson, interviewTimeForDay);
+        }
+
+        public void setId(int id) {
+            super.setId(id);
+        }
     }
 }

@@ -9,12 +9,17 @@ public class Application implements Identified<Integer> {
     private int cesID;
     private Boolean rejected;
 
+    public Application(int userID, int cesID) {
+        this.userID = userID;
+        this.cesID = cesID;
+    }
+
     @Override
     public Integer getId() {
         return id;
     }
 
-    protected void setId(int id){
+    protected void setId(int id) {
         this.id = id;
     }
 
@@ -40,10 +45,5 @@ public class Application implements Identified<Integer> {
 
     public void setUserID(int userID) {
         this.userID = userID;
-    }
-
-    public Application(int userID, int cesID){
-        this.userID = userID;
-        this.cesID = cesID;
     }
 }

@@ -2,8 +2,8 @@ package ua.nc.dao.postgresql.profile;
 
 import ua.nc.dao.AbstractPostgreDAO;
 import ua.nc.dao.ListTypeDAO;
-import ua.nc.entity.profile.ListType;
 import ua.nc.dao.exception.DAOException;
+import ua.nc.entity.profile.ListType;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,19 +14,9 @@ import java.util.List;
 /**
  * Created by Rangar on 26.04.2016.
  */
-public class PostgreListTypeDAO extends AbstractPostgreDAO<ListType, Integer> implements ListTypeDAO{
-    public PostgreListTypeDAO(Connection connection){
+public class PostgreListTypeDAO extends AbstractPostgreDAO<ListType, Integer> implements ListTypeDAO {
+    public PostgreListTypeDAO(Connection connection) {
         super(connection);
-    }
-
-    private class PersistListType extends ListType {
-        public PersistListType(String name) {
-            super(name);
-        }
-
-        public void setId(int id) {
-            super.setId(id);
-        }
     }
 
     @Override
@@ -95,5 +85,15 @@ public class PostgreListTypeDAO extends AbstractPostgreDAO<ListType, Integer> im
     @Override
     public ListType create(ListType object) throws DAOException {
         return persist(object);
+    }
+
+    private class PersistListType extends ListType {
+        public PersistListType(String name) {
+            super(name);
+        }
+
+        public void setId(int id) {
+            super.setId(id);
+        }
     }
 }

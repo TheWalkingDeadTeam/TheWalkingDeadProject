@@ -1,48 +1,48 @@
 'use strict';
 
-App.controller('MailController', ['$scope', 'MailService', function($scope, MailService) {
+App.controller('MailController', ['$scope', 'MailService', function ($scope, MailService) {
     var self = this;
-    self.mail={id:null,bodyTemplate:'',headTemplate:''};
-    self.mails=[];
+    self.mail = {id: null, bodyTemplate: '', headTemplate: ''};
+    self.mails = [];
 
-    self.fetchAllMails = function(){
+    self.fetchAllMails = function () {
         MailService.fetchAllMails()
             .then(
-                function(d) {
+                function (d) {
                     self.mails = d;
                 },
-                function(errResponse){
+                function (errResponse) {
                     console.error('Error while fetching Currencies');
                 }
             );
     };
 
-    self.createMail = function(mail){
+    self.createMail = function (mail) {
         MailService.createMail(mail)
             .then(
                 self.fetchAllMails,
-                function(errResponse){
+                function (errResponse) {
                     console.error('Error while creating Mail.');
                 }
             );
     };
 
-    self.updateMail = function(mail, id){
+    self.updateMail = function (mail, id) {
         MailService.updateMail(mail, id)
         MailService.updateMail(mail, id)
             .then(
                 self.fetchAllMails,
-                function(errResponse){
+                function (errResponse) {
                     console.error('Error while updating Mail.');
                 }
             );
     };
 
-    self.deleteMail= function(id){
+    self.deleteMail = function (id) {
         MailService.deleteMail(id)
             .then(
                 self.fetchAllMails,
-                function(errResponse){
+                function (errResponse) {
                     console.error('Error while deleting Mail.');
                 }
             );
@@ -50,38 +50,38 @@ App.controller('MailController', ['$scope', 'MailService', function($scope, Mail
 
     self.fetchAllMails();
 
-    self.submit = function() {
-        if(self.mail.id==null){
+    self.submit = function () {
+        if (self.mail.id == null) {
             console.log('Saving New Mail', self.mail);
             self.createMail(self.mail);
-        }else{
+        } else {
             self.updateMail(self.mail, self.mail.id);
             console.log('Mail updated with id ', self.mail.id);
         }
         self.reset();
     };
 
-    self.edit = function(id){
+    self.edit = function (id) {
         console.log('id to be edited', id);
-        for(var i = 0; i < self.mails.length; i++){
-            if(self.mails[i].id == id) {
+        for (var i = 0; i < self.mails.length; i++) {
+            if (self.mails[i].id == id) {
                 self.mail = angular.copy(self.mails[i]);
                 break;
             }
         }
     };
 
-    self.remove = function(id){
+    self.remove = function (id) {
         console.log('id to be deleted', id);
-        if(self.mail.id === id) {//clean form if the mail to be deleted is shown there.
+        if (self.mail.id === id) {//clean form if the mail to be deleted is shown there.
             self.reset();
         }
         self.deleteMail(id);
     };
 
 
-    self.reset = function(){
-        self.mail={id:null,bodyTemplate:'',headTemplate:''};
+    self.reset = function () {
+        self.mail = {id: null, bodyTemplate: '', headTemplate: ''};
         $scope.myForm.$setPristine(); //reset Form
     };
 

@@ -1,10 +1,10 @@
 package ua.nc.dao.postgresql;
 
+import org.apache.log4j.Logger;
 import ua.nc.dao.AbstractPostgreDAO;
 import ua.nc.dao.AppSetting;
 import ua.nc.dao.RoleDAO;
 import ua.nc.dao.exception.DAOException;
-import ua.nc.dao.pool.ConnectionPool;
 import ua.nc.entity.Role;
 import ua.nc.entity.User;
 
@@ -21,8 +21,8 @@ import java.util.Set;
 /**
  * Created by Pavel on 22.04.2016.
  */
-public class PostgreRoleDAO extends AbstractPostgreDAO<Role,Integer> implements RoleDAO {
-    /*    private static final Logger LOGGER = Logger.getLogger(PostgreRoleDAO.class);*/
+public class PostgreRoleDAO extends AbstractPostgreDAO<Role, Integer> implements RoleDAO {
+    private static final Logger LOGGER = Logger.getLogger(PostgreRoleDAO.class);
 
     private static final String SELECT = "SELECT * FROM public.role r WHERE r.role_id = ?";
     private static final String UPDATE = "UPDATE public.role r SET (r.name = ?, r.description = ?) WHERE r.role_id = ?";
@@ -30,12 +30,8 @@ public class PostgreRoleDAO extends AbstractPostgreDAO<Role,Integer> implements 
     private static final String GET_ALL = "SELECT * FROM public.role";
     private static final String FIND_BY_NAME = "SELECT * FROM public.role r WHERE r.name = ?";
 
-    private class PersistRole extends Role{
-
-        @Override
-        public void setId(Integer id) {
-            super.setId(id);
-        }
+    public PostgreRoleDAO(Connection connection) {
+        super(connection);
     }
 
     @Override
@@ -52,7 +48,7 @@ public class PostgreRoleDAO extends AbstractPostgreDAO<Role,Integer> implements 
             role.setId(resultSet.getInt("role_id"));
             role.setName(resultSet.getString("name"));
         } catch (SQLException e) {
-            System.out.println("Role" + name + "  not found");
+            LOGGER.info("Role" + name + "  not found");
             throw new DAOException(e);
         } finally {
             try {
@@ -81,11 +77,10 @@ public class PostgreRoleDAO extends AbstractPostgreDAO<Role,Integer> implements 
                 Role role = new Role();
                 role.setId(resultSet.getInt("role_id"));
                 role.setName(resultSet.getString("name"));
-                System.out.println(role.getName());
                 roles.add(role);
             }
         } catch (SQLException e) {
-            System.out.println("Roles for " + email + "  not found");
+            LOGGER.info("Roles for " + email + "  not found");
             throw new DAOException(e);
         } finally {
             try {
@@ -116,7 +111,7 @@ public class PostgreRoleDAO extends AbstractPostgreDAO<Role,Integer> implements 
             statement.executeBatch();
             connection.commit();
         } catch (SQLException e) {
-            System.out.println("Cant set roles to user" + user.getName());
+            LOGGER.info("Cant set roles to user" + user.getName());
             throw new DAOException(e);
         } finally {
             try {
@@ -153,15 +148,15 @@ public class PostgreRoleDAO extends AbstractPostgreDAO<Role,Integer> implements 
     @Override
     protected List<Role> parseResultSet(ResultSet rs) throws DAOException {
         List<Role> result = new ArrayList<>();
-        try{
-            while(rs.next()){
+        try {
+            while (rs.next()) {
                 PersistRole role = new PersistRole();
                 role.setId(rs.getInt("role_id"));
                 role.setName(rs.getString("name"));
                 role.setDescription(rs.getString("description"));
                 result.add(role);
             }
-        }catch(SQLException e) {
+        } catch (SQLException e) {
 
         }
         return result;
@@ -172,7 +167,7 @@ public class PostgreRoleDAO extends AbstractPostgreDAO<Role,Integer> implements 
         try {
             statement.setString(1, object.getName());
             statement.setString(2, object.getDescription());
-        } catch (SQLException e){
+        } catch (SQLException e) {
 
         }
     }
@@ -182,17 +177,17 @@ public class PostgreRoleDAO extends AbstractPostgreDAO<Role,Integer> implements 
         try {
             statement.setString(1, object.getName());
             statement.setString(2, object.getDescription());
-            statement.setInt(3,object.getId());
-        } catch (SQLException e){
+            statement.setInt(3, object.getId());
+        } catch (SQLException e) {
 
         }
     }
 
     @Override
     protected void prepareStatementForSelect(PreparedStatement statement, Role object) throws DAOException {
-        try{
-            statement.setInt(1,object.getId());
-        } catch (SQLException e){
+        try {
+            statement.setInt(1, object.getId());
+        } catch (SQLException e) {
 
         }
     }
@@ -202,7 +197,11 @@ public class PostgreRoleDAO extends AbstractPostgreDAO<Role,Integer> implements 
         return null;
     }
 
-    public PostgreRoleDAO(Connection connection) {
-        super(connection);
+    private class PersistRole extends Role {
+
+        @Override
+        public void setId(Integer id) {
+            super.setId(id);
+        }
     }
 }

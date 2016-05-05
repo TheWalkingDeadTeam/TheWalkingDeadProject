@@ -58,8 +58,9 @@
     </style>
 </head>
 <body>
-<div ng-controller="StudentCtrl" class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
-  <jsp:include page="admin-header.jsp"/>
+<div ng-controller="StudentCtrl"
+     class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
+    <jsp:include page="admin-header.jsp"/>
 
 
     <main class="mdl-layout__content mdl-color--grey-100">

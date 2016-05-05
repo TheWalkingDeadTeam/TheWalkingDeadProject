@@ -2,8 +2,8 @@ package ua.nc.dao.postgresql.profile;
 
 import ua.nc.dao.AbstractPostgreDAO;
 import ua.nc.dao.FieldDAO;
-import ua.nc.entity.profile.Field;
 import ua.nc.dao.exception.DAOException;
+import ua.nc.entity.profile.Field;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,13 +14,13 @@ import java.util.List;
 /**
  * Created by Rangar on 24.04.2016.
  */
-public class PostgreFieldDAO extends AbstractPostgreDAO<Field, Integer> implements FieldDAO{
-    public PostgreFieldDAO(Connection connection){
-        super(connection);
-    }
-
+public class PostgreFieldDAO extends AbstractPostgreDAO<Field, Integer> implements FieldDAO {
     private static final String getFieldsForCESQuery = "SELECT * FROM field f " +
             "JOIN ces_field cf ON f.field_id = cf.field_id WHERE cf.ces_id = ?";
+
+    public PostgreFieldDAO(Connection connection) {
+        super(connection);
+    }
 
     @Override
     public List<Field> getFieldsForCES(Integer ces_id) throws DAOException {
@@ -32,16 +32,6 @@ public class PostgreFieldDAO extends AbstractPostgreDAO<Field, Integer> implemen
             throw new DAOException(e);
         }
         return result;
-    }
-
-    private class PersistField extends Field {
-        public PersistField(int cesID, String name, int fieldTypeID, boolean multipleChoice, int orderNum, int listID) {
-            super(cesID, name, fieldTypeID, multipleChoice, orderNum, listID);
-        }
-
-        public void setId(int id) {
-            super.setId(id);
-        }
     }
 
     @Override
@@ -117,5 +107,15 @@ public class PostgreFieldDAO extends AbstractPostgreDAO<Field, Integer> implemen
     @Override
     public Field create(Field field) throws DAOException {
         return persist(field);
+    }
+
+    private class PersistField extends Field {
+        public PersistField(int cesID, String name, int fieldTypeID, boolean multipleChoice, int orderNum, int listID) {
+            super(cesID, name, fieldTypeID, multipleChoice, orderNum, listID);
+        }
+
+        public void setId(int id) {
+            super.setId(id);
+        }
     }
 }

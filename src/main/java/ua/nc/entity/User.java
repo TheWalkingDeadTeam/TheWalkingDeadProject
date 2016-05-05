@@ -5,7 +5,7 @@ import java.util.Set;
 /**
  * Created by Pavel on 18.04.2016.
  */
-public class User implements Identified<Integer>{
+public class User implements Identified<Integer> {
     private Integer id;
     private String name;
     private String email;

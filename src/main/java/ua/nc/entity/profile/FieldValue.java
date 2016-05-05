@@ -5,13 +5,22 @@ import java.util.Date;
 /**
  * Created by Rangar on 24.04.2016.
  */
-public class FieldValue  {
+public class FieldValue {
     private int fieldID;
     private int applicationID;
     private String valueText;
     private Double valueDouble;
     private Date valueDate;
     private Integer listValueID;
+
+    public FieldValue(int fieldID, int applicationID, String valueText, Double valueDouble, Date valueDate, Integer listValueID) {
+        this.fieldID = fieldID;
+        this.applicationID = applicationID;
+        this.valueText = valueText;
+        this.valueDouble = valueDouble;
+        this.valueDate = valueDate;
+        this.listValueID = listValueID;
+    }
 
     public Integer getListValueID() {
         return listValueID;
@@ -59,14 +68,5 @@ public class FieldValue  {
 
     public void setValueDate(Date valueDate) {
         this.valueDate = valueDate;
-    }
-
-    public FieldValue(int fieldID ,int applicationID, String valueText, Double valueDouble, Date valueDate, Integer listValueID){
-        this.fieldID = fieldID;
-        this.applicationID = applicationID;
-        this.valueText = valueText;
-        this.valueDouble = valueDouble;
-        this.valueDate = valueDate;
-        this.listValueID = listValueID;
     }
 }

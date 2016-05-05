@@ -1,15 +1,15 @@
-$( document ).ready(function() {
+$(document).ready(function () {
     // popup-------------------------------------------------------------------------------popup
-    $('.recoverybtn').bind('click', function(){
+    $('.recoverybtn').bind('click', function () {
         $('.recovery').fadeIn(500); //openpopup
         openValidate();
     });
 
-    $('.closebtn').bind('click', function(){
+    $('.closebtn').bind('click', function () {
         $('.recovery').fadeOut(300); //closebutton
     });
 
-    $('.layout').bind('click', function(){
+    $('.layout').bind('click', function () {
         $('.recovery').fadeOut(300); //layoutclose
     });
     //popup
@@ -18,38 +18,39 @@ $( document ).ready(function() {
     // binding
 
 
-    function ValidateRecoveryForm(){
+    function ValidateRecoveryForm() {
         var elem = $(this);
         var innerText = elem.val();
         var errorMsg = '';
 
-       if(elem.is('#userEmail')){
-            if (!/^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/.test(innerText)){
+        if (elem.is('#userEmail')) {
+            if (!/^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/.test(innerText)) {
                 errorMsg = errorMsg + 'Incorrect email';
             }
             $('.correct-email').text(errorMsg);
-        };
+        }
+        ;
         buttonEnable();
     };
     // oninputvalidation
 
-    function openValidate(){
+    function openValidate() {
         var errorMsg = '';
 
         var elem = $('#userEmail');
         var innerText = elem.val();
 
-        if (!/^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/.test(innerText)){
+        if (!/^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/.test(innerText)) {
             errorMsg = errorMsg + 'Incorrect email';
         }
         $('.correct-email').text(errorMsg);
         buttonEnable();
     };
     // start validation
-    function buttonEnable(){
-        if($('.correct-email').text() == ''){
+    function buttonEnable() {
+        if ($('.correct-email').text() == '') {
             $('#stupidUser button').prop('disabled', false);
-        }else{
+        } else {
             $('#stupidUser button').prop('disabled', true);
         }
     };

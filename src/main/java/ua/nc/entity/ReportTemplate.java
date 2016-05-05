@@ -8,12 +8,17 @@ public class ReportTemplate implements Identified<Integer> {
     private String query;
     private String name;
 
+    public ReportTemplate(String query, String name) {
+        this.query = query;
+        this.name = name;
+    }
+
     @Override
     public Integer getId() {
         return reportTemplateID;
     }
 
-    protected void setId(int id){
+    protected void setId(int id) {
         this.reportTemplateID = id;
     }
 
@@ -30,11 +35,6 @@ public class ReportTemplate implements Identified<Integer> {
     }
 
     public void setName(String name) {
-        this.name = name;
-    }
-
-    public ReportTemplate(String query, String name){
-        this.query = query;
         this.name = name;
     }
 }

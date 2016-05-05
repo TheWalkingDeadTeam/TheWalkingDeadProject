@@ -15,18 +15,8 @@ import java.util.List;
  * Created by Rangar on 03.05.2016.
  */
 public class PostgreFeedbackDAO extends AbstractPostgreDAO<Feedback, Integer> implements FeedbackDAO {
-    public  PostgreFeedbackDAO(Connection connection){
+    public PostgreFeedbackDAO(Connection connection) {
         super(connection);
-    }
-
-    private class PersistFeedback extends Feedback{
-        public PersistFeedback(int score, String comment, int interviewerID) {
-            super(score, comment, interviewerID);
-        }
-
-        public void setId(int id) {
-            super.setId(id);
-        }
     }
 
     @Override
@@ -100,5 +90,15 @@ public class PostgreFeedbackDAO extends AbstractPostgreDAO<Feedback, Integer> im
     @Override
     public Feedback create(Feedback object) throws DAOException {
         return persist(object);
+    }
+
+    private class PersistFeedback extends Feedback {
+        public PersistFeedback(int score, String comment, int interviewerID) {
+            super(score, comment, interviewerID);
+        }
+
+        public void setId(int id) {
+            super.setId(id);
+        }
     }
 }

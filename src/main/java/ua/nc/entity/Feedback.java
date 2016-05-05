@@ -9,12 +9,18 @@ public class Feedback implements Identified<Integer> {
     private String comment;
     private int interviewerID;
 
+    public Feedback(int score, String comment, int interviewerID) {
+        this.score = score;
+        this.comment = comment;
+        this.interviewerID = interviewerID;
+    }
+
     @Override
     public Integer getId() {
         return id;
     }
 
-    protected void setId(int id){
+    protected void setId(int id) {
         this.id = id;
     }
 
@@ -39,12 +45,6 @@ public class Feedback implements Identified<Integer> {
     }
 
     public void setInterviewerID(int interviewerID) {
-        this.interviewerID = interviewerID;
-    }
-
-    public Feedback(int score, String comment, int interviewerID){
-        this.score = score;
-        this.comment = comment;
         this.interviewerID = interviewerID;
     }
 }

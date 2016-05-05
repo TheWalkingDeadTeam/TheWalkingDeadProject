@@ -1,19 +1,16 @@
 package ua.nc.dao.postgresql;
 
+import org.apache.log4j.Logger;
 import ua.nc.dao.AbstractPostgreDAO;
-import ua.nc.dao.AppSetting;
 import ua.nc.dao.UserDAO;
 import ua.nc.dao.exception.DAOException;
-import ua.nc.dao.pool.ConnectionPool;
 import ua.nc.entity.Role;
 import ua.nc.entity.User;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -22,16 +19,14 @@ import java.util.Set;
  * Created by Pavel on 21.04.2016.
  */
 public class PostgreUserDAO extends AbstractPostgreDAO<User, Integer> implements UserDAO {
-    /*    private static final Logger LOGGER = Logger.getLogger(PostgreUserDAO.class);*/
-
-    public PostgreUserDAO(Connection connection) {
-        super(connection);
-    }
-
+    private static final Logger LOGGER = Logger.getLogger(PostgreUserDAO.class);
+    private static final String SQL_UPDATE_USER = "UPDATE public.user SET password = ? WHERE user_id = ?";
     private final String FIND_BY_EMAIL = "SELECT * FROM public.user u WHERE u.email = ?";
     private final String CREATE_USER = "INSERT INTO public.user(name, email, password) VALUES (?, ?, ?)";
     private final String SET_ROLE_TO_USER = "INSERT INTO public.user_role(role_id, user_id) SELECT ?, user_id FROM public.user u WHERE u.email=?";
-    private static final String SQL_UPDATE_USER = "UPDATE public.user SET password = ? WHERE user_id = ?";
+    public PostgreUserDAO(Connection connection) {
+        super(connection);
+    }
 
     @Override
     public User findByEmail(String email) throws DAOException {
@@ -49,9 +44,9 @@ public class PostgreUserDAO extends AbstractPostgreDAO<User, Integer> implements
             user.setName(resultSet.getString("name"));
             user.setEmail(resultSet.getString("email"));
             user.setPassword(resultSet.getString("password"));
-            System.out.println(user.getName());
+            LOGGER.debug("Find user " + user.getName() + " byEmail");
         } catch (SQLException e) {
-            System.out.println("User with " + email + " not find in DB");
+            LOGGER.info("User with " + email + " not find in DB");
             throw new DAOException(e);
         } finally {
             try {
@@ -88,11 +83,11 @@ public class PostgreUserDAO extends AbstractPostgreDAO<User, Integer> implements
             }
             connection.commit();
         } catch (SQLException e) {
-            System.out.println("User with name" + user.getName() + "  not created");
+            LOGGER.debug("User with name" + user.getName() + "  not created");
             try {
                 connection.rollback();
             } catch (SQLException e1) {
-                System.out.println("Unable to rollback transaction");
+                LOGGER.warn("Unable to rollback transaction");
                 throw new DAOException(e1);
             }
             throw new DAOException(e);
@@ -173,22 +168,9 @@ public class PostgreUserDAO extends AbstractPostgreDAO<User, Integer> implements
         return null;
     }
 
-    private class PersistUser extends User{
-        public PersistUser(Integer id, String name, String email, String password, Set<Role> roles) {
-            super(id, name, email, password, roles);
-        }
-
-        public PersistUser() {
-        }
-
-        @Override
-        public void setId(Integer id) {
-            super.setId(id);
-        }
-    }
-
     /**
      * Updates user with new password
+     *
      * @param user
      * @throws DAOException
      */
@@ -201,10 +183,10 @@ public class PostgreUserDAO extends AbstractPostgreDAO<User, Integer> implements
             statement.setString(1, user.getPassword());
             statement.setInt(2, user.getId());
             statement.executeUpdate();
-        } catch (SQLException e){
-            System.out.println("User:" + user.getName() + "  not updated");
-            throw  new DAOException(e);
-        }finally {
+        } catch (SQLException e) {
+            LOGGER.info("User:" + user.getName() + "  not updated");
+            throw new DAOException(e);
+        } finally {
             try {
                 if (resultSet != null)
                     resultSet.close();
@@ -213,6 +195,20 @@ public class PostgreUserDAO extends AbstractPostgreDAO<User, Integer> implements
             } catch (Exception e) {
                 throw new DAOException(e);
             }
+        }
+    }
+
+    private class PersistUser extends User {
+        public PersistUser(Integer id, String name, String email, String password, Set<Role> roles) {
+            super(id, name, email, password, roles);
+        }
+
+        public PersistUser() {
+        }
+
+        @Override
+        public void setId(Integer id) {
+            super.setId(id);
         }
     }
 
