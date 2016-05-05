@@ -183,14 +183,7 @@ public class PostgreRoleDAO extends AbstractPostgreDAO<Role, Integer> implements
         }
     }
 
-    @Override
-    protected void prepareStatementForSelect(PreparedStatement statement, Role object) throws DAOException {
-        try {
-            statement.setInt(1, object.getId());
-        } catch (SQLException e) {
 
-        }
-    }
 
     @Override
     public Role create(Role object) throws DAOException {

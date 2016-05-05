@@ -153,10 +153,7 @@ public class PostgreMailDAO extends AbstractPostgreDAO<Mail, Integer> implements
 
     }
 
-    @Override
-    protected void prepareStatementForSelect(PreparedStatement statement, Mail object) throws DAOException {
 
-    }
 
     @Override
     public Mail persist(Mail object) throws DAOException {

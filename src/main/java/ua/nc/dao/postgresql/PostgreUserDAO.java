@@ -143,10 +143,7 @@ public class PostgreUserDAO extends AbstractPostgreDAO<User, Integer> implements
 
     }
 
-    @Override
-    protected void prepareStatementForSelect(PreparedStatement statement, User object) throws DAOException {
 
-    }
 
     @Override
     public User persist(User object) throws DAOException {
