@@ -40,10 +40,9 @@
             </div>
             <div id='collapsed-menu' class='navbar-collapse collapse'>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="/profile/{id}">Home</a></li>
+                    <li><a href="/login">Home</a></li>
                     <li><a href="/information">Information</a></li>
                     <li><a href="/contacts">Contacts</a></li>
-                    <li><a href="/changePassword">Change password</a></li>
                     <li><a href="/logout">Logout</a></li>
                 </ul>
             </div>

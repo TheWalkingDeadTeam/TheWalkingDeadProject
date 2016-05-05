@@ -33,7 +33,7 @@
     <div class="col-lg-12 col-md-12 hidden-sm hidden-xs">
         <div class="container-fluid navbar-inner navigation">
             <a class="col-lg-4 col-md-4" href="#"><p>Home</p></a>
-            <a class="col-lg-4 col-md-4" href="#"><p>Information</p></a>
+            <a class="col-lg-4 col-md-4" href="/account"><p>[Account]</p></a>
             <a class="col-lg-4 col-md-4" href="#"><p>Contacts</p></a>
         </div>
     </div>
@@ -74,7 +74,7 @@
         </sec:authorize>
     </div>
 
-    <%--  <div class="recovery">
+      <div class="recovery registration">
           <div class="layout"></div>
           <sec:authorize access="!isAuthenticated()">
               <form id="stupidUser" action="/passwordRecovery">
@@ -92,7 +92,7 @@
                   <button id="buttonRecoverPassword" class="btn btn-lg btn-primary btn-block">Send request</button>
               </form>
           </sec:authorize>
-      </div>--%>
+      </div>
 
     <div class="row">
 
@@ -124,6 +124,7 @@
                            required>
                     <button id="buttonSignIn" class="btn btn-lg btn-primary btn-block signbtn" type="submit">Sign in
                     </button>
+                    <button type="button" class="btn btn-lg btn-primary btn-block recoverybtn">Forgot password</button>
                     <button type="button" class="btn btn-lg btn-primary btn-block regbut">Registration</button>
                 </form>
             </sec:authorize>
@@ -190,5 +191,5 @@
 <script src="/resources/js/logout.js"></script>
 <script src="/resources/bootstrap/js/bootstrap.js"></script>
 <script src="/resources/js/registration.js"></script>
-<%--<script src="/resources/js/passwordRecovery.js"></script>--%>
+<script src="/resources/js/passwordRecovery.js"></script>
 </html>

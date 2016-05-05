@@ -72,6 +72,9 @@
                 <span>Ivan</span>
                 <span>Ivanovich</span>
                 <span>ivanovivanovich@gmail.com</span>
+
+            </div>
+            <div class="col-lg-6 col-md-4 col-xs-3">
                 <jsp:include page="change-password.jsp"/>
             </div>
         </div>

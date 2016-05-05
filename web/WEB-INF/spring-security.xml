@@ -20,6 +20,11 @@
                        access="hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_DEV','ROLE_BA','ROLE_STUDENT')"/>
         <intercept-url pattern="/profile/**"
                        access="hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_DEV','ROLE_BA','ROLE_STUDENT')"/>
+        <intercept-url pattern="/account**"
+                       access="isAuthenticated()"/>
+        <intercept-url pattern="/account/**"
+                       access="isAuthenticated()"/>
+
 
         <access-denied-handler error-page="/403"/>
 
