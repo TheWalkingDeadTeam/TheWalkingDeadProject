@@ -3,7 +3,6 @@ package ua.nc.dao.postgresql;
 import ua.nc.dao.AppSetting;
 import ua.nc.dao.UserDAO;
 import ua.nc.dao.exception.DAOException;
-import ua.nc.dao.pool.ConnectionPool;
 import ua.nc.entity.User;
 
 import java.sql.Connection;
@@ -15,7 +14,7 @@ import java.sql.SQLException;
 /**
  * Created by Pavel on 21.04.2016.
  */
-public class PostgreUserDAO extends UserDAO {
+public class PostgreUserDAO implements UserDAO {
     /*    private static final Logger LOGGER = Logger.getLogger(PostgreUserDAO.class);*/
     private final Connection connection;
     private static final String SQL_UPDATE_USER = "UPDATE public.user SET password = ? WHERE user_id = ?";
@@ -93,6 +92,7 @@ public class PostgreUserDAO extends UserDAO {
 
     /**
      * Updates user with new password
+     *
      * @param user
      * @throws DAOException
      */
@@ -105,10 +105,10 @@ public class PostgreUserDAO extends UserDAO {
             statement.setString(1, user.getPassword());
             statement.setInt(2, user.getId());
             statement.executeUpdate();
-        } catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("User:" + user.getName() + "  not updated");
-            throw  new DAOException(e);
-        }finally {
+            throw new DAOException(e);
+        } finally {
             try {
                 if (resultSet != null)
                     resultSet.close();

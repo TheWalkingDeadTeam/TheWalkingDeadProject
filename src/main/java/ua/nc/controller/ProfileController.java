@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import ua.nc.dao.exception.DAOException;
 import ua.nc.entity.profile.Profile;
 import ua.nc.service.CESService;
 import ua.nc.service.ProfileService;
@@ -47,10 +48,14 @@ public class ProfileController {
         Validator validator = new ProfileValidator();
         errors = validator.validate(profile);
         if (errors.isEmpty()) {
-            profileService.setProfile((UserDetailsImpl) SecurityContextHolder
-                    .getContext()
-                    .getAuthentication()
-                    .getPrincipal(), profile);
+            try {
+                profileService.setProfile((UserDetailsImpl) SecurityContextHolder
+                        .getContext()
+                        .getAuthentication()
+                        .getPrincipal(), profile);
+            } catch (DAOException e) {
+                e.printStackTrace(); //toDO add log
+            }
         }
         return errors;
     }

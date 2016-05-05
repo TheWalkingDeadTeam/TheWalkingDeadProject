@@ -60,6 +60,7 @@ public class UserServiceImpl implements UserService {
 
     /**
      * Change User password
+     *
      * @param user
      * @param password
      */

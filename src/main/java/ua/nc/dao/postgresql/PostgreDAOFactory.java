@@ -5,12 +5,6 @@ import ua.nc.dao.enums.DataBaseType;
 import ua.nc.dao.factory.DAOFactory;
 import ua.nc.dao.pool.ConnectionPool;
 import ua.nc.dao.postgresql.profile.*;
-import ua.nc.entity.CESStatus;
-import ua.nc.entity.Feedback;
-import ua.nc.entity.Interviewee;
-import ua.nc.entity.ReportTemplate;
-import ua.nc.entity.profile.FieldType;
-import ua.nc.entity.profile.ListType;
 
 import java.sql.Connection;
 

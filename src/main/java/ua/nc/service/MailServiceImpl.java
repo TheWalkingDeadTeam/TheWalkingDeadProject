@@ -1,6 +1,5 @@
 package ua.nc.service;
 
-import org.apache.commons.logging.Log;
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.MailSender;

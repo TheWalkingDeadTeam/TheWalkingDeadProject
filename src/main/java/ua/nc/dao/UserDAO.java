@@ -11,6 +11,5 @@ public interface UserDAO {
 
     void createUser(User user) throws DAOException;
 
-    public abstract void updateUser(User user) throws DAOException;
-
+    void updateUser(User user) throws DAOException;
 }

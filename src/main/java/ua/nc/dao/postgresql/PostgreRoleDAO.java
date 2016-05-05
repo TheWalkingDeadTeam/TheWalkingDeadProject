@@ -3,7 +3,6 @@ package ua.nc.dao.postgresql;
 import ua.nc.dao.AppSetting;
 import ua.nc.dao.RoleDAO;
 import ua.nc.dao.exception.DAOException;
-import ua.nc.dao.pool.ConnectionPool;
 import ua.nc.entity.Role;
 import ua.nc.entity.User;
 
@@ -18,7 +17,7 @@ import java.util.Set;
 /**
  * Created by Pavel on 22.04.2016.
  */
-public class PostgreRoleDAO extends RoleDAO {
+public class PostgreRoleDAO implements RoleDAO {
     /*    private static final Logger LOGGER = Logger.getLogger(PostgreRoleDAO.class);*/
     private final Connection connection;
 

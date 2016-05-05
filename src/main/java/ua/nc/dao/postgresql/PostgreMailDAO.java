@@ -4,7 +4,6 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 import ua.nc.dao.MailDAO;
 import ua.nc.dao.exception.DAOException;
-import ua.nc.dao.pool.ConnectionPool;
 import ua.nc.entity.Mail;
 
 import java.sql.*;
@@ -15,7 +14,7 @@ import java.util.List;
  * Created by Alexander on 22.04.2016.
  */
 @Repository
-public class PostgreMailDAO extends MailDAO {
+public class PostgreMailDAO implements MailDAO {
 
     private static final Logger LOGGER = Logger.getLogger(PostgreMailDAO.class);
 
