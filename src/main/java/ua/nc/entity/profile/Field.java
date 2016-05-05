@@ -15,11 +15,11 @@ public class Field implements Identified<Integer> {
     private Integer listTypeID;
 
     @Override
-    public Integer getID() {
+    public Integer getId() {
         return ID;
     }
 
-    protected void setID(int id){
+    protected void setId(int id){
         this.ID = id;
     }
 

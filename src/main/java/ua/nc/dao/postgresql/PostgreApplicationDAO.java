@@ -24,12 +24,13 @@ public class PostgreApplicationDAO extends AbstractPostgreDAO<Application, Integ
             super(userID, cesID);
         }
 
-        public void setID(int id) {
-            super.setID(id);
+        public void setId(int id) {
+            super.setId(id);
         }
     }
 
     public static final String getApplicationByUserCES = "SELECT * FROM Application WHERE system_user_id = ? AND ces_id = ?";
+    public static final String getAllCESApplicationsQuery = "SELECT * FROM Application WHERE ces_id = ?";
 
     @Override
     public String getSelectQuery() {
@@ -57,7 +58,7 @@ public class PostgreApplicationDAO extends AbstractPostgreDAO<Application, Integ
         try {
             while (rs.next()) {
                 PersistApplication application = new PersistApplication(rs.getInt("system_user_id"), rs.getInt("ces_id"));
-                application.setID(rs.getInt("application_id"));
+                application.setId(rs.getInt("application_id"));
                 application.setRejected(rs.getBoolean("rejected"));
                 result.add(application);
             }
@@ -81,7 +82,7 @@ public class PostgreApplicationDAO extends AbstractPostgreDAO<Application, Integ
     protected void prepareStatementForUpdate(PreparedStatement statement, Application object) throws DAOException {
         try {
             statement.setBoolean(1, object.getRejected());
-            statement.setInt(2, object.getID());
+            statement.setInt(2, object.getId());
         } catch (Exception e) {
             throw new DAOException(e);
         }
@@ -90,7 +91,7 @@ public class PostgreApplicationDAO extends AbstractPostgreDAO<Application, Integ
     @Override
     protected void prepareStatementForSelect(PreparedStatement statement, Application object) throws DAOException {
         try {
-            statement.setInt(1, object.getID());
+            statement.setInt(1, object.getId());
         } catch (Exception e) {
             throw new DAOException(e);
         }
@@ -103,6 +104,18 @@ public class PostgreApplicationDAO extends AbstractPostgreDAO<Application, Integ
             statement.setInt(1, user_id);
             statement.setInt(2, ces_id);
             result = parseResultSet(statement.executeQuery()).iterator().next();
+        } catch (Exception e) {
+            throw new DAOException(e);
+        }
+        return result;
+    }
+
+    @Override
+    public List<Application> getAllCESApplications(Integer ces_id) throws DAOException {
+        List<Application> result;
+        try (PreparedStatement statement = connection.prepareStatement(getAllCESApplicationsQuery)) {
+            statement.setInt(1, ces_id);
+            result = parseResultSet(statement.executeQuery());
         } catch (Exception e) {
             throw new DAOException(e);
         }

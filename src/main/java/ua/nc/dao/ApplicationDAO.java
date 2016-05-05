@@ -10,4 +10,5 @@ import java.util.List;
  */
 public interface ApplicationDAO extends GenericDAO<Application, Integer> {
     Application getApplicationByUserCES(Integer user_id, Integer ces_id) throws DAOException;
+    List<Application> getAllCESApplications(Integer ces_id) throws DAOException;
 }

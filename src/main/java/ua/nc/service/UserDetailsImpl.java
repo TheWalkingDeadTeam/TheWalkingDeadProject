@@ -11,7 +11,7 @@ import java.util.Collection;
 public class UserDetailsImpl extends User {
     private Integer id;
 
-    public Integer getID() {
+    public Integer getId() {
         return id;
     }
 
@@ -24,6 +24,4 @@ public class UserDetailsImpl extends User {
         super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
         this.id = id;
     }
-
-
 }

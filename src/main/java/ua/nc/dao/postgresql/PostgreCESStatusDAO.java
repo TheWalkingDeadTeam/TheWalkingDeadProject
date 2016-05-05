@@ -1,9 +1,9 @@
-package ua.nc.dao.postgresql.profile;
+package ua.nc.dao.postgresql;
 
 import ua.nc.dao.AbstractPostgreDAO;
-import ua.nc.dao.ListTypeDAO;
-import ua.nc.entity.profile.ListType;
+import ua.nc.dao.CESStatusDAO;
 import ua.nc.dao.exception.DAOException;
+import ua.nc.entity.CESStatus;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,15 +12,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Rangar on 26.04.2016.
+ * Created by Rangar on 04.05.2016.
  */
-public class PostgreListTypeDAO extends AbstractPostgreDAO<ListType, Integer> implements ListTypeDAO{
-    public PostgreListTypeDAO(Connection connection){
+public class PostgreCESStatusDAO extends AbstractPostgreDAO<CESStatus, Integer> implements CESStatusDAO {
+    public  PostgreCESStatusDAO(Connection connection){
         super(connection);
     }
 
-    private class PersistListType extends ListType {
-        public PersistListType(String name) {
+    private class PersistCESStatus extends CESStatus{
+        public PersistCESStatus(String name) {
             super(name);
         }
 
@@ -31,32 +31,32 @@ public class PostgreListTypeDAO extends AbstractPostgreDAO<ListType, Integer> im
 
     @Override
     public String getSelectQuery() {
-        return "SELECT * FROM list WHERE list.list_id = ?;";
+        return "SELECT * FORM ces_status WHERE ces_status_id = ?";
     }
 
     @Override
     public String getCreateQuery() {
-        return "INSERT INTO list (name) VALUES (?);";
+        return "INSERT INTO ces_status (name) VALUES (?);";
     }
 
     @Override
     public String getUpdateQuery() {
-        return "UPDATE list SET list.name = ? WHERE list.list_id = ?;";
+        return "UPDATE ces_status SET name = ? WHERE ces_status_id = ?";
     }
 
     @Override
     public String getAllQuery() {
-        return "SELECT * FROM list";
+        return "SELECT * FORM ces_status";
     }
 
     @Override
-    protected java.util.List<ListType> parseResultSet(ResultSet rs) throws DAOException {
-        List<ListType> result = new ArrayList<>();
+    protected List<CESStatus> parseResultSet(ResultSet rs) throws DAOException {
+        List<CESStatus> result = new ArrayList<>();
         try {
             while (rs.next()) {
-                PersistListType listType = new PersistListType(rs.getString("name"));
-                listType.setId(rs.getInt("list_id"));
-                result.add(listType);
+                PersistCESStatus cesStatus = new PersistCESStatus(rs.getString("name"));
+                cesStatus.setId(rs.getInt("ces_status_id"));
+                result.add(cesStatus);
             }
         } catch (Exception e) {
             throw new DAOException(e);
@@ -65,7 +65,7 @@ public class PostgreListTypeDAO extends AbstractPostgreDAO<ListType, Integer> im
     }
 
     @Override
-    protected void prepareStatementForInsert(PreparedStatement statement, ListType object) throws DAOException {
+    protected void prepareStatementForInsert(PreparedStatement statement, CESStatus object) throws DAOException {
         try {
             statement.setString(1, object.getName());
         } catch (Exception e) {
@@ -74,7 +74,7 @@ public class PostgreListTypeDAO extends AbstractPostgreDAO<ListType, Integer> im
     }
 
     @Override
-    protected void prepareStatementForUpdate(PreparedStatement statement, ListType object) throws DAOException {
+    protected void prepareStatementForUpdate(PreparedStatement statement, CESStatus object) throws DAOException {
         try {
             statement.setString(1, object.getName());
             statement.setInt(2, object.getId());
@@ -84,7 +84,7 @@ public class PostgreListTypeDAO extends AbstractPostgreDAO<ListType, Integer> im
     }
 
     @Override
-    protected void prepareStatementForSelect(PreparedStatement statement, ListType object) throws DAOException {
+    protected void prepareStatementForSelect(PreparedStatement statement, CESStatus object) throws DAOException {
         try {
             statement.setInt(1, object.getId());
         } catch (Exception e) {
@@ -93,7 +93,7 @@ public class PostgreListTypeDAO extends AbstractPostgreDAO<ListType, Integer> im
     }
 
     @Override
-    public ListType create(ListType object) throws DAOException {
+    public CESStatus create(CESStatus object) throws DAOException {
         return persist(object);
     }
 }

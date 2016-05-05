@@ -8,11 +8,11 @@ public class ProfileFieldValue {
     private String fieldValueName;
     private String value;
 
-    public String getID() {
+    public String getId() {
         return ID;
     }
 
-    public void setID(String ID) {
+    public void setId(String ID) {
         this.ID = ID;
     }
 

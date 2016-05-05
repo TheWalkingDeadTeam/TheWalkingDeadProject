@@ -22,11 +22,11 @@ public class ProfileField {
         this.values = values;
     }
 
-    public int getID() {
+    public int getId() {
         return ID;
     }
 
-    public void setID(int ID) {
+    public void setId(int ID) {
         this.ID = ID;
     }
 
