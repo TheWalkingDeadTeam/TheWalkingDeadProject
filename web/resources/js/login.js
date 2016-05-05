@@ -2,7 +2,7 @@
  * Created by Pavel on 25.04.2016.
  */
 $(document).ready(function () {
-    $("#buttonSignIn").click(function () {
+    $("#buttonSignIn").click(function (event) {
         event.preventDefault();
         $.ajax({
             type: 'post',
