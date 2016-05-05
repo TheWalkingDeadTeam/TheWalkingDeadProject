@@ -4,6 +4,7 @@ import ua.nc.dao.MailDAO;
 import ua.nc.dao.RoleDAO;
 import ua.nc.dao.UserDAO;
 import ua.nc.dao.enums.DataBaseType;
+import ua.nc.dao.exception.DAOException;
 import ua.nc.dao.factory.DAOFactory;
 import ua.nc.dao.pool.ConnectionPool;
 
@@ -21,10 +22,20 @@ public class PostgreDAOFactory extends DAOFactory {
         Connection connection = null;
         try {
             connection = connectionPool.getConnection();
+            System.out.println("CONNECTION ESTABLISHED");
         } catch (Exception e) {
             System.out.println("GET CONNECTION");
         }
         return connection;
+    }
+
+    @Override
+    public void putConnection(Connection connection) {
+        try {
+            connectionPool.putConnection(connection);
+        } catch (DAOException e){
+
+        }
     }
 
     @Override

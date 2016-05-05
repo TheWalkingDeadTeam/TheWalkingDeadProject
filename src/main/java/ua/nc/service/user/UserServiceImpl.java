@@ -11,6 +11,7 @@ import ua.nc.entity.User;
 import ua.nc.service.MailService;
 import ua.nc.service.MailServiceImpl;
 
+import java.sql.Connection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,24 +20,32 @@ import java.util.Set;
  */
 public class UserServiceImpl implements UserService {
     private DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
-    private UserDAO userDAO = daoFactory.getUserDAO(daoFactory.getConnection());
-    private RoleDAO roleDAO = daoFactory.getRoleDAO(daoFactory.getConnection());
+    //private UserDAO userDAO = daoFactory.getUserDAO(daoFactory.getConnection());
+    // private RoleDAO roleDAO = daoFactory.getRoleDAO(daoFactory.getConnection());
     private MailService mailService = new MailServiceImpl();
 
     @Override
     public User getUser(String email) {
+        Connection connection = daoFactory.getConnection();
+        UserDAO userDAO = daoFactory.getUserDAO(connection);
+        RoleDAO roleDAO = daoFactory.getRoleDAO(connection);
         User user = null;
         try {
             user = userDAO.findByEmail(email);
             user.setRoles(roleDAO.findByEmail(email));
         } catch (DAOException e) {
             System.out.println("DB exception");
+        } finally {
+            daoFactory.putConnection(connection);
         }
         return user;
     }
 
     @Override
     public User createUser(User user) {
+        Connection connection = daoFactory.getConnection();
+        UserDAO userDAO = daoFactory.getUserDAO(connection);
+        RoleDAO roleDAO = daoFactory.getRoleDAO(connection);
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         user.setPassword(encoder.encode(user.getPassword()));
         Set<Role> roles = new HashSet<>();
@@ -52,6 +61,8 @@ public class UserServiceImpl implements UserService {
         } catch (DAOException e) {
             System.out.println("DB exception"); //toDo log4j
             return null;
+        } finally {
+            daoFactory.putConnection(connection);
         }
 
 

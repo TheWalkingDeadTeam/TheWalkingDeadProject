@@ -21,38 +21,16 @@ import java.util.Set;
 /**
  * Created by Pavel on 21.04.2016.
  */
-public class PostgreUserDAO implements UserDAO {
+public class PostgreUserDAO extends AbstractPostgreDAO<User, Integer> implements UserDAO {
     /*    private static final Logger LOGGER = Logger.getLogger(PostgreUserDAO.class);*/
 
-    private final Connection connection;
-
     public PostgreUserDAO(Connection connection) {
-        this.connection = connection;
+        super(connection);
     }
 
     private final String FIND_BY_EMAIL = "SELECT * FROM public.user u WHERE u.email = ?";
     private final String CREATE_USER = "INSERT INTO public.user(name, email, password) VALUES (?, ?, ?)";
     private final String SET_ROLE_TO_USER = "INSERT INTO public.user_role(role_id, user_id) SELECT ?, user_id FROM public.user u WHERE u.email=?";
-
-    private class PersistUser extends User{
-        public PersistUser(Integer id, String name, String email, String password, Set<Role> roles) {
-            super(id, name, email, password, roles);
-        }
-
-        public PersistUser() {
-        }
-
-        @Override
-        public void setId(Integer id) {
-            super.setId(id);
-        }
-    }
-
-    /**
-     * @param email
-     * @return
-     * @throws DAOException
-     */
 
     @Override
     public User findByEmail(String email) throws DAOException {
@@ -128,6 +106,93 @@ public class PostgreUserDAO implements UserDAO {
             }
         }
     }
+
+    @Override
+    public User create(User object) throws DAOException {
+        return null;
+    }
+
+    @Override
+    public String getSelectQuery() {
+        return null;
+    }
+
+    @Override
+    public String getCreateQuery() {
+        return null;
+    }
+
+    @Override
+    public String getUpdateQuery() {
+        return null;
+    }
+
+    @Override
+    public String getAllQuery() {
+        return null;
+    }
+
+    @Override
+    protected List<User> parseResultSet(ResultSet rs) throws DAOException {
+        return null;
+    }
+
+    @Override
+    protected void prepareStatementForInsert(PreparedStatement statement, User object) throws DAOException {
+
+    }
+
+    @Override
+    protected void prepareStatementForUpdate(PreparedStatement statement, User object) throws DAOException {
+
+    }
+
+    @Override
+    protected void prepareStatementForSelect(PreparedStatement statement, User object) throws DAOException {
+
+    }
+
+    @Override
+    public User persist(User object) throws DAOException {
+        return null;
+    }
+
+    @Override
+    public User read(Integer key) throws DAOException {
+        return null;
+    }
+
+    @Override
+    public void update(User object) throws DAOException {
+
+    }
+
+    @Override
+    public List<User> getAll() throws DAOException {
+        return null;
+    }
+
+    private class PersistUser extends User{
+        public PersistUser(Integer id, String name, String email, String password, Set<Role> roles) {
+            super(id, name, email, password, roles);
+        }
+
+        public PersistUser() {
+        }
+
+        @Override
+        public void setId(Integer id) {
+            super.setId(id);
+        }
+    }
+
+    /**
+     * @param email
+     * @return
+     * @throws DAOException
+     */
+
+
 
 
 }
