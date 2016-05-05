@@ -74,15 +74,6 @@ public class PostgreFieldTypeDAO extends AbstractPostgreDAO<FieldType, Integer> 
     }
 
     @Override
-    protected void prepareStatementForSelect(PreparedStatement statement, FieldType object) throws DAOException {
-        try {
-            statement.setInt(1, object.getId());
-        } catch (Exception e) {
-            throw new DAOException(e);
-        }
-    }
-
-    @Override
     public FieldType create(FieldType object) throws DAOException {
         return persist(object);
     }

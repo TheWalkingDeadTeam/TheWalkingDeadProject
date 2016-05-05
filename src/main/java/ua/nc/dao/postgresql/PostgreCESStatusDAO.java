@@ -74,15 +74,6 @@ public class PostgreCESStatusDAO extends AbstractPostgreDAO<CESStatus, Integer> 
     }
 
     @Override
-    protected void prepareStatementForSelect(PreparedStatement statement, CESStatus object) throws DAOException {
-        try {
-            statement.setInt(1, object.getId());
-        } catch (Exception e) {
-            throw new DAOException(e);
-        }
-    }
-
-    @Override
     public CESStatus create(CESStatus object) throws DAOException {
         return persist(object);
     }

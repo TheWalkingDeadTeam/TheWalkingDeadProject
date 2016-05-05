@@ -17,6 +17,10 @@ import java.util.List;
 public class PostgreApplicationDAO extends AbstractPostgreDAO<Application, Integer> implements ApplicationDAO {
     public static final String getApplicationByUserCES = "SELECT * FROM Application WHERE system_user_id = ? AND ces_id = ?";
     public static final String getAllCESApplicationsQuery = "SELECT * FROM Application WHERE ces_id = ?";
+    public static final String getAllUsersForCurrentCES = "Select u.* from system_user u JOIN application a " +
+            "ON u.system_user_id = a.system_user_id WHERE ces_id = " +
+            "(SELECT ces.ces_id from course_enrollment_session ces " +
+            "JOIN ces_status stat ON ces.ces_status_id = stat.ces_status_id AND stat.name = 'Active')";
 
     public PostgreApplicationDAO(Connection connection) {
         super(connection);
@@ -73,15 +77,6 @@ public class PostgreApplicationDAO extends AbstractPostgreDAO<Application, Integ
         try {
             statement.setBoolean(1, object.getRejected());
             statement.setInt(2, object.getId());
-        } catch (Exception e) {
-            throw new DAOException(e);
-        }
-    }
-
-    @Override
-    protected void prepareStatementForSelect(PreparedStatement statement, Application object) throws DAOException {
-        try {
-            statement.setInt(1, object.getId());
         } catch (Exception e) {
             throw new DAOException(e);
         }

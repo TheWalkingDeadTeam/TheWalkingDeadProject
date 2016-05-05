@@ -81,15 +81,6 @@ public class PostgreIntervieweeDAO extends AbstractPostgreDAO<Interviewee, Integ
     }
 
     @Override
-    protected void prepareStatementForSelect(PreparedStatement statement, Interviewee object) throws DAOException {
-        try {
-            statement.setInt(1, object.getId());
-        } catch (Exception e) {
-            throw new DAOException(e);
-        }
-    }
-
-    @Override
     public Interviewee create(Interviewee object) throws DAOException {
         return persist(object);
     }
