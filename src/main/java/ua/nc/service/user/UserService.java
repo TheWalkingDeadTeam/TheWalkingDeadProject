@@ -11,4 +11,6 @@ public interface UserService {
     User createUser(User user);
 
     void changePassword(User user, String password);
+
+    User recoverPass(User user);
 }

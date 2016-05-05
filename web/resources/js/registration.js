@@ -1,16 +1,16 @@
 $( document ).ready(function() {
 	// popup-------------------------------------------------------------------------------popup
 		$('.regbut').bind('click', function(){
-			$('.registration').fadeIn(500); //openpopup
+			$('.reg').fadeIn(500); //openpopup
 			openValidate();
 		});
 
 		$('.closebtn').bind('click', function(){
-			$('.registration').fadeOut(300); //closebutton
+			$('.reg').fadeOut(300); //closebutton
 		});
 
 		$('.layout').bind('click', function(){
-			$('.registration').fadeOut(300); //layoutclose
+			$('.reg').fadeOut(300); //layoutclose
 		});
 	//popup
 	// -------------------------------------------------------------------------------validation

@@ -1,5 +1,6 @@
 package ua.nc.service.user;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import ua.nc.dao.RoleDAO;
 import ua.nc.dao.UserDAO;
@@ -72,24 +73,18 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    /**
-     * Change User password
-     *
-     * @param user
-     * @param password
-     */
     @Override
-    public void changePassword(User user, String password) {
-        Connection connection = daoFactory.getConnection();
-        UserDAO userDAO = daoFactory.getUserDAO(connection);
+    public User recoverPass(User user) {
+        String testPassword = RandomStringUtils.randomAlphanumeric(10);
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        user.setPassword(encoder.encode(password));
         try {
+            user.setPassword(encoder.encode(testPassword));
             userDAO.updateUser(user);
+            mailService.sendMail(user.getEmail(), "Password recovery", "Welcome " + user.getName() + " ! \n NetCracker[TheWalkingDeadTeam] " + user.getPassword());
+            return user;
         } catch (DAOException e) {
-            System.out.println("User password has not been modified");
-        } finally {
-            daoFactory.putConnection(connection);
+            System.out.println("DB exception"); //toDo log4j
+            return null;
         }
     }
 }

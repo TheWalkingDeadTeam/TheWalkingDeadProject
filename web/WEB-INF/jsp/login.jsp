@@ -74,6 +74,25 @@
         </sec:authorize>
     </div>
 
+    <div class="recovery registration">
+        <div class="layout"></div>
+        <sec:authorize access="!isAuthenticated()" url="/passwordRecovery">
+            <form id="stupidUser" action="/passwordRecovery">
+                <div id="passwordRecovery"></div>
+                <div class="row container-fluid recovery-head">
+                    <div class="col-lg-6 col-md-8 col-sm-9 col-xs-9">
+                        <h2 class="form-signin-heading">Password recovery</h2>
+                    </div>
+                    <div class="col-lg-6 col-md-4 col-sm-3 col-xs-3 ">
+                        <i class="material-icons closeico"><span class="closebtn">clear</span></i>
+                    </div>
+                </div>
+                <input id="userEmail" name="email" class="form-control" placeholder="Email address" type="text" value="">
+                <div class="correct-email"></div>
+                <button id="buttonRecoverPassword" class="btn btn-lg btn-primary btn-block">Send request</button>
+            </form>
+        </sec:authorize>
+    </div>
 
     <div class="row">
 
@@ -111,6 +130,7 @@
                     <p><sec:authentication property="principal.authorities"/></p>
                     <p><img id = "photo_img" src="/getPhoto" alt="User's photo" width = "100" height = "100" onError="this.src='/resources/images/user-photo.png'"/></p>
                 </div>
+                <p><a id="buttonLogout" class="btn btn-lg btn-danger" href="/logout" role="button">Logout</a></p>
                 <p>
                     <a id="buttonLogout" class="btn btn-lg btn-danger" href="/logout" role="button">Logout</a>
                 </p>
@@ -168,4 +188,5 @@
 <script src="/resources/js/logout.js"></script>
 <script src="/resources/bootstrap/js/bootstrap.js"></script>
 <script src="/resources/js/registration.js"></script>
+<script src="/resources/js/passwordRecovery.js"></script>
 </html>
