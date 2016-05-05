@@ -1,6 +1,7 @@
 package ua.nc.dao.postgresql.profile;
 
 import ua.nc.dao.AbstractPostgreDAO;
+import ua.nc.dao.ListTypeDAO;
 import ua.nc.entity.profile.ListType;
 import ua.nc.dao.exception.DAOException;
 
@@ -13,7 +14,7 @@ import java.util.List;
 /**
  * Created by Rangar on 26.04.2016.
  */
-public class PostgreListTypeDAO extends AbstractPostgreDAO<ListType, Integer> {
+public class PostgreListTypeDAO extends AbstractPostgreDAO<ListType, Integer> implements ListTypeDAO{
     public PostgreListTypeDAO(Connection connection){
         super(connection);
     }

@@ -1,6 +1,7 @@
 package ua.nc.dao.postgresql.profile;
 
 import ua.nc.dao.AbstractPostgreDAO;
+import ua.nc.dao.FieldTypeDAO;
 import ua.nc.entity.profile.FieldType;
 import ua.nc.dao.exception.DAOException;
 
@@ -13,7 +14,7 @@ import java.util.List;
 /**
  * Created by Rangar on 26.04.2016.
  */
-public class PostgreFieldTypeDAO extends AbstractPostgreDAO<FieldType, Integer> {
+public class PostgreFieldTypeDAO extends AbstractPostgreDAO<FieldType, Integer> implements FieldTypeDAO {
     public PostgreFieldTypeDAO(Connection connection){
         super(connection);
     }
