@@ -61,7 +61,7 @@
                         <label class="col-md-2 control-lable" for="file">Place</label>
                         <div class="col-md-7">
                             <input type="text" data-ng-model="location"  name="location" class="location form-control input-sm"
-                                   placeholder="Enter interview place" pattern="(\d|[a-z])" ng-pattern-restrict  ng-minlength="3" required/>
+                                   placeholder="Enter interview place"  ng-pattern-restrict  ng-minlength="3" required/>
                             <div class="has-error" ng-show="myForm.$dirty">
                                 <span ng-show="myForm.location.$error.required">This is a required field</span>
                                 <span ng-show="myForm.location.$error.minlength">Chars only allowed</span>
@@ -70,6 +70,11 @@
                         </div>
                     </div>
                 </div>
+
+
+
+                <%--Checkbox with mails here--%>
+
 
 
                 <div class="row">
