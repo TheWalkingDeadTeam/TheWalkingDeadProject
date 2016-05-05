@@ -7,6 +7,9 @@ mailScheduler.controller('SchedulerController', ['$scope', '$http', function ($s
 
     $scope.list = [];
 
+    
+    
+    
     $scope.submit = function () {
         var formData = {
             "minutes": $scope.minutes,

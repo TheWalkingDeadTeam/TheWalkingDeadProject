@@ -10,6 +10,12 @@ import java.util.List;
  * Created by Alexander on 23.04.2016.
  */
 public interface MailService {
+
+    void sendInterviewReminders(List<Date> interviewDates, int reminderTime, Mail interviewerMail,
+                                Mail studentsMail, List<User> interviewersList, List<User> studentsList);
+
+    Date planSchedule(int hoursPerDay, Mail interviewerMail, Mail studentsMail);
+
     public List<Mail> getAllMails();
 
     public void updateMail(Mail mail);

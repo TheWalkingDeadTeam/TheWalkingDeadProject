@@ -74,6 +74,36 @@
 
 
                 <%--Checkbox with mails here--%>
+                <div class="panel panel-default">
+                    <!-- Default panel contents -->
+                    <div class="panel-heading"><span class="lead">List of Mails </span></div>
+                    <div class="tablecontainer">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Head</th>
+                                <th>Body</th>
+                                <th width="20%"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="MailController in ctrl.mails">
+                                <td><span ng-bind="m.id"></span></td>
+                                <td><span ng-bind="m.bodyTemplate"></span></td>
+                                <td><span ng-bind="m.headTemplate"></span></td>
+                                <td>
+                                    <button type="button" ng-click="ctrl.edit(m.id)" class="btn btn-success custom-width">Edit</button>  <button type="button" ng-click="ctrl.remove(m.id)" class="btn btn-danger custom-width">Remove</button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+                <%--Checkbox with mails here--%>
+
 
 
 
@@ -93,5 +123,7 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
 <script src="<c:url value='/resources/js/scheduler_controller.js' />"></script>
+<script src="<c:url value='/resources/js/mail_service.js' />"></script>
+<script src="<c:url value='/resources/js/mail_controller.js' />"></script>
 </body>
 </html>
