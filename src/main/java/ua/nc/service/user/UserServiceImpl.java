@@ -11,6 +11,7 @@ import ua.nc.entity.User;
 import ua.nc.service.MailService;
 import ua.nc.service.MailServiceImpl;
 
+import java.sql.Connection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,25 +20,34 @@ import java.util.Set;
  */
 public class UserServiceImpl implements UserService {
     private DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
-    private UserDAO userDAO = daoFactory.getUserDAO(daoFactory.getConnection());
-    private RoleDAO roleDAO = daoFactory.getRoleDAO(daoFactory.getConnection());
-    private MailService mailService;
+    //private UserDAO userDAO = daoFactory.getUserDAO(daoFactory.getConnection());
+    // private RoleDAO roleDAO = daoFactory.getRoleDAO(daoFactory.getConnection());
+    private MailService mailService = new MailServiceImpl();
 
     @Override
     public User getUser(String email) {
+        Connection connection = daoFactory.getConnection();
+        UserDAO userDAO = daoFactory.getUserDAO(connection);
+        RoleDAO roleDAO = daoFactory.getRoleDAO(connection);
         User user = null;
         try {
             user = userDAO.findByEmail(email);
             user.setRoles(roleDAO.findByEmail(email));
         } catch (DAOException e) {
             System.out.println("DB exception");
+        } finally {
+            daoFactory.putConnection(connection);
         }
         return user;
     }
 
     @Override
     public User createUser(User user) {
-        mailService = new MailServiceImpl();
+        System.out.println("Create user service");
+        Connection connection = daoFactory.getConnection();
+        UserDAO userDAO = daoFactory.getUserDAO(connection);
+        RoleDAO roleDAO = daoFactory.getRoleDAO(connection);
+        System.out.println("Create user service after dao");
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         user.setPassword(encoder.encode(user.getPassword()));
         Set<Role> roles = new HashSet<>();
@@ -46,13 +56,17 @@ public class UserServiceImpl implements UserService {
                 roles.add(roleDAO.findByName(role.getName()));
             }
             user.setRoles(roles);
-            userDAO.createUser(user);
-            roleDAO.setRoleToUser(user.getRoles(), user);
+            System.out.println("Before creation");
+            userDAO.createUser(user,user.getRoles());
+            System.out.println("After creation");
+            //roleDAO.setRoleToUser(user.getRoles(), user);
             mailService.sendMail(user.getEmail(), "Registration", "Welcome " + user.getName() + " ! \n NetCracker[TheWalkingDeadTeam] ");
             return user;
         } catch (DAOException e) {
             System.out.println("DB exception"); //toDo log4j
             return null;
+        } finally {
+            daoFactory.putConnection(connection);
         }
 
 

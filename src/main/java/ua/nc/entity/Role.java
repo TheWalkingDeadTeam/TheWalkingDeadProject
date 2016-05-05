@@ -5,9 +5,10 @@ import java.util.List;
 /**
  * Created by Pavel on 22.04.2016.
  */
-public class Role {
+public class Role implements Identified<Integer> {
     private Integer id;
     private String name;
+    private String description;
     private List<User> users;
 
     public Integer getId() {
@@ -24,6 +25,14 @@ public class Role {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public List<User> getUsers() {

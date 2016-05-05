@@ -2,6 +2,7 @@ package ua.nc.dao.postgresql;
 
 import ua.nc.dao.*;
 import ua.nc.dao.enums.DataBaseType;
+import ua.nc.dao.exception.DAOException;
 import ua.nc.dao.factory.DAOFactory;
 import ua.nc.dao.pool.ConnectionPool;
 import ua.nc.dao.postgresql.profile.*;
@@ -20,10 +21,20 @@ public class PostgreDAOFactory extends DAOFactory {
         Connection connection = null;
         try {
             connection = connectionPool.getConnection();
+            System.out.println("CONNECTION ESTABLISHED");
         } catch (Exception e) {
             System.out.println("GET CONNECTION");
         }
         return connection;
+    }
+
+    @Override
+    public void putConnection(Connection connection) {
+        try {
+            connectionPool.putConnection(connection);
+        } catch (DAOException e){
+
+        }
     }
 
     @Override

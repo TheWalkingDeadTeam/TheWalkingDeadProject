@@ -144,7 +144,8 @@ $( document ).ready(function() {
 				name: $('#name').val(),
 				surname: $('#surname').val(),
 				email: $('#email').val(),
-				password: $('#password').val()
+				password: $('#password').val(),
+				roles: [{name : 'ROLE_STUDENT'}]
 			}),
 			success: function (response) {
 				if (response.errors.length) {

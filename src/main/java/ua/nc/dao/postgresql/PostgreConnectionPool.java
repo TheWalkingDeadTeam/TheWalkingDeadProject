@@ -50,6 +50,7 @@ public class PostgreConnectionPool extends ConnectionPool {
     public void putConnection(Connection connection) throws DAOException {
         try {
             connection.close();
+            System.out.println("Connection closed");
         } catch (SQLException e) {
             throw new DAOException(e);
         }

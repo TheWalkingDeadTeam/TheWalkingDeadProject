@@ -62,10 +62,10 @@ public class RegistrationValidator implements Validator {
         if (!(user.getRoles() != null && user.getRoles().isEmpty()))
         for(Role role : user.getRoles()) {
             if (!(contains(role.getName()))) {
-                errors.add(new ValidationError("roles", "Role not exist"));
+                errors.add(new ValidationError("roles", "Role not exist "));
             }
         } else {
-            errors.add(new ValidationError("roles", "No roles"));
+            errors.add(new ValidationError("roles", "No roles "));
         }
 
         return errors;

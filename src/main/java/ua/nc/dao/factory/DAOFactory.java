@@ -33,6 +33,8 @@ public abstract class DAOFactory {
 
     public abstract Connection getConnection();
 
+    public abstract void putConnection(Connection connection);
+
     public abstract UserDAO getUserDAO(Connection connection);
 
     public abstract RoleDAO getRoleDAO(Connection connection);
