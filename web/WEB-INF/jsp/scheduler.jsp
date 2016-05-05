@@ -74,11 +74,11 @@
 
 
                 <%--Checkbox with mails here--%>
-                <div class="panel panel-default">
+                <div class="panel panel-default" ? >
                     <!-- Default panel contents -->
                     <div class="panel-heading"><span class="lead">List of Mails </span></div>
                     <div class="tablecontainer">
-                        <table class="table table-hover">
+                        <table class="table table-hover" ng-app="myApp" class="ng-cloak">
                             <thead>
                             <tr>
                                 <th>ID</th>
@@ -88,13 +88,10 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr ng-repeat="MailController in ctrl.mails">
+                            <tr ng-repeat="m in MailController.mails">
                                 <td><span ng-bind="m.id"></span></td>
                                 <td><span ng-bind="m.bodyTemplate"></span></td>
                                 <td><span ng-bind="m.headTemplate"></span></td>
-                                <td>
-                                    <button type="button" ng-click="ctrl.edit(m.id)" class="btn btn-success custom-width">Edit</button>  <button type="button" ng-click="ctrl.remove(m.id)" class="btn btn-danger custom-width">Remove</button>
-                                </td>
                             </tr>
                             </tbody>
                         </table>
