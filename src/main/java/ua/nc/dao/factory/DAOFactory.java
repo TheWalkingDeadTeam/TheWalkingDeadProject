@@ -43,13 +43,13 @@ public abstract class DAOFactory {
 
     public abstract CESDAO getCESDAO(Connection connection);
 
-    public abstract GenericDAO<CESStatus, Integer> getCESStatusDAO(Connection connection);
+    public abstract CESStatusDAO getCESStatusDAO(Connection connection);
 
-    public abstract GenericDAO<Feedback, Integer> getFeedbackDAO(Connection connection);
+    public abstract FeedbackDAO getFeedbackDAO(Connection connection);
 
-    public abstract GenericDAO<Interviewee, Integer> getIntervieweeDAO(Connection connection);
+    public abstract IntervieweeDAO getIntervieweeDAO(Connection connection);
 
-    public abstract GenericDAO<ReportTemplate, Integer> getReportTemplateDAO(Connection connection);
+    public abstract ReportTemplateDAO getReportTemplateDAO(Connection connection);
 
     public abstract FieldDAO getFieldDAO(Connection connection);
 
@@ -57,7 +57,7 @@ public abstract class DAOFactory {
 
     public abstract ListValueDAO getListValueDAO(Connection connection);
 
-    public abstract GenericDAO<FieldType, Integer> getFieldTypeDAO(Connection connection);
+    public abstract FieldTypeDAO getFieldTypeDAO(Connection connection);
 
-    public abstract GenericDAO<ListType, Integer> getListTypeDAO(Connection connection);
+    public abstract ListTypeDAO getListTypeDAO(Connection connection);
 }
