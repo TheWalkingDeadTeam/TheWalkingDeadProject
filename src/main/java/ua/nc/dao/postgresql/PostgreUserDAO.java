@@ -15,7 +15,7 @@ import java.sql.SQLException;
 /**
  * Created by Pavel on 21.04.2016.
  */
-public class PostgreUserDAO extends UserDAO {
+public class PostgreUserDAO implements UserDAO {
     /*    private static final Logger LOGGER = Logger.getLogger(PostgreUserDAO.class);*/
     private final Connection connection;
 

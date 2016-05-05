@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements C
     }
 
     private class PersistCES extends CES{
-        public PersistCES(Integer year, Calendar startRegistrationDate, Calendar endRegistrationDate,Integer quota,
+        public PersistCES(Integer year, Date startRegistrationDate, Date endRegistrationDate,Integer quota,
                           Integer reminders, Integer statusId, Integer interviewTimeForPerson, Integer interviewTimeForDay) {
             super(year, startRegistrationDate, endRegistrationDate,quota, reminders, statusId,
                     interviewTimeForPerson, interviewTimeForDay);
@@ -57,17 +58,31 @@ public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements C
 
     @Override
     protected List<CES> parseResultSet(ResultSet rs) throws DAOException {
-        return null;
+        List<CES> result = new ArrayList<>();
+        try {
+            while (rs.next()) {
+                PersistCES ces = new PersistCES(rs.getInt("year"), rs.getDate("start_registration_date"), rs.getDate("end_registration_date"),
+                        rs.getInt("quota"), rs.getInt("reminders"), rs.getInt("ces_status_id"),
+                        rs.getInt("interviewing_time_person"), rs.getInt("interviewing_time_day"));
+                ces.setId(rs.getInt("ces_id"));
+                ces.setStartInterviewingDate(rs.getDate("start_interviewing_date"));
+                ces.setEndInterviewingDate(rs.getDate("end_interviewing_date"));
+                result.add(ces);
+            }
+        } catch (Exception e) {
+            throw new DAOException(e);
+        }
+        return result;
     }
 
     @Override
     protected void prepareStatementForInsert(PreparedStatement statement, CES object) throws DAOException {
         try {
             statement.setInt(1, object.getYear());
-            statement.setDate(2, (Date) object.getStartRegistrationDate().getTime());
-            statement.setDate(3, (Date) object.getEndRegistrationDate().getTime());
-            statement.setDate(4, (Date) object.getStartInterviewingDate().getTime());
-            statement.setDate(5, (Date) object.getEndInterviewingDate().getTime());
+            statement.setDate(2, new Date(object.getStartRegistrationDate().getTime()));
+            statement.setDate(3, new Date(object.getEndRegistrationDate().getTime()));
+            statement.setDate(4, new Date(object.getStartInterviewingDate().getTime()));
+            statement.setDate(5, new Date(object.getEndInterviewingDate().getTime()));
             statement.setInt(6, object.getQuota());
             statement.setInt(7, object.getStatusId());
             statement.setInt(8, object.getReminders());
@@ -81,8 +96,8 @@ public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements C
     @Override
     protected void prepareStatementForUpdate(PreparedStatement statement, CES object) throws DAOException {
         try {
-            statement.setDate(1, (Date) object.getStartInterviewingDate().getTime());
-            statement.setDate(2, (Date) object.getEndInterviewingDate().getTime());
+            statement.setDate(1, new Date(object.getStartInterviewingDate().getTime()));
+            statement.setDate(2, new Date(object.getEndInterviewingDate().getTime()));
             statement.setInt(3, object.getQuota());
             statement.setInt(4, object.getReminders());
             statement.setInt(5, object.getInterviewTimeForPerson());
@@ -93,27 +108,18 @@ public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements C
         }
     }
 
-    @Override
-    protected void prepareStatementForSelect(PreparedStatement statement, CES object) throws DAOException {
-        try {
-            statement.setInt(1, object.getId());
-        } catch (Exception e) {
-            throw new DAOException(e);
-        }
-    }
-
-    private static final String getCurrentCESQuery = "SELECT ces.CES_ID from CES ces JOIN ON CES_Status stat " +
-            "WHERE ces.CES_Status_ID = stat.CES_Status_ID AND stat.Name = 'Active'";
+    private static final String getCurrentCESQuery = "SELECT ces.* from course_enrollment_session ces " +
+            "JOIN ces_status stat ON ces.ces_status_id = stat.ces_status_id AND stat.name = 'Active'";
 
     @Override
     public CES getCurrentCES() throws DAOException {
-        CES result;
+        List<CES> result;
         try (PreparedStatement statement = connection.prepareStatement(getCurrentCESQuery)) {
-            result = parseResultSet(statement.executeQuery()).iterator().next();
+            result = parseResultSet(statement.executeQuery());
         } catch (Exception e) {
             throw new DAOException(e);
         }
-        return result;
+        return result.iterator().next();
     }
 
     @Override

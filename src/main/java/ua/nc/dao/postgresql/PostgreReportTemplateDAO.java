@@ -86,15 +86,6 @@ public class PostgreReportTemplateDAO extends AbstractPostgreDAO<ReportTemplate,
     }
 
     @Override
-    protected void prepareStatementForSelect(PreparedStatement statement, ReportTemplate object) throws DAOException {
-        try {
-            statement.setInt(1, object.getId());
-        } catch (Exception e) {
-            throw new DAOException(e);
-        }
-    }
-
-    @Override
     public ReportTemplate create(ReportTemplate object) throws DAOException {
         return persist(object);
     }

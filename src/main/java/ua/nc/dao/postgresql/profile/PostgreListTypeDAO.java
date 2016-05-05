@@ -84,15 +84,6 @@ public class PostgreListTypeDAO extends AbstractPostgreDAO<ListType, Integer> im
     }
 
     @Override
-    protected void prepareStatementForSelect(PreparedStatement statement, ListType object) throws DAOException {
-        try {
-            statement.setInt(1, object.getId());
-        } catch (Exception e) {
-            throw new DAOException(e);
-        }
-    }
-
-    @Override
     public ListType create(ListType object) throws DAOException {
         return persist(object);
     }

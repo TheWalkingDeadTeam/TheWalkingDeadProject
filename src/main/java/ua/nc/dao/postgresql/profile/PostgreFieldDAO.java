@@ -106,15 +106,6 @@ public class PostgreFieldDAO extends AbstractPostgreDAO<Field, Integer> implemen
     }
 
     @Override
-    protected void prepareStatementForSelect(PreparedStatement statement, Field object) throws DAOException {
-        try {
-            statement.setInt(1, object.getId());
-        } catch (Exception e) {
-            throw new DAOException(e);
-        }
-    }
-
-    @Override
     public Field create(Field field) throws DAOException {
         return persist(field);
     }

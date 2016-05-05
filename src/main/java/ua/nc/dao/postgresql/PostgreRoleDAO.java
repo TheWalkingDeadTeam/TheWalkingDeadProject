@@ -18,7 +18,7 @@ import java.util.Set;
 /**
  * Created by Pavel on 22.04.2016.
  */
-public class PostgreRoleDAO extends RoleDAO {
+public class PostgreRoleDAO implements RoleDAO {
     /*    private static final Logger LOGGER = Logger.getLogger(PostgreRoleDAO.class);*/
     private final Connection connection;
 
