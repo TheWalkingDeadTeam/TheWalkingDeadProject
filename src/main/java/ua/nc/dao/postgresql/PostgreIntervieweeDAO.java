@@ -1,6 +1,7 @@
 package ua.nc.dao.postgresql;
 
 import ua.nc.dao.AbstractPostgreDAO;
+import ua.nc.dao.IntervieweeDAO;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.entity.Interviewee;
 
@@ -13,7 +14,7 @@ import java.util.List;
 /**
  * Created by Rangar on 03.05.2016.
  */
-public class PostgreIntervieweeDAO extends AbstractPostgreDAO<Interviewee, Integer> {
+public class PostgreIntervieweeDAO extends AbstractPostgreDAO<Interviewee, Integer> implements IntervieweeDAO {
     public  PostgreIntervieweeDAO(Connection connection){
         super(connection);
     }

@@ -1,6 +1,7 @@
 package ua.nc.dao.postgresql;
 
 import ua.nc.dao.AbstractPostgreDAO;
+import ua.nc.dao.ReportTemplateDAO;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.entity.ReportTemplate;
 
@@ -13,7 +14,7 @@ import java.util.List;
 /**
  * Created by Rangar on 02.05.2016.
  */
-public class PostgreReportTemplateDAO extends AbstractPostgreDAO<ReportTemplate, Integer> {
+public class PostgreReportTemplateDAO extends AbstractPostgreDAO<ReportTemplate, Integer> implements ReportTemplateDAO {
     public PostgreReportTemplateDAO(Connection connection){
         super(connection);
     }

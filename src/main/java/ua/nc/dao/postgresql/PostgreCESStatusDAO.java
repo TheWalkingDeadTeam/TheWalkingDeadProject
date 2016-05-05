@@ -1,6 +1,7 @@
 package ua.nc.dao.postgresql;
 
 import ua.nc.dao.AbstractPostgreDAO;
+import ua.nc.dao.CESStatusDAO;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.entity.CESStatus;
 
@@ -13,7 +14,7 @@ import java.util.List;
 /**
  * Created by Rangar on 04.05.2016.
  */
-public class PostgreCESStatusDAO extends AbstractPostgreDAO<CESStatus, Integer> {
+public class PostgreCESStatusDAO extends AbstractPostgreDAO<CESStatus, Integer> implements CESStatusDAO {
     public  PostgreCESStatusDAO(Connection connection){
         super(connection);
     }

@@ -58,22 +58,22 @@ public class PostgreDAOFactory extends DAOFactory {
     }
 
     @Override
-    public GenericDAO<CESStatus, Integer> getCESStatusDAO(Connection connection) {
+    public CESStatusDAO getCESStatusDAO(Connection connection) {
         return new PostgreCESStatusDAO(connection);
     }
 
     @Override
-    public GenericDAO<Feedback, Integer> getFeedbackDAO(Connection connection) {
+    public FeedbackDAO getFeedbackDAO(Connection connection) {
         return new PostgreFeedbackDAO(connection);
     }
 
     @Override
-    public GenericDAO<Interviewee, Integer> getIntervieweeDAO(Connection connection) {
+    public IntervieweeDAO getIntervieweeDAO(Connection connection) {
         return new PostgreIntervieweeDAO(connection);
     }
 
     @Override
-    public GenericDAO<ReportTemplate, Integer> getReportTemplateDAO(Connection connection) {
+    public ReportTemplateDAO getReportTemplateDAO(Connection connection) {
         return new PostgreReportTemplateDAO(connection);
     }
 
@@ -93,12 +93,12 @@ public class PostgreDAOFactory extends DAOFactory {
     }
 
     @Override
-    public GenericDAO<FieldType, Integer> getFieldTypeDAO(Connection connection) {
+    public FieldTypeDAO getFieldTypeDAO(Connection connection) {
         return new PostgreFieldTypeDAO(connection);
     }
 
     @Override
-    public GenericDAO<ListType, Integer> getListTypeDAO(Connection connection) {
+    public ListTypeDAO getListTypeDAO(Connection connection) {
         return new PostgreListTypeDAO(connection);
     }
 }

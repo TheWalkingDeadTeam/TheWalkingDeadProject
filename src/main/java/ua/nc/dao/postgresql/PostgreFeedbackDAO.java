@@ -1,6 +1,7 @@
 package ua.nc.dao.postgresql;
 
 import ua.nc.dao.AbstractPostgreDAO;
+import ua.nc.dao.FeedbackDAO;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.entity.Feedback;
 
@@ -13,7 +14,7 @@ import java.util.List;
 /**
  * Created by Rangar on 03.05.2016.
  */
-public class PostgreFeedbackDAO extends AbstractPostgreDAO<Feedback, Integer> {
+public class PostgreFeedbackDAO extends AbstractPostgreDAO<Feedback, Integer> implements FeedbackDAO {
     public  PostgreFeedbackDAO(Connection connection){
         super(connection);
     }
