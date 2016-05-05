@@ -23,8 +23,8 @@ public class PostgreCESStatusDAO extends AbstractPostgreDAO<CESStatus, Integer> 
             super(name);
         }
 
-        public void setID(int id) {
-            super.setID(id);
+        public void setId(int id) {
+            super.setId(id);
         }
     }
 
@@ -54,7 +54,7 @@ public class PostgreCESStatusDAO extends AbstractPostgreDAO<CESStatus, Integer> 
         try {
             while (rs.next()) {
                 PersistCESStatus cesStatus = new PersistCESStatus(rs.getString("name"));
-                cesStatus.setID(rs.getInt("ces_status_id"));
+                cesStatus.setId(rs.getInt("ces_status_id"));
                 result.add(cesStatus);
             }
         } catch (Exception e) {
@@ -76,7 +76,7 @@ public class PostgreCESStatusDAO extends AbstractPostgreDAO<CESStatus, Integer> 
     protected void prepareStatementForUpdate(PreparedStatement statement, CESStatus object) throws DAOException {
         try {
             statement.setString(1, object.getName());
-            statement.setInt(2, object.getID());
+            statement.setInt(2, object.getId());
         } catch (Exception e) {
             throw new DAOException(e);
         }
@@ -85,7 +85,7 @@ public class PostgreCESStatusDAO extends AbstractPostgreDAO<CESStatus, Integer> 
     @Override
     protected void prepareStatementForSelect(PreparedStatement statement, CESStatus object) throws DAOException {
         try {
-            statement.setInt(1, object.getID());
+            statement.setInt(1, object.getId());
         } catch (Exception e) {
             throw new DAOException(e);
         }

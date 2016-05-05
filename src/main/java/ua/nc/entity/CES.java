@@ -112,11 +112,11 @@ public class CES implements Identified<Integer>{
     }
 
     @Override
-    public Integer getID() {
+    public Integer getId() {
         return id;
     }
 
-    protected void setID(int id){
+    protected void setId(int id){
         this.id = id;
     }
 }

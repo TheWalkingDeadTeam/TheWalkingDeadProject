@@ -9,11 +9,11 @@ public class ReportTemplate implements Identified<Integer> {
     private String name;
 
     @Override
-    public Integer getID() {
+    public Integer getId() {
         return reportTemplateID;
     }
 
-    protected void setID(int id){
+    protected void setId(int id){
         this.reportTemplateID = id;
     }
 

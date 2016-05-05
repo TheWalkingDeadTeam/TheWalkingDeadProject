@@ -10,11 +10,11 @@ public class ListType implements Identified<Integer> {
     private String name;
 
     @Override
-    public Integer getID() {
+    public Integer getId() {
         return ID;
     }
 
-    protected void setID(int id) { this.ID = id;  }
+    protected void setId(int id) { this.ID = id;  }
 
     public String getName() {
         return name;

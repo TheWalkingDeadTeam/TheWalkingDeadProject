@@ -8,7 +8,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -24,8 +23,8 @@ public class PostgreListTypeDAO extends AbstractPostgreDAO<ListType, Integer> {
             super(name);
         }
 
-        public void setID(int id) {
-            super.setID(id);
+        public void setId(int id) {
+            super.setId(id);
         }
     }
 
@@ -55,7 +54,7 @@ public class PostgreListTypeDAO extends AbstractPostgreDAO<ListType, Integer> {
         try {
             while (rs.next()) {
                 PersistListType listType = new PersistListType(rs.getString("name"));
-                listType.setID(rs.getInt("list_id"));
+                listType.setId(rs.getInt("list_id"));
                 result.add(listType);
             }
         } catch (Exception e) {
@@ -77,7 +76,7 @@ public class PostgreListTypeDAO extends AbstractPostgreDAO<ListType, Integer> {
     protected void prepareStatementForUpdate(PreparedStatement statement, ListType object) throws DAOException {
         try {
             statement.setString(1, object.getName());
-            statement.setInt(2, object.getID());
+            statement.setInt(2, object.getId());
         } catch (Exception e) {
             throw new DAOException(e);
         }
@@ -86,7 +85,7 @@ public class PostgreListTypeDAO extends AbstractPostgreDAO<ListType, Integer> {
     @Override
     protected void prepareStatementForSelect(PreparedStatement statement, ListType object) throws DAOException {
         try {
-            statement.setInt(1, object.getID());
+            statement.setInt(1, object.getId());
         } catch (Exception e) {
             throw new DAOException(e);
         }

@@ -13,11 +13,11 @@ public class Interviewee implements Identified<Integer> {
     private Integer hrFeedbackID;
 
     @Override
-    public Integer getID() {
+    public Integer getId() {
         return applicationID;
     }
 
-    protected void setID(int id){
+    protected void setId(int id){
         this.applicationID = id;
     }
 

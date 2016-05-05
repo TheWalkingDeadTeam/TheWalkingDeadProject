@@ -23,8 +23,8 @@ public class PostgreFeedbackDAO extends AbstractPostgreDAO<Feedback, Integer> {
             super(score, comment, interviewerID);
         }
 
-        public void setID(int id) {
-            super.setID(id);
+        public void setId(int id) {
+            super.setId(id);
         }
     }
 
@@ -55,7 +55,7 @@ public class PostgreFeedbackDAO extends AbstractPostgreDAO<Feedback, Integer> {
             while (rs.next()) {
                 PersistFeedback feedback = new PersistFeedback(rs.getInt("score"),
                         rs.getString("comment"), rs.getInt("interviewer_id"));
-                feedback.setID(rs.getInt("feedback_id"));
+                feedback.setId(rs.getInt("feedback_id"));
                 result.add(feedback);
             }
         } catch (Exception e) {
@@ -81,7 +81,7 @@ public class PostgreFeedbackDAO extends AbstractPostgreDAO<Feedback, Integer> {
             statement.setInt(1, object.getScore());
             statement.setString(2, object.getComment());
             statement.setInt(3, object.getInterviewerID());
-            statement.setInt(4, object.getID());
+            statement.setInt(4, object.getId());
         } catch (Exception e) {
             throw new DAOException(e);
         }
@@ -90,7 +90,7 @@ public class PostgreFeedbackDAO extends AbstractPostgreDAO<Feedback, Integer> {
     @Override
     protected void prepareStatementForSelect(PreparedStatement statement, Feedback object) throws DAOException {
         try {
-            statement.setInt(1, object.getID());
+            statement.setInt(1, object.getId());
         } catch (Exception e) {
             throw new DAOException(e);
         }

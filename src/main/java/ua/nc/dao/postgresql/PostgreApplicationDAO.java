@@ -24,8 +24,8 @@ public class PostgreApplicationDAO extends AbstractPostgreDAO<Application, Integ
             super(userID, cesID);
         }
 
-        public void setID(int id) {
-            super.setID(id);
+        public void setId(int id) {
+            super.setId(id);
         }
     }
 
@@ -58,7 +58,7 @@ public class PostgreApplicationDAO extends AbstractPostgreDAO<Application, Integ
         try {
             while (rs.next()) {
                 PersistApplication application = new PersistApplication(rs.getInt("system_user_id"), rs.getInt("ces_id"));
-                application.setID(rs.getInt("application_id"));
+                application.setId(rs.getInt("application_id"));
                 application.setRejected(rs.getBoolean("rejected"));
                 result.add(application);
             }
@@ -82,7 +82,7 @@ public class PostgreApplicationDAO extends AbstractPostgreDAO<Application, Integ
     protected void prepareStatementForUpdate(PreparedStatement statement, Application object) throws DAOException {
         try {
             statement.setBoolean(1, object.getRejected());
-            statement.setInt(2, object.getID());
+            statement.setInt(2, object.getId());
         } catch (Exception e) {
             throw new DAOException(e);
         }
@@ -91,7 +91,7 @@ public class PostgreApplicationDAO extends AbstractPostgreDAO<Application, Integ
     @Override
     protected void prepareStatementForSelect(PreparedStatement statement, Application object) throws DAOException {
         try {
-            statement.setInt(1, object.getID());
+            statement.setInt(1, object.getId());
         } catch (Exception e) {
             throw new DAOException(e);
         }

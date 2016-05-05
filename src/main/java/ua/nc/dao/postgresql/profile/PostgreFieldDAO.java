@@ -39,8 +39,8 @@ public class PostgreFieldDAO extends AbstractPostgreDAO<Field, Integer> implemen
             super(cesID, name, fieldTypeID, multipleChoice, orderNum, listID);
         }
 
-        public void setID(int id) {
-            super.setID(id);
+        public void setId(int id) {
+            super.setId(id);
         }
     }
 
@@ -72,7 +72,7 @@ public class PostgreFieldDAO extends AbstractPostgreDAO<Field, Integer> implemen
                 PersistField field = new PersistField(rs.getInt("ces_id"), rs.getString("name"),
                         rs.getInt("filed_type_id"), rs.getBoolean("multiple_choice"),
                         rs.getInt("order_num"), rs.getInt("list_id"));
-                field.setID(rs.getInt("field_id"));
+                field.setId(rs.getInt("field_id"));
                 result.add(field);
             }
         } catch (Exception e) {
@@ -99,7 +99,7 @@ public class PostgreFieldDAO extends AbstractPostgreDAO<Field, Integer> implemen
     protected void prepareStatementForUpdate(PreparedStatement statement, Field object) throws DAOException {
         try {
             statement.setString(1, object.getName());
-            statement.setInt(2, object.getID());
+            statement.setInt(2, object.getId());
         } catch (Exception e) {
             throw new DAOException(e);
         }
@@ -108,7 +108,7 @@ public class PostgreFieldDAO extends AbstractPostgreDAO<Field, Integer> implemen
     @Override
     protected void prepareStatementForSelect(PreparedStatement statement, Field object) throws DAOException {
         try {
-            statement.setInt(1, object.getID());
+            statement.setInt(1, object.getId());
         } catch (Exception e) {
             throw new DAOException(e);
         }

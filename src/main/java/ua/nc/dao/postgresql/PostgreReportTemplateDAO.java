@@ -23,8 +23,8 @@ public class PostgreReportTemplateDAO extends AbstractPostgreDAO<ReportTemplate,
             super(query, name);
         }
 
-        public void setID(int id) {
-            super.setID(id);
+        public void setId(int id) {
+            super.setId(id);
         }
     }
 
@@ -54,7 +54,7 @@ public class PostgreReportTemplateDAO extends AbstractPostgreDAO<ReportTemplate,
         try {
             while (rs.next()) {
                 PersistReportTemplate reportTemplate = new PersistReportTemplate(rs.getString("query"), rs.getString("name"));
-                reportTemplate.setID(rs.getInt("report_template_id"));
+                reportTemplate.setId(rs.getInt("report_template_id"));
                 result.add(reportTemplate);
             }
         } catch (Exception e) {
@@ -78,7 +78,7 @@ public class PostgreReportTemplateDAO extends AbstractPostgreDAO<ReportTemplate,
         try {
             statement.setString(1, object.getQuery());
             statement.setString(2, object.getName());
-            statement.setInt(3, object.getID());
+            statement.setInt(3, object.getId());
         } catch (Exception e) {
             throw new DAOException(e);
         }
@@ -87,7 +87,7 @@ public class PostgreReportTemplateDAO extends AbstractPostgreDAO<ReportTemplate,
     @Override
     protected void prepareStatementForSelect(PreparedStatement statement, ReportTemplate object) throws DAOException {
         try {
-            statement.setInt(1, object.getID());
+            statement.setInt(1, object.getId());
         } catch (Exception e) {
             throw new DAOException(e);
         }

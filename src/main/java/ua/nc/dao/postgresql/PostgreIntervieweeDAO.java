@@ -5,7 +5,6 @@ import ua.nc.dao.exception.DAOException;
 import ua.nc.entity.Interviewee;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -61,7 +60,7 @@ public class PostgreIntervieweeDAO extends AbstractPostgreDAO<Interviewee, Integ
     @Override
     protected void prepareStatementForInsert(PreparedStatement statement, Interviewee object) throws DAOException {
         try {
-            statement.setInt(1, object.getID());
+            statement.setInt(1, object.getId());
         } catch (Exception e) {
             throw new DAOException(e);
         }
@@ -74,7 +73,7 @@ public class PostgreIntervieweeDAO extends AbstractPostgreDAO<Interviewee, Integ
             statement.setString(2, object.getSpecial_mark());
             statement.setInt(3, object.getDevFeedbackID());
             statement.setInt(4, object.getHrFeedbackID());
-            statement.setInt(5, object.getID());
+            statement.setInt(5, object.getId());
         } catch (Exception e) {
             throw new DAOException(e);
         }
@@ -83,7 +82,7 @@ public class PostgreIntervieweeDAO extends AbstractPostgreDAO<Interviewee, Integ
     @Override
     protected void prepareStatementForSelect(PreparedStatement statement, Interviewee object) throws DAOException {
         try {
-            statement.setInt(1, object.getID());
+            statement.setInt(1, object.getId());
         } catch (Exception e) {
             throw new DAOException(e);
         }

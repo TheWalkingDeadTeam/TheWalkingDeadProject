@@ -27,8 +27,8 @@ public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements C
                     interviewTimeForPerson, interviewTimeForDay);
         }
 
-        public void setID(int id) {
-            super.setID(id);
+        public void setId(int id) {
+            super.setId(id);
         }
     }
 
@@ -87,7 +87,7 @@ public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements C
             statement.setInt(4, object.getReminders());
             statement.setInt(5, object.getInterviewTimeForPerson());
             statement.setInt(6, object.getInterviewTimeForDay());
-            statement.setInt(7, object.getID());
+            statement.setInt(7, object.getId());
         } catch (Exception e) {
             throw new DAOException(e);
         }
@@ -96,7 +96,7 @@ public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements C
     @Override
     protected void prepareStatementForSelect(PreparedStatement statement, CES object) throws DAOException {
         try {
-            statement.setInt(1, object.getID());
+            statement.setInt(1, object.getId());
         } catch (Exception e) {
             throw new DAOException(e);
         }

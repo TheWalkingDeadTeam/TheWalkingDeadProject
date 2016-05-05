@@ -38,8 +38,8 @@ public class PostgreListValueDAO extends AbstractPostgreDAO<ListValue, Integer> 
             super(listID, valueDouble, valueText);
         }
 
-        public void setID(int id) {
-            super.setID(id);
+        public void setId(int id) {
+            super.setId(id);
         }
     }
 
@@ -95,7 +95,7 @@ public class PostgreListValueDAO extends AbstractPostgreDAO<ListValue, Integer> 
         try {
             statement.setDouble(1, object.getValueDouble());
             statement.setString(2, object.getValueText());
-            statement.setInt(3, object.getID());
+            statement.setInt(3, object.getId());
         } catch (Exception e) {
             throw new DAOException(e);
         }
@@ -104,7 +104,7 @@ public class PostgreListValueDAO extends AbstractPostgreDAO<ListValue, Integer> 
     @Override
     protected void prepareStatementForSelect(PreparedStatement statement, ListValue object) throws DAOException {
         try {
-            statement.setInt(1, object.getID());
+            statement.setInt(1, object.getId());
         } catch (Exception e) {
             throw new DAOException(e);
         }

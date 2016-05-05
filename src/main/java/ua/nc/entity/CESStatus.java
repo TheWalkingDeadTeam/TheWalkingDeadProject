@@ -20,12 +20,12 @@ public class CESStatus implements Identified<Integer> {
         this.name = name;
     }
 
-    protected void setID(int id) {
+    protected void setId(int id) {
         this.id = id;
     }
 
     @Override
-    public Integer getID() {
+    public Integer getId() {
         return id;
     }
 }
