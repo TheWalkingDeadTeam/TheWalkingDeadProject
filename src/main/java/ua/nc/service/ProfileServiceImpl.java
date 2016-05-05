@@ -33,6 +33,7 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public Profile getProfile(UserDetailsImpl userDetails, int cesId) throws DAOException {
+        Connection connection = daoFactory.getConnection();
         boolean flagApplied = isApplied(userDetails.getId(), cesId);
         Profile result = new Profile();
         List<ProfileField> profileFields = new ArrayList<>();

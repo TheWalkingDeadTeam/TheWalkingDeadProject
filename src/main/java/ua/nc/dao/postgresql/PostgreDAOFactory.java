@@ -1,11 +1,16 @@
 package ua.nc.dao.postgresql;
 
-import ua.nc.dao.MailDAO;
-import ua.nc.dao.RoleDAO;
-import ua.nc.dao.UserDAO;
+import ua.nc.dao.*;
 import ua.nc.dao.enums.DataBaseType;
 import ua.nc.dao.factory.DAOFactory;
 import ua.nc.dao.pool.ConnectionPool;
+import ua.nc.dao.postgresql.profile.*;
+import ua.nc.entity.CESStatus;
+import ua.nc.entity.Feedback;
+import ua.nc.entity.Interviewee;
+import ua.nc.entity.ReportTemplate;
+import ua.nc.entity.profile.FieldType;
+import ua.nc.entity.profile.ListType;
 
 import java.sql.Connection;
 
@@ -40,5 +45,60 @@ public class PostgreDAOFactory extends DAOFactory {
     @Override
     public MailDAO getMailDAO(Connection connection) {
         return new PostgreMailDAO(connection);
+    }
+
+    @Override
+    public ApplicationDAO getApplicationDAO(Connection connection) {
+        return new PostgreApplicationDAO(connection);
+    }
+
+    @Override
+    public CESDAO getCESDAO(Connection connection) {
+        return new PostgreCESDAO(connection);
+    }
+
+    @Override
+    public GenericDAO<CESStatus, Integer> getCESStatusDAO(Connection connection) {
+        return new PostgreCESStatusDAO(connection);
+    }
+
+    @Override
+    public GenericDAO<Feedback, Integer> getFeedbackDAO(Connection connection) {
+        return new PostgreFeedbackDAO(connection);
+    }
+
+    @Override
+    public GenericDAO<Interviewee, Integer> getIntervieweeDAO(Connection connection) {
+        return new PostgreIntervieweeDAO(connection);
+    }
+
+    @Override
+    public GenericDAO<ReportTemplate, Integer> getReportTemplateDAO(Connection connection) {
+        return new PostgreReportTemplateDAO(connection);
+    }
+
+    @Override
+    public FieldDAO getFieldDAO(Connection connection) {
+        return new PostgreFieldDAO(connection);
+    }
+
+    @Override
+    public FieldValueDAO getFieldValueDAO(Connection connection) {
+        return new PostgreFieldValueDAO(connection);
+    }
+
+    @Override
+    public ListValueDAO getListValueDAO(Connection connection) {
+        return new PostgreListValueDAO(connection);
+    }
+
+    @Override
+    public GenericDAO<FieldType, Integer> getFieldTypeDAO(Connection connection) {
+        return new PostgreFieldTypeDAO(connection);
+    }
+
+    @Override
+    public GenericDAO<ListType, Integer> getListTypeDAO(Connection connection) {
+        return new PostgreListTypeDAO(connection);
     }
 }
