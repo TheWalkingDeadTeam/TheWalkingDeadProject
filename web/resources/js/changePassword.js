@@ -2,10 +2,10 @@
  * Created by Alexander on 30.04.2016.
  */
 $(document).ready(function () {
-    function ValidateForm() {
+    function ValidateChangeForm() {
         var elem = $('#password');
         var innerText = elem.val();
-
+        var errorMsg ='';
         if (!/^.{6,32}$/.test(innerText)) {
             errorMsg = errorMsg + 'Password should have from 6 to 32 symbols';
         }
@@ -14,7 +14,7 @@ $(document).ready(function () {
         errorMsg = '';
     }
 
-    $('.form-control').bind('input', ValidateForm);
+    $('.form-control').bind('input', ValidateChangeForm);
 
     $("#buttonChangePassword").click(function () {
         event.preventDefault();

@@ -47,7 +47,7 @@
 
 
 <div class="content container">
-    <div class="reg registration">
+    <div class="registration">
         <div class="layout"></div>
         <sec:authorize access="!isAuthenticated()">
             <form id="user">
@@ -113,12 +113,6 @@
                 </div>
                 <p>
                     <a id="buttonLogout" class="btn btn-lg btn-danger" href="/logout" role="button">Logout</a>
-                </p>
-                <p>
-                <form id = "photoUpload" method="post" action="uploadPhoto" enctype="multipart/form-data">
-                    Photo to upload: <input type="file" name="photo" accept="image/*"><br />
-                    <input type="submit" value="Upload"/>
-                </form>
                 </p>
             </sec:authorize>
         </div>
