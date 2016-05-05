@@ -23,6 +23,20 @@
 /* Extra Small Devices, Phones */
 @media only screen and (max-width : 480px) {
 
+#fields div{
+padding-right: 20px;
+}
+
+h4{
+	font-size: 17px;
+}
+
+.smprofile span{
+
+	height: 18px;
+	font-size: 14px;
+}
+
 [type='text'],[type='select'],[type='tel']{
 		display: block;
 		width: 100%;
@@ -34,6 +48,7 @@
   	display: block;
   	position: relative;
   	margin-left: 5% !important;
+  	bottom: 15px;
   	line-height: 0px;
   	overflow: visible;
 
@@ -44,7 +59,7 @@
 	display: block;
 	margin-left: 10%;
 	width: 150px;
-	height: 0px;
+	height: 15px;
 }
 
 }

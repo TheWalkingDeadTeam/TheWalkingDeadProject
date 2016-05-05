@@ -12,6 +12,7 @@
             success: function (response) {
                 if (response.fields.length) {
                     requestData = response;
+                    enableSave()
                     $('#fields').on('change, input', enableSave);
                     response.fields.forEach(function (item, i) {
                         typeSwitcher(item, i, '#fields');
@@ -20,7 +21,6 @@
                     $('#agreement').append('<label for="agree">' + "I agree to have my personal information been proceeded " + '</label>');
                     $('<input>').attr({id: "agree", type: "checkbox"}).appendTo('#agreement');
                     $('#agree').on('click', enableSave);
-                    // $('#fields').append('<button id="save" type=\"submit\" form=\"fields\" value=\"Submit\" disabled="disabled">' + 'Save' + '</button>');
                 }
 
             },
@@ -39,7 +39,8 @@
                 })
         });
     });
-    
+
+
     function enableSave() {
 
             var empty = false;
@@ -49,12 +50,38 @@
                 }
             });
 
-            if (empty || !$('#agree').is(':checked')) {
+            if (empty || !$('#agree').is(':checked') || !checkCheckboxes()) {
+                $('#fieldsCheck').addClass('alert alert-danger').html('Please, fill each field and check Agree button');
                 $('#save').attr('disabled', 'disabled');
-            } else if (!empty && $('#agree').is(':checked'))  {
+            } else if (!empty && $('#agree').is(':checked') && checkCheckboxes())  {
+                $('#fieldsCheck').removeClass().empty();
                 $('#save').prop('disabled', false);
             }
 
+    }
+
+    function checkRadio () {
+
+        var radioGroup = $("[id^=radioBlock]").find('input');
+
+        for (var i = 0; i < radioGroup.length; i++) {
+            if (radioGroup[i].checked) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function checkCheckboxes () {
+
+        var group = $("[id^=checkBlock]").find('input');
+
+        for (var i = 0; i < group.length; i++) {
+            if (group[i].checked) {
+                return true;
+            }
+        }
+        return false;
     }
 
     function typeSwitcher(item, i, divname) {
@@ -76,8 +103,8 @@
                     break;
 
                 case 'radio':
-                    $('<div id=\"block'+i+'\">').appendTo($(divname));
-                    $('<span>').text(item.name + ': ').appendTo($('#block' + i));
+                    $('<div id=\"radioBlock'+i+'\">').appendTo($(divname));
+                    $('<span>').text(item.name + ': ').appendTo($('#radioBlock' + i));
                     item.value.forEach ( function (item_value, j) {
                         var isChecked = item_value.value ? 'checked' : '',
                             attributes = {type: 'radio', id: item_value.id, name: item.id};
@@ -85,11 +112,11 @@
                         if (isChecked) {
                             attributes.checked = isChecked;
                         }
-                        $('<label>').attr({for: item_value.id}).text(' ' + item_value.name).appendTo($('#block' + i));
+                        $('<label>').attr({for: item_value.id}).text(' ' + item_value.name).appendTo($('#radioBlock' + i));
                         $('<input>')
                             .attr(attributes)
                             .attr('ng-model', i)
-                            .appendTo($('#block' + i))
+                            .appendTo($('#radioBlock' + i))
                             .on('change', function () {
                                 var updatedRadios = requestData.fields[$(this).attr('ng-model')].value.map(function (item) {
                                     if(item.id == this.id) {
@@ -100,7 +127,7 @@
                                         return item;
                                     }
                                 }, this);
-
+                                enableSave()
                                 requestData.fields[$(this).attr('ng-model')].value = updatedRadios;
 
                             });
@@ -181,20 +208,21 @@
 
             switch (item.type) {
                 case 'checkbox':
-                    $('<div id=\"block'+i+'\">').appendTo($(divname));
-                    $('<span>').text(item.name + ': ').appendTo($('#block' + i));
+                    $('<div id=\"checkBlock'+i+'\">').appendTo($(divname));
+                    $('<span>').text(item.name + ': ').appendTo($('#checkBlock' + i));
                     item.value.forEach ( function (item_value, j) {
                         var isChecked = item_value.value ? 'checked' : '',
                             attributes = {type: 'checkbox', id: item_value.id, value: item_value.value};
                         if (isChecked) {
                             attributes.checked = isChecked;
                         }
-                        $('<label>').attr({for: item_value.id}).text(' ' + item_value.name).appendTo($('#block' + i));
+                        $('<label>').attr({for: item_value.id}).text(' ' + item_value.name).appendTo($('#checkBlock' + i));
                         $('<input>')
                             .attr(attributes)
                             .attr('ng-model', i)
-                            .appendTo($('#block' + i))
+                            .appendTo($('#checkBlock' + i))
                             .on('change', function(){
+                                enableSave()
                                 requestData.fields[$(this).attr('ng-model')].value[j].value = this.checked;
                             });
                     });

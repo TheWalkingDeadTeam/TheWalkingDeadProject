@@ -24,7 +24,9 @@
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed button-header" data-toggle='collapse' data-target='#collapsed-menu' aria-expanded="false">
+                <button type="button" class="navbar-toggle collapsed button-header" data-toggle='collapse'
+                        data-target='#collapsed-menu' aria-expanded="false">
+                    <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
@@ -36,9 +38,10 @@
             </div>
             <div id='collapsed-menu' class='navbar-collapse collapse'>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="">Home</a></li>
+                    <li><a href="/profile/{id}">Home</a></li>
                     <li><a href="">Information</a></li>
                     <li><a href="">Contacts</a></li>
+                    <li><a href="/changePassword">Change password</a></li>
                     <li><a href="/logout">Logout</a></li>
                 </ul>
             </div>
@@ -47,23 +50,26 @@
 </header>
 
 <form id="accountForm">
-    <div class="container-fluid  smprofile">
+    <div class="container smprofile">
         <div class="row">
-            <div class=" col-lg-3 col-md-4 col-sm-4 col-xs-12 ">
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4">
                 <img id="photo_img" src="/getPhoto" alt="User's photo" width="100" height="100"
                      onError="this.src='/resources/images/user-photo.png'" class="profile-photo">
+            </div>
+            <div class='col-lg-3 col-md-3 col-sm-3 col-xs-8'>
                 <form id="photo_form" type=post enctype="multipart/form-data">
                     <div id="photoMessages"></div>
-                    Photo to upload: <input type="file" id="photo_input" name=" photo_input" accept="image/*"><br/>
+                    <label for='photo_input' class='file_upload'/>
+                    <input type="file" id="photo_input" name=" photo_input" accept="image/*">
                     <button id="photo_button" type="submit">Upload</button>
                 </form>
             </div>
-            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4">
+            <div class=" col-lg-2 col-md-2 col-sm-2 col-xs-4 mainf">
                 <h4>Name:</h4>
                 <h4>Surname:</h4>
                 <h4>E-mail:</h4>
             </div>
-            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-3">
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4">
                 <span>Ivan</span>
                 <span>Ivanovich</span>
                 <span>ivanovivanovich@gmail.com</span>

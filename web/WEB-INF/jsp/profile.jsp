@@ -53,27 +53,26 @@
 
 <sec:authorize access="isAuthenticated()">
 
-    <div class="container-fluid  smprofile">
+    <div class="container smprofile">
         <div class="row">
-            <div class="col-lg-offset-3 col-lg-1 col-md-offset-2 col-md-2 col-sm-offset-2 col-sm-3 col-xs-4 ">
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4">
                 <img id="photo_img" src="/getPhoto" alt="User's photo" width="100" height="100"
                      onError="this.src='/resources/images/user-photo.png'" class="profile-photo">
             </div>
-            <div class='col-lg-3 col-md-3 col-sm-7 col-xs-8'>
+            <div class='col-lg-3 col-md-3 col-sm-3 col-xs-8'>
                 <form id="photo_form" type=post enctype="multipart/form-data">
                     <div id="photoMessages"></div>
-                    <span>Photo to upload:</span>
                     <label for='photo_input' class='file_upload'/>
-                        <input type="file" id="photo_input" name=" photo_input" accept="image/*">
-                        <button id="photo_button" type="submit">Upload</button>
+                    <input type="file" id="photo_input" name=" photo_input" accept="image/*">
+                    <button id="photo_button" type="submit">Upload</button>
                 </form>
             </div>
-            <div class="col-lg-offset-0 col-lg-1 col-md-offset-0 col-md-2 col-sm-offset-2 col-sm-3 col-xs-4">
+            <div class=" col-lg-2 col-md-2 col-sm-2 col-xs-4 mainf">
                 <h4>Name:</h4>
                 <h4>Surname:</h4>
                 <h4>E-mail:</h4>
             </div>
-            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-3">
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4">
                 <span>Ivan</span>
                 <span>Ivanovich</span>
                 <span>ivanovivanovich@gmail.com</span>
@@ -86,6 +85,10 @@
             <%--<br>--%>
     </form>
     <sec:authorize access="hasRole('ROLE_STUDENT')">
+        <%--<div id="agreement"><label for="agree">I agree to have my personal information been proceeded </label>--%>
+        <%--<input id="agree" type="checkbox"/>--%>
+        <%--</div>--%>
+        <div id="fieldsCheck"></div>
         <button id="save" type="submit" form="fields" value="Submit" disabled="disabled">Save</button>
     </sec:authorize>
 
