@@ -5,6 +5,7 @@ import ua.nc.entity.User;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Alexander on 23.04.2016.
@@ -12,9 +13,12 @@ import java.util.List;
 public interface MailService {
 
     void sendInterviewReminders(List<Date> interviewDates, int reminderTime, Mail interviewerMail,
-                                Mail studentsMail, List<User> interviewersList, List<User> studentsList);
+                                Map<String, String> interviewerParameters, Mail studentMail,
+                                Map<String, String> studentParameters, List<User> interviewersList,
+                                List<User> studentsList);
 
-    Date planSchedule(int hoursPerDay, Mail interviewerMail, Mail studentsMail);
+    Date planSchedule(int hoursPerDay, Mail interviewerMail, Map<String, String> interviewerParameters,
+                      Mail studentMail, Map<String, String> studentParameters);
 
     List<Mail> getAllMails();
 
@@ -32,5 +36,6 @@ public interface MailService {
 
     List<Mail> getByHeaderMailTemplate(String header);
 
-    void massDelivery(String dateDelivery, final List<User> users, final Mail mail);
+    void massDelivery(String dateDelivery, final List<User> users, final Mail mail,
+                      final Map<String, String> parameters);
 }

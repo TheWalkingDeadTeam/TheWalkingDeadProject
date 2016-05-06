@@ -22,10 +22,7 @@ import ua.nc.entity.User;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * Created by Alexander Haliy on 23.04.2016.
@@ -153,7 +150,8 @@ public class MailServiceImpl implements MailService {
      * @param users        who will get invitation
      * @param mail         template
      */
-    public void massDelivery(String dateDelivery, final List<User> users, final Mail mail) {
+    public void massDelivery(String dateDelivery, final List<User> users, final Mail mail,
+                             final Map<String, String> parameters) {
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         // String date format 2012-07-06 13:05:45
         try {
@@ -169,7 +167,8 @@ public class MailServiceImpl implements MailService {
                     for (User i : users) {
                         //Sleep for one second,google may think you're spamming :(
                         Thread.sleep(1000);
-                        sendMail(i.getEmail(), mail);
+                        Mail customizedMail = customizeMail(mail, parameters);
+                        sendMail(i.getEmail(), customizedMail);
                     }
 
                 } catch (Exception e) {
@@ -177,6 +176,31 @@ public class MailServiceImpl implements MailService {
                 }
             }
         }, new Date());
+    }
+
+    /**
+     * Set all the custom mail parameters.
+     *
+     * @param mail mail to customize.
+     * @param parameters set of parameters in form : "{pattern1:meaning1, ..., patternN:meaningN}"
+     * @return customized mail.
+     */
+    private Mail customizeMail(Mail mail, Map<String, String> parameters) {
+        //customize mail topic
+        String head = mail.getHeadTemplate();
+        for (Map.Entry<String, String> param : parameters.entrySet()) {
+            head = head.replaceAll(param.getKey(), param.getValue());
+        }
+        //customize mail body
+        String body = mail.getBodyTemplate();
+        for (Map.Entry<String, String> param : parameters.entrySet()) {
+            body = body.replaceAll(param.getKey(), param.getValue());
+        }
+
+        Mail result = new Mail();
+        result.setBodyTemplate(body);
+        result.setHeadTemplate(head);
+        return result;
     }
 
     @Override
@@ -257,7 +281,9 @@ public class MailServiceImpl implements MailService {
 
     @Override
     public void sendInterviewReminders(List<Date> interviewDates, int reminderTime, Mail interviewerMail,
-                                       Mail studentsMail, List<User> interviewersList, List<User> studentsList) {
+                                       Map<String, String> interviewerParameters, Mail studentMail,
+                                       Map<String, String> studentParameters, List<User> interviewersList,
+                                       List<User> studentsList) {
         int reminderMillis = reminderTime * MILLIS_PER_HOUR;
         int studentsPerDay = studentsList.size() / interviewDates.size() + 1;
         int todaysFirstStudent = 0;
@@ -269,13 +295,15 @@ public class MailServiceImpl implements MailService {
             todaysFirstStudent = todaysLastStudent;
             todaysLastStudent += studentsPerDay;
             massDelivery(new Date(interviewDate.getTime() + reminderMillis).toString(), interviewersList,
-                    interviewerMail);
-            massDelivery(new Date(interviewDate.getTime() + reminderMillis).toString(), todayStudents, studentsMail);
+                    interviewerMail, interviewerParameters);
+            massDelivery(new Date(interviewDate.getTime() + reminderMillis).toString(), todayStudents, studentMail,
+                    studentParameters);
         }
     }
 
     @Override
-    public Date planSchedule(int hoursPerDay, Mail interviewerMail, Mail studentsMail) {
+    public Date planSchedule(int hoursPerDay, Mail interviewerMail, Map<String, String> interviewerParameters,
+                             Mail studentMail, Map<String, String> studentParameters) {
         Date startDate = new Date();
         int timePerStudent = 10;
         int reminderTime = 24;
@@ -289,7 +317,6 @@ public class MailServiceImpl implements MailService {
             studentsList = applicationDAO.getStudentsForCurrentCES();
         } catch (DAOException e) {
             LOGGER.error("Missing data about current course enrolment session", e);
-            return null;
         }
 
         int studentsAmount = studentsList.size();
@@ -305,8 +332,8 @@ public class MailServiceImpl implements MailService {
             interviewDates.add(startDate);
         }
 
-        sendInterviewReminders(interviewDates, reminderTime, interviewerMail, studentsMail, interviewersList,
-                studentsList);
+        sendInterviewReminders(interviewDates, reminderTime, interviewerMail, interviewerParameters, studentMail,
+                studentParameters, interviewersList, studentsList);
         return endDate;
     }
 
