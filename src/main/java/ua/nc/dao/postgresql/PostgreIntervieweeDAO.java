@@ -26,7 +26,7 @@ public class PostgreIntervieweeDAO extends AbstractPostgreDAO<Interviewee, Integ
 
     @Override
     public String getCreateQuery() {
-        return "INSERT INTO application (application_id) VALUES (?);";
+        return "INSERT INTO interviewee (application_id) VALUES (?);";
     }
 
     @Override
@@ -46,8 +46,8 @@ public class PostgreIntervieweeDAO extends AbstractPostgreDAO<Interviewee, Integ
         try {
             while (rs.next()) {
                 Interviewee interviewee = new Interviewee(rs.getInt("application_id"));
-                interviewee.setInterview_time(rs.getDate("interview_time"));
-                interviewee.setSpecial_mark(rs.getString("special_mark"));
+                interviewee.setInterviewTime(rs.getDate("interview_time"));
+                interviewee.setSpecialMark(rs.getString("special_mark"));
                 interviewee.setDevFeedbackID(rs.getInt("dev_feedback_id"));
                 interviewee.setHrFeedbackID(rs.getInt("hr_feedback_id"));
                 result.add(interviewee);
@@ -70,8 +70,8 @@ public class PostgreIntervieweeDAO extends AbstractPostgreDAO<Interviewee, Integ
     @Override
     protected void prepareStatementForUpdate(PreparedStatement statement, Interviewee object) throws DAOException {
         try {
-            statement.setObject(1, object.getInterview_time());
-            statement.setString(2, object.getSpecial_mark());
+            statement.setObject(1, object.getInterviewTime());
+            statement.setString(2, object.getSpecialMark());
             statement.setInt(3, object.getDevFeedbackID());
             statement.setInt(4, object.getHrFeedbackID());
             statement.setInt(5, object.getId());
