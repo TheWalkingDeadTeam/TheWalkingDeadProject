@@ -56,6 +56,18 @@ public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements C
         return "SELECT * FROM course_enrollment_session";
     }
 
+    private static final String getCurrentCESQuery = "SELECT ces.* from course_enrollment_session ces " +
+            "JOIN ces_status stat ON ces.ces_status_id = stat.ces_status_id AND stat.name = 'Active'";
+    private static final String getPendingCESQuery = "SELECT ces.* FROM course_enrollment_session ces " +
+            "JOIN ces_status stat ON ces.ces_status_id = stat.ces_status_id WHERE name = 'Pending'";
+
+    private static final String addInterviewerForCurrentCES = "INSERT INTO interviewer_participation (ces_id, system_user_id) VALUES (?, ?);";
+    private static final String addCESFieldQuery = "INSERT INTO ces_field (ces_id, field_id) VALUES (?, ?);";
+
+    private static final String removeCESFieldQuery = "DELETE FROM ces_field WHERE ces_id = ? AND field_id = ?";
+    private static final String removeInterviewerForCurrentCESQuery = "DELETE FROM interviewer_participation" +
+            " WHERE ces_id = ? AND system_user_id = ?";
+
     @Override
     protected List<CES> parseResultSet(ResultSet rs) throws DAOException {
         List<CES> result = new ArrayList<>();
@@ -108,31 +120,19 @@ public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements C
         }
     }
 
-    private static final String getCurrentCESQuery = "SELECT ces.* from course_enrollment_session ces " +
-            "JOIN ces_status stat ON ces.ces_status_id = stat.ces_status_id AND stat.name = 'Active'";
-    private static final String getPendingCESQuery = "SELECT ces.* FROM course_enrollment_session ces " +
-            "JOIN ces_status stat ON ces.ces_status_id = stat.ces_status_id WHERE name = 'Pending'";
-
     @Override
     public CES getCurrentCES() throws DAOException {
-        CES result;
-        try (PreparedStatement statement = connection.prepareStatement(getCurrentCESQuery)) {
-            ResultSet rs = statement.executeQuery();
-            if (!rs.isBeforeFirst() ) {
-                result = null;
-            } else {
-                result = parseResultSet(rs).iterator().next();
-            }
-        } catch (Exception e) {
-            throw new DAOException(e);
-        }
-        return result;
+        return getSomeCES(getCurrentCESQuery);
     }
 
     @Override
     public CES getPendingCES() throws DAOException{
+        return getSomeCES(getPendingCESQuery);
+    }
+
+    private CES getSomeCES(String query) throws DAOException {
         CES result;
-        try (PreparedStatement statement = connection.prepareStatement(getPendingCESQuery)) {
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
             ResultSet rs = statement.executeQuery();
             if (!rs.isBeforeFirst() ) {
                 result = null;
@@ -145,17 +145,13 @@ public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements C
         return result;
     }
 
-    private static final String addInterviewerForCurrentCES = "INSERT INTO interviewer_participation (system_user_id, ces_id) VALUES (?, ?);";
-    private static final String addCESFieldQuery = "INSERT INTO ces_field (ces_id, field_id) VALUES (?, ?);";
-
-    @Override
-    public void addCESField(int cesId, int fieldId) throws DAOException {
-        try (PreparedStatement statement = connection.prepareStatement(addCESFieldQuery)) {
+    private void doSmthWithCESFieldOrInterviewerParticipation(String query, int cesId, int otherId) throws DAOException {
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, cesId);
-            statement.setInt(2, fieldId);
+            statement.setInt(2, otherId);
             int count = statement.executeUpdate();
             if (count != 1) {
-                throw new DAOException("On update modify more then 1 record: " + count);
+                throw new DAOException("On change modify more then 1 record: " + count);
             }
         } catch (Exception e) {
             throw new DAOException(e);
@@ -163,17 +159,23 @@ public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements C
     }
 
     @Override
+    public void addCESField(int cesId, int fieldId) throws DAOException {
+        doSmthWithCESFieldOrInterviewerParticipation(addCESFieldQuery, cesId, fieldId);
+    }
+
+    @Override
+    public void removeCESField(int cesId, int fieldId) throws DAOException {
+        doSmthWithCESFieldOrInterviewerParticipation(removeCESFieldQuery, cesId, fieldId);
+    }
+
+    @Override
     public void addInterviewerForCurrentCES(int cesId, int interviewerId) throws DAOException {
-        try (PreparedStatement statement = connection.prepareStatement(addInterviewerForCurrentCES)) {
-            statement.setInt(1, cesId);
-            statement.setInt(2, interviewerId);
-            int count = statement.executeUpdate();
-            if (count != 1) {
-                throw new DAOException("On update modify more then 1 record: " + count);
-            }
-        } catch (Exception e) {
-            throw new DAOException(e);
-        }
+        doSmthWithCESFieldOrInterviewerParticipation(addInterviewerForCurrentCES, cesId, interviewerId);
+    }
+
+    @Override
+    public void removeInterviewerForCurrentCES(int cesId, int interviewerId) throws DAOException {
+        doSmthWithCESFieldOrInterviewerParticipation(removeInterviewerForCurrentCESQuery, cesId, interviewerId);
     }
 
     @Override
