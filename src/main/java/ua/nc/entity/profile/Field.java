@@ -2,6 +2,8 @@ package ua.nc.entity.profile;
 
 import ua.nc.entity.Identified;
 
+import javax.mail.search.IntegerComparisonTerm;
+
 /**
  * Created by Rangar on 24.04.2016.
  */
@@ -14,7 +16,7 @@ public class Field implements Identified<Integer> {
     private int orderNum;
     private Integer listTypeID;
 
-    public Field(int cesID, String name, int fieldTypeID, boolean multipleChoice, int orderNum, int listTypeID) {
+    public Field(int cesID, String name, int fieldTypeID, boolean multipleChoice, int orderNum, Integer listTypeID) {
         this.cesID = cesID;
         this.name = name;
         this.fieldTypeID = fieldTypeID;
