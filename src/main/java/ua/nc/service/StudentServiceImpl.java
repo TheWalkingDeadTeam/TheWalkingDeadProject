@@ -21,12 +21,15 @@ public class StudentServiceImpl implements StudentService{
     public void changeStatus(String action, List<Integer> studentsId) {
         if (Objects.equals(action, "activate")){
             activateStudents(studentsId);
+            System.out.println("activate");
         }
         else if (Objects.equals(action, "deactivate")) {
             deactivateStudents(studentsId);
+            System.out.println("deactivate");
         }
         else if (Objects.equals(action, "reject")) {
             rejectStudents(studentsId);
+            System.out.println("reject");
         }
         else {
             log.error(action + " action not supported");
