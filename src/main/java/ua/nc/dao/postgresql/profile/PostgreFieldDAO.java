@@ -27,7 +27,8 @@ public class PostgreFieldDAO extends AbstractPostgreDAO<Field, Integer> implemen
         List<Field> result;
         try (PreparedStatement statement = connection.prepareStatement(getFieldsForCESQuery)) {
             statement.setInt(1, ces_id);
-            result = parseResultSet(statement.executeQuery());
+            ResultSet rs = statement.executeQuery();
+            result = parseResultSet(rs);
         } catch (Exception e) {
             throw new DAOException(e);
         }
@@ -60,8 +61,8 @@ public class PostgreFieldDAO extends AbstractPostgreDAO<Field, Integer> implemen
         try {
             while (rs.next()) {
                 PersistField field = new PersistField(rs.getInt("ces_id"), rs.getString("name"),
-                        rs.getInt("filed_type_id"), rs.getBoolean("multiple_choice"),
-                        rs.getInt("order_num"), rs.getInt("list_id"));
+                        rs.getInt("field_type_id"), rs.getBoolean("multiple_choice"),
+                        rs.getInt("order_num"), (Integer) rs.getObject("list_id"));
                 field.setId(rs.getInt("field_id"));
                 result.add(field);
             }
@@ -101,7 +102,7 @@ public class PostgreFieldDAO extends AbstractPostgreDAO<Field, Integer> implemen
     }
 
     private class PersistField extends Field {
-        public PersistField(int cesID, String name, int fieldTypeID, boolean multipleChoice, int orderNum, int listID) {
+        public PersistField(int cesID, String name, int fieldTypeID, boolean multipleChoice, int orderNum, Integer listID) {
             super(cesID, name, fieldTypeID, multipleChoice, orderNum, listID);
         }
 

@@ -40,12 +40,12 @@ public class PostgreListValueDAO extends AbstractPostgreDAO<ListValue, Integer> 
 
     @Override
     public String getCreateQuery() {
-        return "INSERT INTO list_value (list_id, value_double, value_text) VALUES (?, ?, ?);";
+        return "INSERT INTO list_value (list_id, value_text) VALUES (?, ?);";
     }
 
     @Override
     public String getUpdateQuery() {
-        return "UPDATE list SET list_value.double_value = ?, list_value.text_value = ? WHERE list_value.list_value_id = ?;";
+        return "UPDATE list SET list_value.text_value = ? WHERE list_value.list_value_id = ?;";
     }
 
     @Override
@@ -59,7 +59,8 @@ public class PostgreListValueDAO extends AbstractPostgreDAO<ListValue, Integer> 
         try {
             while (rs.next()) {
                 PersistListValue listValue = new PersistListValue(rs.getInt("list_value_id"),
-                        rs.getDouble("value_double"), rs.getString("value_text"));
+                        rs.getString("value_text"));
+                listValue.setId(rs.getInt("list_value_id"));
                 listValue.setListID(rs.getInt("list_id"));
                 result.add(listValue);
             }
@@ -73,8 +74,7 @@ public class PostgreListValueDAO extends AbstractPostgreDAO<ListValue, Integer> 
     protected void prepareStatementForInsert(PreparedStatement statement, ListValue object) throws DAOException {
         try {
             statement.setInt(1, object.getListID());
-            statement.setDouble(2, object.getValueDouble());
-            statement.setString(3, object.getValueText());
+            statement.setString(2, object.getValueText());
         } catch (Exception e) {
             throw new DAOException(e);
         }
@@ -83,9 +83,8 @@ public class PostgreListValueDAO extends AbstractPostgreDAO<ListValue, Integer> 
     @Override
     protected void prepareStatementForUpdate(PreparedStatement statement, ListValue object) throws DAOException {
         try {
-            statement.setDouble(1, object.getValueDouble());
-            statement.setString(2, object.getValueText());
-            statement.setInt(3, object.getId());
+            statement.setString(1, object.getValueText());
+            statement.setInt(2, object.getId());
         } catch (Exception e) {
             throw new DAOException(e);
         }
@@ -97,8 +96,8 @@ public class PostgreListValueDAO extends AbstractPostgreDAO<ListValue, Integer> 
     }
 
     private class PersistListValue extends ListValue {
-        public PersistListValue(int listID, double valueDouble, String valueText) {
-            super(listID, valueDouble, valueText);
+        public PersistListValue(int listID, String valueText) {
+            super(listID, valueText);
         }
 
         public void setId(int id) {

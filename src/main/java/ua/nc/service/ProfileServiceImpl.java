@@ -24,13 +24,13 @@ public class ProfileServiceImpl implements ProfileService {
     private DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
 
     @Override
-    public Profile getProfile(UserDetailsImpl userDetails, int cesId) throws DAOException {
+    public Profile getProfile(int userId, int cesId) throws DAOException {
         Connection connection = daoFactory.getConnection();
         FieldDAO fieldDAO = daoFactory.getFieldDAO(connection);
         FieldTypeDAO fieldTypeDAO = daoFactory.getFieldTypeDAO(connection);
         FieldValueDAO fieldValueDAO = daoFactory.getFieldValueDAO(connection);
         ListValueDAO listValueDAO = daoFactory.getListValueDAO(connection);
-        boolean flagApplied = isApplied(userDetails.getId(), cesId);
+        boolean flagApplied = isApplied(userId, cesId);
         Profile result = new Profile();
         List<ProfileField> profileFields = new ArrayList<>();
         List<Field> fields = fieldDAO.getFieldsForCES(cesId);
@@ -48,7 +48,7 @@ public class ProfileServiceImpl implements ProfileService {
                     profileField.setValues(profileFieldValues);
                 } else {
                     FieldValue fieldValue = fieldValueDAO.getFieldValueByUserCESField(
-                            userDetails.getId(), cesId, field.getId()).iterator().next();
+                            userId, cesId, field.getId()).iterator().next();
                     ProfileFieldValue pfValue = new ProfileFieldValue();
                     if (fieldValue.getValueText() != null) {
                         pfValue.setValue(fieldValue.getValueText());
@@ -63,7 +63,7 @@ public class ProfileServiceImpl implements ProfileService {
             } else {
                 List<ListValue> listValues = listValueDAO.getAllListListValue(field.getListTypeID());
                 List<FieldValue> fieldValues = fieldValueDAO.getFieldValueByUserCESField(
-                        userDetails.getId(), cesId, field.getId());
+                        userId, cesId, field.getId());
                 for (ListValue listValue : listValues) {
                     ProfileFieldValue pfValue = new ProfileFieldValue();
                     pfValue.setId(listValue.getId().toString());
@@ -84,6 +84,7 @@ public class ProfileServiceImpl implements ProfileService {
                     }
                     profileFieldValues.add(pfValue);
                 }
+                profileField.setValues(profileFieldValues); ///
             }
             profileFields.add(profileField);
         }
@@ -122,13 +123,10 @@ public class ProfileServiceImpl implements ProfileService {
                 case "select":
                 case "checkbox":
                 case "radio":
-                    if (!profileField.getMultipleChoice()) {
-                        result.add(new FieldValue(profileField.getId(), applicationId, null,
-                                null, null, Integer.parseInt(profileField.getValues().get(0).getId())));
-                    } else {
-                        for (ProfileFieldValue pfValue : profileField.getValues()) {
+                    for (ProfileFieldValue profileFieldValue : profileField.getValues()){
+                        if (Boolean.parseBoolean(profileFieldValue.getValue())){
                             result.add(new FieldValue(profileField.getId(), applicationId, null,
-                                    null, null, Integer.parseInt(pfValue.getId())));
+                                    null, null, Integer.parseInt(profileFieldValue.getId())));
                         }
                     }
                     break;
@@ -212,14 +210,14 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public void setProfile(UserDetailsImpl userDetails, Profile profile) throws DAOException {
+    public void setProfile(int userId, Profile profile) throws DAOException {
         Connection connection = daoFactory.getConnection();
         CESDAO cesDAO = daoFactory.getCESDAO(connection);
         CES ces = cesDAO.getCurrentCES();
-        if (isApplied(userDetails.getId(), ces.getId())) {
-            updateProfile(profile, userDetails.getId(), ces.getId());
+        if (isApplied(userId, ces.getId())) {
+            updateProfile(profile, userId, ces.getId());
         } else {
-            createProfile(profile, userDetails.getId(), ces.getId());
+            createProfile(profile, userId, ces.getId());
         }
     }
 }
