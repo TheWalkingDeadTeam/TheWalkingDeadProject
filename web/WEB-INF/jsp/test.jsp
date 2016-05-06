@@ -2,13 +2,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>Mailing</title>
+    <title>AngularJS $http Example</title>
     <style>
         .mailhead.ng-valid {
             background-color: lightgreen;
         }
         .mailhead.ng-dirty.ng-invalid-required {
-            background-color: #ff9777;
+            background-color: red;
         }
         .mailhead.ng-dirty.ng-invalid-minlength {
             background-color: yellow;
@@ -17,23 +17,19 @@
             background-color: lightgreen;
         }
         .mailbody.ng-dirty.ng-invalid-required {
-            background-color: #ff9777;
+            background-color: red;
         }
         .mailbody.ng-dirty.ng-invalid-email {
             background-color: yellow;
         }
     </style>
-
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link href="<c:url value='/resources/css/app.css' />" rel="stylesheet"></link>
 </head>
-<body ng-app="App" class="ng-cloak">
+<body ng-app="mailer" class="ng-cloak">
 <div class="generic-container" ng-controller="MailController as ctrl">
-
     <div class="panel panel-default">
         <div class="panel-heading"><span class="lead">Mail Template Form </span></div>
-
-
         <div class="formcontainer">
             <form ng-submit="ctrl.submit()" name="myForm" class="form-horizontal">
                 <input type="hidden" ng-model="ctrl.mail.id" />
@@ -41,7 +37,7 @@
                     <div class="form-group col-md-12">
                         <label class="col-md-2 control-lable" for="file">Mail Header</label>
                         <div class="col-md-7">
-                            <input type="text" ng-model="ctrl.mail.headTemplate" name="mhead" class="mailhead form-control input-sm" placeholder="Enter mail header" required ng-minlength="3"/>
+                            <input type="text" ng-model="ctrl.mail.headTemplate" name="mhead" class="mailhead form-control input-sm" placeholder="Enter mail2 header" required ng-minlength="3"/>
                             <div class="has-error" ng-show="myForm.$dirty">
                                 <span ng-show="myForm.mhead.$error.required">This is a required field</span>
                                 <span ng-show="myForm.mhead.$error.minlength">Minimum length required is 3</span>
@@ -72,11 +68,6 @@
             </form>
         </div>
     </div>
-
-
-
-
-
     <div class="panel panel-default">
         <!-- Default panel contents -->
         <div class="panel-heading"><span class="lead">List of Mails </span></div>
@@ -104,9 +95,6 @@
         </div>
     </div>
 </div>
-
-
-
 
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
 <script src="<c:url value='/resources/js/app.js' />"></script>

@@ -1,7 +1,8 @@
 'use strict';
 
+var mailer = angular.module('mailer',[]);
 
-App.controller('MailController', ['$scope', 'MailService', function($scope, MailService) {
+mailer.controller('MailController', ['$scope', 'MailService', function($scope, MailService) {
     var self = this;
     self.mail={id:null,bodyTemplate:'',headTemplate:''};
     self.mails=[];
@@ -84,6 +85,68 @@ App.controller('MailController', ['$scope', 'MailService', function($scope, Mail
     self.reset = function(){
         self.mail={id:null,bodyTemplate:'',headTemplate:''};
         $scope.myForm.$setPristine(); //reset Form
+    };
+
+}]);
+
+
+
+mailer.factory('MailService', ['$http', '$q', function($http, $q){
+
+    return {
+
+        fetchAllMails: function() {
+            return $http.get('/mails/')
+                .then(
+                    function(response){
+                        return response.data;
+                    },
+                    function(errResponse){
+                        console.error('Error while fetching mail');
+                        return $q.reject(errResponse);
+                    }
+                );
+        },
+
+        createMail: function(mail){
+            return $http.post('/mails/', mail)
+                .then(
+                    function(response){
+                        return response.data;
+                    },
+                    function(errResponse){
+                        console.error('Error while creating mail');
+                        return $q.reject(errResponse);
+                    }
+                );
+        },
+
+        updateMail: function(mail, id){
+            return $http.post('/mails/'+id, mail)
+                .then(
+                    function(response){
+                        return response.data;
+                    },
+                    function(errResponse){
+                        console.error('Error while updating mail');
+                        return $q.reject(errResponse);
+                    }
+                );
+        },
+
+        deleteMail: function(id){
+            return $http.delete('/mails/'+id)
+                .then(
+                    function(response){
+                        return response.data;
+                    },
+                    function(errResponse){
+                        console.error('Error while deleting mail');
+                        return $q.reject(errResponse);
+                    }
+                );
+        }
+
     };
 
 }]);
