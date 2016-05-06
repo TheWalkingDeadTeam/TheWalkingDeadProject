@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import ua.nc.entity.User;
+import ua.nc.service.UserDetailsImpl;
 import ua.nc.service.user.UserService;
 import ua.nc.service.user.UserServiceImpl;
 import ua.nc.validator.PasswordValidator;
@@ -27,7 +28,7 @@ import java.util.Set;
 @Controller
 public class UserController {
     private final UserService userService = new UserServiceImpl();
-    private final Logger log = Logger.getLogger(LoginController.class);
+    private final Logger log = Logger.getLogger(UserController.class);
 
     /**
      * Registered user can change password
@@ -40,10 +41,8 @@ public class UserController {
     public Set<ValidationError> changePassword(@RequestBody String password) {
         Validator validator = new PasswordValidator();
         Set<ValidationError> errors = null;
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
-                .getPrincipal();
-        String usernameName = userDetails.getUsername();
-        User user = userService.getUser(usernameName);
+        User user = userService.getUser(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal()).getUsername());
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             JsonNode node = objectMapper.readValue(password, JsonNode.class);

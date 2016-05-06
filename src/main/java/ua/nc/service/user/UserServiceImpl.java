@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
             mailService.sendMail(user.getEmail(), "Registration", "Welcome " + user.getName() + " ! \n NetCracker[TheWalkingDeadTeam] ");
             return user;
         } catch (DAOException e) {
-            LOGGER.warn("User hasn't been created");
+            LOGGER.warn("User " + user.getEmail() + " hasn't been created");
             return null;
         } finally {
             daoFactory.putConnection(connection);

@@ -23,7 +23,7 @@ App.factory('MailService', ['$http', '$q', function ($http, $q) {
         },
 
         createMail: function (mail) {
-            return $http.post('http://localhost:8080/mails/', mail)
+            return $http.post('/mails/', mail)
                 .then(
                     function (response) {
                         return response.data;
@@ -36,7 +36,7 @@ App.factory('MailService', ['$http', '$q', function ($http, $q) {
         },
 
         updateMail: function (mail, id) {
-            return $http.post('http://localhost:8080/mails/' + id, mail)
+            return $http.post('/mails/' + id, mail)
                 .then(
                     function (response) {
                         return response.data;
@@ -49,7 +49,7 @@ App.factory('MailService', ['$http', '$q', function ($http, $q) {
         },
 
         deleteMail: function (id) {
-            return $http.delete('http://localhost:8080/mails/' + id)
+            return $http.delete('/mails/' + id)
                 .then(
                     function (response) {
                         return response.data;
