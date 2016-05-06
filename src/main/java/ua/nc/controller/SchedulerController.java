@@ -15,7 +15,7 @@ import java.util.Set;
  */
 @Controller
 public class SchedulerController {
-    @RequestMapping(value = "/schedule", method = RequestMethod.POST)
+    @RequestMapping(value = "/schedule", method = RequestMethod.POST,  produces = "application/json")
     public @ResponseBody
     Set<ValidationError> PostService(@RequestBody String Json) {
         Set<ValidationError> errors = new HashSet<>();

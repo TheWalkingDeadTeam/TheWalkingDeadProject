@@ -23,3 +23,5 @@ mailScheduler.controller('SchedulerController', ['$scope', '$http', function ($s
         $scope.list = [];
     };
 }]);
+
+// var mailAndScheduler = angular.module('mailAndScheduler',['mailScheduler','mailer']);

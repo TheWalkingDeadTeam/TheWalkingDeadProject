@@ -74,29 +74,29 @@
 
 
                 <%--Checkbox with mails here--%>
-                <div class="panel panel-default" ? >
-                    <!-- Default panel contents -->
-                    <div class="panel-heading"><span class="lead">List of Mails </span></div>
-                    <div class="tablecontainer">
-                        <table class="table table-hover" ng-app="myApp" class="ng-cloak">
-                            <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Head</th>
-                                <th>Body</th>
-                                <th width="20%"></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr ng-repeat="m in MailController.mails">
-                                <td><span ng-bind="m.id"></span></td>
-                                <td><span ng-bind="m.bodyTemplate"></span></td>
-                                <td><span ng-bind="m.headTemplate"></span></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                <%--<div class="panel panel-default" ? >--%>
+                    <%--<!-- Default panel contents -->--%>
+                    <%--<div class="panel-heading"><span class="lead">List of Mails </span></div>--%>
+                    <%--<div class="tablecontainer">--%>
+                        <%--<table class="table table-hover" ng-controller="mailer as ctrl" class="ng-cloak">--%>
+                            <%--<thead>--%>
+                            <%--<tr>--%>
+                                <%--<th>ID</th>--%>
+                                <%--<th>Head</th>--%>
+                                <%--<th>Body</th>--%>
+                                <%--<th width="20%"></th>--%>
+                            <%--</tr>--%>
+                            <%--</thead>--%>
+                            <%--<tbody>--%>
+                            <%--<tr ng-repeat="m in ctrl.mails">--%>
+                                <%--<td><span ng-bind="m.id"></span></td>--%>
+                                <%--<td><span ng-bind="m.bodyTemplate"></span></td>--%>
+                                <%--<td><span ng-bind="m.headTemplate"></span></td>--%>
+                            <%--</tr>--%>
+                            <%--</tbody>--%>
+                        <%--</table>--%>
+                    <%--</div>--%>
+                <%--</div>--%>
 
 
                 <%--Checkbox with mails here--%>
