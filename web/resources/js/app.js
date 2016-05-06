@@ -1,6 +1,6 @@
 'use strict';
 
- var App = angular.module('myApp',[]);
+var App = angular.module('App',[]);
 //
 // // var rootApp = angular.module('mailScheduler',['firstApp','secondApp']);
 // //

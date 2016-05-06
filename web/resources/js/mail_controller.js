@@ -1,5 +1,6 @@
 'use strict';
 
+
 App.controller('MailController', ['$scope', 'MailService', function($scope, MailService) {
     var self = this;
     self.mail={id:null,bodyTemplate:'',headTemplate:''};

@@ -27,7 +27,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link href="<c:url value='/resources/css/app.css' />" rel="stylesheet"></link>
 </head>
-<body ng-app="myApp" class="ng-cloak">
+<body ng-app="App" class="ng-cloak">
 <div class="generic-container" ng-controller="MailController as ctrl">
 
     <div class="panel panel-default">
