@@ -2,8 +2,8 @@
  * Created by Pavel on 25.04.2016.
  */
 $(document).ready(function () {
-    $("#buttonSignIn").click(function () {
-        event.preventDefault(); 
+    $("#buttonSignIn").click(function (event) {
+        event.preventDefault();
         $.ajax({
             type: 'post',
             url: '/security_check',
@@ -27,7 +27,7 @@ $(document).ready(function () {
                         .html(errors_out);
                     $('#j_password').val("");
                 } else {
-                    window.location.href = window.location.href;
+                    location.reload();
                 }
             },
             error: function (jqXHR, exception) {

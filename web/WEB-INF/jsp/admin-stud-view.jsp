@@ -58,8 +58,9 @@
     </style>
 </head>
 <body>
-<div ng-controller="StudentCtrl" class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
-  <jsp:include page="admin-header.jsp"/>
+<div ng-controller="StudentCtrl"
+     class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
+    <jsp:include page="admin-header.jsp"/>
 
 
     <main class="mdl-layout__content mdl-color--grey-100">
@@ -153,8 +154,8 @@
                 <tr ng-repeat="ch in students | orderBy:sortType:sortReverse | filter:searchFilt">
                     <td><input type="checkbox" checklist-model="dataStudents.studId" checklist-value="ch.id"></td>
                     <td ng-init="index=$index + 1">{{index}}</td>
-                    <td><a href="/profile/{{ch.id}}" target="_blanks">{{ch.name}}</a></td>
-                    <td><a href="/profile/{{ch.id}}" target="_blanks">{{ch.surname}}</a></td>
+                    <td><a href="/admin/students/{{ch.id}}" target="_blanks">{{ch.name}}</a></td>
+                    <td><a href="/admin/students/{{ch.id}}" target="_blanks">{{ch.surname}}</a></td>
                     <td>{{ch.university}}</td>
                     <td>{{ch.devMark}}</td>
                     <td>{{ch.hrMark}}</td>

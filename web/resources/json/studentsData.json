@@ -2,7 +2,7 @@
   {
     "id": 1,
     "name": "Abc",
-    "surname" : "Ogurchik",
+    "surname": "Ogurchik",
     "isActive": "1",
     "university": "KPI",
     "devMark": 10,
@@ -12,8 +12,8 @@
   {
     "id": 1,
     "name": "Abc",
-    "surname" : "Ogurchik",
+    "surname": "Ogurchik",
     "isActive": "1",
-    "role" : "Admin"
+    "role": "Admin"
   }
 ]

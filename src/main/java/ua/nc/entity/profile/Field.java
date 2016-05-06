@@ -14,12 +14,21 @@ public class Field implements Identified<Integer> {
     private int orderNum;
     private Integer listTypeID;
 
+    public Field(int cesID, String name, int fieldTypeID, boolean multipleChoice, int orderNum, int listTypeID) {
+        this.cesID = cesID;
+        this.name = name;
+        this.fieldTypeID = fieldTypeID;
+        this.multipleChoice = multipleChoice;
+        this.orderNum = orderNum;
+        this.listTypeID = listTypeID;
+    }
+
     @Override
-    public Integer getID() {
+    public Integer getId() {
         return ID;
     }
 
-    protected void setID(int id){
+    protected void setId(int id) {
         this.ID = id;
     }
 
@@ -69,14 +78,5 @@ public class Field implements Identified<Integer> {
 
     public void setOrderNum(int orderNum) {
         this.orderNum = orderNum;
-    }
-
-    public Field(int cesID, String name, int fieldTypeID, boolean multipleChoice, int orderNum, int listTypeID){
-        this.cesID = cesID;
-        this.name = name;
-        this.fieldTypeID = fieldTypeID;
-        this.multipleChoice = multipleChoice;
-        this.orderNum = orderNum;
-        this.listTypeID = listTypeID;
     }
 }

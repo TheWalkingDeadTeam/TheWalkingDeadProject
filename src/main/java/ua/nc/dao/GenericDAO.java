@@ -1,7 +1,7 @@
 package ua.nc.dao;
 
-import ua.nc.entity.Identified;
 import ua.nc.dao.exception.DAOException;
+import ua.nc.entity.Identified;
 
 import java.io.Serializable;
 import java.util.List;
@@ -11,8 +11,12 @@ import java.util.List;
  */
 public interface GenericDAO<T extends Identified, PK extends Serializable> {
     public T create(T object) throws DAOException;
+
     public T persist(T object) throws DAOException;
+
     public T read(PK key) throws DAOException;
+
     public void update(T object) throws DAOException;
+
     public List<T> getAll() throws DAOException;
 }

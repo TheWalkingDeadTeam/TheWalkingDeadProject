@@ -5,7 +5,7 @@ import java.util.Set;
 /**
  * Created by Pavel on 18.04.2016.
  */
-public class User {
+public class User implements Identified<Integer> {
     private Integer id;
     private String name;
     private String email;
@@ -27,7 +27,7 @@ public class User {
         return id;
     }
 
-    public void setId(Integer id) {
+    protected void setId(Integer id) {
         this.id = id;
     }
 

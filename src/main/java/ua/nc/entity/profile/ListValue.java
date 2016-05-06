@@ -11,12 +11,20 @@ public class ListValue implements Identified<Integer> {
     private double valueDouble;
     private String valueText;
 
+    public ListValue(int listTypeID, double valueDouble, String valueText) {
+        this.listTypeID = listTypeID;
+        this.valueDouble = valueDouble;
+        this.valueText = valueText;
+    }
+
     @Override
-    public Integer getID() {
+    public Integer getId() {
         return ID;
     }
 
-    protected void setID(int id) { this.ID = id;  }
+    protected void setId(int id) {
+        this.ID = id;
+    }
 
     public int getListID() {
         return listTypeID;
@@ -39,12 +47,6 @@ public class ListValue implements Identified<Integer> {
     }
 
     public void setValueText(String valueText) {
-        this.valueText = valueText;
-    }
-
-    public ListValue(int listTypeID, double valueDouble, String valueText){
-        this.listTypeID = listTypeID;
-        this.valueDouble = valueDouble;
         this.valueText = valueText;
     }
 }

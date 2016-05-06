@@ -4,18 +4,24 @@ package ua.nc.entity;
  * Created by Rangar on 02.05.2016.
  */
 public class Feedback implements Identified<Integer> {
-    private int feedbackID;
+    private int id;
     private int score;
     private String comment;
     private int interviewerID;
 
-    @Override
-    public Integer getID() {
-        return null;
+    public Feedback(int score, String comment, int interviewerID) {
+        this.score = score;
+        this.comment = comment;
+        this.interviewerID = interviewerID;
     }
 
-    protected void setID(int id){
-        this.feedbackID = id;
+    @Override
+    public Integer getId() {
+        return id;
+    }
+
+    protected void setId(int id) {
+        this.id = id;
     }
 
     public int getScore() {
@@ -39,12 +45,6 @@ public class Feedback implements Identified<Integer> {
     }
 
     public void setInterviewerID(int interviewerID) {
-        this.interviewerID = interviewerID;
-    }
-
-    public Feedback(int score, String comment, int interviewerID){
-        this.score = score;
-        this.comment = comment;
         this.interviewerID = interviewerID;
     }
 }

@@ -10,7 +10,10 @@ import java.util.List;
  */
 public interface FieldValueDAO {
     List<FieldValue> getFieldValueByUserCESField(Integer user_id, Integer ces_id, Integer field_id) throws DAOException;
+
     void update(FieldValue fieldValue) throws DAOException;
+
     FieldValue create(FieldValue fieldValue) throws DAOException;
+
     void deleteMultiple(Integer user_id, Integer ces_id, Integer field_id) throws DAOException;
 }

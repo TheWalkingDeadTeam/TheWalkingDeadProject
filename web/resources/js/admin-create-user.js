@@ -17,11 +17,11 @@ $("#buttonRegistration").click(function () {
             roles: checkroles
         }),
         success: function (response) {
-            if (response.errors.length) {
+            if (response.length) {
                 var errors_out = "";
                 // response.errors.forEach(item, i);
-                for (var i in response.errors) {
-                    errors_out += response.errors[i].errorMessage + "</br>"
+                for (var i in response) {
+                    errors_out += response[i].errorMessage + "</br>"
                 }
                 $('#messageRegistration')
                     .removeClass()
@@ -36,8 +36,9 @@ $("#buttonRegistration").click(function () {
                     .empty()
                     .addClass('alert alert-success')
                     .html('Registered successfully');
-                $('.registration input')
+                $('#regform')
                     .val("");
+                $( "#check" ).prop( "checked", false );
                 $("input").filter(".roles").prop("checked", false);
             }
         },

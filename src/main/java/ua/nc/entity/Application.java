@@ -4,18 +4,23 @@ package ua.nc.entity;
  * Created by Rangar on 01.05.2016.
  */
 public class Application implements Identified<Integer> {
-    private int ID;
+    private int id;
     private int userID;
     private int cesID;
     private Boolean rejected;
 
-    @Override
-    public Integer getID() {
-        return null;
+    public Application(int userID, int cesID) {
+        this.userID = userID;
+        this.cesID = cesID;
     }
 
-    protected void setID(int id){
-        this.ID = id;
+    @Override
+    public Integer getId() {
+        return id;
+    }
+
+    protected void setId(int id) {
+        this.id = id;
     }
 
     public int getCesID() {
@@ -40,10 +45,5 @@ public class Application implements Identified<Integer> {
 
     public void setUserID(int userID) {
         this.userID = userID;
-    }
-
-    public Application(int userID, int cesID){
-        this.userID = userID;
-        this.cesID = cesID;
     }
 }

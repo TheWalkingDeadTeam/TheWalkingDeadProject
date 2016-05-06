@@ -1,8 +1,9 @@
 package ua.nc.dao.postgresql.profile;
 
 import ua.nc.dao.AbstractPostgreDAO;
-import ua.nc.entity.profile.FieldType;
+import ua.nc.dao.FieldTypeDAO;
 import ua.nc.dao.exception.DAOException;
+import ua.nc.entity.profile.FieldType;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,19 +14,9 @@ import java.util.List;
 /**
  * Created by Rangar on 26.04.2016.
  */
-public class PostgreFieldTypeDAO extends AbstractPostgreDAO<FieldType, Integer> {
-    public PostgreFieldTypeDAO(Connection connection){
+public class PostgreFieldTypeDAO extends AbstractPostgreDAO<FieldType, Integer> implements FieldTypeDAO {
+    public PostgreFieldTypeDAO(Connection connection) {
         super(connection);
-    }
-
-    private class PersistFieldType extends FieldType{
-        public PersistFieldType(String name) {
-            super(name);
-        }
-
-        public void setID(int id) {
-            super.setID(id);
-        }
     }
 
     @Override
@@ -54,7 +45,7 @@ public class PostgreFieldTypeDAO extends AbstractPostgreDAO<FieldType, Integer> 
         try {
             while (rs.next()) {
                 PersistFieldType fieldType = new PersistFieldType(rs.getString("name"));
-                fieldType.setID(rs.getInt("list_id"));
+                fieldType.setId(rs.getInt("list_id"));
                 result.add(fieldType);
             }
         } catch (Exception e) {
@@ -76,16 +67,7 @@ public class PostgreFieldTypeDAO extends AbstractPostgreDAO<FieldType, Integer> 
     protected void prepareStatementForUpdate(PreparedStatement statement, FieldType object) throws DAOException {
         try {
             statement.setString(1, object.getName());
-            statement.setInt(2, object.getID());
-        } catch (Exception e) {
-            throw new DAOException(e);
-        }
-    }
-
-    @Override
-    protected void prepareStatementForSelect(PreparedStatement statement, FieldType object) throws DAOException {
-        try {
-            statement.setInt(1, object.getID());
+            statement.setInt(2, object.getId());
         } catch (Exception e) {
             throw new DAOException(e);
         }
@@ -94,5 +76,15 @@ public class PostgreFieldTypeDAO extends AbstractPostgreDAO<FieldType, Integer> 
     @Override
     public FieldType create(FieldType object) throws DAOException {
         return persist(object);
+    }
+
+    private class PersistFieldType extends FieldType {
+        public PersistFieldType(String name) {
+            super(name);
+        }
+
+        public void setId(int id) {
+            super.setId(id);
+        }
     }
 }

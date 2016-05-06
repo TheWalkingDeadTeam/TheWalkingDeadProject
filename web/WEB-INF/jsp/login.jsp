@@ -33,7 +33,7 @@
     <div class="col-lg-12 col-md-12 hidden-sm hidden-xs">
         <div class="container-fluid navbar-inner navigation">
             <a class="col-lg-4 col-md-4" href="#"><p>Home</p></a>
-            <a class="col-lg-4 col-md-4" href="#"><p>Information</p></a>
+            <a class="col-lg-4 col-md-4" href="/account"><p>[Account]</p></a>
             <a class="col-lg-4 col-md-4" href="#"><p>Contacts</p></a>
         </div>
     </div>
@@ -74,6 +74,25 @@
         </sec:authorize>
     </div>
 
+      <div class="recovery registration">
+          <div class="layout"></div>
+          <sec:authorize access="!isAuthenticated()">
+              <form id="stupidUser" action="/passwordRecovery">
+                  <div id="passwordRecovery"></div>
+                  <div class="row container-fluid recovery-head">
+                      <div class="col-lg-6 col-md-8 col-sm-9 col-xs-9">
+                          <h2 class="form-signin-heading">Password recovery</h2>
+                      </div>
+                      <div class="col-lg-6 col-md-4 col-sm-3 col-xs-3 ">
+                          <i class="material-icons closeico"><span class="closebtn">clear</span></i>
+                      </div>
+                  </div>
+                  <input id="userEmail" name="email" class="form-control" placeholder="Email address" type="text" value="">
+                  <div class="correct-email"></div>
+                  <button id="buttonRecoverPassword" class="btn btn-lg btn-primary btn-block">Send request</button>
+              </form>
+          </sec:authorize>
+      </div>
 
     <div class="row">
 
@@ -82,13 +101,16 @@
 
             <sec:authorize access="isAuthenticated()">
                 <div class="alert alert-info" role="alert">
-                <div id="messageCheckPassword"></div>
-                <form>
-                    <input id="changePassword" name="password" class="form-control" placeholder="Password" type="text"
-                           value="">
-                    <button id="buttonChangePassword" class="btn btn-lg btn-primary btn-block changebtn">ChangePassword</button>
-                </form>
-                 </div>
+                    <div id="messageCheckPassword"></div>
+                    <form>
+                        <input id="changePassword" name="password" class="form-control" placeholder="Password"
+                               type="text"
+                               value="">
+                        <button id="buttonChangePassword" class="btn btn-lg btn-primary btn-block changebtn">
+                            ChangePassword
+                        </button>
+                    </form>
+                </div>
             </sec:authorize>
 
 
@@ -102,6 +124,7 @@
                            required>
                     <button id="buttonSignIn" class="btn btn-lg btn-primary btn-block signbtn" type="submit">Sign in
                     </button>
+                    <button type="button" class="btn btn-lg btn-primary btn-block recoverybtn">Forgot password</button>
                     <button type="button" class="btn btn-lg btn-primary btn-block regbut">Registration</button>
                 </form>
             </sec:authorize>
@@ -109,17 +132,11 @@
                 <div class="alert alert-info" role="alert">
                     <p>Your login: <sec:authentication property="principal.username"/></p>
                     <p><sec:authentication property="principal.authorities"/></p>
-                    <p><img id = "photo_img" src="/getPhoto" alt="User's photo" width = "100" height = "100" onError="this.src='/resources/images/user-photo.png'"/></p>
+                    <p><img id="photo_img" src="/getPhoto" alt="User's photo" width="100" height="100"
+                            onError="this.src='/resources/images/user-photo.png'"/></p>
                 </div>
-                <p>
-                    <a id="buttonLogout" class="btn btn-lg btn-danger" href="/logout" role="button">Logout</a>
-                </p>
-                <p>
-                <form id = "photoUpload" method="post" action="uploadPhoto" enctype="multipart/form-data">
-                    Photo to upload: <input type="file" name="photo" accept="image/*"><br />
-                    <input type="submit" value="Upload"/>
-                </form>
-                </p>
+                <p><a id="buttonLogout" class="btn btn-lg btn-danger" href="/logout" role="button">Logout</a></p>
+
             </sec:authorize>
         </div>
         <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
@@ -174,4 +191,5 @@
 <script src="/resources/js/logout.js"></script>
 <script src="/resources/bootstrap/js/bootstrap.js"></script>
 <script src="/resources/js/registration.js"></script>
+<script src="/resources/js/passwordRecovery.js"></script>
 </html>

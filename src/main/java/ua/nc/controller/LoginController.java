@@ -8,7 +8,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
@@ -41,13 +40,12 @@ import java.util.Set;
  */
 @Controller
 public class LoginController implements HandlerExceptionResolver {
-    private final Logger log = Logger.getLogger(LoginController.class);
+    private static final Logger LOGGER = Logger.getLogger(LoginController.class);
+    private final UserService userService = new UserServiceImpl();
+    private final PhotoService photoService = new PhotoServiceImpl();
     @Autowired
     @Qualifier("authenticationManager")
     protected AuthenticationManager authenticationManager;
-
-    private final UserService userService = new UserServiceImpl();
-    private final PhotoService photoService = new PhotoServiceImpl();
 
     @Override
     public ModelAndView resolveException(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) {
@@ -77,12 +75,12 @@ public class LoginController implements HandlerExceptionResolver {
             token.setDetails(userDetailsService.loadUserByUsername(user.getEmail()));
             Authentication auth = authenticationManager.authenticate(token);
             SecurityContextHolder.getContext().setAuthentication(auth);
-            log.info("Sign in successful with email " + user.getEmail());
+            LOGGER.info("Sign in successful with email " + user.getEmail());
         } catch (BadCredentialsException e) {
-            log.warn("Authorization deny " + user.getEmail() + " has another password");
+            LOGGER.warn("Authorization deny " + user.getEmail() + " has another password");
             errors.add(new ValidationError("signin", "Invalid username or password"));
         } catch (UsernameNotFoundException e) {
-            log.warn("Authorization deny email" + user.getEmail() + " not found");
+            LOGGER.warn("Authorization deny email" + user.getEmail() + " not found");
             errors.add(new ValidationError("signin", "Invalid username or password"));
         }
         return errors;
@@ -98,11 +96,11 @@ public class LoginController implements HandlerExceptionResolver {
             if (userService.getUser(user.getEmail()) == null) {
                 User registeredUser = userService.createUser(user);
                 if (registeredUser == null) {
-                    log.warn("Register failed " + user.getEmail());
+                    LOGGER.warn("Register failed " + user.getEmail());
                     errors.add(new ValidationError("register", "Register failed"));
                 }
             } else {
-                log.warn("User " + user.getEmail() + " already exists");
+                LOGGER.warn("User " + user.getEmail() + " already exists");
                 errors.add(new ValidationError("user", "Such user already exists"));
             }
         }
@@ -117,28 +115,55 @@ public class LoginController implements HandlerExceptionResolver {
         Set<ValidationError> errors = validator.validate(photo);
         if (errors.isEmpty()) {
             try {
-                UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
-                        .getPrincipal();
-                String usernameName = userDetails.getUsername();
-                User user = userService.getUser(usernameName);
+                User user = userService.getUser(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+                        .getPrincipal()).getUsername());
                 photoService.uploadPhoto(photo, user.getId());
             } catch (IOException e) {
                 errors.add(new ValidationError("photo", "Something went wrong"));
             }
         }
-        for (ValidationError error : errors) {
-            System.out.println(error.getErrorMessage());
+        return errors;
+    }
+
+    @RequestMapping(value = {"/passwordRecovery"}, method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public Set<ValidationError> recoverPassword(@RequestBody User user) {
+        Validator validator = new RegistrationValidator();
+        Set<ValidationError> errors = validator.validate(user);
+        UserService userService = new UserServiceImpl();
+        User updatedUser = userService.recoverPass(user);
+        if (errors.isEmpty()) {
+            if (updatedUser == null || updatedUser.getEmail() == null
+                    && user.getPassword() == null) {
+                LOGGER.warn("Password recovery failed " + user.getEmail());
+                errors.add(new ValidationError("password", "Recovery failed"));
+            }
         }
         return errors;
     }
 
+
+//    @RequestMapping(value = "/stuff/{stuffId}", method = RequestMethod.GET)
+//    public ResponseEntity<InputStreamResource> downloadStuff(@PathVariable int stuffId)
+//            throws IOException {
+//        String fullPath = stuffService.figureOutFileNameFor(stuffId);
+//        File file = new File(fullPath);
+//
+//        HttpHeaders respHeaders = new HttpHeaders();
+//        respHeaders.setContentType("application/pdf");
+//        respHeaders.setContentLength(12345678);
+//        respHeaders.setContentDispositionFormData("attachment", "fileNameIwant.pdf");
+//
+//        InputStreamResource isr = new InputStreamResource(new FileInputStream(file));
+//        return new ResponseEntity<InputStreamResource>(isr, respHeaders, HttpStatus.OK);
+//    }
+
+
     @ResponseBody
     @RequestMapping(value = "/getPhoto")
     public byte[] getPhoto() {
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
-                .getPrincipal();
-        String usernameName = userDetails.getUsername();
-        User user = userService.getUser(usernameName);
+        User user = userService.getUser(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal()).getUsername());
         return photoService.getPhotoById(user.getId());
     }
 

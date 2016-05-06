@@ -25,7 +25,8 @@
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed button-header" data-toggle='collapse' data-target='#collapsed-menu' aria-expanded="false">
+                <button type="button" class="navbar-toggle collapsed button-header" data-toggle='collapse'
+                        data-target='#collapsed-menu' aria-expanded="false">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
@@ -39,10 +40,10 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="">Home</a></li>
                     <li><a href="">Information</a></li>
-<sec:authorize access="hasRole('ROLE_STUDENT')">
+                    <sec:authorize access="hasRole('ROLE_STUDENT')">
 
-<li><a href="/profile">Profile</a></li>
-    </sec:authorize>
+                        <li><a href="/profile">Profile</a></li>
+                    </sec:authorize>
                     <li><a href="/logout">Logout</a></li>
                 </ul>
             </div>
@@ -71,6 +72,9 @@
                 <span>Ivan</span>
                 <span>Ivanovich</span>
                 <span>ivanovivanovich@gmail.com</span>
+
+            </div>
+            <div class="col-lg-6 col-md-4 col-xs-3">
                 <jsp:include page="change-password.jsp"/>
             </div>
         </div>

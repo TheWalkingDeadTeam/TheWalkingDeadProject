@@ -1,6 +1,7 @@
 package ua.nc.dao.postgresql;
 
 import ua.nc.dao.AbstractPostgreDAO;
+import ua.nc.dao.ReportTemplateDAO;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.entity.ReportTemplate;
 
@@ -13,19 +14,9 @@ import java.util.List;
 /**
  * Created by Rangar on 02.05.2016.
  */
-public class PostgreReportTemplateDAO extends AbstractPostgreDAO<ReportTemplate, Integer> {
-    public PostgreReportTemplateDAO(Connection connection){
+public class PostgreReportTemplateDAO extends AbstractPostgreDAO<ReportTemplate, Integer> implements ReportTemplateDAO {
+    public PostgreReportTemplateDAO(Connection connection) {
         super(connection);
-    }
-
-    private class PersistReportTemplate extends ReportTemplate{
-        public PersistReportTemplate(String query, String name) {
-            super(query, name);
-        }
-
-        public void setID(int id) {
-            super.setID(id);
-        }
     }
 
     @Override
@@ -54,7 +45,7 @@ public class PostgreReportTemplateDAO extends AbstractPostgreDAO<ReportTemplate,
         try {
             while (rs.next()) {
                 PersistReportTemplate reportTemplate = new PersistReportTemplate(rs.getString("query"), rs.getString("name"));
-                reportTemplate.setID(rs.getInt("report_template_id"));
+                reportTemplate.setId(rs.getInt("report_template_id"));
                 result.add(reportTemplate);
             }
         } catch (Exception e) {
@@ -65,21 +56,37 @@ public class PostgreReportTemplateDAO extends AbstractPostgreDAO<ReportTemplate,
 
     @Override
     protected void prepareStatementForInsert(PreparedStatement statement, ReportTemplate object) throws DAOException {
-
+        try {
+            statement.setString(1, object.getQuery());
+            statement.setString(2, object.getName());
+        } catch (Exception e) {
+            throw new DAOException(e);
+        }
     }
 
     @Override
     protected void prepareStatementForUpdate(PreparedStatement statement, ReportTemplate object) throws DAOException {
-
-    }
-
-    @Override
-    protected void prepareStatementForSelect(PreparedStatement statement, ReportTemplate object) throws DAOException {
-
+        try {
+            statement.setString(1, object.getQuery());
+            statement.setString(2, object.getName());
+            statement.setInt(3, object.getId());
+        } catch (Exception e) {
+            throw new DAOException(e);
+        }
     }
 
     @Override
     public ReportTemplate create(ReportTemplate object) throws DAOException {
         return persist(object);
+    }
+
+    private class PersistReportTemplate extends ReportTemplate {
+        public PersistReportTemplate(String query, String name) {
+            super(query, name);
+        }
+
+        public void setId(int id) {
+            super.setId(id);
+        }
     }
 }

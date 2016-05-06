@@ -6,6 +6,7 @@ import ua.nc.dao.exception.DAOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.List;
 
 /**
@@ -68,29 +69,27 @@ public abstract class AbstractPostgreDAO<T extends Identified<PK>, PK extends In
      */
     protected abstract void prepareStatementForUpdate(PreparedStatement statement, T object) throws DAOException;
 
-    /**
-     * Sets select query arguments in accordance with object 'object' fields.
-     * @param statement  statement to prepare
-     * @param object object to use for operation
-     */
-    protected abstract void prepareStatementForSelect(PreparedStatement statement, T object) throws DAOException;
-
     @Override
     public T persist(T object) throws DAOException {
         T persistInstance;
         String sql = getCreateQuery();
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        int pk = 0;
+        try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             prepareStatementForInsert(statement, object);
             int count = statement.executeUpdate();
             if (count != 1) {
                 throw new DAOException("On persist modify more then 1 record: " + count);
+            }
+            ResultSet key = statement.getGeneratedKeys();
+            if (key != null && key.next()) {
+                pk = key.getInt(1);
             }
         } catch (Exception e) {
             throw new DAOException(e);
         }
         sql = getSelectQuery();
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            prepareStatementForSelect(statement, object);
+            statement.setInt(1, pk);
             ResultSet rs = statement.executeQuery();
             List<T> list = parseResultSet(rs);
             if ((list == null) || (list.size() != 1)) {
@@ -108,7 +107,7 @@ public abstract class AbstractPostgreDAO<T extends Identified<PK>, PK extends In
         List<T> list;
         String sql = getSelectQuery();
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, (Integer)key);
+            statement.setInt(1, (Integer) key);
             ResultSet rs = statement.executeQuery();
             list = parseResultSet(rs);
         } catch (Exception e) {

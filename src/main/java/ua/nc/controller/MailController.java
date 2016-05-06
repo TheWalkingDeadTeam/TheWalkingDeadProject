@@ -19,8 +19,8 @@ import java.util.List;
 
 @RestController
 public class MailController {
+    private static final Logger LOGGER = Logger.getLogger(MailController.class);
     MailService mailService = new MailServiceImpl();
-    private static final Logger LOGGER = Logger.getLogger(MailServiceImpl.class);
 
     /**
      * Retrieve all mail
@@ -46,7 +46,7 @@ public class MailController {
     public ResponseEntity<Mail> getMail(@PathVariable("id") Integer id) {
         Mail mail = mailService.getMail(id);
         if (mail == null) {
-            System.out.println("User with id" + id + "not found");
+            LOGGER.info("User with id" + id + "not found");
             return new ResponseEntity<Mail>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<Mail>(mail, HttpStatus.OK);
@@ -61,7 +61,7 @@ public class MailController {
      */
     @RequestMapping(value = "/mails/", method = RequestMethod.POST)
     public ResponseEntity<Void> createMail(@RequestBody Mail mail, UriComponentsBuilder ucBuilder) {
-        System.out.println("Creating mail:" + mail.getHeadTemplate() + mail.getBodyTemplate());
+        LOGGER.debug("Creating mail:" + mail.getHeadTemplate() + mail.getBodyTemplate());
         mailService.createMail(mail.getHeadTemplate(), mail.getBodyTemplate());
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("/mails/{id}").buildAndExpand(mail.getId()).toUri());
@@ -77,10 +77,10 @@ public class MailController {
      */
     @RequestMapping(value = "/mails/{id}", method = RequestMethod.POST)
     public ResponseEntity<Mail> updateMail(@PathVariable("id") Integer id, @RequestBody Mail mail) {
-        System.out.println("Updating mail" + id);
+        LOGGER.debug("Updating mail" + id);
         Mail mailCurrent = mailService.getMail(id);
         if (mailCurrent == null) {
-            System.out.println("User with id" + id + "not found");
+            LOGGER.info("User with id" + id + "not found");
             return new ResponseEntity<Mail>(HttpStatus.NOT_FOUND);
         }
         mailCurrent.setBodyTemplate(mail.getBodyTemplate());
@@ -99,7 +99,7 @@ public class MailController {
     public ResponseEntity<Mail> deleteUser(@PathVariable("id") Integer id) {
         Mail mail = mailService.getMail(id);
         if (mail == null) {
-            System.out.println("Unable to delete user" + id + "not found");
+            LOGGER.info("Unable to delete user" + id + "not found");
             return new ResponseEntity<Mail>(HttpStatus.NOT_FOUND);
         }
         mailService.deleteMail(mail);
@@ -113,7 +113,7 @@ public class MailController {
      */
     @RequestMapping(value = "/mails/", method = RequestMethod.DELETE)
     public ResponseEntity<Mail> deleteAllMail() {
-        System.out.println("Deleting all mail");
+        LOGGER.debug("Deleting all mail");
         List<Mail> mails = mailService.getAllMails();
         for (Mail i : mails) {
             mailService.deleteMail(i);

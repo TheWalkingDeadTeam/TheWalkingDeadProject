@@ -60,21 +60,24 @@
 <body>
 <div ng-controller="interCtrl"
      class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
-    <jsp:include page="admin-header.jsp" />
+    <jsp:include page="admin-header.jsp"/>
 
 
     <main class="mdl-layout__content mdl-color--grey-100">
 
-        <div >
+        <div>
 
 
-            <button ng-click="activateStud()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
+            <button ng-click="activateStud()"
+                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
                 Activate
             </button>
-            <button ng-click="deactivateStud()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
+            <button ng-click="deactivateStud()"
+                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
                 Deactivate
             </button>
-            <button ng-click="saveChanges()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
+            <button ng-click="saveChanges()"
+                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
                 Save
             </button>
             <table class="table table-bordered table-striped" style="{margin-top: 200px}">

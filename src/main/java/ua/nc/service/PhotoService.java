@@ -9,5 +9,6 @@ import java.io.IOException;
  */
 public interface PhotoService {
     void uploadPhoto(MultipartFile photo, int id) throws IOException;
+
     byte[] getPhotoById(int id);
 }

@@ -1,27 +1,22 @@
 package ua.nc.controller;
 
 import org.apache.log4j.Logger;
-import org.springframework.http.HttpRequest;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import ua.nc.entity.User;
-import ua.nc.entity.profile.Profile;
-import ua.nc.service.ProfileService;
-import ua.nc.service.ProfileServiceImpl;
+import ua.nc.service.UserDetailsImpl;
 import ua.nc.service.user.UserService;
 import ua.nc.service.user.UserServiceImpl;
 import ua.nc.validator.RegistrationValidator;
 import ua.nc.validator.ValidationError;
 import ua.nc.validator.Validator;
 
-import java.util.LinkedHashSet;
 import java.util.Set;
+
+/**
+ * Created by Pavel on 18.04.2016.
+ */
 
 /**
  * Created by Pavel on 18.04.2016.
@@ -29,7 +24,7 @@ import java.util.Set;
 @Controller
 @RequestMapping(value = "/admin")
 public class AdminController {
-    private final Logger log = Logger.getLogger(LoginController.class);
+    private static final Logger LOGGER = Logger.getLogger(AdminController.class);
     private final UserService userService = new UserServiceImpl();
 
     @RequestMapping(method = RequestMethod.GET)
@@ -43,16 +38,20 @@ public class AdminController {
     Set<ValidationError> registerUser(@RequestBody User user) {
         Validator validator = new RegistrationValidator();
         Set<ValidationError> errors = validator.validate(user);
+
         if (errors.isEmpty()) {
             if (userService.getUser(user.getEmail()) == null) {
 
                 User registeredUser = userService.createUser(user);
                 if (registeredUser == null) {
-                    log.warn("Register failed " + user.getEmail());
+                    LOGGER.warn("Register failed " + user.getEmail());
                     errors.add(new ValidationError("register", "Register failed"));
+                } else {
+                    LOGGER.info("Admin" + ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+                            .getPrincipal()).getUsername() + " create user " + user.getEmail());
                 }
             } else {
-                log.warn("User " + user.getEmail() + " already exists");
+                LOGGER.warn("User " + user.getEmail() + " already exists");
                 errors.add(new ValidationError("user", "Such user already exists"));
             }
         }
@@ -122,8 +121,8 @@ public class AdminController {
 
 
     @RequestMapping(value = "/students/{id}", method = RequestMethod.GET, produces = "application/json")
-    public String getStudentById(@ModelAttribute("id") Integer id) {
-        return "redirect:/profile/" + id;
+    public String getStudentById(@PathVariable("id") Integer id) {
+        return "redirect:/profile?" + id;
     }
 
     /**
@@ -184,8 +183,7 @@ public class AdminController {
 
 
     @RequestMapping(value = {"/mail-template"}, method = RequestMethod.GET)
-    public String mail(){return "admin-mail-template";}
-
-    @RequestMapping(value = {"/scheduler"},method = RequestMethod.GET)
-    public String scheduler(){return "scheduler";}
+    public String mail() {
+        return "admin-mail-template";
+    }
 }

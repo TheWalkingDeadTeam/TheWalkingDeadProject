@@ -1,6 +1,7 @@
 package ua.nc.service;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.log4j.Logger;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
@@ -9,11 +10,11 @@ import java.io.*;
  * Created by Hlib on 29.04.2016.
  */
 public class PhotoServiceImpl implements PhotoService {
-
-    private final static String PHOTOS_HOME = System.getProperty("catalina.home")+ File.separator+"photos";
+    private final static Logger log = Logger.getLogger(PhotoServiceImpl.class);
+    private final static String PHOTOS_HOME = System.getProperty("catalina.home") + File.separator + "photos";
 
     @Override
-    public void uploadPhoto(MultipartFile photo, int userID) throws IOException{
+    public void uploadPhoto(MultipartFile photo, int userID) throws IOException {
         byte[] photoBytes = photo.getBytes();
         File dir = new File(PHOTOS_HOME + File.separator + userID);
         if (!dir.exists()) {
@@ -29,11 +30,10 @@ public class PhotoServiceImpl implements PhotoService {
     public byte[] getPhotoById(int userID) {
         File file = new File(PHOTOS_HOME + File.separator + userID + File.separator + "photo");
         byte[] fileByteArray = null;
-        try{
-            fileByteArray =  IOUtils.toByteArray(new FileInputStream(file));
-        }
-        catch (IOException ex) {
-            System.out.println(ex.toString());
+        try {
+            fileByteArray = IOUtils.toByteArray(new FileInputStream(file));
+        } catch (IOException ex) {
+            log.info(ex.toString());
         }
         return fileByteArray;
     }

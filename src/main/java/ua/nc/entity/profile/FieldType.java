@@ -9,22 +9,24 @@ public class FieldType implements Identified<Integer> {
     private int ID;
     private String name;
 
+    public FieldType(String name) {
+        this.name = name;
+    }
+
     @Override
-    public Integer getID() {
+    public Integer getId() {
         return ID;
     }
 
-    protected void setID(int id) { this.ID = id;  }
+    protected void setId(int id) {
+        this.ID = id;
+    }
 
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
-        this.name = name;
-    }
-
-    public FieldType(String name){
         this.name = name;
     }
 }
