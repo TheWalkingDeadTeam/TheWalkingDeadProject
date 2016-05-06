@@ -29,6 +29,10 @@ public class PostgreRoleDAO extends AbstractPostgreDAO<Role, Integer> implements
     private static final String INSERT = "INSERT INTO public.role r (r.name, r.description) VALUES (?,?)";
     private static final String GET_ALL = "SELECT * FROM public.role";
     private static final String FIND_BY_NAME = "SELECT * FROM public.role r WHERE r.name = ?";
+    private static final String FIND_BY_EMAIL = "SELECT  r.role_id, r.name FROM public.system_user u " +
+            "JOIN public.system_user_role ur on u.system_user_id = ur.system_user_id " +
+            "JOIN public.role r ON ur.role_id = r.role_id WHERE u.email = ?";
+
 
     public PostgreRoleDAO(Connection connection) {
         super(connection);
@@ -65,12 +69,11 @@ public class PostgreRoleDAO extends AbstractPostgreDAO<Role, Integer> implements
 
     @Override
     public Set<Role> findByEmail(String email) throws DAOException {
-        String sql = AppSetting.get("role.findByEmail");
         Set<Role> roles = new HashSet<>();
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
-            statement = connection.prepareStatement(sql);
+            statement = connection.prepareStatement(FIND_BY_EMAIL);
             statement.setString(1, email);
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -80,7 +83,7 @@ public class PostgreRoleDAO extends AbstractPostgreDAO<Role, Integer> implements
                 roles.add(role);
             }
         } catch (SQLException e) {
-            LOGGER.info("Roles for " + email + "  not found");
+            LOGGER.info("Roles for " + email + "  not found" + e.getMessage());
             throw new DAOException(e);
         } finally {
             try {

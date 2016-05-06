@@ -12,6 +12,7 @@ public class FieldType implements Identified<Integer> {
     public FieldType(String name) {
         this.name = name;
     }
+    public FieldType(){}
 
     @Override
     public Integer getId() {

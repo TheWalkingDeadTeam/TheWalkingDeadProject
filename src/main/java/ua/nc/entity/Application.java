@@ -13,6 +13,7 @@ public class Application implements Identified<Integer> {
         this.userID = userID;
         this.cesID = cesID;
     }
+    public Application(){}
 
     @Override
     public Integer getId() {

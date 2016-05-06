@@ -88,7 +88,12 @@ public class PostgreApplicationDAO extends AbstractPostgreDAO<Application, Integ
         try (PreparedStatement statement = connection.prepareStatement(getApplicationByUserCES)) {
             statement.setInt(1, user_id);
             statement.setInt(2, ces_id);
-            result = parseResultSet(statement.executeQuery()).iterator().next();
+            ResultSet rs = statement.executeQuery();
+            if (!rs.isBeforeFirst() ) {
+                result = null;
+            } else {
+                result = parseResultSet(rs).iterator().next();
+            }
         } catch (Exception e) {
             throw new DAOException(e);
         }
@@ -100,7 +105,12 @@ public class PostgreApplicationDAO extends AbstractPostgreDAO<Application, Integ
         List<Application> result;
         try (PreparedStatement statement = connection.prepareStatement(getAllCESApplicationsQuery)) {
             statement.setInt(1, ces_id);
-            result = parseResultSet(statement.executeQuery());
+            ResultSet rs = statement.executeQuery();
+            if (!rs.isBeforeFirst() ) {
+                result = null;
+            } else {
+                result = parseResultSet(rs);
+            }
         } catch (Exception e) {
             throw new DAOException(e);
         }

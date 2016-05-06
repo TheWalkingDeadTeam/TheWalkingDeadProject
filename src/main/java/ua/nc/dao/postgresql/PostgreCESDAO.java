@@ -113,23 +113,49 @@ public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements C
 
     @Override
     public CES getCurrentCES() throws DAOException {
-        List<CES> result;
+        CES result;
         try (PreparedStatement statement = connection.prepareStatement(getCurrentCESQuery)) {
-            result = parseResultSet(statement.executeQuery());
+            ResultSet rs = statement.executeQuery();
+            if (!rs.isBeforeFirst() ) {
+                result = null;
+            } else {
+                result = parseResultSet(rs).iterator().next();
+            }
         } catch (Exception e) {
             throw new DAOException(e);
         }
-        return result.iterator().next();
+        return result;
+    }
+
+    private static final String addInterviewerForCurrentCES = "INSERT INTO interviewer_participation (system_user_id, ces_id) VALUES (?, ?);";
+    private static final String addCESFieldQuery = "INSERT INTO ces_field (ces_id, field_id) VALUES (?, ?);";
+
+    @Override
+    public void addCESField(int cesId, int fieldId) throws DAOException {
+        try (PreparedStatement statement = connection.prepareStatement(addCESFieldQuery)) {
+            statement.setInt(1, cesId);
+            statement.setInt(2, fieldId);
+            int count = statement.executeUpdate();
+            if (count != 1) {
+                throw new DAOException("On update modify more then 1 record: " + count);
+            }
+        } catch (Exception e) {
+            throw new DAOException(e);
+        }
     }
 
     @Override
-    public void addCESField(int cesId, int fieldId) {
-
-    }
-
-    @Override
-    public void addInterviewerForCurrentCES(int interviewerId) {
-
+    public void addInterviewerForCurrentCES(int cesId, int interviewerId) throws DAOException {
+        try (PreparedStatement statement = connection.prepareStatement(addInterviewerForCurrentCES)) {
+            statement.setInt(1, cesId);
+            statement.setInt(2, interviewerId);
+            int count = statement.executeUpdate();
+            if (count != 1) {
+                throw new DAOException("On update modify more then 1 record: " + count);
+            }
+        } catch (Exception e) {
+            throw new DAOException(e);
+        }
     }
 
     @Override

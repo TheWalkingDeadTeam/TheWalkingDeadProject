@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @Controller
 public class AccountController {
-    private final Logger log = Logger.getLogger(LoginController.class);
+    private static final Logger LOGGER = Logger.getLogger(AccountController.class);
 
     @RequestMapping(value = "/account", method = RequestMethod.GET)
     public String account() {

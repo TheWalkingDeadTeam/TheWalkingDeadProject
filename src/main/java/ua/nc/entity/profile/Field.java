@@ -22,6 +22,7 @@ public class Field implements Identified<Integer> {
         this.orderNum = orderNum;
         this.listTypeID = listTypeID;
     }
+    public Field(){}
 
     @Override
     public Integer getId() {

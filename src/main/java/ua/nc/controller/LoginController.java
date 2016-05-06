@@ -8,7 +8,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
@@ -21,6 +20,7 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import ua.nc.entity.User;
 import ua.nc.service.PhotoService;
 import ua.nc.service.PhotoServiceImpl;
+import ua.nc.service.UserDetailsImpl;
 import ua.nc.service.user.UserDetailsServiceImpl;
 import ua.nc.service.user.UserService;
 import ua.nc.service.user.UserServiceImpl;
@@ -40,7 +40,7 @@ import java.util.Set;
  */
 @Controller
 public class LoginController implements HandlerExceptionResolver {
-    private final Logger log = Logger.getLogger(LoginController.class);
+    private static final Logger LOGGER = Logger.getLogger(LoginController.class);
     private final UserService userService = new UserServiceImpl();
     private final PhotoService photoService = new PhotoServiceImpl();
     @Autowired
@@ -75,12 +75,12 @@ public class LoginController implements HandlerExceptionResolver {
             token.setDetails(userDetailsService.loadUserByUsername(user.getEmail()));
             Authentication auth = authenticationManager.authenticate(token);
             SecurityContextHolder.getContext().setAuthentication(auth);
-            log.info("Sign in successful with email " + user.getEmail());
+            LOGGER.info("Sign in successful with email " + user.getEmail());
         } catch (BadCredentialsException e) {
-            log.warn("Authorization deny " + user.getEmail() + " has another password");
+            LOGGER.warn("Authorization deny " + user.getEmail() + " has another password");
             errors.add(new ValidationError("signin", "Invalid username or password"));
         } catch (UsernameNotFoundException e) {
-            log.warn("Authorization deny email" + user.getEmail() + " not found");
+            LOGGER.warn("Authorization deny email" + user.getEmail() + " not found");
             errors.add(new ValidationError("signin", "Invalid username or password"));
         }
         return errors;
@@ -96,11 +96,11 @@ public class LoginController implements HandlerExceptionResolver {
             if (userService.getUser(user.getEmail()) == null) {
                 User registeredUser = userService.createUser(user);
                 if (registeredUser == null) {
-                    log.warn("Register failed " + user.getEmail());
+                    LOGGER.warn("Register failed " + user.getEmail());
                     errors.add(new ValidationError("register", "Register failed"));
                 }
             } else {
-                log.warn("User " + user.getEmail() + " already exists");
+                LOGGER.warn("User " + user.getEmail() + " already exists");
                 errors.add(new ValidationError("user", "Such user already exists"));
             }
         }
@@ -115,13 +115,8 @@ public class LoginController implements HandlerExceptionResolver {
         Set<ValidationError> errors = validator.validate(photo);
         if (errors.isEmpty()) {
             try {
-                byte[] photoBytes = photo.getBytes();
-
-                String resHome = System.getProperty("catalina.home");
-                UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
-                        .getPrincipal();
-                String usernameName = userDetails.getUsername();
-                User user = userService.getUser(usernameName);
+                User user = userService.getUser(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+                        .getPrincipal()).getUsername());
                 photoService.uploadPhoto(photo, user.getId());
             } catch (IOException e) {
                 errors.add(new ValidationError("photo", "Something went wrong"));
@@ -140,7 +135,7 @@ public class LoginController implements HandlerExceptionResolver {
         if (errors.isEmpty()) {
             if (updatedUser == null || updatedUser.getEmail() == null
                     && user.getPassword() == null) {
-                log.warn("Password recovery failed " + user.getEmail());
+                LOGGER.warn("Password recovery failed " + user.getEmail());
                 errors.add(new ValidationError("password", "Recovery failed"));
             }
         }
@@ -167,10 +162,8 @@ public class LoginController implements HandlerExceptionResolver {
     @ResponseBody
     @RequestMapping(value = "/getPhoto")
     public byte[] getPhoto() {
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
-                .getPrincipal();
-        String usernameName = userDetails.getUsername();
-        User user = userService.getUser(usernameName);
+        User user = userService.getUser(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal()).getUsername());
         return photoService.getPhotoById(user.getId());
     }
 

@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -20,10 +21,15 @@ import java.util.Set;
  */
 public class PostgreUserDAO extends AbstractPostgreDAO<User, Integer> implements UserDAO {
     private static final Logger LOGGER = Logger.getLogger(PostgreUserDAO.class);
-    private static final String SQL_UPDATE_USER = "UPDATE public.user SET password = ? WHERE user_id = ?";
-    private final String FIND_BY_EMAIL = "SELECT * FROM public.user u WHERE u.email = ?";
-    private final String CREATE_USER = "INSERT INTO public.user(name, email, password) VALUES (?, ?, ?)";
-    private final String SET_ROLE_TO_USER = "INSERT INTO public.user_role(role_id, user_id) SELECT ?, user_id FROM public.user u WHERE u.email=?";
+    private static final String SQL_UPDATE_USER = "UPDATE public.system_user SET password = ? WHERE system_user_id = ?";
+    private final String FIND_BY_EMAIL = "SELECT * FROM public.system_user u WHERE u.email = ?";
+    private final String CREATE_USER = "INSERT INTO public.system_user(name, surname, email, password, system_user_status_id) VALUES (?, ?, ?, ?, ?)";
+    private final String SET_ROLE_TO_USER = "INSERT INTO public.system_user_role(role_id, system_user_id) SELECT ?, system_user_id FROM public.system_user u WHERE u.email=?";
+    private final String GET_BY_ROLE = "SELECT u.system_user_id, u.name, u.surname, u.email FROM public.system_user u " +
+            "JOIN public.system_user_role ur ON u.system_user_id = ur.system_user_id" +
+            "JOIN public.role r ON ur.role_id = r.role_id" +
+            "WHERE r.name = ?";
+    private final String GET_STATUS_ID = "SELECT system_user_status_id FROM system_user_status WHERE name = ?";
     public PostgreUserDAO(Connection connection) {
         super(connection);
     }
@@ -40,13 +46,14 @@ public class PostgreUserDAO extends AbstractPostgreDAO<User, Integer> implements
             resultSet = statement.executeQuery();
             resultSet.next();
             user = new PersistUser();
-            user.setId(resultSet.getInt("user_id"));
+            user.setId(resultSet.getInt("system_user_id"));
             user.setName(resultSet.getString("name"));
+            user.setSurname(resultSet.getString("surname"));
             user.setEmail(resultSet.getString("email"));
             user.setPassword(resultSet.getString("password"));
             LOGGER.debug("Find user " + user.getName() + " byEmail");
         } catch (SQLException e) {
-            LOGGER.info("User with " + email + " not find in DB");
+            LOGGER.info("User with " + email + " not found in DB" + e.getMessage());
             throw new DAOException(e);
         } finally {
             try {
@@ -67,10 +74,17 @@ public class PostgreUserDAO extends AbstractPostgreDAO<User, Integer> implements
         ResultSet resultSet = null;
         try {
             connection.setAutoCommit(false);
+            statement = connection.prepareStatement(GET_STATUS_ID);
+            statement.setString(1,"Active");
+            resultSet = statement.executeQuery();
+            resultSet.next();
+            int statusId = resultSet.getInt("system_user_status_id");
             statement = connection.prepareStatement(CREATE_USER);
             statement.setString(1, user.getName());
-            statement.setString(2, user.getEmail());
-            statement.setString(3, user.getPassword());
+            statement.setString(2, user.getSurname());
+            statement.setString(3, user.getEmail());
+            statement.setString(4, user.getPassword());
+            statement.setInt(5,statusId);
             statement.executeUpdate();
             if (!roles.isEmpty()) {
                 statement = connection.prepareStatement(SET_ROLE_TO_USER);
@@ -83,7 +97,7 @@ public class PostgreUserDAO extends AbstractPostgreDAO<User, Integer> implements
             }
             connection.commit();
         } catch (SQLException e) {
-            LOGGER.debug("User with name" + user.getName() + "  not created");
+            LOGGER.warn("User with name" + user.getName() + "  not created" + e.getMessage());
             try {
                 connection.rollback();
             } catch (SQLException e1) {
@@ -93,14 +107,35 @@ public class PostgreUserDAO extends AbstractPostgreDAO<User, Integer> implements
             throw new DAOException(e);
         } finally {
             try {
-                if (resultSet != null)
-                    resultSet.close();
                 if (statement != null)
                     statement.close();
             } catch (Exception e) {
                 throw new DAOException(e);
             }
         }
+    }
+
+    @Override
+    public Set<User> getByRole(Role role) throws DAOException {
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        PersistUser user = null;
+        Set<User> users = new HashSet<>();
+        try{
+            statement = connection.prepareStatement(GET_BY_ROLE);
+            statement.setString(1, role.getName());
+            resultSet = statement.executeQuery();
+            while (resultSet.next()){
+                user = new PersistUser();
+                user.setId(resultSet.getInt("user_id"));
+                user.setName(resultSet.getString("name"));
+                user.setEmail(resultSet.getString("email"));
+                users.add(user);
+            }
+        } catch (SQLException ex){
+            throw new DAOException(ex);
+        }
+        return users;
     }
 
     @Override
@@ -196,8 +231,8 @@ public class PostgreUserDAO extends AbstractPostgreDAO<User, Integer> implements
     }
 
     private class PersistUser extends User {
-        public PersistUser(Integer id, String name, String email, String password, Set<Role> roles) {
-            super(id, name, email, password, roles);
+        public PersistUser(Integer id, String name, String surname, String email, String password, Set<Role> roles) {
+            super(id, name, surname, email, password, roles);
         }
 
         public PersistUser() {

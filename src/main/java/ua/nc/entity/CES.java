@@ -30,6 +30,7 @@ public class CES implements Identified<Integer>{
         this.interviewTimeForPerson = interviewTimeForPerson;
         this.interviewTimeForDay = interviewTimeForDay;
     }
+    public CES(){}
 
     public Integer getStatusId() {
         return statusId;
