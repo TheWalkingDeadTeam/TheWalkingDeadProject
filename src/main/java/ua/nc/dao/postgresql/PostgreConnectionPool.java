@@ -15,7 +15,7 @@ public class PostgreConnectionPool extends ConnectionPool {
     private final static Logger LOGGER = Logger.getLogger(PostgreConnectionPool.class);
     private static volatile PostgreConnectionPool instance;
     private final String SERVER_NAME = "130.211.149.11";
-    private final String DATABASE_NAME = "wd";
+    private final String DATABASE_NAME = "WD_Project";
     private final String USER = "postgres";
     private final String PASSWORD = "netcrackerpwd";
     private PGPoolingDataSource dataSource;
@@ -45,7 +45,9 @@ public class PostgreConnectionPool extends ConnectionPool {
         Connection connection = null;
         try {
             connection = dataSource.getConnection();
+            LOGGER.debug("Connection established");
         } catch (SQLException e) {
+            LOGGER.warn("Connection denied");
             throw new DAOException(e);
         }
         return connection;
