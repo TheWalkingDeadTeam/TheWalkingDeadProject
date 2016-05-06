@@ -33,7 +33,7 @@
     <div class="col-lg-12 col-md-12 hidden-sm hidden-xs">
         <div class="container-fluid navbar-inner navigation">
             <a class="col-lg-4 col-md-4" href="#"><p>Home</p></a>
-            <a class="col-lg-4 col-md-4" href="/account"><p>[Account]</p></a>
+            <a class="col-lg-4 col-md-4" href="/account"><p>Account</p></a>
             <a class="col-lg-4 col-md-4" href="#"><p>Contacts</p></a>
         </div>
     </div>

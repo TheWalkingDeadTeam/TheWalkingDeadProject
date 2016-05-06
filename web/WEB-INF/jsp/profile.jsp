@@ -72,9 +72,9 @@
                 <h4>E-mail:</h4>
             </div>
             <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4">
-                <span id="userName">Ivan</span>
-                <span id="userSurname">Ivanovich</span>
-                <span id="userEmail">ivanovivanovich@gmail.com</span>
+                <span id="userName"></span>
+                <span id="userSurname"></span>
+                <span id="userEmail"></span>
             </div>
         </div>
     </div>
@@ -136,6 +136,7 @@
 </footer>
 
 <script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="/resources/js/account.js"></script>
 <script src="/resources/js/profile.js"></script>
 <script src="/resources/js/photo.js"></script>
 
