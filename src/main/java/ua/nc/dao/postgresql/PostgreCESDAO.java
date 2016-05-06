@@ -110,11 +110,29 @@ public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements C
 
     private static final String getCurrentCESQuery = "SELECT ces.* from course_enrollment_session ces " +
             "JOIN ces_status stat ON ces.ces_status_id = stat.ces_status_id AND stat.name = 'Active'";
+    private static final String getPendingCESQuery = "SELECT ces.* FROM course_enrollment_session ces " +
+            "JOIN ces_status stat ON ces.ces_status_id = stat.ces_status_id WHERE name = 'Pending'";
 
     @Override
     public CES getCurrentCES() throws DAOException {
         CES result;
         try (PreparedStatement statement = connection.prepareStatement(getCurrentCESQuery)) {
+            ResultSet rs = statement.executeQuery();
+            if (!rs.isBeforeFirst() ) {
+                result = null;
+            } else {
+                result = parseResultSet(rs).iterator().next();
+            }
+        } catch (Exception e) {
+            throw new DAOException(e);
+        }
+        return result;
+    }
+
+    @Override
+    public CES getPendingCES() throws DAOException{
+        CES result;
+        try (PreparedStatement statement = connection.prepareStatement(getPendingCESQuery)) {
             ResultSet rs = statement.executeQuery();
             if (!rs.isBeforeFirst() ) {
                 result = null;
