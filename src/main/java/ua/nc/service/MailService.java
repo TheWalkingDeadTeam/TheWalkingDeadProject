@@ -12,11 +12,6 @@ import java.util.Map;
  */
 public interface MailService {
 
-    void sendInterviewReminders(List<Date> interviewDates, int reminderTime, Mail interviewerMail,
-                                Map<String, String> interviewerParameters, Mail studentMail,
-                                Map<String, String> studentParameters, List<User> interviewersList,
-                                List<User> studentsList);
-
     Date planSchedule(int hoursPerDay, Mail interviewerMail, Map<String, String> interviewerParameters,
                       Mail studentMail, Map<String, String> studentParameters);
 
@@ -28,14 +23,50 @@ public interface MailService {
 
     Mail getMail(Integer id);
 
+    /**
+     * Create new mail template and store it in db.
+     *
+     * @param header mail topic.
+     * @param body mail body.
+     */
     Mail createMail(String header, String body);
 
+    /**
+     * Send email to recipient.
+     *
+     * @param address recipient email adress.
+     * @param mail template of email to send.
+     */
     void sendMail(String address, Mail mail);
 
+    /**
+     * Send email  to recipient with explicit email template.
+     * Async call function will return controll to the main flow.
+     * Sends email with a delay to pass spam-filter.
+     *
+     * @param address recipient address.
+     * @param header mail topic.
+     * @param body mail body.
+     */
     void sendMail(String address, String header, String body);
 
+    /**
+     * Get mail templates by topic.
+     *
+     * @param header mail topic.
+     * @return template with such topic.
+     */
     List<Mail> getByHeaderMailTemplate(String header);
 
+    /**
+     * Massive delivery service for async mailing.
+     * Everything you need is to put time.
+     *
+     * @param dateDelivery specific date mail to be send.
+     * @param users who will get invitation.
+     * @param mail template.
+     * @param parameters set of parameters in form : "{pattern1:meaning1, ..., patternN:meaningN}".
+     */
     void massDelivery(String dateDelivery, final List<User> users, final Mail mail,
                       final Map<String, String> parameters);
 }

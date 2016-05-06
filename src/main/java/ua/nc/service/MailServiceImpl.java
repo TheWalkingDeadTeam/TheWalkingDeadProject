@@ -32,6 +32,12 @@ import java.util.*;
 @Service("mailService")
 public class MailServiceImpl implements MailService {
     private static final Logger LOGGER = Logger.getLogger(MailServiceImpl.class);
+    private static final String PROTOCOL = "smtp";
+    private static final String HOST = "smtp.gmail.com";
+    private static final int PORT = 587;
+    private static final String USERNAME = "netcrackerua@gmail.com";
+    private static final String PASSWORD = "netcrackerpwd";
+    private static final long SLEEP = 1000;
     private DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
     private MailDAO mailDAO = daoFactory.getMailDAO(daoFactory.getConnection());
     private CESDAO cesDAO = daoFactory.getCESDAO(daoFactory.getConnection());
@@ -57,17 +63,6 @@ public class MailServiceImpl implements MailService {
         schedulerMassDeliveryService.initialize();
     }
 
-    public MailServiceImpl() {
-
-    }
-
-    /**
-     * Create new Mail and store
-     * it in db
-     *
-     * @param header
-     * @param body
-     */
     @Override
     public Mail createMail(String header, String body) {
         Mail mail = null;
@@ -83,37 +78,21 @@ public class MailServiceImpl implements MailService {
         return mail;
     }
 
-    /**
-     * Send email to recipent
-     *
-     * @param address
-     * @param mail
-     */
     @Override
     public void sendMail(String address, Mail mail) {
         sendMail(address, mail.getHeadTemplate(), mail.getBodyTemplate());
     }
 
-    /**
-     * Send email  to recipient with concrete Mail entity
-     * Async call function will return controll to the main flow
-     * Sends email with delay 5 seconds, spam-filter will pass these
-     *
-     * @param address recipient address
-     * @param header
-     * @param body
-     */
-
-
+    @Override
     public void sendMail(String address, String header, String body) {
 
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         Properties properties = getMailProperties();
-        mailSender.setProtocol("smtp");
-        mailSender.setHost("smtp.gmail.com");
-        mailSender.setPort(587);
-        mailSender.setUsername("netcrackerua@gmail.com");
-        mailSender.setPassword("netcrackerpwd");
+        mailSender.setProtocol(PROTOCOL);
+        mailSender.setHost(HOST);
+        mailSender.setPort(PORT);
+        mailSender.setUsername(USERNAME);
+        mailSender.setPassword(PASSWORD);
         mailSender.setJavaMailProperties(properties);
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(address);
@@ -124,12 +103,12 @@ public class MailServiceImpl implements MailService {
     }
 
     /**
-     * Async mail sending
+     * Async mail sending.
      *
-     * @param message
-     * @param mailSender
+     * @param message message to send.
+     * @param mailSender sender.
      */
-    public void AsynchronousSender(final SimpleMailMessage message, final MailSender mailSender) {
+    private void AsynchronousSender(final SimpleMailMessage message, final MailSender mailSender) {
         scheduler.execute(new Runnable() {
             @Override
             public void run() {
@@ -142,14 +121,7 @@ public class MailServiceImpl implements MailService {
         });
     }
 
-    /**
-     * Massive delivery service for async mailing
-     * Everything you need is to put time
-     *
-     * @param dateDelivery specific date mail to be send
-     * @param users        who will get invitation
-     * @param mail         template
-     */
+    @Override
     public void massDelivery(String dateDelivery, final List<User> users, final Mail mail,
                              final Map<String, String> parameters) {
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -163,14 +135,12 @@ public class MailServiceImpl implements MailService {
             @Override
             public void run() {
                 try {
-
                     for (User i : users) {
-                        //Sleep for one second,google may think you're spamming :(
-                        Thread.sleep(1000);
+                        //Sleep for a while, google may think you're spamming :(
+                        Thread.sleep(SLEEP);
                         Mail customizedMail = customizeMail(mail, parameters);
                         sendMail(i.getEmail(), customizedMail);
                     }
-
                 } catch (Exception e) {
                     LOGGER.error("Failed to send", e);
                 }
@@ -182,7 +152,7 @@ public class MailServiceImpl implements MailService {
      * Set all the custom mail parameters.
      *
      * @param mail mail to customize.
-     * @param parameters set of parameters in form : "{pattern1:meaning1, ..., patternN:meaningN}"
+     * @param parameters set of parameters in form : "{pattern1:meaning1, ..., patternN:meaningN}".
      * @return customized mail.
      */
     private Mail customizeMail(Mail mail, Map<String, String> parameters) {
@@ -247,12 +217,6 @@ public class MailServiceImpl implements MailService {
         return mail;
     }
 
-    /**
-     * Get Mails by Header
-     *
-     * @param header
-     * @return
-     */
     public List<Mail> getByHeaderMailTemplate(String header) {
         List<Mail> mails = new ArrayList<>();
         try {
@@ -278,9 +242,7 @@ public class MailServiceImpl implements MailService {
         return mailProperties;
     }
 
-
-    @Override
-    public void sendInterviewReminders(List<Date> interviewDates, int reminderTime, Mail interviewerMail,
+    private void sendInterviewReminders(List<Date> interviewDates, int reminderTime, Mail interviewerMail,
                                        Map<String, String> interviewerParameters, Mail studentMail,
                                        Map<String, String> studentParameters, List<User> interviewersList,
                                        List<User> studentsList) {
