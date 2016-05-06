@@ -3,6 +3,7 @@ package ua.nc.service;
 import org.apache.log4j.Logger;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by creed on 06.05.16.
@@ -18,13 +19,13 @@ public class StudentServiceImpl implements StudentService{
      */
     @Override
     public void changeStatus(String action, List<Integer> studentsId) {
-        if (action == "activate"){
+        if (Objects.equals(action, "activate")){
             activateStudents(studentsId);
         }
-        else if (action == "deactivate") {
+        else if (Objects.equals(action, "deactivate")) {
             deactivateStudents(studentsId);
         }
-        else if (action == "reject") {
+        else if (Objects.equals(action, "reject")) {
             rejectStudents(studentsId);
         }
         else {
