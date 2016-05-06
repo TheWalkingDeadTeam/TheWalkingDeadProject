@@ -169,7 +169,8 @@ CREATE TABLE Field (
 
 CREATE TABLE CES_Field(
   CES_ID int NOT NULL references Course_Enrollment_Session(CES_ID) ON DELETE RESTRICT ON UPDATE CASCADE,
-  Field_ID int NOT NULL references Field(Field_ID) ON DELETE RESTRICT ON UPDATE CASCADE
+  Field_ID int NOT NULL references Field(Field_ID) ON DELETE RESTRICT ON UPDATE CASCADE,
+  PRIMARY KEY (CES_ID, Field_ID)
 );
 
 CREATE TABLE Field_Value (

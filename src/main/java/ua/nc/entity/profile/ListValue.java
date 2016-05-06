@@ -16,6 +16,7 @@ public class ListValue implements Identified<Integer> {
         this.valueDouble = valueDouble;
         this.valueText = valueText;
     }
+    public ListValue(){}
 
     @Override
     public Integer getId() {

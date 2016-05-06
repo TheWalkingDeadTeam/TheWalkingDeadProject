@@ -11,6 +11,7 @@ public class CESStatus implements Identified<Integer> {
     public CESStatus(String name) {
         this.name = name;
     }
+    public CESStatus(){}
 
     public String getName() {
         return name;
