@@ -52,12 +52,13 @@ phonecatControllers.controller("StudentCtrl", ["$scope", "$http", "$rootElement"
             values: $scope.dataStudents.studId
         };
         if ($scope.dataStudents.studId.length != 0) {
-            var res = $http.post('students', dataObj);
-            res.success(function (data, status, headers, config) {
+            $http.post('students', dataObj)
+                .success(function (data, status, headers, config) {
                 $scope.message = data;
-            });
-            res.error(function (data, status, headers, config) {
-                alert("failure message: " + JSON.stringify({data: data}));
+            })
+                .error(function (data, status, headers, config) {
+                // alert("failure message: " + JSON.stringify({data: data}));
+                // alert($scope.message = data);
             });
         }
     };

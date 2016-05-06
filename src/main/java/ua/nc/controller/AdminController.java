@@ -1,9 +1,14 @@
 package ua.nc.controller;
 
 import org.apache.log4j.Logger;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import ua.nc.entity.StudentStatus;
 import ua.nc.entity.User;
+import ua.nc.service.StudentService;
+import ua.nc.service.StudentServiceImpl;
 import ua.nc.service.user.UserService;
 import ua.nc.service.user.UserServiceImpl;
 import ua.nc.validator.RegistrationValidator;
@@ -24,6 +29,7 @@ import java.util.Set;
 public class AdminController {
     private final Logger log = Logger.getLogger(LoginController.class);
     private final UserService userService = new UserServiceImpl();
+    StudentService studentService = new StudentServiceImpl();
 
     @RequestMapping(method = RequestMethod.GET)
     public String login() {
@@ -113,6 +119,18 @@ public class AdminController {
 
     }
 
+    /**
+     * Takes a json file with students status changes
+     *
+     * @param studentStatus
+     */
+    @RequestMapping(value = "/students", method = RequestMethod.POST, produces = "application/json")
+    @ResponseStatus(value = HttpStatus.OK)
+    public void studentStatus(@RequestBody StudentStatus studentStatus) {
+        StudentStatus status = studentStatus;
+        studentService.changeStatus(status.getType(), status.getValues());
+
+    }
 
     @RequestMapping(value = "/students/{id}", method = RequestMethod.GET, produces = "application/json")
     public String getStudentById(@PathVariable("id") Integer id) {
