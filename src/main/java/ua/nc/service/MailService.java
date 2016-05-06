@@ -16,24 +16,21 @@ public interface MailService {
 
     Date planSchedule(int hoursPerDay, Mail interviewerMail, Mail studentsMail);
 
-    public List<Mail> getAllMails();
+    List<Mail> getAllMails();
 
-    public void updateMail(Mail mail);
+    void updateMail(Mail mail);
 
-    public void deleteMail(Mail mail);
+    void deleteMail(Mail mail);
 
-    public Mail getMail(Integer id);
+    Mail getMail(Integer id);
 
-    public Mail createMail(String header, String body);
+    Mail createMail(String header, String body);
 
-    public void sendMail(String address, Mail mail);
+    void sendMail(String address, Mail mail);
 
-    public void sendMail(String address, String header, String body);
+    void sendMail(String address, String header, String body);
 
-    public List<Mail> getByHeaderMailTemplate(String header);
+    List<Mail> getByHeaderMailTemplate(String header);
 
-    public void massDelivery(String dateDelivery, final List<User> users, final Mail mail);
-
-    public void sendInterviewReminders(List<Date> interviewDates, int studentHours, int devHours, int hrHours,
-                                       int baHours, final Mail InterviewerMail, final Mail IntervieweeMail);
+    void massDelivery(String dateDelivery, final List<User> users, final Mail mail);
 }

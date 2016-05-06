@@ -9,6 +9,9 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Service;
+import ua.nc.dao.ApplicationDAO;
+import ua.nc.dao.CESDAO;
+import ua.nc.dao.InterviewerParticipationDAO;
 import ua.nc.dao.MailDAO;
 import ua.nc.dao.enums.DataBaseType;
 import ua.nc.dao.exception.DAOException;
@@ -34,6 +37,10 @@ public class MailServiceImpl implements MailService {
     private static final Logger LOGGER = Logger.getLogger(MailServiceImpl.class);
     private DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
     private MailDAO mailDAO = daoFactory.getMailDAO(daoFactory.getConnection());
+    private CESDAO cesDAO = daoFactory.getCESDAO(daoFactory.getConnection());
+    private InterviewerParticipationDAO interviewerParticipationDAO =
+            daoFactory.getInterviewerParticipationDAO(daoFactory.getConnection());
+    private ApplicationDAO applicationDAO = daoFactory.getApplicationDAO(daoFactory.getConnection());
     private static ThreadPoolTaskScheduler scheduler;
     private static ThreadPoolTaskScheduler schedulerMassDeliveryService;
     private static final int POOL_SIZE = 2;
@@ -173,23 +180,6 @@ public class MailServiceImpl implements MailService {
     }
 
     @Override
-    public void sendInterviewReminders(List<Date> interviewDates, int studentHours, int devHours, int hrHours,
-                                       int baHours, Mail InterviewerMail, Mail IntervieweeMail) {
-        int studentMillis = studentHours * MILLIS_PER_HOUR;
-        int devMillis = devHours * MILLIS_PER_HOUR;
-        int hrMillis = hrHours * MILLIS_PER_HOUR;
-        int baMillis = baHours * MILLIS_PER_HOUR;
-
-        for (Date interviewDate : interviewDates) {
-            massDelivery(new Date(interviewDate.getTime() + studentMillis).toString(), new ArrayList<User>(), IntervieweeMail);
-            massDelivery(new Date(interviewDate.getTime() + devMillis).toString(), new ArrayList<User>(), InterviewerMail);
-            massDelivery(new Date(interviewDate.getTime() + hrMillis).toString(), new ArrayList<User>(), InterviewerMail);
-            massDelivery(new Date(interviewDate.getTime() + baMillis).toString(), new ArrayList<User>(), InterviewerMail);
-        }
-    }
-
-
-    @Override
     public List<Mail> getAllMails() {
         List<Mail> mails = new ArrayList<>();
         try {
@@ -286,16 +276,21 @@ public class MailServiceImpl implements MailService {
 
     @Override
     public Date planSchedule(int hoursPerDay, Mail interviewerMail, Mail studentsMail) {
-        //stub,later should pull from DAO,not implemented yet
         Date startDate = new Date();
-        //stub,later should pull from DAO,not implemented yet
         int timePerStudent = 10;
-        //stub,later should pull from DAO,not implemented yet
         int reminderTime = 24;
-        //stub,later should pull from DAO,not implemented yet
         List<User> interviewersList = new ArrayList<>();
-        //stub,later should pull from DAO,not implemented yet
         List<User> studentsList = new ArrayList<>();
+        try {
+            startDate = cesDAO.getCurrentCES().getStartInterviewingDate();
+            timePerStudent = cesDAO.getCurrentCES().getInterviewTimeForPerson();
+            reminderTime = cesDAO.getCurrentCES().getReminders();
+            interviewersList = interviewerParticipationDAO.getInterviewersForCurrentCES();
+            studentsList = applicationDAO.getStudentsForCurrentCES();
+        } catch (DAOException e) {
+            LOGGER.error("Missing data about current course enrolment session", e);
+            return null;
+        }
 
         int studentsAmount = studentsList.size();
         int interviewersAmount = interviewersList.size();
