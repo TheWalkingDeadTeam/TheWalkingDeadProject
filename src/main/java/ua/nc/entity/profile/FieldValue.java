@@ -21,6 +21,7 @@ public class FieldValue {
         this.valueDate = valueDate;
         this.listValueID = listValueID;
     }
+    public FieldValue(){}
 
     public Integer getListValueID() {
         return listValueID;

@@ -15,6 +15,7 @@ public class Interviewee implements Identified<Integer> {
     public Interviewee(int id) {
         this.applicationID = id;
     }
+    public Interviewee(){}
 
     @Override
     public Integer getId() {

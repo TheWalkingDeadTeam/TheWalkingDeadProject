@@ -14,6 +14,7 @@ public class Feedback implements Identified<Integer> {
         this.comment = comment;
         this.interviewerID = interviewerID;
     }
+    public Feedback(){}
 
     @Override
     public Integer getId() {
