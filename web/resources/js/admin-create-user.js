@@ -36,8 +36,9 @@ $("#buttonRegistration").click(function () {
                     .empty()
                     .addClass('alert alert-success')
                     .html('Registered successfully');
-                $('.registration input')
+                $('#regform')
                     .val("");
+                $( "#check" ).prop( "checked", false );
                 $("input").filter(".roles").prop("checked", false);
             }
         },

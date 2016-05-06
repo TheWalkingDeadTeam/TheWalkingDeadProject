@@ -61,7 +61,7 @@
                                 <h2 class="form-signin-heading">Interviewer Registration</h2>
                             </div>
                         </div>
-                        <div class="col-lg-11 col-md-8 col-sm-9 col-xs-9">
+                        <div id="regform" class="col-lg-11 col-md-8 col-sm-9 col-xs-9">
                             <input id="name" name="name" class="form-control" placeholder="Name" type="text" value="">
                             <div class="correct-name"></div>
                             <input id="surename" name="surename" class="form-control" placeholder="Surename" type="text"
@@ -76,7 +76,7 @@
                             <div class="correct-password"></div>
                             <button id="buttonRegistration" class="btn btn-lg btn-primary btn-block">Register</button>
                         </div>
-                        <div class="col-lg-1 col-md-4 col-sm-6 col-xs-6">
+                        <div id="check" class="col-lg-1 col-md-4 col-sm-6 col-xs-6">
                             <label class="checkbox">
                                 <input type="checkbox" id="checkbox_admin" value="ROLE_ADMIN" class="roles"> Admin
                             </label>

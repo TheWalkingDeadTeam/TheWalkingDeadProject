@@ -19,7 +19,7 @@ import java.util.List;
 
 @RestController
 public class MailController {
-    private static final Logger LOGGER = Logger.getLogger(MailServiceImpl.class);
+    private static final Logger LOGGER = Logger.getLogger(MailController.class);
     MailService mailService = new MailServiceImpl();
 
     /**

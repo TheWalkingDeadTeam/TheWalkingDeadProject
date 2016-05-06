@@ -27,7 +27,7 @@ $(document).ready(function () {
                         .html(errors_out);
                     $('#j_password').val("");
                 } else {
-                    window.location.href = window.location.href;
+                    location.reload();
                 }
             },
             error: function (jqXHR, exception) {
