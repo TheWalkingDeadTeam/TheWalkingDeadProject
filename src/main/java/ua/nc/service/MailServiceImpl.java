@@ -40,19 +40,11 @@ public class MailServiceImpl implements MailService {
     private static final long SLEEP = 1000;
     private DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
     private MailDAO mailDAO = daoFactory.getMailDAO(daoFactory.getConnection());
-    private CESDAO cesDAO = daoFactory.getCESDAO(daoFactory.getConnection());
-    private InterviewerParticipationDAO interviewerParticipationDAO =
-            daoFactory.getInterviewerParticipationDAO(daoFactory.getConnection());
-    private ApplicationDAO applicationDAO = daoFactory.getApplicationDAO(daoFactory.getConnection());
     private static ThreadPoolTaskScheduler scheduler;
     private static ThreadPoolTaskScheduler schedulerMassDeliveryService;
     private static final int POOL_SIZE = 2;
     private static final int POOL_SIZE_SCHEDULER = 10;
     private static final int MILLIS_PER_HOUR = 1000 * 60 * 60;
-    private static final int MILLIS_PER_DAY = MILLIS_PER_HOUR * 24;
-    private static final int MINUTES_PER_HOUR = 60;
-    private static final int INTERVIEWERS_PER_STUDENT = 2;
-
 
     static {
         scheduler = new ThreadPoolTaskScheduler();
@@ -236,19 +228,8 @@ public class MailServiceImpl implements MailService {
         return mailProperties;
     }
 
-    /**
-     * Spread all the students by interview dates and send notifications to all the participants.
-     *
-     * @param interviewDates list of all the interview dates.
-     * @param reminderTime time during that the notification needs to be sent.
-     * @param interviewerMail email template to send to all the interviewers.
-     * @param interviewerParameters parameters to set in interviewer template to personalize the emails.
-     * @param studentMail email template to send to all the students.
-     * @param studentParameters parameters to set in student template to personalize the emails.
-     * @param interviewersList list of all the interviewers who take part in the current interview.
-     * @param studentsList list of all the students who take part in the current interview.
-     */
-    private void sendInterviewReminders(List<Date> interviewDates, int reminderTime, Mail interviewerMail,
+    @Override
+    public void sendInterviewReminders(List<Date> interviewDates, int reminderTime, Mail interviewerMail,
                                        Map<String, String> interviewerParameters, Mail studentMail,
                                        Map<String, String> studentParameters, List<User> interviewersList,
                                        List<User> studentsList) {
@@ -268,42 +249,5 @@ public class MailServiceImpl implements MailService {
                     studentParameters);
         }
     }
-
-    @Override
-    public Date planSchedule(int hoursPerDay, Mail interviewerMail, Map<String, String> interviewerParameters,
-                             Mail studentMail, Map<String, String> studentParameters) {
-        Date startDate = new Date();
-        int timePerStudent = 10;
-        int reminderTime = 24;
-        List<User> interviewersList = new ArrayList<>();
-        List<User> studentsList = new ArrayList<>();
-        try {
-            startDate = cesDAO.getCurrentCES().getStartInterviewingDate();
-            timePerStudent = cesDAO.getCurrentCES().getInterviewTimeForPerson();
-            reminderTime = cesDAO.getCurrentCES().getReminders();
-            interviewersList = interviewerParticipationDAO.getInterviewersForCurrentCES();
-            studentsList = applicationDAO.getStudentsForCurrentCES();
-        } catch (DAOException e) {
-            LOGGER.error("Missing data about current course enrolment session", e);
-        }
-
-        int studentsAmount = studentsList.size();
-        int interviewersAmount = interviewersList.size();
-        Date endDate = new Date(startDate.getTime() + studentsAmount / (MINUTES_PER_HOUR / timePerStudent * hoursPerDay)
-                / interviewersAmount * INTERVIEWERS_PER_STUDENT);
-
-        List<Date> interviewDates = new ArrayList<>();
-        interviewDates.add(startDate);
-        long currentTime = startDate.getTime();
-        while (currentTime < endDate.getTime()) {
-            currentTime += MILLIS_PER_DAY;
-            interviewDates.add(startDate);
-        }
-
-        sendInterviewReminders(interviewDates, reminderTime, interviewerMail, interviewerParameters, studentMail,
-                studentParameters, interviewersList, studentsList);
-        return endDate;
-    }
-
 
 }
