@@ -35,7 +35,7 @@ public class PostgreListValueDAO extends AbstractPostgreDAO<ListValue, Integer> 
 
     @Override
     public String getSelectQuery() {
-        return "SELECT * FROM list_value WHERE list_value.list_value_id = ?;";
+        return "SELECT * FROM list_value WHERE list_value_id = ?";
     }
 
     @Override
@@ -45,7 +45,7 @@ public class PostgreListValueDAO extends AbstractPostgreDAO<ListValue, Integer> 
 
     @Override
     public String getUpdateQuery() {
-        return "UPDATE list SET list_value.text_value = ? WHERE list_value.list_value_id = ?;";
+        return "UPDATE list_value SET text_value = ? WHERE list_value_id = ?;";
     }
 
     @Override
