@@ -48,8 +48,8 @@ public class PostgreIntervieweeDAO extends AbstractPostgreDAO<Interviewee, Integ
                 Interviewee interviewee = new Interviewee(rs.getInt("application_id"));
                 interviewee.setInterviewTime(rs.getDate("interview_time"));
                 interviewee.setSpecialMark(rs.getString("special_mark"));
-                interviewee.setDevFeedbackID(rs.getInt("dev_feedback_id"));
-                interviewee.setHrFeedbackID(rs.getInt("hr_feedback_id"));
+                interviewee.setDevFeedbackID((Integer) rs.getObject("dev_feedback_id"));
+                interviewee.setHrFeedbackID((Integer) rs.getObject("hr_feedback_id"));
                 result.add(interviewee);
             }
         } catch (Exception e) {
@@ -72,8 +72,8 @@ public class PostgreIntervieweeDAO extends AbstractPostgreDAO<Interviewee, Integ
         try {
             statement.setObject(1, object.getInterviewTime());
             statement.setString(2, object.getSpecialMark());
-            statement.setInt(3, object.getDevFeedbackID());
-            statement.setInt(4, object.getHrFeedbackID());
+            statement.setObject(3, object.getDevFeedbackID());
+            statement.setObject(4, object.getHrFeedbackID());
             statement.setInt(5, object.getId());
         } catch (Exception e) {
             throw new DAOException(e);
