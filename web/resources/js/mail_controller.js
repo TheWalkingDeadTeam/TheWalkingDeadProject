@@ -2,11 +2,35 @@
 
 var mailer = angular.module('mailer',[]);
 
-mailer.controller('MailController', ['$scope', 'MailService', function($scope, MailService) {
+mailer.controller('MailController', ['$scope', 'MailService','$http', function($scope, MailService,$http) {
+
+    $scope.list = [];
+
+    $scope.submit = function () {
+        var formData = {
+            "minutes": $scope.minutes,
+            "locations": $scope.location,
+            "mailId": $scope.mailId
+        };
+
+        var response = $http.post('/schedule', formData);
+        response.success(function (data, status, headers, config) {
+            $scope.list.push(data);
+        });
+        response.error(function (data, status, headers, config) {
+            alert("Exception details: " + JSON.stringify({data: data}));
+        });
+        $scope.list = [];
+    };
+    
+    
+    
+    
     var self = this;
     self.mail={id:null,bodyTemplate:'',headTemplate:''};
     self.mails=[];
-
+    
+    
     self.fetchAllMails = function(){
         MailService.fetchAllMails()
             .then(
@@ -167,24 +191,7 @@ mailer.factory('Parameters',function () {
     }
 });
 
-mailer.controller('SchedulerController', ['$scope', '$http', function ($scope, $http) {
-
-    $scope.list = [];
-
-    $scope.submit = function () {
-        var formData = {
-            "minutes": $scope.minutes,
-            "locations": $scope.location,
-            "mailId": $scope.mailId
-        };
-
-        var response = $http.post('/schedule', formData);
-        response.success(function (data, status, headers, config) {
-            $scope.list.push(data);
-        });
-        response.error(function (data, status, headers, config) {
-            alert("Exception details: " + JSON.stringify({data: data}));
-        });
-        $scope.list = [];
-    };
-}]);
+// mailer.controller('SchedulerController', ['$scope', '$http', function ($scope, $http) {
+//
+//
+// }]);

@@ -37,7 +37,7 @@
         <div class="panel-heading"><span class="lead">Scheduler paramaters </span></div>
         <div class="formcontainer">
             <form ng-submit="submit()" name="myForm" class="form-horizontal"
-                  data-ng-controller="SchedulerController">
+                  data-ng-controller="MailController as ctrl">
 
                 <div class="row">
                     <div class="form-group col-md-12">
@@ -78,7 +78,7 @@
                     <!-- Default panel contents -->
                     <div class="panel-heading"><span class="lead">List of Mails </span></div>
                     <div class="tablecontainer">
-                        <table class="table table-hover" ng-controller="MailController as ctrl" class="ng-cloak">
+                        <table class="table table-hover"  class="ng-cloak">
                             <thead>
                             <tr>
                                 <th> <img src="/resources/images/checkbox.png" width="15" height="15"> </th>
@@ -88,9 +88,12 @@
                             </tr>
                             </thead>
                             <tbody>
+
+
                             <tr ng-repeat="m in ctrl.mails">
-                                <td><input type="radio"  data-ng-module="mailId" value="{{m.id}}"></td>
-                                <%--<td><span ng-bind="m.id"></span></td>--%>
+                                <td><input type="radio"  data-ng-model="$parent.mailId" ng-value="{{m.id}}"></td>
+
+                            <%--<td><span ng-bind="m.id"></span></td>--%>
                                 <td><span ng-bind="m.bodyTemplate"></span></td>
                                 <td><span ng-bind="m.headTemplate"></span></td>
                             </tr>
