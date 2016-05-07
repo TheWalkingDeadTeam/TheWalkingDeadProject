@@ -53,7 +53,7 @@ public class PostgreApplicationDAO extends AbstractPostgreDAO<Application, Integ
             while (rs.next()) {
                 PersistApplication application = new PersistApplication(rs.getInt("system_user_id"), rs.getInt("ces_id"));
                 application.setId(rs.getInt("application_id"));
-                application.setRejected(rs.getBoolean("rejected"));
+                application.setRejected((Boolean) rs.getObject("rejected"));
                 result.add(application);
             }
         } catch (Exception e) {
@@ -75,7 +75,7 @@ public class PostgreApplicationDAO extends AbstractPostgreDAO<Application, Integ
     @Override
     protected void prepareStatementForUpdate(PreparedStatement statement, Application object) throws DAOException {
         try {
-            statement.setBoolean(1, object.getRejected());
+            statement.setObject(1, object.getRejected());
             statement.setInt(2, object.getId());
         } catch (Exception e) {
             throw new DAOException(e);

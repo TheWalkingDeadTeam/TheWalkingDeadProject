@@ -2,20 +2,20 @@ package ua.nc.entity.profile;
 
 import ua.nc.entity.Identified;
 
+import javax.mail.search.IntegerComparisonTerm;
+
 /**
  * Created by Rangar on 24.04.2016.
  */
 public class Field implements Identified<Integer> {
     private Integer ID;
-    private int cesID;
     private String name;
     private int fieldTypeID;
     private boolean multipleChoice;
     private int orderNum;
     private Integer listTypeID;
 
-    public Field(int cesID, String name, int fieldTypeID, boolean multipleChoice, int orderNum, int listTypeID) {
-        this.cesID = cesID;
+    public Field(String name, int fieldTypeID, boolean multipleChoice, int orderNum, Integer listTypeID) {
         this.name = name;
         this.fieldTypeID = fieldTypeID;
         this.multipleChoice = multipleChoice;
@@ -31,14 +31,6 @@ public class Field implements Identified<Integer> {
 
     protected void setId(int id) {
         this.ID = id;
-    }
-
-    public int getCesID() {
-        return cesID;
-    }
-
-    public void setCesID(int cesID) {
-        this.cesID = cesID;
     }
 
     public String getName() {

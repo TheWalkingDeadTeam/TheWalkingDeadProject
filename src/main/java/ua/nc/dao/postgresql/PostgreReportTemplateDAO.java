@@ -21,7 +21,7 @@ public class PostgreReportTemplateDAO extends AbstractPostgreDAO<ReportTemplate,
 
     @Override
     public String getSelectQuery() {
-        return "SELECT * FROM report_template WHERE report_template_id = ?";
+        return "SELECT * FROM report_template WHERE report_id = ?";
     }
 
     @Override
@@ -31,7 +31,7 @@ public class PostgreReportTemplateDAO extends AbstractPostgreDAO<ReportTemplate,
 
     @Override
     public String getUpdateQuery() {
-        return "UPDATE report_template SET query = ?, name = ? WHERE report_template_id = ?;";
+        return "UPDATE report_template SET query = ?, name = ? WHERE report_id = ?;";
     }
 
     @Override
@@ -45,7 +45,7 @@ public class PostgreReportTemplateDAO extends AbstractPostgreDAO<ReportTemplate,
         try {
             while (rs.next()) {
                 PersistReportTemplate reportTemplate = new PersistReportTemplate(rs.getString("query"), rs.getString("name"));
-                reportTemplate.setId(rs.getInt("report_template_id"));
+                reportTemplate.setId(rs.getInt("report_id"));
                 result.add(reportTemplate);
             }
         } catch (Exception e) {
