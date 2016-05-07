@@ -11,5 +11,6 @@ public interface CESDAO extends GenericDAO<CES, Integer> {
 
     void addCESField(int cesId, int fieldId);
 
+    //мб это переместить в InterviewerParticipationDAO? По смыслу больше туда подходит
     void addInterviewerForCurrentCES(int interviewerId);
 }

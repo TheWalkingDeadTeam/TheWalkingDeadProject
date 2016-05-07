@@ -54,4 +54,6 @@ public abstract class DAOFactory {
     public abstract FieldTypeDAO getFieldTypeDAO(Connection connection);
 
     public abstract ListTypeDAO getListTypeDAO(Connection connection);
+
+    public abstract InterviewerParticipationDAO getInterviewerParticipationDAO(Connection connection);
 }
