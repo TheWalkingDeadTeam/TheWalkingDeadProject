@@ -176,7 +176,7 @@ app.controller('StudentCtrl', ["$http", "$scope", function ($http, $scope) {
         //In practice this should be in a factory.
         vm.users = [];
         // "students/list/"+vm.itemsPerPage+"/"+pageno
-        $http.get("students/list").success(function (response) {
+        $http.get("students/list/"+vm.itemsPerPage+"/"+pageno).success(function (response) {
             vm.users = response;
         });
         $http.get("students/size").success(function (response) {

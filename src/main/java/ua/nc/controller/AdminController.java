@@ -78,6 +78,7 @@ public class AdminController {
 
         return "admin-stud-view";
     }
+
     @RequestMapping(value = {"/students/size"}, method = RequestMethod.GET, produces = "application/json")
     public
     @ResponseBody
@@ -85,92 +86,9 @@ public class AdminController {
         return "{\"size\":2000}";
     }
 
-    @RequestMapping(value = {"/students/list"}, method = RequestMethod.GET, produces = "application/json")
-    public
-    @ResponseBody
-    String studentsGetJSON() {
-
-
-//        return "{\"total_count\":2000,\"data\":[{\n" +
-//                "    \"id\": 1,\n" +
-//                "    \"name\": \"Abc Ogurchik\",\n" +
-//                "    \"isActive\": \"1\",\n" +
-//                "    \"university\": \"KPI\",\n" +
-//                "    \"devMark\": 10,\n" +
-//                "    \"hrMark\": 5,\n" +
-//                "    \"color\": \"blue\"\n" +
-//                "  },\n" +
-//                "  {\n" +
-//                "    \"id\": 7,\n" +
-//                "    \"name\": \"Bcd Ananas\",\n" +
-//                "    \"isActive\": \"0\",\n" +
-//                "    \"university\": \"NAU\",\n" +
-//                "    \"devMark\": 15,\n" +
-//                "    \"hrMark\": 10,\n" +
-//                "    \"color\": \"yellow\"\n" +
-//                "  },\n" +
-//                "  {\n" +
-//                "    \"id\": 8,\n" +
-//                "    \"name\": \"TEST Apelsin\",\n" +
-//                "    \"isActive\": \"1\",\n" +
-//                "    \"university\": \"NAU\",\n" +
-//                "    \"devMark\": 15,\n" +
-//                "    \"hrMark\": 10,\n" +
-//                "    \"color\": \"yellow\"\n" +
-//                "  },\n" +
-//                "  {\n" +
-//                "    \"id\": 2,\n" +
-//                "    \"name\": \"Bcd Kokos\",\n" +
-//                "    \"isActive\": \"1\",\n" +
-//                "    \"university\": \"KPI\",\n" +
-//                "    \"devMark\": 10,\n" +
-//                "    \"hrMark\": 85,\n" +
-//                "    \"color\": \"green\"\n" +
-//                "  }]}";
-        return "[{\n" +
-                "    \"id\": 1,\n" +
-                "    \"name\": \"Abc Ogurchik\",\n" +
-                "    \"isActive\": \"1\",\n" +
-                "    \"university\": \"KPI\",\n" +
-                "    \"devMark\": 10,\n" +
-                "    \"hrMark\": 5,\n" +
-                "    \"color\": \"blue\"\n" +
-                "  },\n" +
-                "  {\n" +
-                "    \"id\": 7,\n" +
-                "    \"name\": \"Bcd Ananas\",\n" +
-                "    \"isActive\": \"0\",\n" +
-                "    \"university\": \"NAU\",\n" +
-                "    \"devMark\": 15,\n" +
-                "    \"hrMark\": 10,\n" +
-                "    \"color\": \"yellow\"\n" +
-                "  },\n" +
-                "  {\n" +
-                "    \"id\": 8,\n" +
-                "    \"name\": \"TEST Apelsin\",\n" +
-                "    \"isActive\": \"1\",\n" +
-                "    \"university\": \"NAU\",\n" +
-                "    \"devMark\": 15,\n" +
-                "    \"hrMark\": 10,\n" +
-                "    \"color\": \"yellow\"\n" +
-                "  },\n" +
-                "  {\n" +
-                "    \"id\": 2,\n" +
-                "    \"name\": \"Bcd Kokos\",\n" +
-                "    \"isActive\": \"1\",\n" +
-                "    \"university\": \"KPI\",\n" +
-                "    \"devMark\": 10,\n" +
-                "    \"hrMark\": 85,\n" +
-                "    \"color\": \"green\"\n" +
-                "  }]";
-
-
-    }
-
     @RequestMapping(value = {"/students/list/{itemsPerPage}/{pageNumber}"}, method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public String getStudents(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber) {
-        System.out.println(itemsPerPage + " " + pageNumber);
         return "[{\n" +
                 "    \"id\": 1,\n" +
                 "    \"name\": \"Abc Ogurchik\",\n" +
