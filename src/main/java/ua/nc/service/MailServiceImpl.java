@@ -202,11 +202,6 @@ public class MailServiceImpl implements MailService {
         }
     }
 
-    /**
-     * Retrieve mail by id
-     *
-     * @param id
-     */
     @Override
     public Mail getMail(Integer id) {
         Mail mail = null;
@@ -227,11 +222,10 @@ public class MailServiceImpl implements MailService {
         return mails;
     }
 
-
     /**
-     * Configuration for mail mail delivery service
+     * Configuration for mail delivery service
      *
-     * @return propeties
+     * @return the mail service properties.
      */
     private Properties getMailProperties() {
         Properties mailProperties = new Properties();
@@ -242,6 +236,18 @@ public class MailServiceImpl implements MailService {
         return mailProperties;
     }
 
+    /**
+     * Spread all the students by interview dates and send notifications to all the participants.
+     *
+     * @param interviewDates list of all the interview dates.
+     * @param reminderTime time during that the notification needs to be sent.
+     * @param interviewerMail email template to send to all the interviewers.
+     * @param interviewerParameters parameters to set in interviewer template to personalize the emails.
+     * @param studentMail email template to send to all the students.
+     * @param studentParameters parameters to set in student template to personalize the emails.
+     * @param interviewersList list of all the interviewers who take part in the current interview.
+     * @param studentsList list of all the students who take part in the current interview.
+     */
     private void sendInterviewReminders(List<Date> interviewDates, int reminderTime, Mail interviewerMail,
                                        Map<String, String> interviewerParameters, Mail studentMail,
                                        Map<String, String> studentParameters, List<User> interviewersList,

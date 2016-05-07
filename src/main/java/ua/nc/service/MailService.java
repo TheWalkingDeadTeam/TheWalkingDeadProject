@@ -12,15 +12,46 @@ import java.util.Map;
  */
 public interface MailService {
 
+    /**
+     * Plan current interview schedule and send notifications to all the participants.
+     *
+     * @param hoursPerDay amount of interview hours per day.
+     * @param interviewerMail email template to send to all the interviewers.
+     * @param interviewerParameters parameters to set in interviewer template to personalize the emails.
+     * @param studentMail email template to send to all the students.
+     * @param studentParameters parameters to set in student template to personalize the emails.
+     * @return end date of the interview session.
+     */
     Date planSchedule(int hoursPerDay, Mail interviewerMail, Map<String, String> interviewerParameters,
                       Mail studentMail, Map<String, String> studentParameters);
 
+    /**
+     * Get all the existing mail templates.
+     *
+     * @return all the templates list.
+     */
     List<Mail> getAllMails();
 
+    /**
+     * Update existing mail template.
+     *
+     * @param mail the template with existing id.
+     */
     void updateMail(Mail mail);
 
+    /**
+     * Delete specified mail template.
+     *
+     * @param mail the mail template to delete.
+     */
     void deleteMail(Mail mail);
 
+    /**
+     * Retrieve mail template by id.
+     *
+     * @param id the template id.
+     * @return mail template with the specified id
+     */
     Mail getMail(Integer id);
 
     /**
@@ -28,6 +59,7 @@ public interface MailService {
      *
      * @param header mail topic.
      * @param body mail body.
+     * @return new mail template.
      */
     Mail createMail(String header, String body);
 
