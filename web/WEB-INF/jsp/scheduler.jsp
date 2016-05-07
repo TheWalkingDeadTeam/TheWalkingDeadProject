@@ -31,7 +31,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link href="<c:url value='/resources/css/app.css' />" rel="stylesheet"></link>
 </head>
-<body ng-app="mailScheduler" class="ng-cloack">
+<body ng-app="mailer" class="ng-cloack">
 <div class="generic-container">
     <div class="panel panel-default">
         <div class="panel-heading"><span class="lead">Scheduler paramaters </span></div>
@@ -74,29 +74,30 @@
 
 
                 <%--Checkbox with mails here--%>
-                <%--<div class="panel panel-default" ? >--%>
-                    <%--<!-- Default panel contents -->--%>
-                    <%--<div class="panel-heading"><span class="lead">List of Mails </span></div>--%>
-                    <%--<div class="tablecontainer">--%>
-                        <%--<table class="table table-hover" ng-controller="mailer as ctrl" class="ng-cloak">--%>
-                            <%--<thead>--%>
-                            <%--<tr>--%>
-                                <%--<th>ID</th>--%>
-                                <%--<th>Head</th>--%>
-                                <%--<th>Body</th>--%>
-                                <%--<th width="20%"></th>--%>
-                            <%--</tr>--%>
-                            <%--</thead>--%>
-                            <%--<tbody>--%>
-                            <%--<tr ng-repeat="m in ctrl.mails">--%>
+                <div class="panel panel-default" ? >
+                    <!-- Default panel contents -->
+                    <div class="panel-heading"><span class="lead">List of Mails </span></div>
+                    <div class="tablecontainer">
+                        <table class="table table-hover" ng-controller="MailController as ctrl" class="ng-cloak">
+                            <thead>
+                            <tr>
+                                <th> <img src="/resources/images/checkbox.png" width="15" height="15"> </th>
+                                <th>Topic</th>
+                                <th>Body</th>
+                                <th width="20%"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="m in ctrl.mails">
+                                <td><input type="radio"  data-ng-module="mailId" value="{{m.id}}"></td>
                                 <%--<td><span ng-bind="m.id"></span></td>--%>
-                                <%--<td><span ng-bind="m.bodyTemplate"></span></td>--%>
-                                <%--<td><span ng-bind="m.headTemplate"></span></td>--%>
-                            <%--</tr>--%>
-                            <%--</tbody>--%>
-                        <%--</table>--%>
-                    <%--</div>--%>
-                <%--</div>--%>
+                                <td><span ng-bind="m.bodyTemplate"></span></td>
+                                <td><span ng-bind="m.headTemplate"></span></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
 
                 <%--Checkbox with mails here--%>
@@ -119,8 +120,6 @@
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
-<script src="<c:url value='/resources/js/scheduler_controller.js' />"></script>
-<script src="<c:url value='/resources/js/mail_service.js' />"></script>
 <script src="<c:url value='/resources/js/mail_controller.js' />"></script>
 </body>
 </html>

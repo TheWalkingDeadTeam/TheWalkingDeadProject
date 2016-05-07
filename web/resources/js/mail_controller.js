@@ -150,3 +150,41 @@ mailer.factory('MailService', ['$http', '$q', function($http, $q){
     };
 
 }]);
+
+//Service for shared variable
+mailer.factory('Parameters',function () {
+    var mailId = {
+        "mailId":mailId
+    }
+
+    return {
+        getMailId: function () {
+            return mailId[0]
+        },
+        setMailId: function (id) {
+            mailId[0] = id
+        }
+    }
+});
+
+mailer.controller('SchedulerController', ['$scope', '$http', function ($scope, $http) {
+
+    $scope.list = [];
+
+    $scope.submit = function () {
+        var formData = {
+            "minutes": $scope.minutes,
+            "locations": $scope.location,
+            "mailId": $scope.mailId
+        };
+
+        var response = $http.post('/schedule', formData);
+        response.success(function (data, status, headers, config) {
+            $scope.list.push(data);
+        });
+        response.error(function (data, status, headers, config) {
+            alert("Exception details: " + JSON.stringify({data: data}));
+        });
+        $scope.list = [];
+    };
+}]);
