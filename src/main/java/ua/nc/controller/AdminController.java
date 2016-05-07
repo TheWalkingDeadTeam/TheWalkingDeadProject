@@ -180,4 +180,12 @@ public class AdminController {
     public String mail() {
         return "admin-mail-template";
     }
+
+
+    @RequestMapping(value = {"/scheduler"} ,method = RequestMethod.GET)
+    public String schedulerView() {
+        return "scheduler";
+    }
+
+
 }
