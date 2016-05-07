@@ -60,7 +60,7 @@ public class PostgreFieldDAO extends AbstractPostgreDAO<Field, Integer> implemen
         try {
             while (rs.next()) {
                 PersistField field = new PersistField(rs.getInt("ces_id"), rs.getString("name"),
-                        rs.getInt("filed_type_id"), rs.getBoolean("multiple_choice"),
+                        rs.getInt("field_type_id"), rs.getBoolean("multiple_choice"),
                         rs.getInt("order_num"), rs.getInt("list_id"));
                 field.setId(rs.getInt("field_id"));
                 result.add(field);

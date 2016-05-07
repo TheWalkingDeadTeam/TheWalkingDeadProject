@@ -45,7 +45,7 @@ public class PostgreConnectionPool extends ConnectionPool {
         Connection connection = null;
         try {
             connection = dataSource.getConnection();
-            LOGGER.debug("Connection established");
+            LOGGER.info("Connection established");
         } catch (SQLException e) {
             LOGGER.warn("Connection denied");
             throw new DAOException(e);

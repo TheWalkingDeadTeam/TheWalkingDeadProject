@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import ua.nc.dao.CESDAO;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.entity.profile.Profile;
 import ua.nc.service.CESService;
@@ -16,7 +17,9 @@ import ua.nc.validator.ProfileValidator;
 import ua.nc.validator.ValidationError;
 import ua.nc.validator.Validator;
 
+import java.sql.Connection;
 import java.util.Set;
+import org.apache.log4j.Logger;
 
 /**
  * Created by Pavel on 28.04.2016.
@@ -25,16 +28,24 @@ import java.util.Set;
 public class ProfileController {
     private ProfileService profileService = new ProfileServiceImpl();
     private CESService cesService;
+    private final static Logger LOGGER = Logger.getLogger(ProfileController.class);
 
-/*    @RequestMapping(value = "/profile", method = RequestMethod.GET)
+    @RequestMapping(value = "/getProfile", method = RequestMethod.GET)
     public
     @ResponseBody
-    Profile profile() {
-        return profileService.getProfile((UserDetailsImpl) SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getPrincipal());
-    }*/
+    Profile getProfile() {
+        /*Connection connection =
+        CESDAO cesdao =*/
+        try {
+            return profileService.getProfile((UserDetailsImpl) SecurityContextHolder
+                    .getContext()
+                    .getAuthentication()
+                    .getPrincipal(), 1);
+        } catch (DAOException ex){
+            LOGGER.warn(ex.getMessage());
+        }
+        return null;
+    }
 
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
     public String profile() {

@@ -46,8 +46,8 @@ public class MailServiceImpl implements MailService {
         schedulerMassDeliveryService.initialize();
     }
 
-    private DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
-    private MailDAO mailDAO = daoFactory.getMailDAO(daoFactory.getConnection());
+    private static DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
+    private static MailDAO mailDAO = daoFactory.getMailDAO(daoFactory.getConnection());
 
     public MailServiceImpl() {
 
