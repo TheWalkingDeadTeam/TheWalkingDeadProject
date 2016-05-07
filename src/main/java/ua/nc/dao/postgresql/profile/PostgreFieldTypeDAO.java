@@ -45,7 +45,7 @@ public class PostgreFieldTypeDAO extends AbstractPostgreDAO<FieldType, Integer> 
         try {
             while (rs.next()) {
                 PersistFieldType fieldType = new PersistFieldType(rs.getString("name"));
-                fieldType.setId(rs.getInt("list_id"));
+                fieldType.setId(rs.getInt("field_type_id"));
                 result.add(fieldType);
             }
         } catch (Exception e) {

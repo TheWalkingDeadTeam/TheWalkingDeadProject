@@ -60,10 +60,10 @@ public class ProfileController {
         errors = validator.validate(profile);
         if (errors.isEmpty()) {
             try {
-                profileService.setProfile((UserDetailsImpl) SecurityContextHolder
+                profileService.setProfile(((UserDetailsImpl) SecurityContextHolder
                         .getContext()
                         .getAuthentication()
-                        .getPrincipal(), profile);
+                        .getPrincipal()).getId(), profile);
             } catch (DAOException e) {
                 e.printStackTrace(); //toDO add log
             }

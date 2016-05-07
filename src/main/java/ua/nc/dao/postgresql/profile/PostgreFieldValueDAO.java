@@ -18,7 +18,7 @@ public class PostgreFieldValueDAO implements FieldValueDAO {
     private static final String getFieldValueByUserCESFieldQuery = "SELECT * FROM field_value WHERE Application_id = " +
             "(SELECT Application_id from Application WHERE system_user_id = ? AND CES_id = ?) AND Field_id = ?";
     private static final String updateQuery = "UPDATE field_value " +
-            "SET value_text = ?, value_double = ?, value_date = ? " +
+            "SET value_text = ?, value_double = ?, value_date = ?, list_value_id = ? " +
             "WHERE Application_id = ? AND Field_id = ?";
     private static final String createQuery = "INSERT INTO field_value " +
             "(field_id, application_id, value_text, value_double, value_date, list_value_id) " +
@@ -50,10 +50,15 @@ public class PostgreFieldValueDAO implements FieldValueDAO {
     public void update(FieldValue fieldValue) throws DAOException {
         try (PreparedStatement statement = connection.prepareStatement(updateQuery)) {
             statement.setString(1, fieldValue.getValueText());
-            statement.setDouble(2, fieldValue.getValueDouble());
-            statement.setDate(3, new java.sql.Date(fieldValue.getValueDate().getTime()));
-            statement.setInt(4, fieldValue.getApplicationID());
-            statement.setInt(5, fieldValue.getFieldID());
+            statement.setObject(2, fieldValue.getValueDouble());
+            if (fieldValue.getValueDate() == null){
+                statement.setDate(3, null);
+            } else {
+                statement.setDate(3, new java.sql.Date(fieldValue.getValueDate().getTime()));
+            }
+            statement.setObject(4, fieldValue.getListValueID());
+            statement.setInt(5, fieldValue.getApplicationID());
+            statement.setInt(6, fieldValue.getFieldID());
             int count = statement.executeUpdate();
             if (count != 1) {
                 throw new DAOException("On update modify more then 1 record: " + count);
@@ -69,9 +74,13 @@ public class PostgreFieldValueDAO implements FieldValueDAO {
             statement.setInt(1, fieldValue.getFieldID());
             statement.setInt(2, fieldValue.getApplicationID());
             statement.setString(3, fieldValue.getValueText());
-            statement.setDouble(4, fieldValue.getValueDouble());
-            statement.setDate(5, new java.sql.Date(fieldValue.getValueDate().getTime()));
-            statement.setInt(6, fieldValue.getListValueID());
+            statement.setObject(4, fieldValue.getValueDouble());
+            if (fieldValue.getValueDate() == null){
+                statement.setDate(5, null);
+            } else {
+                statement.setDate(5, new java.sql.Date(fieldValue.getValueDate().getTime()));
+            }
+            statement.setObject(6, fieldValue.getListValueID());
             int count = statement.executeUpdate();
             if (count != 1) {
                 throw new DAOException("On persist modify more then 1 record: " + count);
@@ -99,8 +108,8 @@ public class PostgreFieldValueDAO implements FieldValueDAO {
         try {
             while (rs.next()) {
                 FieldValue fieldValue = new FieldValue(rs.getInt("field_id"), rs.getInt("application_id"),
-                        rs.getString("value_text"), rs.getDouble("value_double"),
-                        rs.getDate("value_date"), rs.getInt("list_value_id"));
+                        rs.getString("value_text"),(Double) rs.getObject("value_double"),
+                        rs.getDate("value_date"),(Integer) rs.getObject("list_value_id"));
                 result.add(fieldValue);
             }
         } catch (Exception e) {

@@ -27,7 +27,8 @@ public class PostgreFieldDAO extends AbstractPostgreDAO<Field, Integer> implemen
         List<Field> result;
         try (PreparedStatement statement = connection.prepareStatement(getFieldsForCESQuery)) {
             statement.setInt(1, ces_id);
-            result = parseResultSet(statement.executeQuery());
+            ResultSet rs = statement.executeQuery();
+            result = parseResultSet(rs);
         } catch (Exception e) {
             throw new DAOException(e);
         }
@@ -41,12 +42,13 @@ public class PostgreFieldDAO extends AbstractPostgreDAO<Field, Integer> implemen
 
     @Override
     public String getCreateQuery() {
-        return "INSERT INTO field (ces_id, name, field_type_id, multiple_choice, order_num, list_id) VALUES (?, ?, ?, ?, ?, ?);";
+        return "INSERT INTO field (name, field_type_id, multiple_choice, order_num, list_id) VALUES (?, ?, ?, ?, ?);";
     }
 
     @Override
     public String getUpdateQuery() {
-        return "UPDATE field SET field.name = ? WHERE field.field_id = ?;";
+        return "UPDATE field SET field.name = ?, field_type_id = ?, multiple_choice = ?, order_num = ?, list_id = ? " +
+                "WHERE field.field_id = ?;";
     }
 
     @Override
@@ -59,9 +61,9 @@ public class PostgreFieldDAO extends AbstractPostgreDAO<Field, Integer> implemen
         List<Field> result = new ArrayList<>();
         try {
             while (rs.next()) {
-                PersistField field = new PersistField(rs.getInt("ces_id"), rs.getString("name"),
+                PersistField field = new PersistField(rs.getString("name"),
                         rs.getInt("field_type_id"), rs.getBoolean("multiple_choice"),
-                        rs.getInt("order_num"), rs.getInt("list_id"));
+                        rs.getInt("order_num"), (Integer) rs.getObject("list_id"));
                 field.setId(rs.getInt("field_id"));
                 result.add(field);
             }
@@ -74,12 +76,11 @@ public class PostgreFieldDAO extends AbstractPostgreDAO<Field, Integer> implemen
     @Override
     protected void prepareStatementForInsert(PreparedStatement statement, Field object) throws DAOException {
         try {
-            statement.setInt(1, object.getCesID());
-            statement.setString(2, object.getName());
-            statement.setInt(3, object.getFieldTypeID());
-            statement.setBoolean(4, object.getMultipleChoice());
-            statement.setInt(5, object.getOrderNum());
-            statement.setInt(6, object.getListTypeID());
+            statement.setString(1, object.getName());
+            statement.setInt(2, object.getFieldTypeID());
+            statement.setBoolean(3, object.getMultipleChoice());
+            statement.setInt(4, object.getOrderNum());
+            statement.setObject(5, object.getListTypeID());
         } catch (Exception e) {
             throw new DAOException(e);
         }
@@ -89,7 +90,11 @@ public class PostgreFieldDAO extends AbstractPostgreDAO<Field, Integer> implemen
     protected void prepareStatementForUpdate(PreparedStatement statement, Field object) throws DAOException {
         try {
             statement.setString(1, object.getName());
-            statement.setInt(2, object.getId());
+            statement.setInt(2, object.getFieldTypeID());
+            statement.setBoolean(3, object.getMultipleChoice());
+            statement.setInt(4, object.getOrderNum());
+            statement.setObject(5, object.getListTypeID());
+            statement.setInt(6, object.getId());
         } catch (Exception e) {
             throw new DAOException(e);
         }
@@ -101,8 +106,8 @@ public class PostgreFieldDAO extends AbstractPostgreDAO<Field, Integer> implemen
     }
 
     private class PersistField extends Field {
-        public PersistField(int cesID, String name, int fieldTypeID, boolean multipleChoice, int orderNum, int listID) {
-            super(cesID, name, fieldTypeID, multipleChoice, orderNum, listID);
+        public PersistField(String name, int fieldTypeID, boolean multipleChoice, int orderNum, Integer listID) {
+            super(name, fieldTypeID, multipleChoice, orderNum, listID);
         }
 
         public void setId(int id) {
