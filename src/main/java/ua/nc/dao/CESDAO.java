@@ -9,7 +9,11 @@ import ua.nc.entity.CES;
 public interface CESDAO extends GenericDAO<CES, Integer> {
     CES getCurrentCES() throws DAOException;
 
+    CES getPendingCES() throws DAOException;
+
     void addCESField(int cesId, int fieldId) throws DAOException;
+    void removeCESField(int cesId, int fieldId) throws DAOException;
 
     void addInterviewerForCurrentCES(int cesId, int interviewerId) throws DAOException;
+    void removeInterviewerForCurrentCES(int cesId, int interviewerId) throws DAOException;
 }
