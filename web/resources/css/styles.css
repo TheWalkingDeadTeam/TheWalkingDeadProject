@@ -2,13 +2,19 @@
 #document button {
     background-color: rgb(110, 150, 190);
     border: none;
-    border-radius: 0px;
     outline: none;
 }
 
+[for='recpass']{
+    margin-top: 10px;
+    color: rgb(110, 150, 190);
+    border-bottom: solid 1px rgb(110, 150, 190);
+    float: right;
+}
+
 #document button:hover {
-    background-color: #CCC;
-    border-color: #CCC;
+    background-color: #959595;
+    border-color: #959595;
     transition-duration: 0.2s;
 }
 
@@ -25,6 +31,13 @@
 }
 
 /* HEADER */
+.header-img{
+    max-width: 205px;
+}
+
+.brand-img{
+    padding: 0 !important;
+}
 
 .headerTop .btn {
     width: 150px;

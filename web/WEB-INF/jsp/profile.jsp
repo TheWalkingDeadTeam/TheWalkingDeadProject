@@ -4,6 +4,7 @@
 <head>
     <title>Profile</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" sizes="32x32" href="/resources/images/ico.png"/>
     <%--<link rel="stylesheet" type="text/css" href="/resources/css/reset.css"/>--%>
     <%--<link rel="stylesheet" type="text/css" href="/resources/css/styles.css"/>--%>
@@ -12,8 +13,8 @@
 
     <link rel="icon" type="image/png" sizes="32x32" href="/images/ico.png">
     <link rel="stylesheet" type="text/css" href="resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="resources/css/style.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="resources/css/media.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="resources/css/style-profile.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="resources/css/media-profile.css" rel="stylesheet">
     <script src="resources/bootstrap/js/jquery-2.2.2.min.js" defer></script>
     <script src="resources/bootstrap/js/bootstrap.min.js" defer></script>
     <%--<style type="text/css">--%>
