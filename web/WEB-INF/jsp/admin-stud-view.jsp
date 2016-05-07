@@ -58,16 +58,14 @@
     </style>
 </head>
 <body>
-<div ng-controller="StudentCtrl"
+<main ng-controller="StudentCtrl as data"
      class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
+
     <jsp:include page="admin-header.jsp"/>
 
 
     <main class="mdl-layout__content mdl-color--grey-100">
-
         <div>
-
-
             <button ng-click="activateStud()"
                     class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
                 Activate
@@ -84,96 +82,92 @@
                     class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
                 Save
             </button>
-            <table class="table table-bordered table-striped" style="{margin-top: 200px}">
-
-                <thead>
-                <tr>
-                    <td>
-                        <input type="checkbox" ng-model="selectedAll" ng-click="checkAll()">
-                    </td>
-                    <td>
-                        <a href="#" ng-click="sortType = 'id'; sortReverse = !sortReverse">
-                            #
-                            <span ng-show="sortType == 'id' && !sortReverse" class="fa fa-caret-down"></span>
-                            <span ng-show="sortType == 'id' && sortReverse" class="fa fa-caret-up"></span>
-                        </a>
-                    </td>
-                    <td>
-                        <a href="#" ng-click="sortType = 'name'; sortReverse = !sortReverse">
-                            Name
-                            <span ng-show="sortType == 'name' && !sortReverse" class="fa fa-caret-down"></span>
-                            <span ng-show="sortType == 'name' && sortReverse" class="fa fa-caret-up"></span>
-                        </a>
-                    </td>
-                    <td>
-                        <a href="#" ng-click="sortType = 'name'; sortReverse = !sortReverse">
-                            Surname
-                            <span ng-show="sortType == 'name' && !sortReverse" class="fa fa-caret-down"></span>
-                            <span ng-show="sortType == 'name' && sortReverse" class="fa fa-caret-up"></span>
-                        </a>
-                    </td>
-                    <td>
-                        <a href="#" ng-click="sortType = 'university'; sortReverse = !sortReverse">
-                            University
-                            <span ng-show="sortType == 'university' && !sortReverse" class="fa fa-caret-down"></span>
-                            <span ng-show="sortType == 'university' && sortReverse" class="fa fa-caret-up"></span>
-                        </a>
-                    </td>
-                    <td>
-                        <a href="#" ng-click="sortType = 'devMark'; sortReverse = !sortReverse">
-                            Dev Assesment
-                            <span ng-show="sortType == 'devMark' && !sortReverse" class="fa fa-caret-down"></span>
-                            <span ng-show="sortType == 'devMark' && sortReverse" class="fa fa-caret-up"></span>
-                        </a>
-                    </td>
-                    <td>
-                        <a href="#" ng-click="sortType = 'hrMark'; sortReverse = !sortReverse">
-                            HR Assesment
-                            <span ng-show="sortType == 'hrMark' && !sortReverse" class="fa fa-caret-down"></span>
-                            <span ng-show="sortType == 'hrMark' && sortReverse" class="fa fa-caret-up"></span>
-                        </a>
-                    </td>
-                    <td>
-                        <a href="#" ng-click="sortType = 'color'; sortReverse = !sortReverse">
-                            Color
-                            <span ng-show="sortType == 'color' && !sortReverse" class="fa fa-caret-down"></span>
-                            <span ng-show="sortType == 'color' && sortReverse" class="fa fa-caret-up"></span>
-                        </a>
-                    </td>
-                    <td>
-                        <a href="#" ng-click="sortType = 'isActive'; sortReverse = !sortReverse">
-                            Active
-                            <span ng-show="sortType == 'isActive' && !sortReverse" class="fa fa-caret-down"></span>
-                            <span ng-show="sortType == 'isActive' && sortReverse" class="fa fa-caret-up"></span>
-                        </a>
-                    </td>
-                </tr>
-                </thead>
-
-                <tbody>
-                <tr ng-repeat="ch in students | orderBy:sortType:sortReverse | filter:searchFilt">
-                    <td><input type="checkbox" checklist-model="dataStudents.studId" checklist-value="ch.id"></td>
-                    <td ng-init="index=$index + 1">{{index}}</td>
-                    <td><a href="/admin/students/{{ch.id}}" target="_blanks">{{ch.name}}</a></td>
-                    <td><a href="/admin/students/{{ch.id}}" target="_blanks">{{ch.surname}}</a></td>
-                    <td>{{ch.university}}</td>
-                    <td>{{ch.devMark}}</td>
-                    <td>{{ch.hrMark}}</td>
-                    <td ng-style="{opacity:0.5,'background-color':'{{ch.color}}'}" title="
+        </div>
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <td>
+                <input type="checkbox" ng-model="selectedAll" ng-click="checkAll()">
+            </td>
+            <td>
+                <a href="#" ng-click="sortType = 'id'; sortReverse = !sortReverse">
+                    #
+                    <span ng-show="sortType == 'id' && !sortReverse" class="fa fa-caret-down"></span>
+                    <span ng-show="sortType == 'id' && sortReverse" class="fa fa-caret-up"></span>
+                </a>
+            </td>
+            <td>
+                <a href="#" ng-click="sortType = 'name'; sortReverse = !sortReverse">
+                    Full Name
+                    <span ng-show="sortType == 'name' && !sortReverse" class="fa fa-caret-down"></span>
+                    <span ng-show="sortType == 'name' && sortReverse" class="fa fa-caret-up"></span>
+                </a>
+            </td>
+            <td>
+                <a href="#" ng-click="sortType = 'university'; sortReverse = !sortReverse">
+                    University
+                    <span ng-show="sortType == 'university' && !sortReverse" class="fa fa-caret-down"></span>
+                    <span ng-show="sortType == 'university' && sortReverse" class="fa fa-caret-up"></span>
+                </a>
+            </td>
+            <td>
+                <a href="#" ng-click="sortType = 'devMark'; sortReverse = !sortReverse">
+                    Dev Assesment
+                    <span ng-show="sortType == 'devMark' && !sortReverse" class="fa fa-caret-down"></span>
+                    <span ng-show="sortType == 'devMark' && sortReverse" class="fa fa-caret-up"></span>
+                </a>
+            </td>
+            <td>
+                <a href="#" ng-click="sortType = 'hrMark'; sortReverse = !sortReverse">
+                    HR Assesment
+                    <span ng-show="sortType == 'hrMark' && !sortReverse" class="fa fa-caret-down"></span>
+                    <span ng-show="sortType == 'hrMark' && sortReverse" class="fa fa-caret-up"></span>
+                </a>
+            </td>
+            <td>
+                <a href="#" ng-click="sortType = 'color'; sortReverse = !sortReverse">
+                    Color
+                    <span ng-show="sortType == 'color' && !sortReverse" class="fa fa-caret-down"></span>
+                    <span ng-show="sortType == 'color' && sortReverse" class="fa fa-caret-up"></span>
+                </a>
+            </td>
+            <td>
+                <a href="#" ng-click="sortType = 'isActive'; sortReverse = !sortReverse">
+                    Active
+                    <span ng-show="sortType == 'isActive' && !sortReverse" class="fa fa-caret-down"></span>
+                    <span ng-show="sortType == 'isActive' && sortReverse" class="fa fa-caret-up"></span>
+                </a>
+            </td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-show="data.users.length <= 0">
+            <td colspan="5" style="text-align:center;">Loading new data!!</td>
+        </tr>
+        <tr dir-paginate="user in data.users|itemsPerPage:data.itemsPerPage" total-items="data.total_count">
+            <td><input type="checkbox" checklist-model="dataStudents.studId" checklist-value="user.id"></td>
+            <td ng-init="index=$index + 1">{{index}}</td>
+            <td><a href="/admin/students/{{user.id}}" target="_blanks">{{user.name}}{{user.surname}}</a></td>
+            <td>{{user.university}}</td>
+            <td>{{user.devMark}}</td>
+            <td>{{user.hrMark}}</td>
+            <td ng-style="{opacity:0.5,'background-color':'{{user.color}}'}" title="
             {{ch.color == 'red' ? 'Reject' :
             ch.color == 'green' ? 'On course' :
             ch.color == 'blue' ? 'On job' : 'Thinking'}}"></td>
-                    <td>{{ch.isActive == 1 ? "Active" : "Inactive"}}</td>
-
-                </tr>
-                </tbody>
-            </table>
-
-
-        </div>
+            <td>{{user.isActive == 1 ? "Active" : "Inactive"}}</td>
+        </tr>
+        </tbody>
+    </table>
+    <dir-pagination-controls
+            max-size="8"
+            direction-links="true"
+            boundary-links="true"
+            on-page-change="data.getData(newPageNumber)">
+    </dir-pagination-controls>
     </main>
 </div>
-
+</main>
 
 <script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
@@ -182,7 +176,10 @@
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-route.js"></script>
 <script src="../../resources/js/studentListAngular.js"></script>
+<script src="../../resources/js/dirPagination.js"></script>
 <script src="http://vitalets.github.io/checklist-model/checklist-model.js"></script>
+
 </body>
+
 
 </html>
