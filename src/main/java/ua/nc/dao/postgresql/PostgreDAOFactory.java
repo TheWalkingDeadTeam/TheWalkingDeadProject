@@ -108,4 +108,9 @@ public class PostgreDAOFactory extends DAOFactory {
     public ListTypeDAO getListTypeDAO(Connection connection) {
         return new PostgreListTypeDAO(connection);
     }
+
+    @Override
+    public InterviewerParticipationDAO getInterviewerParticipationDAO(Connection connection) {
+        return null;
+    }
 }

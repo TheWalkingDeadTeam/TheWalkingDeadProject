@@ -10,10 +10,13 @@ mailer.controller('MailController', ['$scope', 'MailService','$http', function($
         var formData = {
             "minutes": $scope.minutes,
             "locations": $scope.location,
-            "mailId": $scope.mailId
+            "mailIdUser": $scope.mailIdUser,
+            "mailIdStaff": $scope.mailIdStaff,
+            "contact" : $scope.contact,
+            "courseType" : $scope.courseType
         };
 
-        var response = $http.post('/schedule', formData);
+        var response = $http.post('/admin/scheduler', formData);
         response.success(function (data, status, headers, config) {
             $scope.list.push(data);
         });

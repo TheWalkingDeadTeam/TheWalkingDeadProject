@@ -145,7 +145,7 @@ public class MailServiceImpl implements MailService {
                     LOGGER.error("Failed to send", e);
                 }
             }
-        }, new Date());
+        }, new Date(dateDelivery));
     }
 
     /**

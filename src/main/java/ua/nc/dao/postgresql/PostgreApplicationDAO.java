@@ -4,6 +4,7 @@ import ua.nc.dao.AbstractPostgreDAO;
 import ua.nc.dao.ApplicationDAO;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.entity.Application;
+import ua.nc.entity.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -105,6 +106,11 @@ public class PostgreApplicationDAO extends AbstractPostgreDAO<Application, Integ
             throw new DAOException(e);
         }
         return result;
+    }
+
+    @Override
+    public List<User> getStudentsForCurrentCES() throws DAOException {
+        return null;
     }
 
     @Override
