@@ -29,11 +29,21 @@ import java.util.*;
 @Service("mailService")
 public class MailServiceImpl implements MailService {
     private static final Logger LOGGER = Logger.getLogger(MailServiceImpl.class);
-    private static final int MILLIS_PER_HOUR = 1000 * 60 * 60;
+    private static final String PROTOCOL = "smtp";
+    private static final String HOST = "smtp.gmail.com";
+    private static final int PORT = 587;
+    private static final String USERNAME = "netcrackerua@gmail.com";
+    private static final String PASSWORD = "netcrackerpwd";
+    private static final long SLEEP = 1000;
+    private static final String DATE_PATTERN = "$Date";
+    private static final String NAME_PATTERN = "$Name";
+    private DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
     private static final int POOL_SIZE = 2;
     private static final int POOL_SIZE_SCHEDULER = 10;
     private static ThreadPoolTaskScheduler scheduler;
     private static ThreadPoolTaskScheduler schedulerMassDeliveryService;
+    private static final int MILLIS_PER_HOUR = 1000 * 60 * 60;
+
 
     static {
         scheduler = new ThreadPoolTaskScheduler();
@@ -44,7 +54,6 @@ public class MailServiceImpl implements MailService {
         schedulerMassDeliveryService.initialize();
     }
 
-    private DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
 
     public MailServiceImpl() {
 
@@ -87,26 +96,16 @@ public class MailServiceImpl implements MailService {
         sendMail(address, mail.getHeadTemplate(), mail.getBodyTemplate());
     }
 
-    /**
-     * Send email  to recipient with concrete Mail entity
-     * Async call function will return controll to the main flow
-     * Sends email with delay 5 seconds, spam-filter will pass these
-     *
-     * @param address recipient address
-     * @param header
-     * @param body
-     */
-
-
+    @Override
     public void sendMail(String address, String header, String body) {
 
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         Properties properties = getMailProperties();
-        mailSender.setProtocol("smtp");
-        mailSender.setHost("smtp.gmail.com");
-        mailSender.setPort(587);
-        mailSender.setUsername("netcrackerua@gmail.com");
-        mailSender.setPassword("netcrackerpwd");
+        mailSender.setProtocol(PROTOCOL);
+        mailSender.setHost(HOST);
+        mailSender.setPort(PORT);
+        mailSender.setUsername(USERNAME);
+        mailSender.setPassword(PASSWORD);
         mailSender.setJavaMailProperties(properties);
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(address);
@@ -117,12 +116,12 @@ public class MailServiceImpl implements MailService {
     }
 
     /**
-     * Async mail sending
+     * Async mail sending.
      *
-     * @param message
-     * @param mailSender
+     * @param message    message to send.
+     * @param mailSender sender.
      */
-    public void AsynchronousSender(final SimpleMailMessage message, final MailSender mailSender) {
+    private void AsynchronousSender(final SimpleMailMessage message, final MailSender mailSender) {
         scheduler.execute(new Runnable() {
             @Override
             public void run() {
@@ -143,6 +142,7 @@ public class MailServiceImpl implements MailService {
      * @param users        who will get invitation
      * @param mail         template
      */
+    @Override
     public void massDelivery(String dateDelivery, final List<User> users, final Mail mail) {
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         // String date format 2012-07-06 13:05:45
@@ -155,13 +155,13 @@ public class MailServiceImpl implements MailService {
             @Override
             public void run() {
                 try {
-
+                    Map<String, String> nameParameter = new HashMap<>();
                     for (User i : users) {
-                        //Sleep for one second,google may think you're spamming :(
-                        Thread.sleep(1000);
-                        sendMail(i.getEmail(), mail);
+                        //Sleep for a while, google may think you're spamming :(
+                        Thread.sleep(SLEEP);
+                        nameParameter.put(NAME_PATTERN, i.getName());
+                        sendMail(i.getEmail(), customizeMail(mail, nameParameter));
                     }
-
                 } catch (Exception e) {
                     LOGGER.warn("Failed to send email", e);
                 }
@@ -169,26 +169,30 @@ public class MailServiceImpl implements MailService {
         }, new Date(dateDelivery));
     }
 
-
-    public void sendInterviewReminders(List<Date> interviewDates, int studentHours, int devHours, int hrHours,
-                                       int baHours, Mail InterviewerMail, Mail IntervieweeMail) {
-        int studentMillis = studentHours * MILLIS_PER_HOUR;
-        int devMillis = devHours * MILLIS_PER_HOUR;
-        int hrMillis = hrHours * MILLIS_PER_HOUR;
-        int baMillis = baHours * MILLIS_PER_HOUR;
-
-        for (Date interviewDate : interviewDates) {
-            massDelivery(new Date(interviewDate.getTime() + studentMillis).toString(), new ArrayList<User>(), IntervieweeMail);
-            massDelivery(new Date(interviewDate.getTime() + devMillis).toString(), new ArrayList<User>(), InterviewerMail);
-            massDelivery(new Date(interviewDate.getTime() + hrMillis).toString(), new ArrayList<User>(), InterviewerMail);
-            massDelivery(new Date(interviewDate.getTime() + baMillis).toString(), new ArrayList<User>(), InterviewerMail);
+    /**
+     * Set all the predefined mail parameters.
+     *
+     * @param mail       mail to customize.
+     * @param parameters set of parameters in form : "{pattern1:meaning1, ..., patternN:meaningN}".
+     * @return customized mail.
+     */
+    private Mail customizeMail(Mail mail, Map<String, String> parameters) {
+        //customize mail topic
+        String head = mail.getHeadTemplate();
+        for (Map.Entry<String, String> param : parameters.entrySet()) {
+            head = head.replaceAll(param.getKey(), param.getValue());
         }
-    }
 
+        //customize mail body
+        String body = mail.getBodyTemplate();
+        for (Map.Entry<String, String> param : parameters.entrySet()) {
+            body = body.replaceAll(param.getKey(), param.getValue());
+        }
 
-    @Override
-    public Date planSchedule(int hoursPerDay, Mail interviewerMail, Map<String, String> interviewerParameters, Mail studentMail, Map<String, String> studentParameters) {
-        return null;
+        Mail result = new Mail();
+        result.setBodyTemplate(body);
+        result.setHeadTemplate(head);
+        return result;
     }
 
     @Override
@@ -257,6 +261,7 @@ public class MailServiceImpl implements MailService {
      * @param header
      * @return
      */
+    @Override
     public List<Mail> getByHeaderMailTemplate(String header) {
         List<Mail> mails = new ArrayList<>();
         Connection connection = daoFactory.getConnection();
@@ -271,16 +276,10 @@ public class MailServiceImpl implements MailService {
         return mails;
     }
 
-    @Override
-    public void massDelivery(String dateDelivery, List<User> users, Mail mail, Map<String, String> parameters) {
-
-    }
-
-
     /**
-     * Configuration for mail mail delivery service
+     * Configuration for mail delivery service
      *
-     * @return propeties
+     * @return the mail service properties.
      */
     private Properties getMailProperties() {
         Properties mailProperties = new Properties();
@@ -291,5 +290,32 @@ public class MailServiceImpl implements MailService {
         return mailProperties;
     }
 
+    @Override
+    public void sendInterviewReminders(List<Date> interviewDates, int reminderTime, Mail interviewerMail,
+                                       Map<String, String> interviewerParameters, Mail studentMail,
+                                       Map<String, String> studentParameters, List<User> interviewersList,
+                                       List<User> studentsList) {
+        int reminderMillis = reminderTime * MILLIS_PER_HOUR;
+        // +1 -> Math.ceil
+        int studentsPerDay = (int) Math.ceil(studentsList.size() / interviewDates.size());
+        int todaysFirstStudent = 0;
+        int todaysLastStudent = studentsPerDay;
+        Mail customizedInterviewerMail = customizeMail(interviewerMail, studentParameters);
+        Mail customizedStudentMail = customizeMail(studentMail, studentParameters);
+
+        //make everyday mail delivery
+        Map<String, String> dateParameter = new HashMap<>();
+        for (Date interviewDate : interviewDates) {
+            List<User> todayStudents = studentsList.subList(todaysFirstStudent,
+                    Math.min(todaysLastStudent, studentsList.size()));
+            todaysFirstStudent = todaysLastStudent;
+            todaysLastStudent += studentsPerDay;
+
+            String todaysDate = new Date(interviewDate.getTime() - reminderMillis).toString();
+            dateParameter.put(DATE_PATTERN, todaysDate);
+            massDelivery(todaysDate, interviewersList, customizeMail(customizedInterviewerMail, dateParameter));
+            massDelivery(todaysDate, todayStudents, customizeMail(customizedStudentMail, dateParameter));
+        }
+    }
 
 }

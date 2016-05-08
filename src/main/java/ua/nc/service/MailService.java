@@ -13,19 +13,6 @@ import java.util.Map;
 public interface MailService {
 
     /**
-     * Plan current interview schedule and send notifications to all the participants.
-     *
-     * @param hoursPerDay amount of interview hours per day.
-     * @param interviewerMail email template to send to all the interviewers.
-     * @param interviewerParameters parameters to set in interviewer template to personalize the emails.
-     * @param studentMail email template to send to all the students.
-     * @param studentParameters parameters to set in student template to personalize the emails.
-     * @return end date of the interview session.
-     */
-    Date planSchedule(int hoursPerDay, Mail interviewerMail, Map<String, String> interviewerParameters,
-                      Mail studentMail, Map<String, String> studentParameters);
-
-    /**
      * Get all the existing mail templates.
      *
      * @return all the templates list.
@@ -97,8 +84,23 @@ public interface MailService {
      * @param dateDelivery specific date mail to be send.
      * @param users who will get invitation.
      * @param mail template.
-     * @param parameters set of parameters in form : "{pattern1:meaning1, ..., patternN:meaningN}".
      */
-    void massDelivery(String dateDelivery, final List<User> users, final Mail mail,
-                      final Map<String, String> parameters);
+    void massDelivery(String dateDelivery, final List<User> users, final Mail mail);
+
+    /**
+     * Spread all the students by interview dates and send notifications to all the participants.
+     *
+     * @param interviewDates list of all the interview dates.
+     * @param reminderTime time during that the notification needs to be sent.
+     * @param interviewerMail email template to send to all the interviewers.
+     * @param interviewerParameters parameters to set in interviewer template to personalize the emails.
+     * @param studentMail email template to send to all the students.
+     * @param studentParameters parameters to set in student template to personalize the emails.
+     * @param interviewersList list of all the interviewers who take part in the current interview.
+     * @param studentsList list of all the students who take part in the current interview.
+     */
+    void sendInterviewReminders(List<Date> interviewDates, int reminderTime, Mail interviewerMail,
+                                Map<String, String> interviewerParameters, Mail studentMail,
+                                Map<String, String> studentParameters, List<User> interviewersList,
+                                List<User> studentsList);
 }
