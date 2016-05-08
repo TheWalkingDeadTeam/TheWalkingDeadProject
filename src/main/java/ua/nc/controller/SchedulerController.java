@@ -1,37 +1,20 @@
 package ua.nc.controller;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
 import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
 import com.google.maps.model.GeocodingResult;
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import ua.nc.dao.MailDAO;
-import ua.nc.dao.enums.DataBaseType;
 import ua.nc.dao.exception.DAOException;
-import ua.nc.dao.factory.DAOFactory;
-import ua.nc.dao.postgresql.PostgreMailDAO;
 import ua.nc.entity.Mail;
 import ua.nc.entity.Scheduler;
-import ua.nc.entity.User;
 import ua.nc.service.CESService;
 import ua.nc.service.CESServiceImpl;
 import ua.nc.service.MailService;
 import ua.nc.service.MailServiceImpl;
-import ua.nc.validator.ValidationError;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.sql.Connection;
 import java.util.*;
 
 /**
@@ -42,6 +25,13 @@ public class SchedulerController {
     private final Logger log = Logger.getLogger(UserController.class);
     private final static String GEO_CODE_GOOGLE = "AIzaSyCfZKoS6nurd-Hvf-Mb-A3R0yUNFAQ89-c";
     private final static String DEFAULT_PLACE_LINK = "http://www.google.com/maps/place/lat,lng";
+    //params
+    private final static String LOCATION ="$location";
+    private final static String COURSE_TYPE ="$courseType";
+    private final static String GOOGLE_MAPS = "$googleMaps";
+    private final static String CONTACT_INTERVIEWERS ="$contactInterviewers";
+    private final static String CONTACT_STUDENTS ="$contactStudent";
+
 
     /**
      * Produces direct google map link to geolocation
@@ -66,11 +56,11 @@ public class SchedulerController {
         return link;
     }
 
-    private Map<String, String> interviewParam(Scheduler scheduler) {
+    private Map<String, String> param(Scheduler scheduler) {
         Map<String, String> interviewerParameters = new HashMap<>();
-        interviewerParameters.put("$location", scheduler.getLocations());
-        interviewerParameters.put("$courseType", scheduler.getCourseType());
-        interviewerParameters.put("$googleMaps", googleMapLink(scheduler.getLocations()));
+        interviewerParameters.put(LOCATION, scheduler.getLocations());
+        interviewerParameters.put(COURSE_TYPE, scheduler.getCourseType());
+        interviewerParameters.put(GOOGLE_MAPS, googleMapLink(scheduler.getLocations()));
         return interviewerParameters;
     }
 
@@ -92,14 +82,14 @@ public class SchedulerController {
         MailService mailService = new MailServiceImpl();
         Mail interviewMail = mailService.getMail(scheduler.getMailIdStaff());
         Mail studentMail = mailService.getMail(scheduler.getMailIdUser());
-        Map<String, String> interviewerParameters = interviewParam(scheduler);
-        Map<String, String> studentParamets = interviewParam(scheduler);
-        //studentParamets.put("$contact", scheduler.getContact());
-
+        Map<String, String> interviewerParameters = param(scheduler);
+        Map<String, String> studentParamets = param(scheduler);
+        interviewerParameters.put(CONTACT_INTERVIEWERS, scheduler.getContactStaff());
+        studentParamets.put(CONTACT_STUDENTS, scheduler.getContactStudent());
         try {
-            List<Date> planScheduler = cesService.planSchedule(interviewMail,interviewerParameters,studentMail,studentParamets);
-        } catch (DAOException e){
-            log.warn("Check Scheduler paramters",e);
+            List<Date> planScheduler = cesService.planSchedule();
+        } catch (DAOException e) {
+            log.warn("Check Scheduler paramters", e);
         }
     }
 }
