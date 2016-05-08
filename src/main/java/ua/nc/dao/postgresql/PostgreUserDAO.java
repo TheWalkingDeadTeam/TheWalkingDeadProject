@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import ua.nc.dao.AbstractPostgreDAO;
 import ua.nc.dao.UserDAO;
 import ua.nc.dao.exception.DAOException;
+import ua.nc.dao.factory.DAOFactory;
 import ua.nc.entity.Role;
 import ua.nc.entity.User;
 
@@ -21,20 +22,20 @@ public class PostgreUserDAO extends AbstractPostgreDAO<User, Integer> implements
     private static final Logger LOGGER = Logger.getLogger(PostgreUserDAO.class);
     private static final String SQL_UPDATE_USER = "UPDATE public.system_user SET password = ? WHERE system_user_id = ?";
     private final String GET_INTERVIEWERS_FOR_CURRENT_CES = "SELECT users.system_user_id, users.email, users.name, users.surname FROM system_user users " +
-            "JOIN interviewer_participation ip ON ip.system_user_id = users.system_user_id " +
-            "WHERE ces_id = (SELECT ces.ces_id from course_enrollment_session ces JOIN ces_status stat " +
-            "ON ces.ces_status_id = stat.ces_status_id AND stat.name = 'Active')";
-    private final String GET_STUDENTS_FOR_CURRENT_CES = "SELECT users.system_user_id, users.email, users.name, users.surname FROM system_user users" +
-            "JOIN application app ON app.system_user_id = users.system_user_id" +
-            "WHERE ces_id = (SELECT ces.ces_id from course_enrollment_session ces JOIN ces_status stat" +
-            "ON ces.ces_status_id = stat.ces_status_id AND stat.name = 'Active') AND app.rejected IS FALSE";
+            " JOIN interviewer_participation ip ON ip.system_user_id = users.system_user_id " +
+            " WHERE ces_id = (SELECT ces.ces_id from course_enrollment_session ces JOIN ces_status stat " +
+            " ON ces.ces_status_id = stat.ces_status_id AND stat.name = 'Active')";
+    private final String GET_STUDENTS_FOR_CURRENT_CES = "SELECT users.system_user_id, users.email, users.name, users.surname FROM public.system_user users" +
+            " JOIN public.application app ON app.system_user_id = users.system_user_id" +
+            " WHERE ces_id = (SELECT ces.ces_id FROM public.course_enrollment_session ces JOIN public.ces_status stat" +
+            " ON ces.ces_status_id = stat.ces_status_id AND stat.name = 'Active') AND app.rejected IS FALSE";
     private final String FIND_BY_EMAIL = "SELECT * FROM public.system_user u WHERE u.email = ?";
     private final String CREATE_USER = "INSERT INTO public.system_user(name, surname, email, password, system_user_status_id) VALUES (?, ?, ?, ?, ?)";
     private final String SET_ROLE_TO_USER = "INSERT INTO public.system_user_role(role_id, system_user_id) SELECT ?, system_user_id FROM public.system_user u WHERE u.email=?";
     private final String GET_BY_ROLE = "SELECT u.system_user_id, u.name, u.surname, u.email FROM public.system_user u " +
-            "JOIN public.system_user_role ur ON u.system_user_id = ur.system_user_id" +
-            "JOIN public.role r ON ur.role_id = r.role_id" +
-            "WHERE r.name = ?";
+            " JOIN public.system_user_role ur ON u.system_user_id = ur.system_user_id" +
+            " JOIN public.role r ON ur.role_id = r.role_id" +
+            " WHERE r.name = ?";
     private final String GET_STATUS_ID = "SELECT system_user_status_id FROM system_user_status WHERE name = ?";
     public PostgreUserDAO(Connection connection) {
         super(connection);
@@ -189,6 +190,7 @@ public class PostgreUserDAO extends AbstractPostgreDAO<User, Integer> implements
         }
         return users ;
     }
+
 
     @Override
     public User create(User object) throws DAOException {

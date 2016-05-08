@@ -2,6 +2,8 @@
  * Created by Pavel on 25.04.2016.
  */
 $(document).ready(function () {
+    $('#j_password, #password').hideShowPassword(false, true);
+    
     $("#buttonSignIn").click(function (event) {
         event.preventDefault();
         $.ajax({

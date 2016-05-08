@@ -66,7 +66,7 @@
                 <div class="correct-surname"></div>
                 <input id="email" name="email" class="form-control" placeholder="Email address" type="text" value="">
                 <div class="correct-email"></div>
-                <input id="password" name="password" class="form-control" placeholder="Password" type="password"
+                <input id="password" name="password" class="form-control login-field  login-field-password" placeholder="Password" type="password"
                        value="">
                 <div class="correct-password"></div>
                 <button id="buttonRegistration" class="btn btn-lg btn-primary btn-block">Register</button>
@@ -104,7 +104,7 @@
                     <div id="messageCheckPassword"></div>
                     <form>
                         <input id="changePassword" name="password" class="form-control" placeholder="Password"
-                               type="text"
+                               type="password"
                                value="">
                         <button id="buttonChangePassword" class="btn btn-lg btn-primary btn-block changebtn">
                             ChangePassword
@@ -120,7 +120,7 @@
                     <h2 class="form-signin-heading">Please sign in</h2>
                     <input id="j_username" type="text" class="form-control" name="j_username"
                            placeholder="Email address" required>
-                    <input id="j_password" type="password" class="form-control" name="j_password" placeholder="Password"
+                    <input id="j_password" type="password" class="form-control login-field  login-field-password" name="j_password" placeholder="Password"
                            required>
                     <button id="buttonSignIn" class="btn btn-lg btn-primary btn-block signbtn" type="submit">Sign in
                     </button>
@@ -192,4 +192,5 @@
 <script src="/resources/bootstrap/js/bootstrap.js"></script>
 <script src="/resources/js/registration.js"></script>
 <script src="/resources/js/passwordRecovery.js"></script>
+<script src="/resources/js/hideShowPassword.min.js"></script>
 </html>
