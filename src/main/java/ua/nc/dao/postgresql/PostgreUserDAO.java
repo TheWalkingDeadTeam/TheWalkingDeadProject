@@ -20,13 +20,13 @@ import java.util.*;
 public class PostgreUserDAO extends AbstractPostgreDAO<User, Integer> implements UserDAO {
     private static final Logger LOGGER = Logger.getLogger(PostgreUserDAO.class);
     private static final String SQL_UPDATE_USER = "UPDATE public.system_user SET password = ? WHERE system_user_id = ?";
-    private final String GET_INTERVIEWERS_FOR_CURRENT_CES = "SELECT users.system_user_id, users.email, users.name, users.surname FROM system_user users " +
-            "JOIN interviewer_participation ip ON ip.system_user_id = users.system_user_id " +
-            "WHERE ces_id = (SELECT ces.ces_id from course_enrollment_session ces JOIN ces_status stat " +
+    private final String GET_INTERVIEWERS_FOR_CURRENT_CES = "SELECT users.system_user_id, users.email, users.name, users.surname FROM public.system_user users " +
+            "JOIN public.interviewer_participation ip ON ip.system_user_id = users.system_user_id " +
+            "WHERE ces_id = (SELECT ces.ces_id FROM public.course_enrollment_session ces JOIN public.ces_status stat " +
             "ON ces.ces_status_id = stat.ces_status_id AND stat.name = 'Active')";
-    private final String GET_STUDENTS_FOR_CURRENT_CES = "SELECT users.system_user_id, users.email, users.name, users.surname FROM system_user users" +
-            "JOIN application app ON app.system_user_id = users.system_user_id" +
-            "WHERE ces_id = (SELECT ces.ces_id from course_enrollment_session ces JOIN ces_status stat" +
+    private final String GET_STUDENTS_FOR_CURRENT_CES = "SELECT users.system_user_id, users.email, users.name, users.surname FROM public.system_user users" +
+            "JOIN public.application app ON app.system_user_id = users.system_user_id" +
+            "WHERE ces_id = (SELECT ces.ces_id FROM public.course_enrollment_session ces JOIN public.ces_status stat" +
             "ON ces.ces_status_id = stat.ces_status_id AND stat.name = 'Active') AND app.rejected IS FALSE";
     private final String FIND_BY_EMAIL = "SELECT * FROM public.system_user u WHERE u.email = ?";
     private final String CREATE_USER = "INSERT INTO public.system_user(name, surname, email, password, system_user_status_id) VALUES (?, ?, ?, ?, ?)";

@@ -19,13 +19,14 @@
                 <%-- Interview time--%>
                 <div class="row">
                     <div class="form-group col-md-12">
-                        <label class="col-md-2 control-lable" for="file">Minutes for student</label>
+                        <label class="col-md-2 control-lable" for="file">Interviewers Contact Information</label>
                         <div class="col-md-7">
-                            <input type="number" data-ng-model="minutes" name="minutes"
-                                   class="minutes form-control input-sm" placeholder="Enter minutes interval" min="0"
-                                   max="60" required/>
+                            <input type="text" data-ng-model="contactStaff" name="contactStaff"
+                                   class="contact form-control input-sm" placeholder="Enter contact information"
+                                   ng-minlength="3"  required/>
                             <div class="has-error" ng-show="myForm.$dirty">
-                                <span ng-show="myForm.minutes.$error.required">This is a required field</span>
+                                <span ng-show="myForm.contact.$error.required">This is a required field </span>
+                                <span ng-show="myForm.contact.$error.minlength">Contact should be at least 3 symbols</span>
                             </div>
                         </div>
                     </div>
@@ -33,15 +34,14 @@
                 <%--Contact Info--%>
                 <div class="row">
                     <div class="form-group col-md-12">
-                        <label class="col-md-2 control-lable" for="file">Contact information</label>
+                        <label class="col-md-2 control-lable" for="file">Student Contact Information</label>
                         <div class="col-md-7">
-                            <input type="text" data-ng-model="contact" name="contact"
+                            <input type="text" data-ng-model="contactStudent" name="contactStudent"
                                    class="contact form-control input-sm" placeholder="Enter contact information"
-                                   ng-minlength="10" ng-maxlength="12"  required/>
+                                   ng-minlength="3"   required/>
                             <div class="has-error" ng-show="myForm.$dirty">
                                 <span ng-show="myForm.contact.$error.required">This is a required field </span>
-                                <span ng-show="myForm.contact.$error.minlength">Telephone should be at least 10 digits </span>
-                                <span ng-show="myForm.contact.$error.maxlength">Telephone should be at least 12 digits </span>
+                                <span ng-show="myForm.contact.$error.minlength">Contact should be at least 3 symbols</span>
                             </div>
                         </div>
                     </div>
