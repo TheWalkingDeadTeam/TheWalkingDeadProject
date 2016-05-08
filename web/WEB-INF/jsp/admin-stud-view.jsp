@@ -83,14 +83,15 @@
                     class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
                 Save
             </button>
-
             <div class="checkbox-dropdown">
                 Choose column
-                <ul ng-repeat="(key,value) in data.users[0]" class="checkbox-dropdown-list">
-                    <li>
+                <%--<ul  class="checkbox-dropdown-list">--%>
+                <ul class="checkbox-dropdown-list">
+                    <li ng-repeat="(key,value) in data.users[0]">
                         <label>
                             <input type="checkbox" />{{key}}</label></li>
-                    </ul>
+                </ul>
+                <%--</ul>--%>
             </div>
 
 
@@ -186,6 +187,7 @@
 
     </main>
 </div>
+
 </main>
 
 <script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
