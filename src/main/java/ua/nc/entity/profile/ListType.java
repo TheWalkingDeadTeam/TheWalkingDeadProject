@@ -12,6 +12,7 @@ public class ListType implements Identified<Integer> {
     public ListType(String name) {
         this.name = name;
     }
+    public ListType(){}
 
     @Override
     public Integer getId() {

@@ -1,5 +1,6 @@
 package ua.nc.service;
 
+import ua.nc.dao.exception.DAOException;
 import ua.nc.entity.CES;
 
 /**
@@ -8,5 +9,5 @@ import ua.nc.entity.CES;
 public interface CESService {
     CES getCurrentCES();
 
-    void enroll(UserDetailsImpl userDetails);
+    void enroll(Integer userId, Integer currentCESId) throws DAOException;
 }

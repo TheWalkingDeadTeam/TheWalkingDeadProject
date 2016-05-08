@@ -19,17 +19,17 @@ public class CES implements Identified<Integer>{
     private Integer interviewTimeForPerson;
     private Integer interviewTimeForDay;
 
-    public CES(Integer year, Date startRegistrationDate, Date endRegistrationDate, Integer quota, Integer reminders, Integer statusId,
+    public CES(Integer year, Date startRegistrationDate, Integer quota, Integer reminders, Integer statusId,
                Integer interviewTimeForPerson, Integer interviewTimeForDay){
         this.year = year;
         this.startRegistrationDate = startRegistrationDate;
-        this.endRegistrationDate = endRegistrationDate;
         this.quota = quota;
         this.reminders = reminders;
         this.statusId = statusId;
         this.interviewTimeForPerson = interviewTimeForPerson;
         this.interviewTimeForDay = interviewTimeForDay;
     }
+    public CES(){}
 
     public Integer getStatusId() {
         return statusId;

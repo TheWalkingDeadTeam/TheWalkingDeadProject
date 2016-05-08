@@ -9,8 +9,13 @@ import ua.nc.entity.CES;
 public interface CESDAO extends GenericDAO<CES, Integer> {
     CES getCurrentCES() throws DAOException;
 
-    void addCESField(int cesId, int fieldId);
+    CES getPendingCES() throws DAOException;
 
-    //мб это переместить в InterviewerParticipationDAO? По смыслу больше туда подходит
-    void addInterviewerForCurrentCES(int interviewerId);
+    void addCESField(int cesId, int fieldId) throws DAOException;
+
+    void removeCESField(int cesId, int fieldId) throws DAOException;
+
+    void addInterviewerForCurrentCES(int cesId, int interviewerId) throws DAOException;
+
+    void removeInterviewerForCurrentCES(int cesId, int interviewerId) throws DAOException;
 }

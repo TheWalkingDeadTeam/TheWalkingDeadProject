@@ -64,7 +64,7 @@
                         <div id="regform" class="col-lg-11 col-md-8 col-sm-9 col-xs-9">
                             <input id="name" name="name" class="form-control" placeholder="Name" type="text" value="">
                             <div class="correct-name"></div>
-                            <input id="surename" name="surename" class="form-control" placeholder="Surename" type="text"
+                            <input id="surname" name="surname" class="form-control" placeholder="Surename" type="text"
                                    value="">
                             <div class="correct-surename"></div>
                             <input id="email" name="email" class="form-control" placeholder="Email address" type="text"

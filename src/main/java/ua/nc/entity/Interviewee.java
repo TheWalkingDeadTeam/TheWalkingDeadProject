@@ -7,14 +7,15 @@ import java.util.Date;
  */
 public class Interviewee implements Identified<Integer> {
     private int applicationID;
-    private Date interview_time;
-    private String special_mark;
+    private Date interviewTime;
+    private String specialMark;
     private Integer devFeedbackID;
     private Integer hrFeedbackID;
 
     public Interviewee(int id) {
         this.applicationID = id;
     }
+    public Interviewee(){}
 
     @Override
     public Integer getId() {
@@ -25,12 +26,12 @@ public class Interviewee implements Identified<Integer> {
         this.applicationID = id;
     }
 
-    public Date getInterview_time() {
-        return interview_time;
+    public Date getInterviewTime() {
+        return interviewTime;
     }
 
-    public void setInterview_time(Date interview_time) {
-        this.interview_time = interview_time;
+    public void setInterviewTime(Date interview_time) {
+        this.interviewTime = interview_time;
     }
 
     public Integer getHrFeedbackID() {
@@ -41,12 +42,12 @@ public class Interviewee implements Identified<Integer> {
         this.hrFeedbackID = hrFeedbackID;
     }
 
-    public String getSpecial_mark() {
-        return special_mark;
+    public String getSpecialMark() {
+        return specialMark;
     }
 
-    public void setSpecial_mark(String special_mark) {
-        this.special_mark = special_mark;
+    public void setSpecialMark(String special_mark) {
+        this.specialMark = special_mark;
     }
 
     public Integer getDevFeedbackID() {

@@ -8,14 +8,13 @@ import ua.nc.entity.Identified;
 public class ListValue implements Identified<Integer> {
     private int ID;
     private int listTypeID;
-    private double valueDouble;
     private String valueText;
 
-    public ListValue(int listTypeID, double valueDouble, String valueText) {
+    public ListValue(int listTypeID, String valueText) {
         this.listTypeID = listTypeID;
-        this.valueDouble = valueDouble;
         this.valueText = valueText;
     }
+    public ListValue(){}
 
     @Override
     public Integer getId() {
@@ -32,14 +31,6 @@ public class ListValue implements Identified<Integer> {
 
     public void setListID(int listTypeID) {
         this.listTypeID = listTypeID;
-    }
-
-    public double getValueDouble() {
-        return valueDouble;
-    }
-
-    public void setValueDouble(double valueDouble) {
-        this.valueDouble = valueDouble;
     }
 
     public String getValueText() {

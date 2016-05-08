@@ -13,7 +13,7 @@
             success: function (response) {
                 if (response.fields.length) {
                     requestData = response;
-                    enableSave()
+                    enableSave();
                     $('#fields').on('change, input', enableSave);
                     response.fields.forEach(function (item, i) {
                         typeSwitcher(item, i, '#fields');
@@ -37,6 +37,15 @@
                 contentType: "application/json",
                 url: 'profile',
                 data: JSON.stringify(requestData)
+            })
+        });
+
+        $('#buttonEnroll').bind('click', function () {
+            event.preventDefault();
+            $.ajax({
+                method: 'GET',
+                contentType: "application/json",
+                url: '/profile/enroll'
             })
         });
     });
