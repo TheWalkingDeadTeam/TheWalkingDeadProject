@@ -91,39 +91,59 @@ public class AdminController {
     public String getStudents(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber) {
         return "[{\n" +
                 "    \"id\": 1,\n" +
-                "    \"name\": \"Abc Ogurchik\",\n" +
+                "    \"name\": \"Abc\",\n" +
+                "    \"surname\": \"Ogurchik\",\n" +
                 "    \"isActive\": \"1\",\n" +
                 "    \"university\": \"KPI\",\n" +
                 "    \"devMark\": 10,\n" +
                 "    \"hrMark\": 5,\n" +
+                "    \"email\" : \"test@gmail.com\",\n" +
+                "    \"english\" : 5,\n" +
                 "    \"color\": \"blue\"\n" +
-                "  },\n" +
-                "  {\n" +
-                "    \"id\": 7,\n" +
-                "    \"name\": \"Bcd Ananas\",\n" +
-                "    \"isActive\": \"0\",\n" +
-                "    \"university\": \"NAU\",\n" +
-                "    \"devMark\": 15,\n" +
-                "    \"hrMark\": 10,\n" +
-                "    \"color\": \"yellow\"\n" +
-                "  },\n" +
-                "  {\n" +
-                "    \"id\": 8,\n" +
-                "    \"name\": \"TEST Apelsin\",\n" +
-                "    \"isActive\": \"1\",\n" +
-                "    \"university\": \"NAU\",\n" +
-                "    \"devMark\": 15,\n" +
-                "    \"hrMark\": 10,\n" +
-                "    \"color\": \"yellow\"\n" +
-                "  },\n" +
-                "  {\n" +
+                "  },{\n" +
                 "    \"id\": 2,\n" +
-                "    \"name\": \"Bcd Kokos\",\n" +
+                "    \"name\": \"Abc\",\n" +
+                "    \"surname\": \"Ogurchik\",\n" +
                 "    \"isActive\": \"1\",\n" +
                 "    \"university\": \"KPI\",\n" +
                 "    \"devMark\": 10,\n" +
-                "    \"hrMark\": 85,\n" +
-                "    \"color\": \"green\"\n" +
+                "    \"hrMark\": 5,\n" +
+                "    \"email\" : \"test@gmail.com\",\n" +
+                "    \"english\" : 5,\n" +
+                "    \"color\": \"blue\"\n" +
+                "  },{\n" +
+                "    \"id\": 3,\n" +
+                "    \"name\": \"Abc\",\n" +
+                "    \"surname\": \"Ogurchik\",\n" +
+                "    \"isActive\": \"1\",\n" +
+                "    \"university\": \"KPI\",\n" +
+                "    \"devMark\": 10,\n" +
+                "    \"hrMark\": 5,\n" +
+                "    \"email\" : \"test@gmail.com\",\n" +
+                "    \"english\" : 5,\n" +
+                "    \"color\": \"blue\"\n" +
+                "  },{\n" +
+                "    \"id\": 4,\n" +
+                "    \"name\": \"Abc\",\n" +
+                "    \"surname\": \"Ogurchik\",\n" +
+                "    \"isActive\": \"1\",\n" +
+                "    \"university\": \"KPI\",\n" +
+                "    \"devMark\": 10,\n" +
+                "    \"hrMark\": 5,\n" +
+                "    \"email\" : \"test@gmail.com\",\n" +
+                "    \"english\" : 5,\n" +
+                "    \"color\": \"blue\"\n" +
+                "  },{\n" +
+                "    \"id\": 5,\n" +
+                "    \"name\": \"Abc\",\n" +
+                "    \"surname\": \"Ogurchik\",\n" +
+                "    \"isActive\": \"1\",\n" +
+                "    \"university\": \"KPI\",\n" +
+                "    \"devMark\": 10,\n" +
+                "    \"hrMark\": 5,\n" +
+                "    \"email\" : \"test@gmail.com\",\n" +
+                "    \"english\" : 5,\n" +
+                "    \"color\": \"blue\"\n" +
                 "  }]";
 
     }
