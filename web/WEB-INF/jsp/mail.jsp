@@ -35,9 +35,9 @@
                 <input type="hidden" ng-model="ctrl.mail.id" />
                 <div class="row">
                     <div class="form-group col-md-12">
-                        <label class="col-md-2 control-lable" for="file">Mail Header</label>
+                        <label class="col-md-2 control-lable" for="file">Mail Topic</label>
                         <div class="col-md-7">
-                            <input type="text" ng-model="ctrl.mail.headTemplate" name="mhead" class="mailhead form-control input-sm" placeholder="Enter mail2 header" required ng-minlength="3"/>
+                            <input type="text" ng-model="ctrl.mail.headTemplate" name="mhead" class="mailhead form-control input-sm" placeholder="Enter mail topic" required ng-minlength="3"/>
                             <div class="has-error" ng-show="myForm.$dirty">
                                 <span ng-show="myForm.mhead.$error.required">This is a required field</span>
                                 <span ng-show="myForm.mhead.$error.minlength">Minimum length required is 3</span>
@@ -76,7 +76,7 @@
                 <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Head</th>
+                    <th>Topic</th>
                     <th>Body</th>
                     <th width="20%"></th>
                 </tr>
@@ -97,8 +97,6 @@
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
-<script src="<c:url value='/resources/js/app.js' />"></script>
-<script src="<c:url value='/resources/js/mail_service.js' />"></script>
 <script src="<c:url value='/resources/js/mail_controller.js' />"></script>
 </body>
 </html>

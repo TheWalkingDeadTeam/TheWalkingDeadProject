@@ -14,18 +14,19 @@ import java.util.Map;
 public interface CESService {
     CES getCurrentCES();
 
-    void enroll(Integer userId, Integer currentCESId) throws DAOException;
+    void enroll(Integer userId, Integer cesId) throws DAOException;
 
     /**
      * Plan current interview schedule and send notifications to all the participants.
      *
-     * @param interviewerMail email template to send to all the interviewers.
+     * @param interviewerMail       email template to send to all the interviewers.
      * @param interviewerParameters parameters to set in interviewer template to personalize the emails.
-     * @param studentMail email template to send to all the students.
-     * @param studentParameters parameters to set in student template to personalize the emails.
+     * @param studentMail           email template to send to all the students.
+     * @param studentParameters     parameters to set in student template to personalize the emails.
      * @return schedule of the current CES interviews.
      * @throws DAOException missing data about current course enrolment session.
      */
     List<Date> planSchedule(Mail interviewerMail, Map<String, String> interviewerParameters,
                             Mail studentMail, Map<String, String> studentParameters) throws DAOException;
+
 }

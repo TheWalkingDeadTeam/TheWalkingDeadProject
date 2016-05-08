@@ -184,8 +184,7 @@ public class AdminController {
 
     @RequestMapping(value = {"/scheduler"} ,method = RequestMethod.GET)
     public String schedulerView() {
-        return "scheduler";
+        return "admin-scheduler";
     }
-
 
 }

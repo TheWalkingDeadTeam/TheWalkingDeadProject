@@ -1,6 +1,5 @@
 package ua.nc.service;
 
-import org.apache.commons.logging.Log;
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.MailSender;
@@ -9,9 +8,6 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Service;
-import ua.nc.dao.ApplicationDAO;
-import ua.nc.dao.CESDAO;
-import ua.nc.dao.InterviewerParticipationDAO;
 import ua.nc.dao.MailDAO;
 import ua.nc.dao.enums.DataBaseType;
 import ua.nc.dao.exception.DAOException;
@@ -45,11 +41,10 @@ public class MailServiceImpl implements MailService {
     private static final String DATE_PATTERN = "$Date";
     private static final String NAME_PATTERN = "$Name";
     private DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
-    private MailDAO mailDAO = daoFactory.getMailDAO(daoFactory.getConnection());
-    private static ThreadPoolTaskScheduler scheduler;
-    private static ThreadPoolTaskScheduler schedulerMassDeliveryService;
     private static final int POOL_SIZE = 2;
     private static final int POOL_SIZE_SCHEDULER = 10;
+    private static ThreadPoolTaskScheduler scheduler;
+    private static ThreadPoolTaskScheduler schedulerMassDeliveryService;
     private static final int MILLIS_PER_HOUR = 1000 * 60 * 60;
 
     static {
@@ -107,7 +102,7 @@ public class MailServiceImpl implements MailService {
     /**
      * Async mail sending.
      *
-     * @param message message to send.
+     * @param message    message to send.
      * @param mailSender sender.
      */
     private void AsynchronousSender(final SimpleMailMessage message, final MailSender mailSender) {
@@ -153,7 +148,7 @@ public class MailServiceImpl implements MailService {
     /**
      * Set all the predefined mail parameters.
      *
-     * @param mail mail to customize.
+     * @param mail       mail to customize.
      * @param parameters set of parameters in form : "{pattern1:meaning1, ..., patternN:meaningN}".
      * @return customized mail.
      */
@@ -266,7 +261,7 @@ public class MailServiceImpl implements MailService {
                                        Map<String, String> studentParameters, List<User> interviewersList,
                                        List<User> studentsList) {
         int reminderMillis = reminderTime * MILLIS_PER_HOUR;
-        int studentsPerDay = studentsList.size() / interviewDates.size() + 1;
+        int studentsPerDay = (int) Math.ceil(studentsList.size() / interviewDates.size());
         int todaysFirstStudent = 0;
         int todaysLastStudent = studentsPerDay;
         Mail customizedInterviewerMail = customizeMail(interviewerMail, studentParameters);
