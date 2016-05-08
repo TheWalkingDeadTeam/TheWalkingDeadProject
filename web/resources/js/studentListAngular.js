@@ -171,21 +171,42 @@ app.controller('StudentCtrl', ["$http", "$scope", function ($http, $scope) {
     vm.pageno = 1; // initialize page no to 1
     vm.total_count = 0;
     vm.itemsPerPage = 10; //this could be a dynamic value from a drop down
+    $scope.sortType = 'id';
+    $scope.sortReverse = false;
+
+
 
     vm.getData = function (pageno) { // This would fetch the data on page change.
         //In practice this should be in a factory.
         vm.users = [];
         // "students/list/"+vm.itemsPerPage+"/"+pageno
-        $http.get("students/list/"+vm.itemsPerPage+"/"+pageno).success(function (response) {
+        $http.get("students/list/" + vm.itemsPerPage + "/" + pageno + "/" +$scope.sortType + "/" +$scope.sortReverse).success(function (response) {
             vm.users = response;
         });
         $http.get("students/size").success(function (response) {
             vm.total_count = response.size;
         });
     };
+
+    // $scope.sortBy() = function (pageno) {
+    //     var dataObj = {
+    //         sortBy: $scope.sortType,
+    //         sortOrder: $scope.sortReverse
+    // },
+    //     $http.post('stodents/sort', dataObj)
+    //         .success(function (data) {
+    //
+    //         })
+    // }
+    //
     $scope.dataStudents = {
         studId: []
-    }
+    };
+    
+    $scope.columnsType = {
+        columns: []
+    };
+    
     vm.getData(vm.pageno); // Call the function to fetch initial data on page load.
 
     $scope.checkAll = function () {
@@ -200,7 +221,10 @@ app.controller('StudentCtrl', ["$http", "$scope", function ($http, $scope) {
             $scope.dataStudents.studId = [];
         }
 
-    };
+    }
+
+
+
     $scope.activateStud = function () {
         var dataObj = {
             type: 'activate',

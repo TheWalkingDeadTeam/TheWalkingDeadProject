@@ -87,15 +87,16 @@
                 Choose column
                 <%--<ul  class="checkbox-dropdown-list">--%>
                 <ul class="checkbox-dropdown-list">
-                    <li ng-repeat="(key,value) in data.users[0]">
+                    <li ng-repeat="(key, value) in data.users[0]">
                         <label>
-                            <input type="checkbox" />{{key}}</label></li>
+                            <input type="checkbox" checklist-model="columnsType.columns" checklist-value="{{key}}"/>{{key}}</label></li>
                 </ul>
                 <%--</ul>--%>
             </div>
 
 
-            <%--<ul ng-repeat="(key,value) in data.users[0]" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">--%>
+
+        <%--<ul ng-repeat="(key,value) in data.users[0]" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">--%>
                 <%--<li class="dropdown-submenu pull-right">--%>
                     <%--{{key}}--%>
                 <%--</li>--%>
@@ -108,7 +109,7 @@
                 <input type="checkbox" ng-model="selectedAll" ng-click="checkAll()">
             </td>
             <td>
-                <a href="#" ng-click="sortType = 'id'; sortReverse = !sortReverse">
+                <a href="#" ng-click="sortType = 'id'; sortReverse = !sortReverse; data.getData(1)">
                     #
                     <span ng-show="sortType == 'id' && !sortReverse" class="fa fa-caret-down"></span>
                     <span ng-show="sortType == 'id' && sortReverse" class="fa fa-caret-up"></span>
@@ -122,35 +123,35 @@
                 </a>
             </td>
             <td>
-                <a href="#" ng-click="sortType = 'university'; sortReverse = !sortReverse">
+                <a href="#" ng-click="sortType = 'university'; sortReverse = !sortReverse; data.getData(1)">
                     University
                     <span ng-show="sortType == 'university' && !sortReverse" class="fa fa-caret-down"></span>
                     <span ng-show="sortType == 'university' && sortReverse" class="fa fa-caret-up"></span>
                 </a>
             </td>
             <td>
-                <a href="#" ng-click="sortType = 'devMark'; sortReverse = !sortReverse">
+                <a href="#" ng-click="sortType = 'devMark'; sortReverse = !sortReverse; data.getData(1)">
                     Dev Assesment
                     <span ng-show="sortType == 'devMark' && !sortReverse" class="fa fa-caret-down"></span>
                     <span ng-show="sortType == 'devMark' && sortReverse" class="fa fa-caret-up"></span>
                 </a>
             </td>
             <td>
-                <a href="#" ng-click="sortType = 'hrMark'; sortReverse = !sortReverse">
+                <a href="#" ng-click="sortType = 'hrMark'; sortReverse = !sortReverse; data.getData(1)">
                     HR Assesment
                     <span ng-show="sortType == 'hrMark' && !sortReverse" class="fa fa-caret-down"></span>
                     <span ng-show="sortType == 'hrMark' && sortReverse" class="fa fa-caret-up"></span>
                 </a>
             </td>
             <td>
-                <a href="#" ng-click="sortType = 'color'; sortReverse = !sortReverse">
+                <a href="#" ng-click="sortType = 'color'; sortReverse = !sortReverse; data.getData(1)">
                     Color
                     <span ng-show="sortType == 'color' && !sortReverse" class="fa fa-caret-down"></span>
                     <span ng-show="sortType == 'color' && sortReverse" class="fa fa-caret-up"></span>
                 </a>
             </td>
             <td>
-                <a href="#" ng-click="sortType = 'isActive'; sortReverse = !sortReverse">
+                <a href="#" ng-click="sortType = 'isActive'; sortReverse = !sortReverse; data.getData(1)">
                     Active
                     <span ng-show="sortType == 'isActive' && !sortReverse" class="fa fa-caret-down"></span>
                     <span ng-show="sortType == 'isActive' && sortReverse" class="fa fa-caret-up"></span>
@@ -165,7 +166,7 @@
         <tr dir-paginate="user in data.users|itemsPerPage:data.itemsPerPage" total-items="data.total_count">
             <td><input type="checkbox" checklist-model="dataStudents.studId" checklist-value="user.id"></td>
             <td ng-init="index=$index + 1">{{index}}</td>
-            <td><a href="/admin/students/{{user.id}}" target="_blanks">{{user.name}}{{user.surname}}</a></td>
+            <td><a href="/admin/students/{{user.id}}" target="_blanks">{{user.name}} {{user.surname}}</a></td>
             <td>{{user.university}}</td>
             <td>{{user.devMark}}</td>
             <td>{{user.hrMark}}</td>
@@ -184,6 +185,8 @@
             on-page-change="data.getData(newPageNumber)">
     </dir-pagination-controls>
 
+        <p>{{columnsType.columns}}</p>
+
 
     </main>
 </div>
@@ -199,6 +202,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-route.js"></script>
 <script src="../../resources/js/studentListAngular.js"></script>
 <script src="../../resources/js/dirPagination.js"></script>
+<%--<script src="../../resources/ng-table/ng-table.js"></script>--%>
 <script src="http://vitalets.github.io/checklist-model/checklist-model.js"></script>
 
 </body>

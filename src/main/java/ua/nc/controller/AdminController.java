@@ -22,9 +22,6 @@ import java.util.Set;
  * Created by Pavel on 18.04.2016.
  */
 
-/**
- * Created by Pavel on 18.04.2016.
- */
 @Controller
 @RequestMapping(value = "/admin")
 public class AdminController {
@@ -86,9 +83,10 @@ public class AdminController {
         return "{\"size\":2000}";
     }
 
-    @RequestMapping(value = {"/students/list/{itemsPerPage}/{pageNumber}"}, method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = {"/students/list/{itemsPerPage}/{pageNumber}/{sortType}/{sortReverse}"}, method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public String getStudents(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber) {
+    public String getStudents(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("sortType") String sortType, @PathVariable("sortReverse") String sortReverse) {
+        System.out.println(itemsPerPage + " " + pageNumber + " " + sortType + " " + sortReverse);
         return "[{\n" +
                 "    \"id\": 1,\n" +
                 "    \"name\": \"Abc\",\n" +
@@ -158,7 +156,12 @@ public class AdminController {
     @ResponseStatus(value = HttpStatus.OK)
     public void studentStatus(@RequestBody StudentStatus studentStatus) {
         StudentStatus status = studentStatus;
-        studentService.changeStatus(status.getType(), status.getValues());
+        if (!status.getType().isEmpty() && (status.getValues().size() > 0 )) {
+            studentService.changeStatus(status.getType(), status.getValues());
+        }else {
+            LOGGER.warn("Request type is not supported");
+        }
+
 
     }
 
