@@ -15,6 +15,7 @@ import ua.nc.dao.factory.DAOFactory;
 import ua.nc.entity.Mail;
 import ua.nc.entity.User;
 
+import java.sql.Connection;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -47,7 +48,6 @@ public class MailServiceImpl implements MailService {
     }
 
     private DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
-    private MailDAO mailDAO = daoFactory.getMailDAO(daoFactory.getConnection());
 
     public MailServiceImpl() {
 
@@ -62,6 +62,8 @@ public class MailServiceImpl implements MailService {
      */
     @Override
     public Mail createMail(String header, String body) {
+        Connection connection = daoFactory.getConnection();
+        MailDAO mailDAO = daoFactory.getMailDAO(connection);
         Mail mail = null;
         try {
             mail = new Mail();
@@ -71,6 +73,8 @@ public class MailServiceImpl implements MailService {
             LOGGER.debug(newCreated.getId());
         } catch (DAOException e) {
             LOGGER.warn("Mail not created ", e);
+        } finally {
+            daoFactory.putConnection(connection);
         }
         return mail;
     }
@@ -187,30 +191,42 @@ public class MailServiceImpl implements MailService {
 
     @Override
     public List<Mail> getAllMails() {
+        Connection connection = daoFactory.getConnection();
+        MailDAO mailDAO = daoFactory.getMailDAO(connection);
         List<Mail> mails = new ArrayList<>();
         try {
             mails = mailDAO.getAll();
         } catch (DAOException e) {
             LOGGER.error("Can't retrieve all mail", e);
+        } finally {
+            daoFactory.putConnection(connection);
         }
         return mails;
     }
 
     @Override
     public void updateMail(Mail mail) {
+        Connection connection = daoFactory.getConnection();
+        MailDAO mailDAO = daoFactory.getMailDAO(connection);
         try {
             mailDAO.update(mail);
         } catch (DAOException e) {
             LOGGER.error("Can't update mail", e);
+        } finally {
+            daoFactory.putConnection(connection);
         }
     }
 
     @Override
     public void deleteMail(Mail mail) {
+        Connection connection = daoFactory.getConnection();
+        MailDAO mailDAO = daoFactory.getMailDAO(connection);
         try {
             mailDAO.delete(mail);
         } catch (DAOException e) {
             LOGGER.error("Can't delete mail", e);
+        } finally {
+            daoFactory.putConnection(connection);
         }
     }
 
@@ -221,10 +237,14 @@ public class MailServiceImpl implements MailService {
      */
     @Override
     public Mail getMail(Integer id) {
+        Connection connection = daoFactory.getConnection();
+        MailDAO mailDAO = daoFactory.getMailDAO(connection);
         Mail mail = null;
         try {
             mail = mailDAO.get(id);
         } catch (DAOException e) {
+        } finally {
+            daoFactory.putConnection(connection);
         }
         return mail;
     }
@@ -237,10 +257,14 @@ public class MailServiceImpl implements MailService {
      */
     public List<Mail> getByHeaderMailTemplate(String header) {
         List<Mail> mails = new ArrayList<>();
+        Connection connection = daoFactory.getConnection();
+        MailDAO mailDAO = daoFactory.getMailDAO(connection);
         try {
             mails = mailDAO.getByHeader(header);
         } catch (DAOException e) {
             LOGGER.error("Can't handle mail template", e);
+        } finally {
+            daoFactory.putConnection(connection);
         }
         return mails;
     }

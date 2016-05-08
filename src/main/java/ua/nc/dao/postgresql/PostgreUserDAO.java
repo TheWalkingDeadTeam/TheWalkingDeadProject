@@ -11,9 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 /**
@@ -22,6 +20,14 @@ import java.util.Set;
 public class PostgreUserDAO extends AbstractPostgreDAO<User, Integer> implements UserDAO {
     private static final Logger LOGGER = Logger.getLogger(PostgreUserDAO.class);
     private static final String SQL_UPDATE_USER = "UPDATE public.system_user SET password = ? WHERE system_user_id = ?";
+    private final String GET_INTERVIEWERS_FOR_CURRENT_CES = "SELECT users.system_user_id, users.email, users.name, users.surname FROM system_user users " +
+            "JOIN interviewer_participation ip ON ip.system_user_id = users.system_user_id " +
+            "WHERE ces_id = (SELECT ces.ces_id from course_enrollment_session ces JOIN ces_status stat " +
+            "ON ces.ces_status_id = stat.ces_status_id AND stat.name = 'Active')";
+    private final String GET_STUDENTS_FOR_CURRENT_CES = "SELECT users.system_user_id, users.email, users.name, users.surname FROM system_user users" +
+            "JOIN application app ON app.system_user_id = users.system_user_id" +
+            "WHERE ces_id = (SELECT ces.ces_id from course_enrollment_session ces JOIN ces_status stat" +
+            "ON ces.ces_status_id = stat.ces_status_id AND stat.name = 'Active') AND app.rejected IS FALSE";
     private final String FIND_BY_EMAIL = "SELECT * FROM public.system_user u WHERE u.email = ?";
     private final String CREATE_USER = "INSERT INTO public.system_user(name, surname, email, password, system_user_status_id) VALUES (?, ?, ?, ?, ?)";
     private final String SET_ROLE_TO_USER = "INSERT INTO public.system_user_role(role_id, system_user_id) SELECT ?, system_user_id FROM public.system_user u WHERE u.email=?";
@@ -136,6 +142,52 @@ public class PostgreUserDAO extends AbstractPostgreDAO<User, Integer> implements
             throw new DAOException(ex);
         }
         return users;
+    }
+
+    @Override
+    public Set<User> getStudentsForCurrentCES() throws DAOException {
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        Set<User> users = new LinkedHashSet<>();
+        try {
+            statement = connection.prepareStatement(GET_STUDENTS_FOR_CURRENT_CES);
+            resultSet = statement.executeQuery();
+            PersistUser user = null;
+            while (resultSet.next()) {
+                user = new PersistUser();
+                user.setId(resultSet.getInt("system_user_id"));
+                user.setName(resultSet.getString("name"));
+                user.setSurname(resultSet.getString("surname"));
+                user.setEmail(resultSet.getString("email"));
+                users.add(user);
+            }
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        }
+        return users ;
+    }
+
+    @Override
+    public Set<User> getInterviewersForCurrentCES() throws DAOException {
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        Set<User> users = new LinkedHashSet<>();
+        try {
+            statement = connection.prepareStatement(GET_INTERVIEWERS_FOR_CURRENT_CES);
+            resultSet = statement.executeQuery();
+            PersistUser user = null;
+            while (resultSet.next()) {
+                user = new PersistUser();
+                user.setId(resultSet.getInt("system_user_id"));
+                user.setName(resultSet.getString("name"));
+                user.setSurname(resultSet.getString("surname"));
+                user.setEmail(resultSet.getString("email"));
+                users.add(user);
+            }
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        }
+        return users ;
     }
 
     @Override

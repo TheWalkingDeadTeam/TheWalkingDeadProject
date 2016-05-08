@@ -165,8 +165,7 @@ public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements C
             if (!rs.isBeforeFirst() ) {
                 result = null;
             } else {
-                result = parseResultSet(rs).iterator().next();
-            }
+                result = parseResultSet(rs).iterator().next();}
         } catch (Exception e) {
             throw new DAOException(e);
         }
