@@ -6,18 +6,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.entity.CES;
-import ua.nc.entity.profile.Field;
 import ua.nc.entity.profile.Profile;
 import ua.nc.service.*;
-import ua.nc.entity.profile.ProfileField;
-import ua.nc.service.CESService;
-import ua.nc.service.ProfileService;
-import ua.nc.service.ProfileServiceImpl;
-import ua.nc.service.UserDetailsImpl;
 import ua.nc.validator.ProfileValidator;
 import ua.nc.validator.ValidationError;
 import ua.nc.validator.Validator;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -41,7 +36,9 @@ public class ProfileController {
 //    }
 
     @RequestMapping(value = "/profile/{id}", method = RequestMethod.GET, produces = "application/json")
-    public @ResponseBody Profile profile(@PathVariable("id") Integer id) {
+    public
+    @ResponseBody
+    Profile profile(@PathVariable("id") Integer id) {
         Profile profile = null;
         try {
             profile = profileService.getProfile(id, 1);
@@ -76,17 +73,19 @@ public class ProfileController {
     }
 
     @RequestMapping(value = "profile/enroll", method = RequestMethod.GET)
-    public @ResponseBody Set<ValidationError> enroll() {
+    public
+    @ResponseBody
+    Set<ValidationError> enroll() {
         Set<ValidationError> errors = new LinkedHashSet<>();
         CES currentCES = cesService.getCurrentCES();
         if (currentCES != null) {
             try {
-                cesService.enroll(((UserDetailsImpl)SecurityContextHolder
+                cesService.enroll(((UserDetailsImpl) SecurityContextHolder
                         .getContext()
                         .getAuthentication()
                         .getPrincipal()).getId(), currentCES.getId());
             } catch (DAOException e) {
-                LOGGER.info("");
+                LOGGER.info("You have already enrolled to current CES");
             }
         } else {
             LOGGER.info("Can't enroll to current CES. Current CES session is not exist");

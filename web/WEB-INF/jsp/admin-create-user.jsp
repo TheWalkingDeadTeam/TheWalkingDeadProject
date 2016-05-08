@@ -70,7 +70,7 @@
                             <input id="email" name="email" class="form-control" placeholder="Email address" type="text"
                                    value="">
                             <div class="correct-email"></div>
-                            <input id="password" name="password" class="form-control" placeholder="Password"
+                            <input id="password" name="password" class="form-control login-field  login-field-password" placeholder="Password"
                                    type="password"
                                    value="">
                             <div class="correct-password"></div>
@@ -94,15 +94,22 @@
                     </div>
                 </div>
             </div>
-    </main>
+            <a href="/logout" target="_blank" id="view-source"
+               class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">Exit</a>
+    </div></main>
+
 </div>
 
 
+
+</body>
 <script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="/resources/bootstrap/js/bootstrap.js"></script>
+<script src="/resources/js/hideShowPassword.min.js"></script>
 <script src="/resources/js/admin-create-user.js"></script>
 <script src="/resources/js/createNewUserValid.js"></script>
-<script src="/resources/bootstrap/js/bootstrap.js"></script>
-</body>
-
+<script>
+    $('#password').hideShowPassword(false, true);
+</script>
 </html>

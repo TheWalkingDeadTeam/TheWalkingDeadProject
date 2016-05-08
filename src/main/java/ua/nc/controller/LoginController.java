@@ -60,8 +60,16 @@ public class LoginController implements HandlerExceptionResolver {
     }
 
     @RequestMapping(value = {"/", "/login"}, method = RequestMethod.GET)
-    public String login() {
-        return "login";
+    public String login(HttpServletRequest request) {
+        if (request.isUserInRole("ROLE_ADMIN")) {
+            return "admin";
+        } else {
+            if (request.isUserInRole("ROLE_HR") || request.isUserInRole("ROLE_DEV") || request.isUserInRole("ROLE_BA") || request.isUserInRole("ROLE_STUDENT")) {
+                return "account";
+            } else {
+                return "login";
+            }
+        }
     }
 
     @RequestMapping(value = "/security_check ", method = RequestMethod.POST, produces = "application/json")

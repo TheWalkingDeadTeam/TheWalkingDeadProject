@@ -78,8 +78,6 @@ public class AdminController {
     public
     @ResponseBody
     String studentsGetJSON() {
-
-
         return "[{\n" +
                 "    \"id\": 1,\n" +
                 "    \"name\": \"Abc Ogurchik\",\n" +
@@ -139,8 +137,6 @@ public class AdminController {
     public
     @ResponseBody
     String interviewGetJSON() {
-
-
         return "[{\n" +
                 "    \"id\": 1,\n" +
                 "    \"name\": \"Abc\",\n" +
