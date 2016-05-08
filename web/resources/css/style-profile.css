@@ -122,11 +122,11 @@ button:active {
 
 /* при нажатии */
 
-#save {
-    margin: 10px auto;
-    display: block;
-    width: 95px;
-}
+/*#save {*/
+    /*margin: 10px auto;*/
+    /*display: block;*/
+    /*width: 95px;*/
+/*}*/
 
 [type='file'] {
     display: block;
@@ -145,6 +145,12 @@ button:active {
 #fieldsCheck {
     display: block;
     margin: 0 auto;
+    max-width: 700px;
+}
+
+#profileButtons {
+    display: block;
+    margin: 10px auto;
     max-width: 700px;
 }
 

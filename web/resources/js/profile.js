@@ -181,11 +181,8 @@
                     $('<div id=\"block' + i + '\">').appendTo($(divname));
                     $('<span>').attr({for: item.id}).text(item.fieldName + ' ').appendTo($('#block' + i));
                     $('<select>').attr(attributes).attr('ng-model', i).appendTo($('#block' + i));
-                    
+                    $('#select' + item.id).append('<option id="00wild" ' + 'disabled' + '>' + 'University' + '</option>');
                     item.values.forEach(function (item_value, j) {
-                        if (j == 0) {
-                            $('#select' + item.id).append('<option id="00wild" ' + 'disabled' + '>' + 'University' + '</option>');
-                        }
                         var isSelected = item_value.value == "true";
                         $('#select' + item.id)
                             .append('<option id="' + item_value.id + '" value="' + item_value.fieldValueName + '">' + item_value.fieldValueName + '</option>');

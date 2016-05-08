@@ -64,9 +64,9 @@
                         <div id="regform" class="col-lg-11 col-md-8 col-sm-9 col-xs-9">
                             <input id="name" name="name" class="form-control" placeholder="Name" type="text" value="">
                             <div class="correct-name"></div>
-                            <input id="surname" name="surname" class="form-control" placeholder="Surename" type="text"
+                            <input id="surname" name="surname" class="form-control" placeholder="Surname" type="text"
                                    value="">
-                            <div class="correct-surename"></div>
+                            <div class="correct-surname"></div>
                             <input id="email" name="email" class="form-control" placeholder="Email address" type="text"
                                    value="">
                             <div class="correct-email"></div>
@@ -101,6 +101,7 @@
 <script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="/resources/js/admin-create-user.js"></script>
+<script src="/resources/js/createNewUserValid.js"></script>
 <script src="/resources/bootstrap/js/bootstrap.js"></script>
 </body>
 
