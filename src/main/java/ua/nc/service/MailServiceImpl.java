@@ -37,6 +37,7 @@ public class MailServiceImpl implements MailService {
     private static final long SLEEP = 1000;
     private static final String DATE_PATTERN = "$Date";
     private static final String NAME_PATTERN = "$Name";
+    private static final String SURNAME_PATTERN = "$Surname";
     private DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
     private static final int POOL_SIZE = 2;
     private static final int POOL_SIZE_SCHEDULER = 10;
@@ -133,6 +134,7 @@ public class MailServiceImpl implements MailService {
                         //Sleep for a while, google may think you're spamming :(
                         Thread.sleep(SLEEP);
                         nameParameter.put(NAME_PATTERN, i.getName());
+                        nameParameter.put(SURNAME_PATTERN, i.getSurname());
                         sendMail(i.getEmail(), customizeMail(mail, nameParameter));
                     }
                 } catch (Exception e) {
