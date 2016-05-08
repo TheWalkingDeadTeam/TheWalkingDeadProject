@@ -4,7 +4,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ua.nc.dao.exception.DAOException;
+import ua.nc.entity.profile.Field;
 import ua.nc.entity.profile.Profile;
+import ua.nc.entity.profile.ProfileField;
 import ua.nc.service.CESService;
 import ua.nc.service.ProfileService;
 import ua.nc.service.ProfileServiceImpl;
@@ -36,7 +38,6 @@ public class ProfileController {
 
     @RequestMapping(value = "/profile/{id}", method = RequestMethod.GET, produces = "application/json")
     public @ResponseBody Profile profile(@PathVariable("id") Integer id) {
-        System.out.println("Test");
         Profile profile = null;
         try {
             profile = profileService.getProfile(id, 1);

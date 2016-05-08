@@ -13,7 +13,7 @@
         },
         {
           "fieldValueName": "1",
-          "value": "false",
+          "value": "true",
           "id": "2"
         },
         {
@@ -77,7 +77,7 @@
         },
         {
           "fieldValueName": "1",
-          "value": "false",
+          "value": "true",
           "id": "2"
         },
         {
@@ -136,22 +136,22 @@
       "values": [
         {
           "fieldValueName": "Research",
-          "value": false,
+          "value": "false",
           "id": "12"
         },
         {
           "fieldValueName": "Practice",
-          "value": false,
+          "value": "true",
           "id": "13"
         },
         {
           "fieldValueName": "New knowledge",
-          "value": false,
+          "value": "false",
           "id": "14"
         },
         {
           "fieldValueName": "Work in NC",
-          "value": false,
+          "value": "false",
           "id": "15"
         }
       ],
@@ -165,27 +165,27 @@
       "values": [
         {
           "fieldValueName": "VK",
-          "value": false,
+          "value": "false",
           "id": "16"
         },
         {
           "fieldValueName": "Facebook",
-          "value": false,
+          "value": "false",
           "id": "17"
         },
         {
           "fieldValueName": "Our site",
-          "value": false,
+          "value": "false",
           "id": "18"
         },
         {
           "fieldValueName": "Other people",
-          "value": false,
+          "value": "false",
           "id": "19"
         },
         {
           "fieldValueName": "TV",
-          "value": false,
+          "value": "true",
           "id": "20"
         }
       ],
@@ -199,11 +199,36 @@
       "values": [
         {
           "fieldValueName": null,
-          "value": null,
+          "value": "+380666666666",
           "id": null
         }
       ],
       "id": 5
+    },
+    {
+      "fieldName": "University",
+      "orderNum": 6,
+      "multipleChoice": false,
+      "fieldType": "select",
+      "values": [
+
+        {
+          "fieldValueName": "KNU",
+          "value": "false",
+          "id": "22"
+        },
+        {
+          "fieldValueName": "KPI",
+          "value": "false",
+          "id": "21"
+        },
+        {
+          "fieldValueName": "NAUKMA",
+          "value": "false",
+          "id": "23"
+        }
+      ],
+      "id": 6
     },
     {
       "fieldName": "Text field",
@@ -213,7 +238,7 @@
       "values": [
         {
           "fieldValueName": null,
-          "value": null,
+          "value": "text field",
           "id": null
         }
       ],
@@ -227,7 +252,7 @@
       "values": [
         {
           "fieldValueName": null,
-          "value": null,
+          "value": "oki",
           "id": null
         }
       ],

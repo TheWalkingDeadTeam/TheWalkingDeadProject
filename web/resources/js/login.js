@@ -4,6 +4,7 @@
 $(document).ready(function () {
 
     var counter = 0;
+    $('#mainLolo').hide();
      $('#thisDiv').on('click', successLogin);
     // $('#logoDiv').on('click', swapElements(counter));
 

@@ -1,8 +1,6 @@
 (function () {
-
     var requestData;
     var id = location.search.substr(1);
-
     $(document).ready(function () {
         $.ajax({
             type: 'get',
@@ -39,7 +37,8 @@
                 url: '/profile',
                 data: JSON.stringify(requestData),
                 success: function () {
-                    alert();
+                    $('#fieldsCheck').removeClass().empty();
+                    $('#fieldsCheck').addClass('alert alert-success').html('Profile saved successfully');
                 }
             })
         });
@@ -176,34 +175,43 @@
                     break;
 
                 case 'select':
-                    var attributes = {type: 'select', id: item.id};
+
+                    var attributes = {type: 'select', id: 'select' + item.id};
                     attributes.required = "required";
                     $('<div id=\"block' + i + '\">').appendTo($(divname));
                     $('<span>').attr({for: item.id}).text(item.fieldName + ' ').appendTo($('#block' + i));
                     $('<select>').attr(attributes).attr('ng-model', i).appendTo($('#block' + i));
-                    $('#' + item.id).append('<option ' + 'disabled' + '>' + 'University' + '</option>');
+                    
                     item.values.forEach(function (item_value, j) {
-                        var isSelected = (item_value.value == "true") ? 'selected' : '';
-                        $('#' + item.id)
-                            .append('<option id="' + item_value.id + '" value="' + item_value.fieldValueName + '" ' + isSelected + '>' + item_value.fieldValueName + '</option>')
-                            .on('change', function () {
-                                var updatedSelect = requestData.fields[$(this).attr('ng-model')].values.map(function (item) {
-                                    if (item.fieldName == this.value) {
-                                        item.value = true;
-                                        return item;
-                                    } else {
-                                        item.value = false;
-                                        return item;
-                                    }
-                                }, this);
+                        if (j == 0) {
+                            $('#select' + item.id).append('<option id="00wild" ' + 'disabled' + '>' + 'University' + '</option>');
+                        }
+                        var isSelected = item_value.value == "true";
+                        $('#select' + item.id)
+                            .append('<option id="' + item_value.id + '" value="' + item_value.fieldValueName + '">' + item_value.fieldValueName + '</option>');
+                        if(isSelected) {
+                            $("#select" + item.id + " option[value='" + item_value.fieldValueName + "']").prop('selected', true);
+                        }
+                    });
+                    $('#select' + item.id).on('change', function () {
+                        var updatedSelect = requestData.fields[$(this).attr('ng-model')].values.map(function (item) {
+                            allah = $(this).attr('ng-model');
+                            if (item.fieldValueName == this.value) {
+                                console.log(item.fieldValueName);
+                                item.value = 'true';
+                                return item;
+                            } else {
+                                item.value = 'false';
+                                return item;
+                            }
+                        }, this);
 
-                                requestData.fields[$(this).attr('ng-model')].values = updatedSelect;
-                            });
-                    })
+                        requestData.fields[$(this).attr('ng-model')].values = updatedSelect;
+                    });
                     break;
 
                 case 'textarea':
-                    var attributes = {id: item.id, cols: 40, rows: 4};
+                    var attributes = {id: 'textarea' + item.id, cols: 40, rows: 4};
                     attributes.required = "required";
                     $('<div id=\"block' + i + '\">').appendTo($(divname));
                     $('<span>').attr({for: item.id}).text(item.fieldName + ' ').appendTo($('#block' + i));
@@ -214,7 +222,7 @@
                         .bind('input', function () {
                             requestData['fields'][$(this).attr('ng-model')].values[0].value = $(this).val();
                         });
-                    $('#' + item.id).val(item.values[0].value);
+                    $('#textarea' + item.id).val(item.values[0].value);
                     break;
             }
         } else if (item.multipleChoice) {
