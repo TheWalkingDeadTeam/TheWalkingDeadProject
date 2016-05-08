@@ -44,6 +44,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.cyan-light_blue.min.css">
     <link rel="stylesheet" href="/resources/css/styles.css">
+    <link rel="stylesheet" href="/resources/css/checkbox.css">
 
     <style>
         #view-source {
@@ -82,6 +83,22 @@
                     class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
                 Save
             </button>
+
+            <div class="checkbox-dropdown">
+                Choose column
+                <ul ng-repeat="(key,value) in data.users[0]" class="checkbox-dropdown-list">
+                    <li>
+                        <label>
+                            <input type="checkbox" />{{key}}</label></li>
+                    </ul>
+            </div>
+
+
+            <%--<ul ng-repeat="(key,value) in data.users[0]" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">--%>
+                <%--<li class="dropdown-submenu pull-right">--%>
+                    <%--{{key}}--%>
+                <%--</li>--%>
+            <%--</ul>--%>
         </div>
     <table class="table table-striped table-hover">
         <thead>
@@ -165,6 +182,8 @@
             boundary-links="true"
             on-page-change="data.getData(newPageNumber)">
     </dir-pagination-controls>
+
+
     </main>
 </div>
 </main>
@@ -173,6 +192,7 @@
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="/resources/js/admin-create-user.js"></script>
 <script src="/resources/bootstrap/js/bootstrap.js"></script>
+<script src="/resources/js/checkboxScript.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-route.js"></script>
 <script src="../../resources/js/studentListAngular.js"></script>
