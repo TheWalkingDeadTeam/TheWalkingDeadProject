@@ -41,13 +41,11 @@ public class MailServiceImpl implements MailService {
     private DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
     private static final int POOL_SIZE = 2;
     private static final int POOL_SIZE_SCHEDULER = 10;
-    private static ThreadPoolTaskScheduler scheduler;
-    private static ThreadPoolTaskScheduler schedulerMassDeliveryService;
     private static final int MILLIS_PER_HOUR = 1000 * 60 * 60;
+    private static ThreadPoolTaskScheduler scheduler = scheduler = new ThreadPoolTaskScheduler();
+    private static ThreadPoolTaskScheduler schedulerMassDeliveryService = new ThreadPoolTaskScheduler();
 
     static {
-        scheduler = new ThreadPoolTaskScheduler();
-        schedulerMassDeliveryService = new ThreadPoolTaskScheduler();
         scheduler.setPoolSize(POOL_SIZE);
         schedulerMassDeliveryService.setPoolSize(POOL_SIZE_SCHEDULER);
         scheduler.initialize();
@@ -136,6 +134,22 @@ public class MailServiceImpl implements MailService {
             }
         },date);
     }
+
+
+
+    public void test(final Date date) {
+        System.out.println("OK i am in, and the time is:" + date);
+        schedulerMassDeliveryService.schedule(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("OK i am in 2222 and the time is:" + date);
+                    sendMail("olexander.halii@gmail.com","hello","bukin");
+            }
+        },date);
+    }
+
+
+
 
     /**
      * Set all the predefined mail parameters.

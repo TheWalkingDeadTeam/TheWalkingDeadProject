@@ -22,6 +22,8 @@ import ua.nc.service.MailService;
 import ua.nc.service.MailServiceImpl;
 
 import java.sql.Connection;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -54,6 +56,7 @@ public class SchedulerController {
     private String googleMapLink(String location) {
         String link = null;
         GeoApiContext context = new GeoApiContext().setApiKey(GEO_CODE_GOOGLE);
+
         try {
             GeocodingResult[] results = GeocodingApi.geocode(context,
                     location).await();
@@ -61,6 +64,7 @@ public class SchedulerController {
             String longitude = String.valueOf(results[0].geometry.location.lng);
             link = DEFAULT_PLACE_LINK.replaceAll("lat", latitude);
             link = link.replaceAll("lng", longitude);
+            return link;
         } catch (Exception e) {
             log.warn("Failed to parse coordinates", e);
         }
@@ -71,8 +75,8 @@ public class SchedulerController {
     private Map<String, String> param(Scheduler scheduler) {
         Map<String, String> interviewerParameters = new HashMap<>();
         interviewerParameters.put(LOCATION, scheduler.getLocations());
-        interviewerParameters.put(COURSE_TYPE, scheduler.getCourseType());
         interviewerParameters.put(GOOGLE_MAPS, googleMapLink(scheduler.getLocations()));
+        interviewerParameters.put(COURSE_TYPE, scheduler.getCourseType());
         return interviewerParameters;
     }
 
@@ -96,6 +100,8 @@ public class SchedulerController {
         Map<String, String> studentParameters = param(scheduler);
         interviewerParameters.put(CONTACT_INTERVIEWERS, scheduler.getContactStaff());
         studentParameters.put(CONTACT_STUDENTS, scheduler.getContactStudent());
+
+
         try {
             List<Date> interviewDates = cesService.planSchedule();
             CES ces = cesService.getCurrentCES();
@@ -107,5 +113,14 @@ public class SchedulerController {
         } catch (DAOException e) {
             log.warn("Check Scheduler paramters", e);
         }
+
+
+
+//        final long ONE_MINUTE_IN_MILLIS = 60000;//millisecs
+//        Date beforeTime = new Date();
+//        long curTimeInMs = beforeTime.getTime();
+//        Date afterAddingMins = new Date(curTimeInMs + (2 * ONE_MINUTE_IN_MILLIS));
+//        mailService.test(afterAddingMins);
+
     }
 }
