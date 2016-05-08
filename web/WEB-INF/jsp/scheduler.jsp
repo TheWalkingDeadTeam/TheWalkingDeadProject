@@ -1,61 +1,13 @@
+<!--Created by Alexander Haliy on 05.05.2016. !-->
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
-
     <title>Scheduler</title>
-    <style>
-        .minutes.ng-valid {
-            background-color: #d7eec3;
-        }
-
-        .minutes.ng-dirty.ng-invalid-required {
-            background-color: #ffd9cc;
-        }
-
-        .minutes.ng-dirty.ng-invalid-minlength {
-            background-color: yellow;
-        }
-
-        .location.ng-valid {
-            background-color: #d7eec3;
-        }
-
-        .location.ng-dirty.ng-invalid-required {
-            background-color: #ffd9cc;
-        }
-
-        .location.ng-dirty.ng-invalid-email {
-            background-color: yellow;
-        }
-        .contact.ng-valid {
-            background-color: #d7eec3;
-        }
-
-        .contact.ng-dirty.ng-invalid-required {
-            background-color: #ffd9cc;
-        }
-
-        .contact.ng-dirty.ng-invalid-email {
-            background-color: yellow;
-        }
-        .courseType.ng-valid {
-            background-color: #d7eec3;
-        }
-
-        .courseType.ng-dirty.ng-invalid-required {
-            background-color: #ffd9cc;
-        }
-
-        .courseType.ng-dirty.ng-invalid-minlength {
-            background-color: yellow;
-        }
-
-
-    </style>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link href="<c:url value='/resources/css/app.css' />" rel="stylesheet"></link>
+    <link href="<c:url value='/resources/css/scheduler-styles.css' />" rel="stylesheet"></link>
 </head>
 <body ng-app="mailer" class="ng-cloack">
 <div class="generic-container">
@@ -64,7 +16,6 @@
         <div class="formcontainer">
             <form ng-submit="submit()" name="myForm" class="form-horizontal"
                   data-ng-controller="MailController as ctrl" autocomplete="on">
-
                 <%-- Interview time--%>
                 <div class="row">
                     <div class="form-group col-md-12">
@@ -79,7 +30,6 @@
                         </div>
                     </div>
                 </div>
-
                 <%--Contact Info--%>
                 <div class="row">
                     <div class="form-group col-md-12">
@@ -96,7 +46,6 @@
                         </div>
                     </div>
                 </div>
-
                 <%--Course Type--%>
                 <div class="row">
                     <div class="form-group col-md-12">
@@ -113,7 +62,6 @@
                         </div>
                     </div>
                 </div>
-
                 <%--Place interview--%>
                 <div class="row">
                     <div class="form-group col-md-12">
@@ -129,10 +77,8 @@
                         </div>
                     </div>
                 </div>
-                <%--Checkbox with mails here--%>
-                <div class="panel panel-default" ?>
-                    <!-- Default panel contents -->
-
+                <%--Student Mail View--%>
+                <div class="panel panel-default" >
                     <div class="panel-heading"><span class="lead">Student Mail Template</span></div>
                     <div class="tablecontainer">
                         <table class="table table-hover" class="ng-cloak">
@@ -153,7 +99,9 @@
                             </tbody>
                         </table>
                     </div>
-                    <%--Personal Mail Template--%>
+                    </div>
+                    <div class="panel panel-default" >
+                    <%--Staff Mail Template--%>
                     <div class="panel-heading"><span class="lead">Staff Mail Template</span></div>
                     <div class="tablecontainer">
                         <table class="table table-hover" class="ng-cloak">
@@ -174,9 +122,8 @@
                             </tbody>
                         </table>
                     </div>
-                    <%--Personal Mail Template--%>
                 </div>
-                <%--Checkbox with mails here--%>
+                <%--Buttons--%>
                 <div class="row">
                     <div class="form-actions floatRight">
                         <input type="submit" id="submit" value="Submit" class="btn btn-primary btn-sm"
@@ -184,19 +131,17 @@
                         <button type="button" ng-click="ctrl.reset()" class="btn btn-warning btn-sm"
                                 ng-disabled="myForm.$pristine">Reset Form
                         </button>
+
+                        <a href="/admin/mail-template"> <button type="button" class="btn btn-success btn-sm"> Mail Templates
+                        </button> </a>
+
                     </div>
                 </div>
             </form>
         </div>
     </div>
 </div>
-<script>
-    function initialize() {
-        var input = document.getElementById('searchTextField');
-        var autocomplete = new google.maps.places.Autocomplete(input);
-    }
-    google.maps.event.addDomListener(window, 'load', initialize);
-</script>
+<script src="/resources/js/google-api.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
 <script src="<c:url value='/resources/js/mail_controller.js' />"></script>
 </body>

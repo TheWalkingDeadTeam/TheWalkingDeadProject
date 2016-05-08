@@ -1,0 +1,48 @@
+/**
+Created by Alexander Haliy on 05.05.2016
+**/
+.minutes.ng-valid {
+    background-color: #d7eec3;
+}
+
+.minutes.ng-dirty.ng-invalid-required {
+    background-color: #ffd9cc;
+}
+
+.minutes.ng-dirty.ng-invalid-minlength {
+    background-color: yellow;
+}
+
+.location.ng-valid {
+    background-color: #d7eec3;
+}
+
+.location.ng-dirty.ng-invalid-required {
+    background-color: #ffd9cc;
+}
+
+.location.ng-dirty.ng-invalid-email {
+    background-color: yellow;
+}
+.contact.ng-valid {
+    background-color: #d7eec3;
+}
+
+.contact.ng-dirty.ng-invalid-required {
+    background-color: #ffd9cc;
+}
+
+.contact.ng-dirty.ng-invalid-email {
+    background-color: yellow;
+}
+.courseType.ng-valid {
+    background-color: #d7eec3;
+}
+
+.courseType.ng-dirty.ng-invalid-required {
+    background-color: #ffd9cc;
+}
+
+.courseType.ng-dirty.ng-invalid-minlength {
+    background-color: yellow;
+}

@@ -1,4 +1,7 @@
 'use strict';
+/**
+ * Created by Alexander Haliy on 05.05.2016.
+ */
 
 var mailer = angular.module('mailer',[]);
 
