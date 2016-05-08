@@ -15,10 +15,7 @@ import ua.nc.entity.CES;
 import ua.nc.entity.Mail;
 import ua.nc.entity.User;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.sql.Connection;
 
 /**
@@ -68,8 +65,7 @@ public class CESServiceImpl implements CESService {
     }
 
     @Override
-    public List<Date> planSchedule(Mail interviewerMail, Map<String, String> interviewerParameters,
-                                   Mail studentMail, Map<String, String> studentParameters) throws DAOException {
+    public List<Date> planSchedule() throws DAOException {
         Connection connection = daoFactory.getConnection();
         UserDAO userDAO = new PostgreUserDAO(connection);
         CESDAO cesDAO = new PostgreCESDAO(connection);
