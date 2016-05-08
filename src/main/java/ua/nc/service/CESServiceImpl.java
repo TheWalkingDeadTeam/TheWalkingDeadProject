@@ -40,21 +40,24 @@ public class CESServiceImpl implements CESService {
     }
 
     @Override
-    public Date planSchedule(Mail interviewerMail, Map<String, String> interviewerParameters,
-                             Mail studentMail, Map<String, String> studentParameters) throws DAOException {
+    public List<Date> planSchedule(Mail interviewerMail, Map<String, String> interviewerParameters,
+                                          Mail studentMail, Map<String, String> studentParameters) throws DAOException {
+        //get parameters
         CES ces = cesDAO.getCurrentCES();
         Date startDate = ces.getStartInterviewingDate();
         int hoursPerDay = ces.getInterviewTimeForDay();
         int timePerStudent = ces.getInterviewTimeForPerson();
-        int reminderTime = ces.getReminders();
         List<User> interviewersList = interviewerParticipationDAO.getInterviewersForCurrentCES();
         List<User> studentsList = applicationDAO.getStudentsForCurrentCES();
 
+        //calculate end date
         int studentsAmount = studentsList.size();
         int interviewersAmount = interviewersList.size();
         Date endDate = new Date(startDate.getTime() + studentsAmount / (MINUTES_PER_HOUR / timePerStudent * hoursPerDay)
                 / interviewersAmount * INTERVIEWERS_PER_STUDENT);
+        ces.setEndInterviewingDate(endDate);
 
+        //make interview dates list
         List<Date> interviewDates = new ArrayList<>();
         interviewDates.add(startDate);
         long currentTime = startDate.getTime();
@@ -63,9 +66,7 @@ public class CESServiceImpl implements CESService {
             interviewDates.add(startDate);
         }
 
-        new MailServiceImpl().sendInterviewReminders(interviewDates, reminderTime, interviewerMail, interviewerParameters, studentMail,
-                studentParameters, interviewersList, studentsList);
-        return endDate;
+        return interviewDates;
     }
 
 }

@@ -5,6 +5,7 @@ import ua.nc.entity.CES;
 import ua.nc.entity.Mail;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,6 +26,6 @@ public interface CESService {
      * @return schedule of the current CES interviews.
      * @throws DAOException missing data about current course enrolment session.
      */
-    Date planSchedule(Mail interviewerMail, Map<String, String> interviewerParameters,
-                      Mail studentMail, Map<String, String> studentParameters) throws DAOException;
+    List<Date> planSchedule(Mail interviewerMail, Map<String, String> interviewerParameters,
+                            Mail studentMail, Map<String, String> studentParameters) throws DAOException;
 }

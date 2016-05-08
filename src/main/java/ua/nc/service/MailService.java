@@ -84,10 +84,8 @@ public interface MailService {
      * @param dateDelivery specific date mail to be send.
      * @param users who will get invitation.
      * @param mail template.
-     * @param parameters set of parameters in form : "{pattern1:meaning1, ..., patternN:meaningN}".
      */
-    void massDelivery(String dateDelivery, final List<User> users, final Mail mail,
-                      final Map<String, String> parameters);
+    void massDelivery(String dateDelivery, final List<User> users, final Mail mail);
 
     /**
      * Spread all the students by interview dates and send notifications to all the participants.

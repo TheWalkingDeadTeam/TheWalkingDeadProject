@@ -38,6 +38,8 @@ public class MailServiceImpl implements MailService {
     private static final String USERNAME = "netcrackerua@gmail.com";
     private static final String PASSWORD = "netcrackerpwd";
     private static final long SLEEP = 1000;
+    private static final String DATE_PATTERN = "$Date";
+    private static final String NAME_PATTERN = "$Name";
     private DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
     private MailDAO mailDAO = daoFactory.getMailDAO(daoFactory.getConnection());
     private static ThreadPoolTaskScheduler scheduler;
@@ -114,8 +116,7 @@ public class MailServiceImpl implements MailService {
     }
 
     @Override
-    public void massDelivery(String dateDelivery, final List<User> users, final Mail mail,
-                             final Map<String, String> parameters) {
+    public void massDelivery(String dateDelivery, final List<User> users, final Mail mail) {
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         // String date format 2012-07-06 13:05:45
         try {
@@ -127,11 +128,12 @@ public class MailServiceImpl implements MailService {
             @Override
             public void run() {
                 try {
+                    Map<String, String> nameParameter = new HashMap<>();
                     for (User i : users) {
                         //Sleep for a while, google may think you're spamming :(
                         Thread.sleep(SLEEP);
-                        Mail customizedMail = customizeMail(mail, parameters);
-                        sendMail(i.getEmail(), customizedMail);
+                        nameParameter.put(NAME_PATTERN, i.getName());
+                        sendMail(i.getEmail(), customizeMail(mail, nameParameter));
                     }
                 } catch (Exception e) {
                     LOGGER.error("Failed to send", e);
@@ -141,7 +143,7 @@ public class MailServiceImpl implements MailService {
     }
 
     /**
-     * Set all the custom mail parameters.
+     * Set all the predefined mail parameters.
      *
      * @param mail mail to customize.
      * @param parameters set of parameters in form : "{pattern1:meaning1, ..., patternN:meaningN}".
@@ -153,6 +155,7 @@ public class MailServiceImpl implements MailService {
         for (Map.Entry<String, String> param : parameters.entrySet()) {
             head = head.replaceAll(param.getKey(), param.getValue());
         }
+
         //customize mail body
         String body = mail.getBodyTemplate();
         for (Map.Entry<String, String> param : parameters.entrySet()) {
@@ -204,6 +207,7 @@ public class MailServiceImpl implements MailService {
         return mail;
     }
 
+    @Override
     public List<Mail> getByHeaderMailTemplate(String header) {
         List<Mail> mails = new ArrayList<>();
         try {
@@ -237,16 +241,21 @@ public class MailServiceImpl implements MailService {
         int studentsPerDay = studentsList.size() / interviewDates.size() + 1;
         int todaysFirstStudent = 0;
         int todaysLastStudent = studentsPerDay;
+        Mail customizedInterviewerMail = customizeMail(interviewerMail, studentParameters);
+        Mail customizedStudentMail = customizeMail(studentMail, studentParameters);
 
+        //make everyday mail delivery
+        Map<String, String> dateParameter = new HashMap<>();
         for (Date interviewDate : interviewDates) {
-            List<User> todayStudents = studentsList.subList(todaysFirstStudent, Math.min(todaysLastStudent,
-                    studentsList.size()));
+            List<User> todayStudents = studentsList.subList(todaysFirstStudent,
+                    Math.min(todaysLastStudent, studentsList.size()));
             todaysFirstStudent = todaysLastStudent;
             todaysLastStudent += studentsPerDay;
-            massDelivery(new Date(interviewDate.getTime() + reminderMillis).toString(), interviewersList,
-                    interviewerMail, interviewerParameters);
-            massDelivery(new Date(interviewDate.getTime() + reminderMillis).toString(), todayStudents, studentMail,
-                    studentParameters);
+
+            String todaysDate = new Date(interviewDate.getTime() - reminderMillis).toString();
+            dateParameter.put(DATE_PATTERN, todaysDate);
+            massDelivery(todaysDate, interviewersList, customizeMail(customizedInterviewerMail, dateParameter));
+            massDelivery(todaysDate, todayStudents, customizeMail(customizedStudentMail, dateParameter));
         }
     }
 
