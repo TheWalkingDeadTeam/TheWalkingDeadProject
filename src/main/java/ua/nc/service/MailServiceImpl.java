@@ -117,14 +117,7 @@ public class MailServiceImpl implements MailService {
     }
 
     @Override
-    public void massDelivery(String dateDelivery, final List<User> users, final Mail mail) {
-        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        // String date format 2012-07-06 13:05:45
-        try {
-            Date date = dateFormatter.parse(dateDelivery);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+    public void massDelivery(Date date, final List<User> users, final Mail mail) {
         schedulerMassDeliveryService.schedule(new Runnable() {
             @Override
             public void run() {
@@ -141,7 +134,7 @@ public class MailServiceImpl implements MailService {
                     LOGGER.warn("Failed to send email", e);
                 }
             }
-        }, new Date(dateDelivery));
+        },date);
     }
 
     /**
@@ -257,8 +250,10 @@ public class MailServiceImpl implements MailService {
     @Override
     public void sendInterviewReminders(List<Date> interviewDates, int reminderTime, Mail interviewerMail,
                                        Map<String, String> interviewerParameters, Mail studentMail,
-                                       Map<String, String> studentParameters, List<User> interviewersList,
-                                       List<User> studentsList) {
+                                       Map<String, String> studentParameters, Set<User> interviewersSet,
+                                       Set<User> studentsSet) {
+        List<User> interviewersList = new ArrayList<>(interviewersSet);
+        List<User> studentsList = new ArrayList<>(studentsSet);
         int reminderMillis = reminderTime * MILLIS_PER_HOUR;
         int studentsPerDay = (int) Math.ceil(studentsList.size() / interviewDates.size());
         int todaysFirstStudent = 0;
@@ -274,10 +269,10 @@ public class MailServiceImpl implements MailService {
             todaysFirstStudent = todaysLastStudent;
             todaysLastStudent += studentsPerDay;
 
-            String todaysDate = new Date(interviewDate.getTime() - reminderMillis).toString();
-            dateParameter.put(DATE_PATTERN, todaysDate);
-            massDelivery(todaysDate, interviewersList, customizeMail(customizedInterviewerMail, dateParameter));
-            massDelivery(todaysDate, todayStudents, customizeMail(customizedStudentMail, dateParameter));
+            Date todaysDate = new Date(interviewDate.getTime() - reminderMillis);
+            dateParameter.put(DATE_PATTERN, todaysDate.toString());
+            massDelivery(interviewDate, interviewersList, customizeMail(customizedInterviewerMail, dateParameter));
+            massDelivery(interviewDate, todayStudents, customizeMail(customizedStudentMail, dateParameter));
         }
     }
 

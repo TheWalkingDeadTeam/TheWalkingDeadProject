@@ -7,14 +7,21 @@ import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import ua.nc.dao.UserDAO;
+import ua.nc.dao.enums.DataBaseType;
 import ua.nc.dao.exception.DAOException;
+import ua.nc.dao.factory.DAOFactory;
+import ua.nc.dao.postgresql.PostgreUserDAO;
+import ua.nc.entity.CES;
 import ua.nc.entity.Mail;
 import ua.nc.entity.Scheduler;
+import ua.nc.entity.User;
 import ua.nc.service.CESService;
 import ua.nc.service.CESServiceImpl;
 import ua.nc.service.MailService;
 import ua.nc.service.MailServiceImpl;
 
+import java.sql.Connection;
 import java.util.*;
 
 /**
@@ -26,12 +33,17 @@ public class SchedulerController {
     private final static String GEO_CODE_GOOGLE = "AIzaSyCfZKoS6nurd-Hvf-Mb-A3R0yUNFAQ89-c";
     private final static String DEFAULT_PLACE_LINK = "http://www.google.com/maps/place/lat,lng";
     //params
-    private final static String LOCATION ="$location";
-    private final static String COURSE_TYPE ="$courseType";
+    private final static String LOCATION = "$location";
+    private final static String COURSE_TYPE = "$courseType";
     private final static String GOOGLE_MAPS = "$googleMaps";
-    private final static String CONTACT_INTERVIEWERS ="$contactInterviewers";
-    private final static String CONTACT_STUDENTS ="$contactStudent";
+    private final static String CONTACT_INTERVIEWERS = "$contactInterviewers";
+    private final static String CONTACT_STUDENTS = "$contactStudent";
 
+    private final DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
+    private final Connection connection = daoFactory.getConnection();
+    private final UserDAO userDAO = new PostgreUserDAO(connection);
+    private final CESService cesService = new CESServiceImpl();
+    private final MailService mailService = new MailServiceImpl();
 
     /**
      * Produces direct google map link to geolocation
@@ -78,16 +90,20 @@ public class SchedulerController {
     @ResponseStatus(value = HttpStatus.OK)
     public void PostService(@RequestBody Scheduler scheduler) {
         System.out.println(scheduler);
-        CESService cesService = new CESServiceImpl();
-        MailService mailService = new MailServiceImpl();
-        Mail interviewMail = mailService.getMail(scheduler.getMailIdStaff());
+        Mail interviewerMail = mailService.getMail(scheduler.getMailIdStaff());
         Mail studentMail = mailService.getMail(scheduler.getMailIdUser());
         Map<String, String> interviewerParameters = param(scheduler);
-        Map<String, String> studentParamets = param(scheduler);
+        Map<String, String> studentParameters = param(scheduler);
         interviewerParameters.put(CONTACT_INTERVIEWERS, scheduler.getContactStaff());
-        studentParamets.put(CONTACT_STUDENTS, scheduler.getContactStudent());
+        studentParameters.put(CONTACT_STUDENTS, scheduler.getContactStudent());
         try {
-            List<Date> planScheduler = cesService.planSchedule();
+            List<Date> interviewDates = cesService.planSchedule();
+            CES ces = cesService.getCurrentCES();
+            int reminderTime = ces.getReminders();
+            Set<User> interviewersList = userDAO.getInterviewersForCurrentCES();
+            Set<User> studentsList = userDAO.getStudentsForCurrentCES();
+            mailService.sendInterviewReminders(interviewDates, reminderTime, interviewerMail, interviewerParameters,
+                    studentMail, studentParameters, interviewersList, studentsList);
         } catch (DAOException e) {
             log.warn("Check Scheduler paramters", e);
         }

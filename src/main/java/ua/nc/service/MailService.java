@@ -6,6 +6,7 @@ import ua.nc.entity.User;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by Alexander on 23.04.2016.
@@ -81,11 +82,11 @@ public interface MailService {
      * Massive delivery service for async mailing.
      * Everything you need is to put time.
      *
-     * @param dateDelivery specific date mail to be send.
+     * @param date specific date mail to be send.
      * @param users who will get invitation.
      * @param mail template.
      */
-    void massDelivery(String dateDelivery, final List<User> users, final Mail mail);
+    void massDelivery(Date date, final List<User> users, final Mail mail);
 
     /**
      * Spread all the students by interview dates and send notifications to all the participants.
@@ -101,6 +102,6 @@ public interface MailService {
      */
     void sendInterviewReminders(List<Date> interviewDates, int reminderTime, Mail interviewerMail,
                                 Map<String, String> interviewerParameters, Mail studentMail,
-                                Map<String, String> studentParameters, List<User> interviewersList,
-                                List<User> studentsList);
+                                Map<String, String> studentParameters, Set<User> interviewersList,
+                                Set<User> studentsList);
 }
