@@ -15,13 +15,14 @@ import ua.nc.entity.CES;
 import ua.nc.entity.Mail;
 import ua.nc.entity.User;
 
-import java.sql.Connection;
 import java.util.*;
+import java.sql.Connection;
 
 /**
- * Created by Pavel on 06.05.2016.
+ * Created by Max Morozov on 07.05.2016.
  */
 public class CESServiceImpl implements CESService {
+
     private final static Logger LOGGER = Logger.getLogger(CESServiceImpl.class);
     private final DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
 
@@ -64,8 +65,7 @@ public class CESServiceImpl implements CESService {
     }
 
     @Override
-    public List<Date> planSchedule(Mail interviewerMail, Map<String, String> interviewerParameters,
-                                   Mail studentMail, Map<String, String> studentParameters) throws DAOException {
+    public List<Date> planSchedule() throws DAOException {
         Connection connection = daoFactory.getConnection();
         UserDAO userDAO = new PostgreUserDAO(connection);
         CESDAO cesDAO = new PostgreCESDAO(connection);
@@ -74,9 +74,6 @@ public class CESServiceImpl implements CESService {
         Date startDate = ces.getStartInterviewingDate();
         int hoursPerDay = ces.getInterviewTimeForDay();
         int timePerStudent = ces.getInterviewTimeForPerson();
-
-
-        //Changed By Pasha
         Set<User> interviewersList = userDAO.getInterviewersForCurrentCES();
         Set<User> studentsList = userDAO.getStudentsForCurrentCES();
 
@@ -95,6 +92,8 @@ public class CESServiceImpl implements CESService {
             currentTime += MILLIS_PER_DAY;
             interviewDates.add(startDate);
         }
+
         return interviewDates;
     }
+
 }

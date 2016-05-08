@@ -44,7 +44,6 @@ public class MailServiceImpl implements MailService {
     private static ThreadPoolTaskScheduler schedulerMassDeliveryService;
     private static final int MILLIS_PER_HOUR = 1000 * 60 * 60;
 
-
     static {
         scheduler = new ThreadPoolTaskScheduler();
         schedulerMassDeliveryService = new ThreadPoolTaskScheduler();
@@ -54,18 +53,6 @@ public class MailServiceImpl implements MailService {
         schedulerMassDeliveryService.initialize();
     }
 
-
-    public MailServiceImpl() {
-
-    }
-
-    /**
-     * Create new Mail and store
-     * it in db
-     *
-     * @param header
-     * @param body
-     */
     @Override
     public Mail createMail(String header, String body) {
         Connection connection = daoFactory.getConnection();
@@ -85,12 +72,6 @@ public class MailServiceImpl implements MailService {
         return mail;
     }
 
-    /**
-     * Send email to recipent
-     *
-     * @param address
-     * @param mail
-     */
     @Override
     public void sendMail(String address, Mail mail) {
         sendMail(address, mail.getHeadTemplate(), mail.getBodyTemplate());
@@ -134,14 +115,6 @@ public class MailServiceImpl implements MailService {
         });
     }
 
-    /**
-     * Massive delivery service for async mailing
-     * Everything you need is to put time
-     *
-     * @param dateDelivery specific date mail to be send
-     * @param users        who will get invitation
-     * @param mail         template
-     */
     @Override
     public void massDelivery(String dateDelivery, final List<User> users, final Mail mail) {
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -236,11 +209,6 @@ public class MailServiceImpl implements MailService {
         }
     }
 
-    /**
-     * Retrieve mail by id
-     *
-     * @param id
-     */
     @Override
     public Mail getMail(Integer id) {
         Connection connection = daoFactory.getConnection();
@@ -255,12 +223,6 @@ public class MailServiceImpl implements MailService {
         return mail;
     }
 
-    /**
-     * Get Mails by Header
-     *
-     * @param header
-     * @return
-     */
     @Override
     public List<Mail> getByHeaderMailTemplate(String header) {
         List<Mail> mails = new ArrayList<>();
@@ -296,7 +258,6 @@ public class MailServiceImpl implements MailService {
                                        Map<String, String> studentParameters, List<User> interviewersList,
                                        List<User> studentsList) {
         int reminderMillis = reminderTime * MILLIS_PER_HOUR;
-        // +1 -> Math.ceil
         int studentsPerDay = (int) Math.ceil(studentsList.size() / interviewDates.size());
         int todaysFirstStudent = 0;
         int todaysLastStudent = studentsPerDay;
