@@ -19,10 +19,7 @@ import java.sql.Connection;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * Created by Alexander Haliy on 23.04.2016.
@@ -172,7 +169,7 @@ public class MailServiceImpl implements MailService {
         }, new Date(dateDelivery));
     }
 
-    @Override
+
     public void sendInterviewReminders(List<Date> interviewDates, int studentHours, int devHours, int hrHours,
                                        int baHours, Mail InterviewerMail, Mail IntervieweeMail) {
         int studentMillis = studentHours * MILLIS_PER_HOUR;
@@ -188,6 +185,11 @@ public class MailServiceImpl implements MailService {
         }
     }
 
+
+    @Override
+    public Date planSchedule(int hoursPerDay, Mail interviewerMail, Map<String, String> interviewerParameters, Mail studentMail, Map<String, String> studentParameters) {
+        return null;
+    }
 
     @Override
     public List<Mail> getAllMails() {
@@ -267,6 +269,11 @@ public class MailServiceImpl implements MailService {
             daoFactory.putConnection(connection);
         }
         return mails;
+    }
+
+    @Override
+    public void massDelivery(String dateDelivery, List<User> users, Mail mail, Map<String, String> parameters) {
+
     }
 
 
