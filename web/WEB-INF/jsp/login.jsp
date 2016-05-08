@@ -153,7 +153,9 @@
         <div id="logoDiv" class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
             <div id="thisDiv">
                 <img id="mainLogo" class='img-responsive' src='/resources/images/main.jpg'>
-                <iframe id="mainLolo" width="640" height="360" src="https://www.youtube.com/embed/BcmUOmvl1N8?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+                <iframe id="mainLolo" width="640" height="360"
+                        src="https://www.youtube.com/embed/BcmUOmvl1N8?rel=0&amp;controls=0&amp;showinfo=0"
+                        frameborder="0" allowfullscreen></iframe>
             </div>
         </div>
     </div>
@@ -184,7 +186,9 @@
         </div>
     </div>
     <div class="footerSm row visible-sm visible-xs">
-        <img class="col-sm-5 visible-sm" src="resources/images/logo-gray.png">
+        <div class="col-sm-5 visible-sm" >
+            <img src="resources/images/logo-gray.png">
+        </div>
         <div class="footerSmText col-sm-7 col-xs-12">
             <div class="col-sm-8 col-xs-6">
                 <a class="col-sm-6 col-xs-7" href="http://localhost:8080/profile#"><p>Courses Info</p></a>

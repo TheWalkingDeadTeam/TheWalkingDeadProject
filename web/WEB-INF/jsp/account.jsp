@@ -108,7 +108,9 @@
         </div>
     </div>
     <div class="footerSm row visible-sm visible-xs">
-        <img class="col-sm-5 visible-sm" src="resources/images/logo-gray.png">
+        <div class="col-sm-5 visible-sm" >
+            <img src="resources/images/logo-gray.png">
+        </div>
         <div class="footerSmText col-sm-7 col-xs-12">
             <div class="col-sm-8 col-xs-6">
                 <a class="col-sm-6 col-xs-7" href="http://localhost:8080/profile#"><p>Courses Info</p></a>
