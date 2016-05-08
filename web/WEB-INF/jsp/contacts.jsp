@@ -52,6 +52,61 @@
     </nav>
 </header>
 
+<div class="headquarters-container bord-bottom">
+    <div class="container headquarters-info">
+        <div class="row">
+            <div class="col-xs-6 col-sm-6 col-md-6">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="headline-one"><h1>Headquarters</h1></div>
+                        <div class="standard-copy">University Office Park III</div>
+                        <div class="standard-copy">95 Sawyer Road Waltham, MA 02453</div>
+                        <div class="standard-copy">United States of America</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="standard-copy"><h1>Phone numbers</h1></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-4 col-sm-4 col-md-6">
+                        <div class="standard-copy">Phone</div>
+                    </div>
+                    <div class="col-xs-8 col-sm-8 col-md-6">
+                        <div class="standard-copy text-right">1-781-419-3300</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-4 col-sm-4 col-md-6">
+                        <div class="standard-copy">Toll Free</div>
+                    </div>
+                    <div class="col-xs-8 col-sm-8 col-md-6">
+                        <div class="standard-copy text-right">1-800-477-5785</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-4 col-sm-4 col-md-6">
+                        <div class="standard-copy">Fax</div>
+                    </div>
+                    <div class="col-xs-8 col-sm-8 col-md-6">
+                        <div class="standard-copy text-right">1-781-419-3301</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-4 col-sm-4 col-md-4">
+                        <div class="standard-copy">Customer Support</div>
+                    </div>
+                    <div class="col-xs-8 col-sm-8 col-md-8">
+                        <div class="standard-copy text-right">1-781-419-3388, 1-844-855-3355</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-6 col-sm-6 col-md-6"><img class="map-location" src="http://www.netcracker.com/assets/img/map-office-location.png" alt=""></div>
+        </div>
+    </div>
+</div>
+
 <footer class="footer container-fluid">
     <div class="footerLg container visible-md visible-lg">
         <div class="col-lg-3 col-lg-3 col-sm-3"><img class='img-responsive' src="resources/images/logo-gray.png"></div>
