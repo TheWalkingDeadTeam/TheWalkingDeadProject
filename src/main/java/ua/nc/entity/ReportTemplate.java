@@ -12,6 +12,7 @@ public class ReportTemplate implements Identified<Integer> {
         this.query = query;
         this.name = name;
     }
+    public ReportTemplate(){}
 
     @Override
     public Integer getId() {

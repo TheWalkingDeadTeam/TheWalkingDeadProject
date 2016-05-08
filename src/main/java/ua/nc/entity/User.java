@@ -8,6 +8,7 @@ import java.util.Set;
 public class User implements Identified<Integer> {
     private Integer id;
     private String name;
+    private String surname;
     private String email;
     private String password;
     private Set<Role> roles;
@@ -15,9 +16,10 @@ public class User implements Identified<Integer> {
     public User() {
     }
 
-    public User(Integer id, String name, String email, String password, Set<Role> roles) {
+    public User(Integer id, String name, String surname, String email, String password, Set<Role> roles) {
         this.id = id;
         this.name = name;
+        this.surname = surname;
         this.email = email;
         this.password = password;
         this.roles = roles;
@@ -37,6 +39,14 @@ public class User implements Identified<Integer> {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
     public String getEmail() {

@@ -4,6 +4,7 @@ import ua.nc.dao.exception.DAOException;
 import ua.nc.entity.Role;
 import ua.nc.entity.User;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -15,4 +16,10 @@ public interface UserDAO extends GenericDAO<User, Integer> {
     void createUser(User user, Set<Role> roles) throws DAOException;
 
     void updateUser(User user) throws DAOException;
+
+    Set<User> getByRole(Role role) throws DAOException;
+
+    Set<User> getStudentsForCurrentCES() throws DAOException;
+
+    Set<User> getInterviewersForCurrentCES() throws DAOException;
 }

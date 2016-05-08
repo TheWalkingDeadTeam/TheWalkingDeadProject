@@ -92,7 +92,8 @@ CREATE TABLE CES_Status (
 
 INSERT INTO CES_Status (Name) VALUES
 ('Active'),
-('Inactive');
+('Closed'),
+('Pending');
 
 CREATE TABLE Course_Enrollment_Session (
   CES_ID serial PRIMARY KEY,
@@ -127,7 +128,7 @@ CREATE TABLE Application (
   Application_ID serial PRIMARY KEY,
   System_User_ID int NOT NULL references System_User(System_User_ID)  ON DELETE RESTRICT ON UPDATE CASCADE,
   CES_ID int NOT NULL references Course_Enrollment_Session(CES_ID) ON DELETE RESTRICT ON UPDATE CASCADE,
-  rejected bool,
+  rejected bool DEFAULT false,
   UNIQUE(System_User_ID, CES_ID)
 );
 
@@ -164,12 +165,14 @@ CREATE TABLE Field (
   Name varchar(50) NOT NULL,
   Field_Type_ID int NOT NULL references Field_Type(Field_Type_ID) ON DELETE RESTRICT ON UPDATE CASCADE,
   Multiple_Choice bool NOT NULL,
+  Order_Num int NOT NULL CHECK (Order_Num > 0),
   List_ID int references List(List_ID) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 CREATE TABLE CES_Field(
   CES_ID int NOT NULL references Course_Enrollment_Session(CES_ID) ON DELETE RESTRICT ON UPDATE CASCADE,
-  Field_ID int NOT NULL references Field(Field_ID) ON DELETE RESTRICT ON UPDATE CASCADE
+  Field_ID int NOT NULL references Field(Field_ID) ON DELETE RESTRICT ON UPDATE CASCADE,
+  PRIMARY KEY (CES_ID, Field_ID)
 );
 
 CREATE TABLE Field_Value (
@@ -179,7 +182,6 @@ CREATE TABLE Field_Value (
   Value_Double float8,
   Value_Date date,
   List_Value_ID int references List_Value(List_Value_ID) ON DELETE RESTRICT ON UPDATE CASCADE,
-  PRIMARY KEY(Field_ID, Application_ID),
   CHECK ((Value_Double IS NOT NULL) OR (Value_Text IS NOT NULL) OR (Value_Date IS NOT NULL) OR (List_Value_ID IS NOT NULL))
 );
 
@@ -238,36 +240,72 @@ INSERT INTO List_Value (List_ID, Value_Text) VALUES
 
 
 
-INSERT INTO Field (Name, Field_Type_ID, Multiple_Choice, List_ID) VALUES
-('Sql level', (SELECT Field_Type_ID FROM Field_Type WHERE Name = 'number'), false, (SELECT List_ID FROM List WHERE Name = 'Marks'));
+INSERT INTO Field (Name, Field_Type_ID, Multiple_Choice, Order_Num, List_ID) VALUES
+('Sql level', (SELECT Field_Type_ID FROM Field_Type WHERE Name = 'radio'), false, 1, (SELECT List_ID FROM List WHERE Name = 'Marks'));
 INSERT INTO CES_Field (CES_ID, Field_ID) VALUES ((SELECT currval('course_enrollment_session_ces_id_seq')), (SELECT currval('field_field_id_seq')));
 
-INSERT INTO Field (Name, Field_Type_ID, Multiple_Choice, List_ID) VALUES
-('Java level', (SELECT Field_Type_ID FROM Field_Type WHERE Name = 'number'), false, (SELECT List_ID FROM List WHERE Name = 'Marks'));
+INSERT INTO Field (Name, Field_Type_ID, Multiple_Choice, Order_Num, List_ID) VALUES
+('Java level', (SELECT Field_Type_ID FROM Field_Type WHERE Name = 'radio'), false, 2, (SELECT List_ID FROM List WHERE Name = 'Marks'));
 INSERT INTO CES_Field (CES_ID, Field_ID) VALUES ((SELECT currval('course_enrollment_session_ces_id_seq')), (SELECT currval('field_field_id_seq')));
 
-INSERT INTO Field (Name, Field_Type_ID, Multiple_Choice, List_ID) VALUES
-('Your interests', (SELECT Field_Type_ID FROM Field_Type WHERE Name = 'checkbox'), true, (SELECT List_ID FROM List WHERE Name = 'Interests'));
+INSERT INTO Field (Name, Field_Type_ID, Multiple_Choice, Order_Num, List_ID) VALUES
+('Your interests', (SELECT Field_Type_ID FROM Field_Type WHERE Name = 'checkbox'), true, 3,(SELECT List_ID FROM List WHERE Name = 'Interests'));
 INSERT INTO CES_Field (CES_ID, Field_ID) VALUES ((SELECT currval('course_enrollment_session_ces_id_seq')), (SELECT currval('field_field_id_seq')));
 
-INSERT INTO Field (Name, Field_Type_ID, Multiple_Choice, List_ID) VALUES
-('Where have you found information?', (SELECT Field_Type_ID FROM Field_Type WHERE Name = 'radio'), false, (SELECT List_ID FROM List WHERE Name = 'Information'));
+INSERT INTO Field (Name, Field_Type_ID, Multiple_Choice, Order_Num, List_ID) VALUES
+('Where have you found information?', (SELECT Field_Type_ID FROM Field_Type WHERE Name = 'radio'), false, 4, (SELECT List_ID FROM List WHERE Name = 'Information'));
 INSERT INTO CES_Field (CES_ID, Field_ID) VALUES ((SELECT currval('course_enrollment_session_ces_id_seq')), (SELECT currval('field_field_id_seq')));
 
-INSERT INTO Field (Name, Field_Type_ID, Multiple_Choice, List_ID) VALUES
-('Phone number', (SELECT Field_Type_ID FROM Field_Type WHERE Name = 'tel'), false, NULL);
+INSERT INTO Field (Name, Field_Type_ID, Multiple_Choice, Order_Num, List_ID) VALUES
+('Phone number', (SELECT Field_Type_ID FROM Field_Type WHERE Name = 'tel'), false, 5, NULL);
 INSERT INTO CES_Field (CES_ID, Field_ID) VALUES ((SELECT currval('course_enrollment_session_ces_id_seq')), (SELECT currval('field_field_id_seq')));
 
-INSERT INTO Field (Name, Field_Type_ID, Multiple_Choice, List_ID) VALUES
-('University', (SELECT Field_Type_ID FROM Field_Type WHERE Name = 'select'), false, (SELECT List_ID FROM List WHERE Name = 'University'));
+INSERT INTO Field (Name, Field_Type_ID, Multiple_Choice, Order_Num, List_ID) VALUES
+('University', (SELECT Field_Type_ID FROM Field_Type WHERE Name = 'select'), false, 6, (SELECT List_ID FROM List WHERE Name = 'University'));
 INSERT INTO CES_Field (CES_ID, Field_ID) VALUES ((SELECT currval('course_enrollment_session_ces_id_seq')), (SELECT currval('field_field_id_seq')));
 
-INSERT INTO Field (Name, Field_Type_ID, Multiple_Choice, List_ID) VALUES
-('Text field', (SELECT Field_Type_ID FROM Field_Type WHERE Name = 'text'), false, NULL);
+INSERT INTO Field (Name, Field_Type_ID, Multiple_Choice, Order_Num, List_ID) VALUES
+('Text field', (SELECT Field_Type_ID FROM Field_Type WHERE Name = 'text'), false, 7, NULL);
 INSERT INTO CES_Field (CES_ID, Field_ID) VALUES ((SELECT currval('course_enrollment_session_ces_id_seq')), (SELECT currval('field_field_id_seq')));
 
-INSERT INTO Field (Name, Field_Type_ID, Multiple_Choice, List_ID) VALUES
-('Kak dela?', (SELECT Field_Type_ID FROM Field_Type WHERE Name = 'textarea'), false, NULL);
+INSERT INTO Field (Name, Field_Type_ID, Multiple_Choice, Order_Num, List_ID) VALUES
+('Kak dela?', (SELECT Field_Type_ID FROM Field_Type WHERE Name = 'textarea'), false, 8, NULL);
 INSERT INTO CES_Field (CES_ID, Field_ID) VALUES ((SELECT currval('course_enrollment_session_ces_id_seq')), (SELECT currval('field_field_id_seq')));
 
+INSERT INTO Field_Value (Field_ID, Application_ID, Value_Text, Value_Double, Value_Date, List_Value_ID) VALUES
+  ((SELECT Field_ID FROM Field WHERE Name = 'Sql level'),
+   (SELECT a.Application_ID FROM Application a JOIN System_User u ON a.System_User_ID = u.System_User_ID WHERE u.Email = 'student@gmail.com'),
+   NULL,NULL,NULL, (SELECT List_Value_ID FROM List_Value lv JOIN List l on lv.List_ID = l.List_ID WHERE (l.Name = 'Marks' AND lv.Value_Text = '8'))),
 
+  ((SELECT Field_ID FROM Field WHERE Name = 'Java level'),
+   (SELECT a.Application_ID FROM Application a JOIN System_User u ON a.System_User_ID = u.System_User_ID WHERE u.Email = 'student@gmail.com'),
+   NULL,NULL,NULL, (SELECT List_Value_ID FROM List_Value lv JOIN List l on lv.List_ID = l.List_ID WHERE (l.Name = 'Marks' AND lv.Value_Text = '5'))),
+
+  ((SELECT Field_ID FROM Field WHERE Name = 'Your interests'),
+   (SELECT a.Application_ID FROM Application a JOIN System_User u ON a.System_User_ID = u.System_User_ID WHERE u.Email = 'student@gmail.com'),
+   NULL,NULL,NULL, (SELECT List_Value_ID FROM List_Value lv JOIN List l on lv.List_ID = l.List_ID WHERE (l.Name = 'Interests' AND lv.Value_Text = 'Research'))),
+
+  ((SELECT Field_ID FROM Field WHERE Name = 'Your interests'),
+   (SELECT a.Application_ID FROM Application a JOIN System_User u ON a.System_User_ID = u.System_User_ID WHERE u.Email = 'student@gmail.com'),
+   NULL,NULL,NULL, (SELECT List_Value_ID FROM List_Value lv JOIN List l on lv.List_ID = l.List_ID WHERE (l.Name = 'Interests' AND lv.Value_Text = 'Practice'))),
+
+
+  ((SELECT Field_ID FROM Field WHERE Name = 'Where have you found information?'),
+   (SELECT a.Application_ID FROM Application a JOIN System_User u ON a.System_User_ID = u.System_User_ID WHERE u.Email = 'student@gmail.com'),
+   NULL,NULL,NULL, (SELECT List_Value_ID FROM List_Value lv JOIN List l on lv.List_ID = l.List_ID WHERE (l.Name = 'Information' AND lv.Value_Text = 'VK'))),
+
+  ((SELECT Field_ID FROM Field WHERE Name = 'University'),
+   (SELECT a.Application_ID FROM Application a JOIN System_User u ON a.System_User_ID = u.System_User_ID WHERE u.Email = 'student@gmail.com'),
+   NULL,NULL,NULL, (SELECT List_Value_ID FROM List_Value lv JOIN List l on lv.List_ID = l.List_ID WHERE (l.Name = 'University' AND lv.Value_Text = 'KPI'))),
+
+  ((SELECT Field_ID FROM Field WHERE Name = 'Text field'),
+   (SELECT a.Application_ID FROM Application a JOIN System_User u ON a.System_User_ID = u.System_User_ID WHERE u.Email = 'student@gmail.com'),
+   'Hello',NULL,NULL, NULL),
+
+  ((SELECT Field_ID FROM Field WHERE Name = 'Phone number'),
+   (SELECT a.Application_ID FROM Application a JOIN System_User u ON a.System_User_ID = u.System_User_ID WHERE u.Email = 'student@gmail.com'),
+   '12345',NULL,NULL, NULL),
+
+  ((SELECT Field_ID FROM Field WHERE Name = 'Kak dela?'),
+   (SELECT a.Application_ID FROM Application a JOIN System_User u ON a.System_User_ID = u.System_User_ID WHERE u.Email = 'student@gmail.com'),
+   'Very goooood',NULL,NULL, NULL);

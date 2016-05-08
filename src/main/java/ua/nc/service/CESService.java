@@ -14,7 +14,7 @@ import java.util.Map;
 public interface CESService {
     CES getCurrentCES();
 
-    void enroll(UserDetailsImpl userDetails);
+    void enroll(Integer userId, Integer currentCESId) throws DAOException;
 
     /**
      * Plan current interview schedule and send notifications to all the participants.
