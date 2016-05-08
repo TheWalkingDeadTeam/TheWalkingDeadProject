@@ -1,24 +1,26 @@
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-<%--
-  Created by IntelliJ IDEA.
-  User: Neltarion
-  Date: 04.05.2016
-  Time: 14:26
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <html>
 <head>
-    <title>Account Information</title>
+    <title>Profile</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" sizes="32x32" href="/resources/images/ico.png"/>
+    <%--<link rel="stylesheet" type="text/css" href="/resources/css/reset.css"/>--%>
+    <%--<link rel="stylesheet" type="text/css" href="/resources/css/styles.css"/>--%>
+    <%--<link rel="stylesheet" type="text/css" href="/resources/bootstrap/css/bootstrap.css"/>--%>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
     <link rel="icon" type="image/png" sizes="32x32" href="/images/ico.png">
     <link rel="stylesheet" type="text/css" href="resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="resources/css/style.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="resources/css/media.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="resources/css/style-profile.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="resources/css/media-profile.css" rel="stylesheet">
     <script src="resources/bootstrap/js/jquery-2.2.2.min.js" defer></script>
     <script src="resources/bootstrap/js/bootstrap.min.js" defer></script>
+    <%--<style type="text/css">--%>
+    <%--/*<img src='images/logo.png' alt="Brand" class="header-img">*/--%>
+    <%--/*<img src='images/error.gif' class="img-responsive profile-photo">*/--%>
+    <%--/*<img class='img-responsive' src="images/logo-gray.png">*/--%>
 </head>
 <body>
 <header>
@@ -30,7 +32,6 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand brand-img" href="">
                     <img src='resources/images/logo.png' alt="Brand" class="header-img">
@@ -38,10 +39,11 @@
             </div>
             <div id='collapsed-menu' class='navbar-collapse collapse'>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="">Home</a></li>
-                    <li><a href="">Information</a></li>
+                    <li><a href="/login">Home</a></li>
+                    <li><a href="/information">Information</a></li>
+                    <li><a href="/contacts">Contacts</a></li>
                     <sec:authorize access="hasRole('ROLE_STUDENT')">
-                        <li><a href="/profile">Profile</a></li>
+                        <li><a href="/profile/{id}">Profile</a></li>
                     </sec:authorize>
                     <li><a href="/logout">Logout</a></li>
                 </ul>
@@ -50,35 +52,36 @@
     </nav>
 </header>
 
-<form id="accountForm">
-    <div class="container-fluid  smprofile">
+<sec:authorize access="isAuthenticated()">
+
+    <div class="container smprofile">
         <div class="row">
-            <div class=" col-lg-3 col-md-4 col-sm-4 col-xs-12 ">
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4">
                 <img id="photo_img" src="/getPhoto" alt="User's photo" width="100" height="100"
                      onError="this.src='/resources/images/user-photo.png'" class="profile-photo">
+            </div>
+            <div class='col-lg-3 col-md-3 col-sm-3 col-xs-8'>
                 <form id="photo_form" type=post enctype="multipart/form-data">
                     <div id="photoMessages"></div>
-                    Photo to upload: <input type="file" id="photo_input" name=" photo_input" accept="image/*"><br/>
+                    <label for='photo_input' class='file_upload'/>
+                    <input type="file" id="photo_input" name=" photo_input" accept="image/*">
                     <button id="photo_button" type="submit">Upload</button>
                 </form>
             </div>
-            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4">
+            <div class=" col-lg-2 col-md-2 col-sm-2 col-xs-4 mainf">
                 <h4>Name:</h4>
                 <h4>Surname:</h4>
                 <h4>E-mail:</h4>
             </div>
-            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-3">
-                <span>Ivan</span>
-                <span>Ivanovich</span>
-                <span>ivanovivanovich@gmail.com</span>
-
-            </div>
-            <div class="col-lg-6 col-md-4 col-xs-3">
-                <jsp:include page="change-password.jsp"/>
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4">
+                <span id="userName">Ivan</span>
+                <span id="userSurname">Ivanovich</span>
+                <span id="userEmail">ivanovivanovich@gmail.com</span>
             </div>
         </div>
     </div>
-</form>
+    </div>
+</sec:authorize>
 
 
 <footer class="footer container-fluid">
@@ -119,8 +122,9 @@
         </div>
     </div>
 </footer>
-<script src="/resources/js/changePassword.js"></script>
+
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="/resources/js/photo.js"></script>
+
 </body>
 </html>
