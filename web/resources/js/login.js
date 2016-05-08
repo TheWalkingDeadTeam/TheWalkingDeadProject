@@ -2,6 +2,13 @@
  * Created by Pavel on 25.04.2016.
  */
 $(document).ready(function () {
+
+    var counter = 0;
+    $('#mainLolo').hide();
+     $('#thisDiv').on('click', successLogin);
+    // $('#logoDiv').on('click', swapElements(counter));
+
+
     $('#j_password, #password').hideShowPassword(false, true);
     
     $("#buttonSignIn").click(function (event) {
@@ -37,4 +44,17 @@ $(document).ready(function () {
             }
         });
     });
+
+    function successLogin () {
+        counter++;
+        if (counter >= 5) {
+            $('#mainLogo').hide();
+            $('#mainLolo').show();
+            counter = 0;
+        } else {
+            $('#mainLogo').show();
+            $('#mainLolo').hide();
+        }
+    }
 });
+

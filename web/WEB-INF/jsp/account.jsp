@@ -41,7 +41,6 @@
                     <li><a href="">Home</a></li>
                     <li><a href="">Information</a></li>
                     <sec:authorize access="hasRole('ROLE_STUDENT')">
-
                         <li><a href="/profile">Profile</a></li>
                     </sec:authorize>
                     <li><a href="/logout">Logout</a></li>

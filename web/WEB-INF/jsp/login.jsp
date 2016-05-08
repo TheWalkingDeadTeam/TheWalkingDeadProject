@@ -14,6 +14,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Netcracker</title>
     <link rel="icon" type="image/png" sizes="32x32" href="/resources/images/ico.png"/>
     <link rel="stylesheet" type="text/css" href="/resources/css/reset.css"/>
@@ -25,24 +26,30 @@
 
 <body id="document">
 
-<header class="header">
-    <div class="container-fluid navbar headerTop">
-        <a href="#"><img class="col-lg-4 col-md-4 col-sm-9 col-xs-12" src="/resources/images/logo.png" alt="logo"/></a>
-
-    </div>
-    <div class="col-lg-12 col-md-12 hidden-sm hidden-xs">
-        <div class="container-fluid navbar-inner navigation">
-            <a class="col-lg-4 col-md-4" href="#"><p>Home</p></a>
-            <a class="col-lg-4 col-md-4" href="/account"><p>[Account]</p></a>
-            <a class="col-lg-4 col-md-4" href="#"><p>Contacts</p></a>
+<header>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed button-header" data-toggle='collapse'
+                        data-target='#collapsed-menu' aria-expanded="false">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand brand-img" href="">
+                    <img src='resources/images/logo.png' alt="Brand" class="header-img">
+                </a>
+            </div>
+            <div id='collapsed-menu' class='navbar-collapse collapse'>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="/login">Home</a></li>
+                    <li><a href="/information">Information</a></li>
+                    <li><a href="/contacts">Contacts</a></li>
+                    <li><a href="/logout">Logout</a></li>
+                </ul>
+            </div>
         </div>
-    </div>
-    <div class="signIn visible-xs">
-        <div calss="container-fluid">
-            <a class="col-xs-4 pull-left" href="#"><p>Forgot password?</p></a>
-            <a class="col-xs-4 pull-right" href="#"><p class="pull-right">Sign in</p></a>
-        </div>
-    </div>
+    </nav>
 </header>
 
 
@@ -74,25 +81,26 @@
         </sec:authorize>
     </div>
 
-      <div class="recovery registration">
-          <div class="layout"></div>
-          <sec:authorize access="!isAuthenticated()">
-              <form id="stupidUser" action="/passwordRecovery">
-                  <div id="passwordRecovery"></div>
-                  <div class="row container-fluid recovery-head">
-                      <div class="col-lg-6 col-md-8 col-sm-9 col-xs-9">
-                          <h2 class="form-signin-heading">Password recovery</h2>
-                      </div>
-                      <div class="col-lg-6 col-md-4 col-sm-3 col-xs-3 ">
-                          <i class="material-icons closeico"><span class="closebtn">clear</span></i>
-                      </div>
-                  </div>
-                  <input id="userEmail" name="email" class="form-control" placeholder="Email address" type="text" value="">
-                  <div class="correct-email"></div>
-                  <button id="buttonRecoverPassword" class="btn btn-lg btn-primary btn-block">Send request</button>
-              </form>
-          </sec:authorize>
-      </div>
+    <div class="recovery registration">
+        <div class="layout"></div>
+        <sec:authorize access="!isAuthenticated()">
+            <form id="stupidUser" action="/passwordRecovery">
+                <div id="passwordRecovery"></div>
+                <div class="row container-fluid recovery-head">
+                    <div class="col-lg-6 col-md-8 col-sm-9 col-xs-9">
+                        <h2 class="form-signin-heading">Password recovery</h2>
+                    </div>
+                    <div class="col-lg-6 col-md-4 col-sm-3 col-xs-3 ">
+                        <i class="material-icons closeico"><span class="closebtn">clear</span></i>
+                    </div>
+                </div>
+                <input id="userEmail" name="email" class="form-control" placeholder="Email address" type="text"
+                       value="">
+                <div class="correct-email"></div>
+                <button id="buttonRecoverPassword" class="btn btn-lg btn-primary btn-block">Send request</button>
+            </form>
+        </sec:authorize>
+    </div>
 
     <div class="row">
 
@@ -124,8 +132,11 @@
                            required>
                     <button id="buttonSignIn" class="btn btn-lg btn-primary btn-block signbtn" type="submit">Sign in
                     </button>
-                    <button type="button" class="btn btn-lg btn-primary btn-block recoverybtn">Forgot password</button>
                     <button type="button" class="btn btn-lg btn-primary btn-block regbut">Registration</button>
+                    <button style="display: none;" type="button" id="recpass"
+                            class="btn btn-lg btn-primary btn-block recoverybtn">Forgot password
+                    </button>
+                    <label for="recpass">Forgot password?</label>
                 </form>
             </sec:authorize>
             <sec:authorize access="isAuthenticated()">
@@ -139,8 +150,11 @@
 
             </sec:authorize>
         </div>
-        <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
-            <img class='img-responsive' src='/resources/images/main.jpg'>
+        <div id="logoDiv" class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+            <div id="thisDiv">
+                <img id="mainLogo" class='img-responsive' src='/resources/images/main.jpg'>
+                <iframe id="mainLolo" width="640" height="360" src="https://www.youtube.com/embed/BcmUOmvl1N8?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+            </div>
         </div>
     </div>
 </div>
@@ -148,7 +162,8 @@
 
 <footer class="footer container-fluid">
     <div class="footerLg container visible-md visible-lg">
-        <img class="col-lg-3 col-lg-3 col-sm-3" src="/resources/images/logo-gray.png"/>
+        <div class="col-lg-3 col-lg-3 col-sm-3"><img class='img-responsive' src="resources/images/logo-gray.png"></div>
+
         <div class="col-lg-8 col-md-8 col-lg-offset-1 col-lg-offset-1 col-md-offset-1">
             <div class="footerLgText col-lg-3 col-md-3 col-lg-offset-1 col-md-offset-1">
                 <p>Univercity Office Park III</p>
@@ -169,11 +184,11 @@
         </div>
     </div>
     <div class="footerSm row visible-sm visible-xs">
-        <img class="col-sm-5 visible-sm" src="/resources/images/logo-gray.png"/>
+        <img class="col-sm-5 visible-sm" src="resources/images/logo-gray.png">
         <div class="footerSmText col-sm-7 col-xs-12">
             <div class="col-sm-8 col-xs-6">
-                <a class="col-sm-6 col-xs-7" href="#"><p>Courses Info</p></a>
-                <a class="col-sm-6 col-xs-7" href="#"><p>Contacts</p></a>
+                <a class="col-sm-6 col-xs-7" href="http://localhost:8080/profile#"><p>Courses Info</p></a>
+                <a class="col-sm-6 col-xs-7" href="http://localhost:8080/profile#"><p>Contacts</p></a>
             </div>
             <div class="col-sm-4 col-xs-3 pull-right">
                 <p>Privacy Policy</p>

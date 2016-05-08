@@ -6,8 +6,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.entity.CES;
+import ua.nc.entity.profile.Field;
 import ua.nc.entity.profile.Profile;
 import ua.nc.service.*;
+import ua.nc.entity.profile.ProfileField;
+import ua.nc.service.CESService;
+import ua.nc.service.ProfileService;
+import ua.nc.service.ProfileServiceImpl;
+import ua.nc.service.UserDetailsImpl;
 import ua.nc.validator.ProfileValidator;
 import ua.nc.validator.ValidationError;
 import ua.nc.validator.Validator;
@@ -24,27 +30,38 @@ public class ProfileController {
     private ProfileService profileService = new ProfileServiceImpl();
     private CESService cesService = new CESServiceImpl();
 
-/*    @RequestMapping(value = "/profile/{id}", method = RequestMethod.GET)
-    public
-    @ResponseBody
-    Profile profile(@PathVariable Integer) {
-        return profileService.getProfile((UserDetailsImpl) SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getPrincipal());
-    }*/
+//  @RequestMapping(value = "/profile", method = RequestMethod.GET)
+//    public
+//    @ResponseBody
+//    Profile profile() {
+//        return profileService.getProfile((UserDetailsImpl) SecurityContextHolder
+//                .getContext()
+//                .getAuthentication()
+//                .getPrincipal());
+//    }
+
+    @RequestMapping(value = "/profile/{id}", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody Profile profile(@PathVariable("id") Integer id) {
+        Profile profile = null;
+        try {
+            profile = profileService.getProfile(id, 1);
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+        return profile;
+    }
 
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
-    public String profile() {
+    public String profileTest() {
         return "profile";
     }
 
-    @RequestMapping(value = "/profile", method = RequestMethod.POST)
+    @RequestMapping(value = "/profile", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public Set<ValidationError> profileFields(@RequestBody Profile profile) {
         Set<ValidationError> errors;
         Validator validator = new ProfileValidator();
-        errors = validator.validate(profile);
+        errors = new LinkedHashSet<>();/*validator.validate(profile);*/
         if (errors.isEmpty()) {
             try {
                 profileService.setProfile(((UserDetailsImpl) SecurityContextHolder
