@@ -28,6 +28,36 @@
 
     });
 
+    $('#feedback').submit(function (event) {
+            event.preventDefault();
+            $.ajax({
+                type: 'post',
+                url: '/interviewer/feedback/' + id + '/save',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    score: $('#feedback_score').val(),
+                    comment: $('#feedback_text').val()
+                }),
+                success: function (response){
+                    if (response.length){
+                        var errors_out = "";
+                        for (var i in response) {
+                            errors_out += response[i].errorMessage + "</br>"
+                        }
+                        $('#save_message')
+                            .addClass('alert alert-danger')
+                            .html(errors_out);
+                    }
+                },
+                error: function (jqXHR, exception) {
+                    console.log(exception.toString());
+                    window.location.href = "/error"
+                }
+            });
+        }
+    )
+
     function typeSwitcher(item, i, divname){
             $('<div id=\"block' + i + '\">').appendTo($(divname));
             $('<label>').attr({for: item.id}).text(item.fieldName + '\t ').appendTo($('#block' + i));

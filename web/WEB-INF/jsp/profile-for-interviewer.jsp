@@ -51,7 +51,7 @@
   </nav>
 </header>
 
-<sec:authorize access="isAuthenticated()">
+<sec:authorize access="hasAnyRole('ROLE_BA','ROLE_HR','ROLE_DEV')">
 
   <div class="container smprofile">
     <div class="row">
@@ -82,11 +82,13 @@
   </div>
 
   <div id="profile">
-      <%--<br>--%>
   </div>
-
+  <br>
   <form id="feedback">
-    <textarea id = "feedback_text"/>
+    <div id="save_message"></div>
+    <input type="number" id = "feedback_score" max="100" min="0" align="centre"/>
+    <textarea id="feedback_text" placeholder="Put your feedback here" cols="40" rows="10"></textarea>
+    <button type="submit" title="Submit">Submit</button>
   </form>
 
 

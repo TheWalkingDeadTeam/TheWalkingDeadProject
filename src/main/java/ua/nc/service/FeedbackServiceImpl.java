@@ -26,7 +26,7 @@ public class FeedbackServiceImpl implements FeedbackService {
     private final static UserService userService = new UserServiceImpl();
 
     @Override
-    public void saveFeedback(Feedback feedback, Application application) {
+    public boolean saveFeedback(Feedback feedback, Application application) {
         Connection connection = daoFactory.getConnection();
         FeedbackDAO feedbackDAO = daoFactory.getFeedbackDAO(connection);
         IntervieweeDAO intervieweeDAO = daoFactory.getIntervieweeDAO(connection);
@@ -35,7 +35,9 @@ public class FeedbackServiceImpl implements FeedbackService {
         try {
             connection.setAutoCommit(false);
             Interviewee interviewee = intervieweeDAO.getById(application.getId());
-
+            if (interviewee == null) {
+                return false;
+            }
             feedback = feedbackDAO.create(feedback);
             User user = userService.getUser(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                     .getPrincipal()).getUsername());
@@ -47,6 +49,7 @@ public class FeedbackServiceImpl implements FeedbackService {
             }
             intervieweeDAO.update(interviewee);
             connection.commit();
+            return true;
         } catch (SQLException ex){
             try {
                 LOGGER.warn(ex.getMessage());
@@ -54,9 +57,10 @@ public class FeedbackServiceImpl implements FeedbackService {
             } catch (SQLException ex1){
                 LOGGER.warn(ex1.getMessage());
             }
+            return false;
         } catch (DAOException ex) {
             LOGGER.warn(ex.getMessage());
-
+            return false;
         } finally {
             daoFactory.putConnection(connection);
             daoFactory.putConnection(connection1);

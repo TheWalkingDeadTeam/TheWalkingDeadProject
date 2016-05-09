@@ -3,10 +3,7 @@ package ua.nc.controller;
 import org.apache.log4j.Logger;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import ua.nc.entity.Application;
 import ua.nc.entity.Feedback;
 import ua.nc.service.*;
@@ -39,6 +36,7 @@ public class InterviewerController {
         return applicationService.getApplicationByUserForCurrentCES(id);
     }
 
+    @ResponseBody
     @RequestMapping(value = "feedback/{id}/save", method = RequestMethod.POST, produces = "application/json")
     public Set<ValidationError> saveFeedback(@RequestBody Feedback feedback, @PathVariable("id") Integer id){
         Set<ValidationError> errors = new LinkedHashSet<>();
@@ -46,7 +44,9 @@ public class InterviewerController {
                 .getPrincipal()).getUsername()).getId();
         feedback.setInterviewerID(interviewerID);
         Application application = applicationService.getApplicationByUserForCurrentCES(id);
-        feedbackService.saveFeedback(feedback, application);
+        if  (!feedbackService.saveFeedback(feedback, application)){
+            errors.add(new ValidationError("save", "Unable to save feedback"));
+        }
         return  errors;
     }
 }
