@@ -25,7 +25,7 @@ public class PostgreApplicationTableDAO {
     }
 
     private static final String getFieldIdsQuery = (
-            "SELECT field.field_id, field.name FROM field " +
+            "SELECT field.field_id, field.name, field_type.name AS type FROM field " +
                     "JOIN ces_field ON field.field_id = ces_field.field_id " +
                     "JOIN field_type ON field.field_type_id = field_type.field_type_id " +
                     "WHERE ces_id = ? " +
@@ -43,6 +43,7 @@ public class PostgreApplicationTableDAO {
                 FieldData field = new FieldData();
                 field.id = rs.getInt("field_id");
                 field.name = rs.getString("name");
+                field.type = rs.getString("type");
                 fieldData.add(field);
             }
             return fieldData;
@@ -51,14 +52,28 @@ public class PostgreApplicationTableDAO {
         }
     }
 
-    private String subQuery(Integer fieldId) {
+    private String subQuery(Integer fieldId, String fieldType) {
+        String pattern = null;
+        switch (fieldType){
+            case "number":
+                pattern = "field_value.value_double";
+                break;
+            case "text":
+                pattern = "field_value.value_text";
+                break;
+            case "date":
+                pattern = "field_value.value_date";
+                break;
+            case "select":
+            case "radio":
+            case "checkbox":
+                pattern = "list_value.value_text";
+                break;
+        }
         String template = (
-            "MAX(CASE WHEN field.field_id={0} THEN list_value.value_text ELSE NULL END) as field_{0}_list_text," +
-            "MAX(CASE WHEN field.field_id={0} THEN field_value.value_text ELSE NULL END) as field_{0}_text," +
-            "MAX(CASE WHEN field.field_id={0} THEN field_value.value_date ELSE NULL END) as field_{0}_date," +
-            "MAX(CASE WHEN field.field_id={0} THEN field_value.value_double ELSE NULL END) as field_{0}_double"
+            "MAX(CASE WHEN field.field_id={0} THEN {1} ELSE NULL END) as field_{0} "
         );
-        return MessageFormat.format(template, fieldId);
+        return MessageFormat.format(template, fieldId, pattern);
     }
 
     private static final String baseQuery = (
@@ -78,7 +93,7 @@ public class PostgreApplicationTableDAO {
                     "GROUP BY system_user.system_user_id "
     );
 
-    private static final String orderByQuery = " ORDER BY field_{0}_list_text, field_{0}_text, field_{0}_date, field_{0}_double ";
+    private static final String orderByQuery = " ORDER BY field_{0} ";
     private static final String limitOffsetQuery = " LIMIT {0} OFFSET {1} ";
 
     public StudentData getApplicationsTable(Integer cesId, Integer limit, Integer offset) throws DAOException {
@@ -88,11 +103,11 @@ public class PostgreApplicationTableDAO {
         return getApplications(cesId, fullQuery, fieldData);
     }
 
-    public StudentData getApplicationsTable(Integer cesId, Integer limit, Integer offset, String orderBy) throws DAOException {
+    public StudentData getApplicationsTable(Integer cesId, Integer limit, Integer offset, Integer orderBy) throws DAOException {
         List<FieldData> fieldData = getFieldIds(cesId);
         String baseQuery = buildBaseFullQuery(fieldData);
-        String almostFullQuery = baseQuery + MessageFormat.format(limitOffsetQuery, limit, offset);
-        String fullQuery = almostFullQuery + MessageFormat.format(orderByQuery, orderBy);
+        String almostFullQuery = baseQuery + MessageFormat.format(orderByQuery, orderBy);
+        String fullQuery = almostFullQuery + MessageFormat.format(limitOffsetQuery, limit, offset);
         return getApplications(cesId, fullQuery, fieldData);
     }
 
@@ -114,10 +129,10 @@ public class PostgreApplicationTableDAO {
     private String buildBaseFullQuery(List<FieldData> fieldData) throws DAOException {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < fieldData.size() - 1; i++) {
-            builder.append(subQuery(fieldData.get(i).id));
+            builder.append(subQuery(fieldData.get(i).id, fieldData.get(i).type));
             builder.append(",");
         }
-        builder.append(subQuery(fieldData.get(fieldData.size() - 1).id));
+        builder.append(subQuery(fieldData.get(fieldData.size() - 1).id, fieldData.get(fieldData.size() - 1).type));
         String sub = builder.toString();
         return MessageFormat.format(baseQuery, sub);
     }
