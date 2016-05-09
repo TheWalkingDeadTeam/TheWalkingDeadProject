@@ -6,4 +6,5 @@ package ua.nc.entity.profile;
 public class FieldData {
     public int id;
     public String name;
+    public String type;
 }
