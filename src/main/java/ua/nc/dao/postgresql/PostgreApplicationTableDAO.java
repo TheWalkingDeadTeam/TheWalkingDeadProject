@@ -78,8 +78,8 @@ public class PostgreApplicationTableDAO {
                     "GROUP BY system_user.system_user_id "
     );
 
-    private static final String orderByQuery = " ORDER BY {0} ";
-    private static final String limitOffsetQuery = " LIMIT {0}, OFFSET {1} ";
+    private static final String orderByQuery = " ORDER BY field_{0}_list_text, field_{0}_text, field_{0}_date, field_{0}_double ";
+    private static final String limitOffsetQuery = " LIMIT {0} OFFSET {1} ";
 
     public StudentData getApplicationsTable(Integer cesId, Integer limit, Integer offset) throws DAOException {
         List<FieldData> fieldData = getFieldIds(cesId);
