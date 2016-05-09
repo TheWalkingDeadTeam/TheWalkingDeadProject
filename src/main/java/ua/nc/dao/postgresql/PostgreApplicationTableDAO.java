@@ -1,11 +1,16 @@
 package ua.nc.dao.postgresql;
 
 import ua.nc.dao.exception.DAOException;
+import ua.nc.entity.profile.FieldData;
+import ua.nc.entity.profile.RowValue;
+import ua.nc.entity.profile.StudentData;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -20,7 +25,7 @@ public class PostgreApplicationTableDAO {
     }
 
     private static final String getFieldIdsQuery = (
-            "SELECT field.field_id FROM field " +
+            "SELECT field.field_id, field.name FROM field " +
                     "JOIN ces_field ON field.field_id = ces_field.field_id " +
                     "JOIN field_type ON field.field_type_id = field_type.field_type_id " +
                     "WHERE ces_id = ? " +
@@ -29,15 +34,18 @@ public class PostgreApplicationTableDAO {
                     "AND field_type.name != 'textarea'"
     );
 
-    public List<Integer> getFieldIds() throws DAOException {
+    public List<FieldData> getFieldIds(Integer cesId) throws DAOException {
         try (PreparedStatement statement = this.connection.prepareStatement(getFieldIdsQuery)) {
-            statement.setInt(1, 1);
+            statement.setInt(1, cesId);
             ResultSet rs = statement.executeQuery();
-            List<Integer> fieldIds = new LinkedList<>();
+            List<FieldData> fieldData = new ArrayList<>();
             while (rs.next()){
-                fieldIds.add(rs.getInt("field_id"));
+                FieldData field = new FieldData();
+                field.id = rs.getInt("field_id");
+                field.name = rs.getString("name");
+                fieldData.add(field);
             }
-            return fieldIds;
+            return fieldData;
         } catch (Exception e) {
             throw new DAOException(e);
         }
@@ -53,8 +61,8 @@ public class PostgreApplicationTableDAO {
         return MessageFormat.format(template, fieldId);
     }
 
-    public void getApplications() throws DAOException {
-        List<Integer> fieldIds = getFieldIds();
+    public StudentData getApplications(Integer cesId) throws DAOException {
+        List<FieldData> fieldData = getFieldIds(cesId);
         String baseQuery = (
                 "SELECT " +
                 "system_user.system_user_id, " +
@@ -68,30 +76,56 @@ public class PostgreApplicationTableDAO {
                 "JOIN public.field_type ON field.field_type_id = field_type.field_type_id " +
                 "JOIN public.field_value ON field_value.field_id = field.field_id " +
                 "LEFT JOIN public.list_value ON field_value.list_value_id = list_value.list_value_id " +
-                "WHERE field.multiple_choice = FALSE " +
                 "GROUP BY system_user.system_user_id"
         );
         StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < fieldIds.size() - 1; i++) {
-            builder.append(subQuery(fieldIds.get(i)));
+        for (int i = 0; i < fieldData.size() - 1; i++) {
+            builder.append(subQuery(fieldData.get(i).id));
             builder.append(",");
         }
-        builder.append(subQuery(fieldIds.get(fieldIds.size() - 1)));
+        builder.append(subQuery(fieldData.get(fieldData.size() - 1).id));
         String sub = builder.toString();
         String fullQuery = MessageFormat.format(baseQuery, sub);
+        StudentData result = new StudentData();
+        result.header = fieldData;
+        List<RowValue> rowValues = new LinkedList<>();
         try (PreparedStatement statement = this.connection.prepareStatement(fullQuery)) {
             ResultSet rs = statement.executeQuery();
             while (rs.next()){
-                System.out.println(rs.getString("system_user_id"));
-                System.out.println(rs.getString("name"));
-                for (int i = 0; i < fieldIds.size(); i++) {
-                    String fieldName = MessageFormat.format("field_{0}", i);
-                    Object fieldValue = rs.getObject(fieldName);
-                    System.out.println(fieldValue);
+                RowValue rowValue = new RowValue();
+                rowValue.userId = rs.getInt("system_user_id");
+                rowValue.name = rs.getString("name") + " " + rs.getString("surname");
+                for (FieldData i : fieldData) {
+                    rowValue.fields.put(i.id, parseResult(rs, i.id));
                 }
+                rowValues.add(rowValue);
             }
+            result.rows = rowValues;
+            return result;
         } catch (Exception e) {
             throw new DAOException(e);
         }
+    }
+
+    private Object parseResult(ResultSet rs, int i) throws SQLException {
+        Object result;
+        String fieldName = MessageFormat.format("field_{0}_list_text", i);
+        if (rs.getObject(fieldName) != null){
+            result = rs.getString(fieldName);
+        } else {
+            fieldName = MessageFormat.format("field_{0}_text", i);
+            if (rs.getObject(fieldName) != null){
+                result = rs.getString(fieldName);
+            } else {
+                fieldName = MessageFormat.format("field_{0}_double", i);
+                if (rs.getObject(fieldName) != null){
+                    result = rs.getDouble(fieldName);
+                } else {
+                    fieldName = MessageFormat.format("field_{0}_date", i);
+                    result = rs.getDate(fieldName);
+                }
+            }
+        }
+        return result;
     }
 }
