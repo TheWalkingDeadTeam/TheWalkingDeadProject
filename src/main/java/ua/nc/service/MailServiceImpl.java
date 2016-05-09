@@ -285,6 +285,8 @@ public class MailServiceImpl implements MailService {
 
             Date todaysDate = new Date(interviewDate.getTime() - reminderMillis);
             dateParameter.put(DATE_PATTERN, todaysDate.toString());
+
+
             massDelivery(interviewDate, interviewersList, customizeMail(customizedInterviewerMail, dateParameter));
             massDelivery(interviewDate, todayStudents, customizeMail(customizedStudentMail, dateParameter));
         }
