@@ -1,6 +1,7 @@
 package ua.nc.entity.profile;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -8,5 +9,6 @@ import java.util.Map;
  */
 public class RowValue {
     public int userId;
-    public Map<String, Object> fields = new HashMap<>();
+    public String name;
+    public Map<Integer, Object> fields = new LinkedHashMap<>();
 }
