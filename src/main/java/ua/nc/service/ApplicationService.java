@@ -7,5 +7,5 @@ import ua.nc.entity.User;
  * Created by Hlib on 09.05.2016.
  */
 public interface ApplicationService {
-    Application getApplicationByUserForCurrentCES(User user);
+    Application getApplicationByUserForCurrentCES(int userId);
 }

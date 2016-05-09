@@ -8,7 +8,9 @@ import ua.nc.entity.Interviewee;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -83,5 +85,30 @@ public class PostgreIntervieweeDAO extends AbstractPostgreDAO<Interviewee, Integ
     @Override
     public Interviewee create(Interviewee object) throws DAOException {
         return persist(object);
+    }
+
+    @Override
+    public Interviewee getById(int applicationId) {
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try{
+            statement = connection.prepareStatement(getSelectQuery());
+            statement.setInt(1, applicationId);
+            resultSet = statement.executeQuery();
+            List<Interviewee> interviewees = parseResultSet(resultSet);
+            return interviewees.get(0);
+        } catch (SQLException ex) {
+
+        } catch (DAOException ex) {
+
+        }
+        return null;
+    }
+
+    private class PersistInterviewee extends Interviewee{
+        @Override
+        public void setId(int id) {
+            super.setId(id);
+        }
     }
 }

@@ -22,7 +22,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final static DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
 
     @Override
-    public Application getApplicationByUserForCurrentCES(User user) {
+    public Application getApplicationByUserForCurrentCES(int userId) {
         Connection connection = daoFactory.getConnection();
         CESDAO cesdao = daoFactory.getCESDAO(connection);
         ApplicationDAO applicationDAO = daoFactory.getApplicationDAO(connection);
@@ -30,7 +30,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         Application application = null;
         try {
             CES ces = cesdao.getCurrentCES();
-            application = applicationDAO.getApplicationByUserCES(user.getId(),ces.getId());
+            application = applicationDAO.getApplicationByUserCES(userId,ces.getId());
         } catch (DAOException ex){
             LOGGER.warn(ex.getMessage());
         } finally {
