@@ -44,10 +44,10 @@ public class ProfileValidator implements Validator {
         return errors;
     }
 
-    private ValidationError validateNotMultipleChoiceField(ProfileField profileField, String fildType) {
+    private ValidationError validateNotMultipleChoiceField(ProfileField profileField, String fieldType) {
         ValidationError validationError = null;
         if (countElement(profileField.getValues()) > 0) {
-            if (fildType.equals("number")) {
+            if (fieldType.equals("number")) {
                 pattern = Pattern.compile(numbPattern);
                 matcher = pattern.matcher(profileField.getValues().get(0).getValue());
                 if (matcher.matches()) {
@@ -59,14 +59,14 @@ public class ProfileValidator implements Validator {
                     }
                 }
             }
-            if (fildType.equals("radio") || fildType.equals("select")) {
+            if (fieldType.equals("radio") || fieldType.equals("select")) {
                 if (countElement(profileField.getValues()) != 1) {
                     validationError = new ValidationError(profileField.getFieldName(), "You should choose one fields ");
                 }
             }
 
-            if (fildType.equals("tel")) {
-                pattern = Pattern.compile(numbPattern);
+            if (fieldType.equals("tel")) {
+                pattern = Pattern.compile(telPattern);
                 matcher = pattern.matcher(profileField.getValues().get(0).getValue());
                 if (!matcher.matches()) {
                     validationError = new ValidationError(profileField.getFieldName(), "Please, enter number");
