@@ -67,8 +67,6 @@ public class UserServiceImpl implements UserService {
         } finally {
             daoFactory.putConnection(connection);
         }
-
-
     }
 
     @Override

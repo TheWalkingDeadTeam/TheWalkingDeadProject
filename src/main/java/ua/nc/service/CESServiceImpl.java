@@ -74,7 +74,7 @@ public class CESServiceImpl implements CESService {
             applicationDAO.create(application);
             LOGGER.info("Successfully enrolled to current CES");
         } catch (DAOException e) {
-            LOGGER.warn("Can't enrollAsStudent to current CES");
+            LOGGER.warn("Can't enrollAsStudent to current CES", e.getCause());
             throw new DAOException(e);
         } finally {
             daoFactory.putConnection(connection);

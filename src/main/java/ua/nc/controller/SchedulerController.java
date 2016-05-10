@@ -31,7 +31,7 @@ import java.util.*;
  */
 @Controller
 public class SchedulerController {
-    private final Logger log = Logger.getLogger(UserController.class);
+    private final Logger log = Logger.getLogger(SchedulerController.class);
     private final static String GEO_CODE_GOOGLE = "AIzaSyBzqTdqxQtAvZzhVZofehN2mvetgdYpZf0";
     private final static String DEFAULT_PLACE_LINK = "http://www.google.com/maps/place/lat,lng";
     //params

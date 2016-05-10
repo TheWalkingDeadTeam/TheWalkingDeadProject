@@ -20,7 +20,7 @@ import java.util.List;
  */
 @Controller
 public class EnrollmentSessionController {
-    private static final Logger LOGGER = Logger.getLogger(MailController.class);
+    private static final Logger LOGGER = Logger.getLogger(EnrollmentSessionController.class);
     private  CESService cesService = new CESServiceImpl();
 
     /**

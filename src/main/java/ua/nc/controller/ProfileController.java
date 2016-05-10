@@ -85,7 +85,7 @@ public class ProfileController {
                         .getPrincipal()).getId(), currentCES.getId());
             } catch (DAOException e) {
                 errors.add(new ValidationError("enrollAsStudent", "You have already enrolled to current CES"));
-                LOGGER.info("You have already enrolled to current CES");
+                LOGGER.info("You have already enrolled to current CES", e.getCause());
             }
         } else {
             errors.add(new ValidationError("enrollAsStudent", "Can't enrollAsStudent to current CES. Current CES session is not exist"));
@@ -93,6 +93,4 @@ public class ProfileController {
         }
         return errors;
     }
-
-
 }
