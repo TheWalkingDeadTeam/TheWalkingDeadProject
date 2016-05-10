@@ -39,7 +39,7 @@ public class PostgreApplicationTableDAO {
             statement.setInt(1, cesId);
             ResultSet rs = statement.executeQuery();
             List<FieldData> fieldData = new ArrayList<>();
-            while (rs.next()) {
+            while (rs.next()){
                 FieldData field = new FieldData();
                 field.id = rs.getInt("field_id");
                 field.name = rs.getString("name");
@@ -54,7 +54,7 @@ public class PostgreApplicationTableDAO {
 
     private String subQuery(Integer fieldId, String fieldType) {
         String pattern = null;
-        switch (fieldType) {
+        switch (fieldType){
             case "number":
                 pattern = "field_value.value_double";
                 break;
@@ -71,7 +71,7 @@ public class PostgreApplicationTableDAO {
                 break;
         }
         String template = (
-                "MAX(CASE WHEN field.field_id={0} THEN {1} ELSE NULL END) as field_{0} "
+            "MAX(CASE WHEN field.field_id={0} THEN {1} ELSE NULL END) as field_{0} "
         );
         return MessageFormat.format(template, fieldId, pattern);
     }
@@ -141,12 +141,12 @@ public class PostgreApplicationTableDAO {
         StudentData result = new StudentData();
         result.header = fieldData;
         List<RowValue> rowValues = new LinkedList<>();
-        while (rs.next()) {
+        while (rs.next()){
             RowValue rowValue = new RowValue();
             rowValue.userId = rs.getInt("system_user_id");
             rowValue.name = rs.getString("name") + " " + rs.getString("surname");
             for (FieldData i : fieldData) {
-                rowValue.fields.put(i.id, getField(rs, i.id));
+                rowValue.fields.put(i.id, getField(rs, i));
             }
             rowValues.add(rowValue);
         }
@@ -154,24 +154,24 @@ public class PostgreApplicationTableDAO {
         return result;
     }
 
-    private Object getField(ResultSet rs, int i) throws SQLException {
-        Object result;
-        String fieldName = MessageFormat.format("field_{0}_list_text", i);
-        if (rs.getObject(fieldName) != null) {
-            result = rs.getString(fieldName);
-        } else {
-            fieldName = MessageFormat.format("field_{0}_text", i);
-            if (rs.getObject(fieldName) != null) {
+    private Object getField(ResultSet rs, FieldData fd) throws SQLException {
+        Object result = null;
+        String fieldName = MessageFormat.format("field_{0}", fd.id);
+        switch (fd.type){
+            case "number":
+                result = rs.getDouble(fieldName);
+                break;
+            case "text":
                 result = rs.getString(fieldName);
-            } else {
-                fieldName = MessageFormat.format("field_{0}_double", i);
-                if (rs.getObject(fieldName) != null) {
-                    result = rs.getDouble(fieldName);
-                } else {
-                    fieldName = MessageFormat.format("field_{0}_date", i);
-                    result = rs.getDate(fieldName);
-                }
-            }
+                break;
+            case "date":
+                result = rs.getDate(fieldName);
+                break;
+            case "select":
+            case "radio":
+            case "checkbox":
+                result = rs.getString(fieldName);
+                break;
         }
         return result;
     }
