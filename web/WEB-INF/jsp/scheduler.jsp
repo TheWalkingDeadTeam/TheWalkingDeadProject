@@ -32,7 +32,7 @@
                         <div class="col-md-7">
 
                             <div class="input-group bootstrap-timepicker timepicker">
-                                <input id="timepicker1" data-ng-model="interviewTime" name="interviewTime"   type="text" class="form-control input-small">
+                                <input id="timepicker1" data-ng-model="interviewTime" placeholder="Provide interview time" name="interviewTime"   type="text" class="form-control input-small">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
                             </div>
 
