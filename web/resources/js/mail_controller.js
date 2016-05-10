@@ -16,7 +16,8 @@ mailer.controller('MailController', ['$scope', 'MailService','$http', function($
             "mailIdUser": $scope.mailIdUser,
             "mailIdStaff": $scope.mailIdStaff,
             "contactStudent" : $scope.contactStudent,
-            "courseType" : $scope.courseType
+            "courseType" : $scope.courseType,
+            "interviewTime" : $scope.interviewTime
         };
 
         var response = $http.post('/admin/scheduler', formData);

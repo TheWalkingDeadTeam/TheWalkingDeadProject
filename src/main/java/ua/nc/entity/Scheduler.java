@@ -9,6 +9,15 @@ public class Scheduler {
     private Integer mailIdStaff;
     private String contactStaff;
     private String courseType;
+    private String interviewTime;
+
+    public String getInterviewTime() {
+        return interviewTime;
+    }
+
+    public void setInterviewTime(String interviewTime) {
+        this.interviewTime = interviewTime;
+    }
 
     @Override
     public String toString() {
@@ -18,6 +27,7 @@ public class Scheduler {
                 ", mailIdStaff=" + mailIdStaff +
                 ", contactStaff='" + contactStaff + '\'' +
                 ", courseType='" + courseType + '\'' +
+                ", interviewTime='" + interviewTime + '\'' +
                 ", contactStudent='" + contactStudent + '\'' +
                 '}';
     }
