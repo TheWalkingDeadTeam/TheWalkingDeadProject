@@ -1,11 +1,9 @@
 package ua.nc.controller;
 
 import org.apache.log4j.Logger;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ua.nc.entity.User;
-import ua.nc.service.UserDetailsImpl;
 import ua.nc.service.user.UserService;
 import ua.nc.service.user.UserServiceImpl;
 import ua.nc.validator.RegistrationValidator;
@@ -24,7 +22,7 @@ import java.util.Set;
 @Controller
 @RequestMapping(value = "/admin")
 public class AdminController {
-    private static final Logger LOGGER = Logger.getLogger(AdminController.class);
+    private final Logger log = Logger.getLogger(LoginController.class);
     private final UserService userService = new UserServiceImpl();
 
     @RequestMapping(method = RequestMethod.GET)
@@ -38,20 +36,16 @@ public class AdminController {
     Set<ValidationError> registerUser(@RequestBody User user) {
         Validator validator = new RegistrationValidator();
         Set<ValidationError> errors = validator.validate(user);
-
         if (errors.isEmpty()) {
             if (userService.getUser(user.getEmail()) == null) {
 
                 User registeredUser = userService.createUser(user);
                 if (registeredUser == null) {
-                    LOGGER.warn("Register failed " + user.getEmail());
+                    log.warn("Register failed " + user.getEmail());
                     errors.add(new ValidationError("register", "Register failed"));
-                } else {
-                    LOGGER.info("Admin" + ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
-                            .getPrincipal()).getUsername() + " create user " + user.getEmail());
                 }
             } else {
-                LOGGER.warn("User " + user.getEmail() + " already exists");
+                log.warn("User " + user.getEmail() + " already exists");
                 errors.add(new ValidationError("user", "Such user already exists"));
             }
         }
@@ -182,4 +176,11 @@ public class AdminController {
     public String mail() {
         return "admin-mail-template";
     }
+
+
+    @RequestMapping(value = {"/scheduler"} ,method = RequestMethod.GET)
+    public String schedulerView() {
+        return "admin-scheduler";
+    }
+
 }
