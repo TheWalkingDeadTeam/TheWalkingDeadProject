@@ -247,19 +247,19 @@ app.controller('StudentCtrl', ["$http", "$scope", function ($http, $scope) {
             });
         }
     };
-    $scope.saveChanges = function () {
-        var dataObj = {
-            type: "save",
-            values: []
-        };
-        var res = $http.post('students', dataObj);
-        res.success(function (data, status, headers, config) {
-            $scope.message = data;
-        });
-        res.error(function (data, status, headers, config) {
-            alert("failure message: " + JSON.stringify({data: data}));
-        });
-    }
+    // $scope.saveChanges = function () {
+    //     var dataObj = {
+    //         type: "save",
+    //         values: []
+    //     };
+    //     var res = $http.post('students', dataObj);
+    //     res.success(function (data, status, headers, config) {
+    //         $scope.message = data;
+    //     });
+    //     res.error(function (data, status, headers, config) {
+    //         alert("failure message: " + JSON.stringify({data: data}));
+    //     });
+    // }
 
     $scope.searchFiltr = function () {
         var dataObj = {

@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import ua.nc.dao.postgresql.PostgreApplicationTableDAO;
 import ua.nc.entity.StudentStatus;
 import ua.nc.entity.User;
 import ua.nc.service.StudentService;
@@ -89,6 +90,8 @@ public class AdminController {
     @RequestMapping(value = {"/students/list/{itemsPerPage}/{pageNumber}"}, method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public String getStudents(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber) {
+
+
         return "[{\n" +
                 "    \"id\": 1,\n" +
                 "    \"name\": \"Abc\",\n" +

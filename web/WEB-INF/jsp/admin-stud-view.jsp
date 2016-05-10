@@ -79,20 +79,20 @@
                     class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
                 Reject
             </button>
-            <button ng-click="saveChanges()"
-                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
-                Save
-            </button>
-            <div class="checkbox-dropdown">
-                Choose column
-                <%--<ul  class="checkbox-dropdown-list">--%>
-                <ul class="checkbox-dropdown-list">
-                    <li ng-repeat="(key,value) in data.users[0]">
-                        <label>
-                            <input type="checkbox" />{{key}}</label></li>
-                </ul>
+            <%--<button ng-click="saveChanges()"--%>
+                    <%--class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">--%>
+                <%--Save--%>
+            <%--</button>--%>
+            <%--<div class="checkbox-dropdown">--%>
+                <%--Choose column--%>
+                <%--&lt;%&ndash;<ul  class="checkbox-dropdown-list">&ndash;%&gt;--%>
+                <%--<ul class="checkbox-dropdown-list">--%>
+                    <%--<li ng-repeat="(key,value) in data.users[0]">--%>
+                        <%--<label>--%>
+                            <%--<input type="checkbox" />{{key}}</label></li>--%>
                 <%--</ul>--%>
-            </div>
+                <%--&lt;%&ndash;</ul>&ndash;%&gt;--%>
+            <%--</div>--%>
 
 
             <%--<ul ng-repeat="(key,value) in data.users[0]" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">--%>
