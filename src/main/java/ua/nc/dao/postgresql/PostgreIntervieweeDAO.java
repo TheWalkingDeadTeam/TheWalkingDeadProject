@@ -33,7 +33,7 @@ public class PostgreIntervieweeDAO extends AbstractPostgreDAO<Interviewee, Integ
 
     @Override
     public String getUpdateQuery() {
-        return "UPDATE application SET interview_time = ?, special_mark = ?, " +
+        return "UPDATE interviewee SET interview_time = ?, special_mark = ?, " +
                 "dev_feedback_id = ?, hr_feedback_id = ? WHERE application_id = ?;";
     }
 
