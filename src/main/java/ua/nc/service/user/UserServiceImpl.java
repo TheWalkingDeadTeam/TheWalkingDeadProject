@@ -1,5 +1,6 @@
 package ua.nc.service.user;
 
+
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -90,7 +91,7 @@ public class UserServiceImpl implements UserService {
     public User recoverPass(User user) {
         Connection connection = daoFactory.getConnection();
         UserDAO userDAO = daoFactory.getUserDAO(connection);
-        String testPassword = "1fdsjflKalFl1J65gfl";//RandomStringUtils.randomAlphanumeric(10);
+        String testPassword = RandomStringUtils.randomAlphanumeric(10);
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         try {
             user.setPassword(encoder.encode(testPassword));

@@ -145,6 +145,7 @@ public class LoginController implements HandlerExceptionResolver {
             email = emailNode.asText();
             errors = validator.validate(email);
             if (errors.isEmpty()) {
+
                 User user = userService.getUser(email);
                 if (user != null) {
                     userService.recoverPass(user);
@@ -155,7 +156,6 @@ public class LoginController implements HandlerExceptionResolver {
             }
         } catch (IOException e) {
             LOGGER.error("Failed to parse", e);
-            errors.add(new ValidationError("Parsing", "Parsing was failed"));
         }
         return errors;
     }
