@@ -42,7 +42,6 @@
             <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="accbtn">
                 <li class="mdl-menu__item">ion@gmail.com</li>
                 <li class="mdl-menu__item">info@example.com</li>
-                <li class="mdl-menu__item"><i class="material-icons">add</i>Add another account...</li>
             </ul>
         </div>
     </header>
@@ -63,6 +62,8 @@
         <a class="mdl-navigation__link" href="/admin/mail-template"><i
                 class="mdl-color-text--blue-grey-400 material-icons"
                 role="presentation">mail</i>Edit Letter Templates</a>
+        <a class="mdl-navigation__link" href="/admin/enroll-session"><i class="mdl-color-text--blue-grey-400 material-icons"
+                                                                   role="presentation">schedule</i>Enrollment History</a>
         <div class="mdl-layout-spacer"></div>
         <a class="mdl-navigation__link" href="/admin"><i class="mdl-color-text--blue-grey-400 material-icons"
                                                          role="presentation">help_outline</i>Menu</a>
