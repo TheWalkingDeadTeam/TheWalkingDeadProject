@@ -46,7 +46,7 @@ public class CESServiceImpl implements CESService {
     }
 
     @Override
-    public void enroll(Integer userId, Integer currentCESId) throws DAOException {
+    public void enrollAsStudent(Integer userId, Integer currentCESId) throws DAOException {
         Connection connection = daoFactory.getConnection();
         ApplicationDAO applicationDAO = new PostgreApplicationDAO(connection);
         Application application = new Application();
@@ -56,7 +56,22 @@ public class CESServiceImpl implements CESService {
             applicationDAO.create(application);
             LOGGER.info("Successfully enrolled to current CES");
         } catch (DAOException e) {
-            LOGGER.warn("Can't enroll to current CES");
+            LOGGER.warn("Can't enrollAsStudent to current CES");
+            throw new DAOException(e);
+        } finally {
+            daoFactory.putConnection(connection);
+        }
+    }
+
+    @Override
+    public void enrollAsInterviewer(Integer userId, Integer cesId) throws DAOException {
+        Connection connection = daoFactory.getConnection();
+        CESDAO cesdao = new PostgreCESDAO(connection);
+        try {
+            cesdao.addInterviewerForCurrentCES(cesId, userId);
+            LOGGER.info("Successfully enrolled to current CES");
+        } catch (DAOException e) {
+            LOGGER.warn("Can't enrollAsStudent to current CES");
             throw new DAOException(e);
         } finally {
             daoFactory.putConnection(connection);
