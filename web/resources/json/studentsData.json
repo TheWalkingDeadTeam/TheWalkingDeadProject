@@ -12,10 +12,15 @@
     "color": "blue"
   },
   {
-    "id": 1,
-    "name": "Abc",
-    "surname": "Ogurchik",
+    "id": 2,
+    "name": "Abcac",
+    "surname": "Pomidorchik",
     "isActive": "1",
-    "role": "Admin"
+    "university": "NAU",
+    "devMark": 15,
+    "hrMark": 25,
+    "email" : "ger@gmail.com",
+    "english" : 7,
+    "color": "green"
   }
 ]
