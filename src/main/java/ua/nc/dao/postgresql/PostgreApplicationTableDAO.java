@@ -146,7 +146,7 @@ public class PostgreApplicationTableDAO {
             rowValue.userId = rs.getInt("system_user_id");
             rowValue.name = rs.getString("name") + " " + rs.getString("surname");
             for (FieldData i : fieldData) {
-                rowValue.fields.put(i.id, getField(rs, i.id));
+                rowValue.fields.put(i.id, getField(rs, i));
             }
             rowValues.add(rowValue);
         }
@@ -154,24 +154,24 @@ public class PostgreApplicationTableDAO {
         return result;
     }
 
-    private Object getField(ResultSet rs, int i) throws SQLException {
-        Object result;
-        String fieldName = MessageFormat.format("field_{0}_list_text", i);
-        if (rs.getObject(fieldName) != null){
-            result = rs.getString(fieldName);
-        } else {
-            fieldName = MessageFormat.format("field_{0}_text", i);
-            if (rs.getObject(fieldName) != null){
+    private Object getField(ResultSet rs, FieldData fd) throws SQLException {
+        Object result = null;
+        String fieldName = MessageFormat.format("field_{0}", fd.id);
+        switch (fd.type){
+            case "number":
+                result = rs.getDouble(fieldName);
+                break;
+            case "text":
                 result = rs.getString(fieldName);
-            } else {
-                fieldName = MessageFormat.format("field_{0}_double", i);
-                if (rs.getObject(fieldName) != null){
-                    result = rs.getDouble(fieldName);
-                } else {
-                    fieldName = MessageFormat.format("field_{0}_date", i);
-                    result = rs.getDate(fieldName);
-                }
-            }
+                break;
+            case "date":
+                result = rs.getDate(fieldName);
+                break;
+            case "select":
+            case "radio":
+            case "checkbox":
+                result = rs.getString(fieldName);
+                break;
         }
         return result;
     }
