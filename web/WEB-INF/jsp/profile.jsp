@@ -73,9 +73,10 @@
                 <h4>E-mail:</h4>
             </div>
             <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4">
+                <sec:authentication var="principal" property="principal"/>
                 <span id="userName">Ivan</span>
                 <span id="userSurname">Ivanovich</span>
-                <span id="userEmail">ivanovivanovich@gmail.com</span>
+                <span id="userEmail">${principal.username}</span>
             </div>
         </div>
     </div>
