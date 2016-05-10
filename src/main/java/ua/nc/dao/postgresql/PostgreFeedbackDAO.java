@@ -8,6 +8,7 @@ import ua.nc.entity.Feedback;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,6 +76,20 @@ public class PostgreFeedbackDAO extends AbstractPostgreDAO<Feedback, Integer> im
             statement.setInt(4, object.getId());
         } catch (Exception e) {
             throw new DAOException(e);
+        }
+    }
+
+    @Override
+    public Feedback getById(int id) throws DAOException{
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try{
+            statement = connection.prepareStatement(getSelectQuery());
+            resultSet = statement.executeQuery();
+            List<Feedback> feedbacks = parseResultSet(resultSet);
+            return feedbacks.size() < 1 ? null : feedbacks.get(0);
+        } catch (SQLException ex){
+            throw new DAOException(ex);
         }
     }
 

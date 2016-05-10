@@ -67,4 +67,18 @@ public class FeedbackServiceImpl implements FeedbackService {
         }
 
     }
+
+    @Override
+    public Feedback getFeedback(int id) {
+        Connection connection = daoFactory.getConnection();
+        FeedbackDAO feedbackDAO = daoFactory.getFeedbackDAO(connection);
+        RoleDAO roleDAO = daoFactory.getRoleDAO(connection);
+        Feedback feedback = null;
+        try{
+            feedback = feedbackDAO.getById(id);
+        } catch (DAOException ex){
+            LOGGER.warn(ex.getMessage());
+        }
+        return feedback;
+    }
 }

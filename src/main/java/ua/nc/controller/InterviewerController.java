@@ -6,6 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ua.nc.entity.Application;
 import ua.nc.entity.Feedback;
+import ua.nc.entity.Interviewee;
+import ua.nc.entity.User;
 import ua.nc.service.*;
 import ua.nc.service.user.UserService;
 import ua.nc.service.user.UserServiceImpl;
@@ -25,6 +27,7 @@ public class InterviewerController {
     private ApplicationService applicationService = new ApplicationServiceImpl();
     private UserService userService = new UserServiceImpl();
     private FeedbackService feedbackService = new FeedbackServiceImpl();
+    private IntervieweeService intervieweeService = new IntervieweeServiceImpl();
 
     @RequestMapping(value = "/feedback", method = RequestMethod.GET)
     public String feedback(){
@@ -48,5 +51,19 @@ public class InterviewerController {
             errors.add(new ValidationError("save", "Unable to save feedback"));
         }
         return  errors;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "getFeedback/{id}", method = RequestMethod.POST, produces = "application/json")
+    public Feedback getFeedback(@PathVariable("id") Integer id){
+        Application application = applicationService.getApplicationByUserForCurrentCES(id);
+        Interviewee interviewee = intervieweeService.getInterviewee(application.getId());
+        User user = userService.getUser(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal()).getUsername());
+        if (userService.checkRole(user,"ROLE_DEV")){
+            return feedbackService.getFeedback(interviewee.getDevFeedbackID());
+        } else {
+            return feedbackService.getFeedback(interviewee.getHrFeedbackID());
+        }
     }
 }

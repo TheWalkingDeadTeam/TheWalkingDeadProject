@@ -104,4 +104,16 @@ public class UserServiceImpl implements UserService {
             daoFactory.putConnection(connection);
         }
     }
+
+    @Override
+    public boolean checkRole(User user, String roleName) {
+        Connection connection = daoFactory.getConnection();
+        RoleDAO roleDAO = daoFactory.getRoleDAO(connection);
+        try {
+            return user.getRoles().contains(roleDAO.findByName(roleName));
+        } catch (DAOException ex){
+            LOGGER.warn(ex);
+        }
+        return false;
+    }
 }

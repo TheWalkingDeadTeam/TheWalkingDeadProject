@@ -8,4 +8,5 @@ import ua.nc.entity.Feedback;
  */
 public interface FeedbackService {
     boolean saveFeedback(Feedback feedback, Application application);
+    Feedback getFeedback(int id);
 }
