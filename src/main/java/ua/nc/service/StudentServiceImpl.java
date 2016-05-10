@@ -1,10 +1,13 @@
 package ua.nc.service;
 
 import org.apache.log4j.Logger;
+import ua.nc.dao.ApplicationDAO;
+import ua.nc.dao.CESDAO;
 import ua.nc.dao.enums.DataBaseType;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.dao.factory.DAOFactory;
 import ua.nc.dao.postgresql.PostgreApplicationTableDAO;
+import ua.nc.entity.Application;
 import ua.nc.entity.CES;
 import ua.nc.entity.profile.StudentData;
 
@@ -57,13 +60,13 @@ public class StudentServiceImpl implements StudentService {
     public void changeStatus(String action, List<Integer> studentsId) {
         if (Objects.equals(action, "activate")) {
             activateStudents(studentsId);
-            System.out.println("activate");
+            log.info("Sudent list activate"+ studentsId.toString());
         } else if (Objects.equals(action, "deactivate")) {
             deactivateStudents(studentsId);
-            System.out.println("deactivate");
+            log.info("Sudent list deactivate"+ studentsId.toString());
         } else if (Objects.equals(action, "reject")) {
             rejectStudents(studentsId);
-            System.out.println("reject");
+            log.info("Sudent list reject"+ studentsId.toString());
         } else {
             log.error(action + " action not supported");
         }
@@ -92,7 +95,19 @@ public class StudentServiceImpl implements StudentService {
      */
     @Override
     public void rejectStudents(List<Integer> studentsId) {
-        // StudentListDAO
-        // метод, который обидит список студентов
+        Connection connection = daoFactory.getConnection();
+        ApplicationDAO applicationDAO = daoFactory.getApplicationDAO(connection);
+        CESDAO cesDAO = daoFactory.getCESDAO(connection);
+        try {
+            List<Application> applications = applicationDAO.getAllCESApplications(cesDAO.getCurrentCES().getId());
+            for (Application application : applications) {
+                application.setRejected(true);
+                applicationDAO.update(application);
+            }
+        } catch (DAOException e) {
+            e.printStackTrace();
+        } finally {
+            daoFactory.putConnection(connection);
+        }
     }
 }

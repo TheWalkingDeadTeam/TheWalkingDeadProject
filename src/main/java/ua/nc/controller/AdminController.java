@@ -85,6 +85,15 @@ public class AdminController {
         return "{\"size\":2000}";
     }
 
+
+    @RequestMapping(value = {"/students/search"}, method = RequestMethod.GET, produces = "application/json")
+    public
+    @ResponseBody
+    String studentsSearch() {
+        return "{\"size\":2000}";
+    }
+
+
     @RequestMapping(value = {"/students/list/{itemsPerPage}/{pageNumber}"}, method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public StudentData getStudents(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber) {

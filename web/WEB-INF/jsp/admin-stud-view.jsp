@@ -110,15 +110,11 @@
             <td>
                 <a href="#" ng-click="sortType = 'id'; sortReverse = !sortReverse">
                     #
-                    <span ng-show="sortType == 'id' && !sortReverse" class="fa fa-caret-down"></span>
-                    <span ng-show="sortType == 'id' && sortReverse" class="fa fa-caret-up"></span>
                 </a>
             </td>
             <td>
                 <a href="#" ng-click="sortType = 'name'; sortReverse = !sortReverse">
                     Full Name
-                    <span ng-show="sortType == 'name' && !sortReverse" class="fa fa-caret-down"></span>
-                    <span ng-show="sortType == 'name' && sortReverse" class="fa fa-caret-up"></span>
                 </a>
             </td>
             <%--<td>--%>

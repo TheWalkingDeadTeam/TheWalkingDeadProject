@@ -292,7 +292,7 @@ app.controller('StudentCtrl', ["$http", "$scope", function ($http, $scope) {
             type: "search",
             values: [$scope.searchFilt]
         };
-        var res = $http.post('students', dataObj);
+        var res = $http.get('students/search', dataObj);
         res.success(function (data, status, headers, config) {
             $scope.message = data;
         });
