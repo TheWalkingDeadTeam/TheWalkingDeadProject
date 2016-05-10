@@ -1,242 +1,262 @@
 {
   "fields": [
     {
-      "id": 1,
-      "name": "Sql level",
-      "odrer_num": 2,
-      "multiple": false,
-      "mandatory": false,
-      "type": "number",
-      "value": [
+      "fieldName": "Sql level",
+      "orderNum": 1,
+      "multipleChoice": false,
+      "fieldType": "radio",
+      "values": [
         {
-          "id": "",
-          "name": "",
-          "value": 5
+          "fieldValueName": "0",
+          "value": "false",
+          "id": "1"
+        },
+        {
+          "fieldValueName": "1",
+          "value": "true",
+          "id": "2"
+        },
+        {
+          "fieldValueName": "2",
+          "value": "false",
+          "id": "3"
+        },
+        {
+          "fieldValueName": "3",
+          "value": "false",
+          "id": "4"
+        },
+        {
+          "fieldValueName": "4",
+          "value": "false",
+          "id": "5"
+        },
+        {
+          "fieldValueName": "5",
+          "value": "false",
+          "id": "6"
+        },
+        {
+          "fieldValueName": "6",
+          "value": "false",
+          "id": "7"
+        },
+        {
+          "fieldValueName": "7",
+          "value": "false",
+          "id": "8"
+        },
+        {
+          "fieldValueName": "8",
+          "value": "false",
+          "id": "9"
+        },
+        {
+          "fieldValueName": "9",
+          "value": "false",
+          "id": "10"
+        },
+        {
+          "fieldValueName": "10",
+          "value": "false",
+          "id": "11"
         }
-      ]
+      ],
+      "id": 1
     },
     {
-      "id": 2,
-      "name": "Java level",
-      "odrer_num": 1,
-      "multiple": false,
-      "mandatory": false,
-      "type": "number",
-      "value": [
+      "fieldName": "Java level",
+      "orderNum": 2,
+      "multipleChoice": false,
+      "fieldType": "radio",
+      "values": [
         {
-          "id": "",
-          "name": "",
-          "value": 9
+          "fieldValueName": "0",
+          "value": "false",
+          "id": "1"
+        },
+        {
+          "fieldValueName": "1",
+          "value": "true",
+          "id": "2"
+        },
+        {
+          "fieldValueName": "2",
+          "value": "false",
+          "id": "3"
+        },
+        {
+          "fieldValueName": "3",
+          "value": "false",
+          "id": "4"
+        },
+        {
+          "fieldValueName": "4",
+          "value": "false",
+          "id": "5"
+        },
+        {
+          "fieldValueName": "5",
+          "value": "false",
+          "id": "6"
+        },
+        {
+          "fieldValueName": "6",
+          "value": "false",
+          "id": "7"
+        },
+        {
+          "fieldValueName": "7",
+          "value": "false",
+          "id": "8"
+        },
+        {
+          "fieldValueName": "8",
+          "value": "false",
+          "id": "9"
+        },
+        {
+          "fieldValueName": "9",
+          "value": "false",
+          "id": "10"
+        },
+        {
+          "fieldValueName": "10",
+          "value": "false",
+          "id": "11"
         }
-      ]
+      ],
+      "id": 2
     },
     {
-      "id": 11,
-      "name": "Your interests",
-      "type": "checkbox",
-      "multiple": true,
-      "orderNum": 11,
-      "value": [
+      "fieldName": "Your interests",
+      "orderNum": 3,
+      "multipleChoice": true,
+      "fieldType": "checkbox",
+      "values": [
         {
-          "id": 111,
-          "name": "Research",
-          "orderNum": "1",
-          "value": false
+          "fieldValueName": "Research",
+          "value": "false",
+          "id": "12"
         },
         {
-          "id": 112,
-          "name": "Practice",
-          "orderNum": 2,
-          "value": true
+          "fieldValueName": "Practice",
+          "value": "true",
+          "id": "13"
         },
         {
-          "id": 113,
-          "name": "new knowledge",
-          "orderNum": 3,
-          "value": true
+          "fieldValueName": "New knowledge",
+          "value": "false",
+          "id": "14"
         },
         {
-          "id": 114,
-          "name": "work in NetCracker",
-          "orderNum": 4,
-          "value": false
+          "fieldValueName": "Work in NC",
+          "value": "false",
+          "id": "15"
         }
-      ]
+      ],
+      "id": 3
     },
     {
-      "id": 13,
-      "name": "Where have you found information about us?",
-      "type": "radio",
-      "multiple": false,
-      "orderNum": 13,
-      "value": [
+      "fieldName": "Where have you found information?",
+      "orderNum": 4,
+      "multipleChoice": false,
+      "fieldType": "radio",
+      "values": [
         {
-          "id": 131,
-          "name": "vk",
-          "orderNum": 1,
-          "value": true
+          "fieldValueName": "VK",
+          "value": "false",
+          "id": "16"
         },
         {
-          "id": 132,
-          "name": "facebook",
-          "orderNum": 2,
-          "value": false
+          "fieldValueName": "Facebook",
+          "value": "false",
+          "id": "17"
         },
         {
-          "id": 133,
-          "name": "ourSite",
-          "orderNum": 3,
-          "value": false
+          "fieldValueName": "Our site",
+          "value": "false",
+          "id": "18"
         },
         {
-          "id": 134,
-          "name": "otherPeople",
-          "orderNum": 4,
-          "value": false
+          "fieldValueName": "Other people",
+          "value": "false",
+          "id": "19"
         },
         {
-          "id": 135,
-          "name": "tv",
-          "orderNum": 5,
-          "value": false
+          "fieldValueName": "TV",
+          "value": "true",
+          "id": "20"
         }
-      ]
+      ],
+      "id": 4
     },
     {
-      "id": 14,
-      "name": "Phone number",
-      "type": "tel",
-      "multiple": false,
-      "orderNum": 14,
-      "value": [
+      "fieldName": "Phone number",
+      "orderNum": 5,
+      "multipleChoice": false,
+      "fieldType": "tel",
+      "values": [
         {
-          "id": "",
-          "name": "",
-          "value": "+380662281488"
+          "fieldValueName": null,
+          "value": "+380666666666",
+          "id": null
         }
-      ]
+      ],
+      "id": 5
     },
     {
-      "id": 15,
-      "name": "University",
-      "type": "select",
-      "multiple": false,
-      "orderNum": 15,
-      "value": [
+      "fieldName": "University",
+      "orderNum": 6,
+      "multipleChoice": false,
+      "fieldType": "select",
+      "values": [
+
         {
-          "id": 151,
-          "name": "KPI",
-          "orderNum": 1,
-          "value": false
+          "fieldValueName": "KNU",
+          "value": "false",
+          "id": "22"
         },
         {
-          "id": 152,
-          "name": "KNEU",
-          "orderNum": 2,
-          "value": false
+          "fieldValueName": "KPI",
+          "value": "false",
+          "id": "21"
         },
         {
-          "id": 153,
-          "name": "ghetto",
-          "orderNum": 3,
-          "value": true
+          "fieldValueName": "NAUKMA",
+          "value": "false",
+          "id": "23"
         }
-      ]
+      ],
+      "id": 6
     },
     {
-      "id": 16,
-      "name": "Text field here",
-      "type": "text",
-      "multiple": false,
-      "orderNum": 16,
-      "value": [
+      "fieldName": "Text field",
+      "orderNum": 7,
+      "multipleChoice": false,
+      "fieldType": "text",
+      "values": [
         {
-          "id": "",
-          "name": "",
-          "value": "allahu akbar"
+          "fieldValueName": null,
+          "value": "text field",
+          "id": null
         }
-      ]
+      ],
+      "id": 7
     },
     {
-      "id": 17,
-      "name": "Kak dela bratishka?",
-      "type": "textarea",
-      "multiple": false,
-      "orderNum": 17,
-      "value": [
+      "fieldName": "Kak dela?",
+      "orderNum": 8,
+      "multipleChoice": false,
+      "fieldType": "textarea",
+      "values": [
         {
-          "id": "",
-          "name": "",
-          "value": ""
+          "fieldValueName": null,
+          "value": "oki",
+          "id": null
         }
-      ]
-    },
-    {
-      "id": 18,
-      "name": "Kak dela bratishka?",
-      "type": "textarea",
-      "multiple": false,
-      "orderNum": 18,
-      "value": [
-        {
-          "id": "",
-          "name": "",
-          "value": ""
-        }
-      ]
-    },
-    {
-      "id": 19,
-      "name": "Kak dela bratishka?",
-      "type": "textarea",
-      "multiple": false,
-      "orderNum": 19,
-      "value": [
-        {
-          "id": "",
-          "name": "",
-          "value": ""
-        }
-      ]
-    },
-    {
-      "id": 20,
-      "name": "Where have you found information about us?",
-      "type": "radio",
-      "multiple": false,
-      "orderNum": 20,
-      "value": [
-        {
-          "id": 201,
-          "name": "vk",
-          "orderNum": 1,
-          "value": true
-        },
-        {
-          "id": 202,
-          "name": "facebook",
-          "orderNum": 2,
-          "value": false
-        },
-        {
-          "id": 203,
-          "name": "ourSite",
-          "orderNum": 3,
-          "value": false
-        },
-        {
-          "id": 204,
-          "name": "otherPeople",
-          "orderNum": 4,
-          "value": false
-        },
-        {
-          "id": 205,
-          "name": "tv",
-          "orderNum": 5,
-          "value": false
-        }
-      ]
+      ],
+      "id": 8
     }
   ]
 }

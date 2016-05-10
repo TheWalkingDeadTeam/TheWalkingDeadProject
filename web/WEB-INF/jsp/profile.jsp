@@ -4,6 +4,7 @@
 <head>
     <title>Profile</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" sizes="32x32" href="/resources/images/ico.png"/>
     <%--<link rel="stylesheet" type="text/css" href="/resources/css/reset.css"/>--%>
     <%--<link rel="stylesheet" type="text/css" href="/resources/css/styles.css"/>--%>
@@ -12,8 +13,8 @@
 
     <link rel="icon" type="image/png" sizes="32x32" href="/images/ico.png">
     <link rel="stylesheet" type="text/css" href="resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="resources/css/style.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="resources/css/media.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="resources/css/style-profile.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="resources/css/media-profile.css" rel="stylesheet">
     <script src="resources/bootstrap/js/jquery-2.2.2.min.js" defer></script>
     <script src="resources/bootstrap/js/bootstrap.min.js" defer></script>
     <%--<style type="text/css">--%>
@@ -84,12 +85,11 @@
             <%--<br>--%>
     </form>
     <sec:authorize access="hasRole('ROLE_STUDENT')">
-        <%--<div id="agreement"><label for="agree">I agree to have my personal information been proceeded </label>--%>
-        <%--<input id="agree" type="checkbox"/>--%>
-        <%--</div>--%>
         <div id="fieldsCheck"></div>
+        <div id="profileButtons">
         <button id="save" type="submit" form="fields" value="Submit" disabled="disabled">Save</button>
-        <button id="buttonEnroll" type="button" value="Enroll"  href="/enroll" >Enroll</button>
+        <button id="buttonEnroll" type="submit" value="Enroll" href="/enroll">Enroll</button>
+        </div>
     </sec:authorize>
 
 
@@ -120,7 +120,9 @@
         </div>
     </div>
     <div class="footerSm row visible-sm visible-xs">
-        <img class="col-sm-5 visible-sm" src="resources/images/logo-gray.png">
+        <div class="col-sm-5 visible-sm" >
+            <img src="resources/images/logo-gray.png">
+        </div>
         <div class="footerSmText col-sm-7 col-xs-12">
             <div class="col-sm-8 col-xs-6">
                 <a class="col-sm-6 col-xs-7" href="http://localhost:8080/profile#"><p>Courses Info</p></a>

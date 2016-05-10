@@ -12,6 +12,7 @@
     <http use-expressions="true">
         <csrf disabled="true"/>
         <intercept-url pattern="/error" access="permitAll"/>
+        <intercept-url pattern="/login" access="permitAll" />
         <intercept-url pattern="/admin**" access="hasRole('ROLE_ADMIN')"/>
         <intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
         <intercept-url pattern="/interviewer**" access="hasAnyRole('ROLE_HR','ROLE_DEV','ROLE_BA')"/>
@@ -31,13 +32,17 @@
         <form-login login-page="/login"
                     login-processing-url="/j_spring_security_check"
                     username-parameter="j_username" password-parameter="j_password"
-                    authentication-failure-url="/login?error"
-        />
+                    authentication-failure-url="/login?error" />
+             <!--       authentication-success-handler-ref="myAuthenticationSuccessHandler"-->
 
         <logout logout-url="/logout" logout-success-url="/login?logout"
                 invalidate-session="true"/>
     </http>
 
+<!--
+    <beans:bean id="myAuthenticationSuccessHandler"
+                class="ua.nc.security.MySimpleUrlAuthenticationSuccessHandler" />
+-->
 
 
 

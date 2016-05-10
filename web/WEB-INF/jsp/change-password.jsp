@@ -11,7 +11,7 @@
     <div class="alert alert-info" role="alert">
         <div id="messageCheckPassword"></div>
         <form>
-            <input id="changePassword" name="password" class="form-control" placeholder="Password" type="text"
+            <input id="changePassword" name="password" class="form-control login-field  login-field-password" placeholder="Password" type="password"
                    value="">
             <button id="buttonChangePassword" class="btn btn-lg btn-primary btn-block changebtn">ChangePassword</button>
         </form>

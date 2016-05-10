@@ -12,6 +12,7 @@ import ua.nc.validator.ProfileValidator;
 import ua.nc.validator.ValidationError;
 import ua.nc.validator.Validator;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -24,27 +25,40 @@ public class ProfileController {
     private ProfileService profileService = new ProfileServiceImpl();
     private CESService cesService = new CESServiceImpl();
 
-/*    @RequestMapping(value = "/profile/{id}", method = RequestMethod.GET)
+//  @RequestMapping(value = "/profile", method = RequestMethod.GET)
+//    public
+//    @ResponseBody
+//    Profile profile() {
+//        return profileService.getProfile((UserDetailsImpl) SecurityContextHolder
+//                .getContext()
+//                .getAuthentication()
+//                .getPrincipal());
+//    }
+
+    @RequestMapping(value = "/profile/{id}", method = RequestMethod.GET, produces = "application/json")
     public
     @ResponseBody
-    Profile profile(@PathVariable Integer) {
-        return profileService.getProfile((UserDetailsImpl) SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getPrincipal());
-    }*/
+    Profile profile(@PathVariable("id") Integer id) {
+        Profile profile = null;
+        try {
+            profile = profileService.getProfile(id, 1);
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+        return profile;
+    }
 
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
-    public String profile() {
+    public String profileTest() {
         return "profile";
     }
 
-    @RequestMapping(value = "/profile", method = RequestMethod.POST)
+    @RequestMapping(value = "/profile", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public Set<ValidationError> profileFields(@RequestBody Profile profile) {
         Set<ValidationError> errors;
         Validator validator = new ProfileValidator();
-        errors = validator.validate(profile);
+        errors = new LinkedHashSet<>();/*validator.validate(profile);*/
         if (errors.isEmpty()) {
             try {
                 profileService.setProfile(((UserDetailsImpl) SecurityContextHolder
@@ -59,19 +73,23 @@ public class ProfileController {
     }
 
     @RequestMapping(value = "profile/enroll", method = RequestMethod.GET)
-    public @ResponseBody Set<ValidationError> enroll() {
+    public
+    @ResponseBody
+    Set<ValidationError> enroll() {
         Set<ValidationError> errors = new LinkedHashSet<>();
         CES currentCES = cesService.getCurrentCES();
         if (currentCES != null) {
             try {
-                cesService.enroll(((UserDetailsImpl)SecurityContextHolder
+                cesService.enroll(((UserDetailsImpl) SecurityContextHolder
                         .getContext()
                         .getAuthentication()
                         .getPrincipal()).getId(), currentCES.getId());
             } catch (DAOException e) {
-                LOGGER.info("");
+                errors.add(new ValidationError("enroll", "You have already enrolled to current CES"));
+                LOGGER.info("You have already enrolled to current CES");
             }
         } else {
+            errors.add(new ValidationError("enroll", "Can't enroll to current CES. Current CES session is not exist"));
             LOGGER.info("Can't enroll to current CES. Current CES session is not exist");
         }
         return errors;
