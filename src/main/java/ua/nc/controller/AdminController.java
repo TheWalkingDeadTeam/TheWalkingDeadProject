@@ -1,5 +1,6 @@
 package ua.nc.controller;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ua.nc.entity.StudentStatus;
 import ua.nc.entity.User;
+import ua.nc.entity.profile.StudentData;
 import ua.nc.service.StudentService;
 import ua.nc.service.StudentServiceImpl;
 import ua.nc.service.UserDetailsImpl;
@@ -83,66 +85,73 @@ public class AdminController {
         return "{\"size\":2000}";
     }
 
-    @RequestMapping(value = {"/students/list/{itemsPerPage}/{pageNumber}/{sortType}/{sortReverse}"}, method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = {"/students/list/{itemsPerPage}/{pageNumber}/{sortType}"}, method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public String getStudents(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("sortType") String sortType, @PathVariable("sortReverse") String sortReverse) {
-        System.out.println(itemsPerPage + " " + pageNumber + " " + sortType + " " + sortReverse);
-        return "[{\n" +
-                "    \"id\": 1,\n" +
-                "    \"name\": \"Abc\",\n" +
-                "    \"surname\": \"Ogurchik\",\n" +
-                "    \"isActive\": \"1\",\n" +
-                "    \"university\": \"KPI\",\n" +
-                "    \"devMark\": 10,\n" +
-                "    \"hrMark\": 5,\n" +
-                "    \"email\" : \"test@gmail.com\",\n" +
-                "    \"english\" : 5,\n" +
-                "    \"color\": \"blue\"\n" +
-                "  },{\n" +
-                "    \"id\": 2,\n" +
-                "    \"name\": \"Abc\",\n" +
-                "    \"surname\": \"Ogurchik\",\n" +
-                "    \"isActive\": \"1\",\n" +
-                "    \"university\": \"KPI\",\n" +
-                "    \"devMark\": 10,\n" +
-                "    \"hrMark\": 5,\n" +
-                "    \"email\" : \"test@gmail.com\",\n" +
-                "    \"english\" : 5,\n" +
-                "    \"color\": \"blue\"\n" +
-                "  },{\n" +
-                "    \"id\": 3,\n" +
-                "    \"name\": \"Abc\",\n" +
-                "    \"surname\": \"Ogurchik\",\n" +
-                "    \"isActive\": \"1\",\n" +
-                "    \"university\": \"KPI\",\n" +
-                "    \"devMark\": 10,\n" +
-                "    \"hrMark\": 5,\n" +
-                "    \"email\" : \"test@gmail.com\",\n" +
-                "    \"english\" : 5,\n" +
-                "    \"color\": \"blue\"\n" +
-                "  },{\n" +
-                "    \"id\": 4,\n" +
-                "    \"name\": \"Abc\",\n" +
-                "    \"surname\": \"Ogurchik\",\n" +
-                "    \"isActive\": \"1\",\n" +
-                "    \"university\": \"KPI\",\n" +
-                "    \"devMark\": 10,\n" +
-                "    \"hrMark\": 5,\n" +
-                "    \"email\" : \"test@gmail.com\",\n" +
-                "    \"english\" : 5,\n" +
-                "    \"color\": \"blue\"\n" +
-                "  },{\n" +
-                "    \"id\": 5,\n" +
-                "    \"name\": \"Abc\",\n" +
-                "    \"surname\": \"Ogurchik\",\n" +
-                "    \"isActive\": \"1\",\n" +
-                "    \"university\": \"KPI\",\n" +
-                "    \"devMark\": 10,\n" +
-                "    \"hrMark\": 5,\n" +
-                "    \"email\" : \"test@gmail.com\",\n" +
-                "    \"english\" : 5,\n" +
-                "    \"color\": \"blue\"\n" +
-                "  }]";
+    public StudentData getStudents(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("sortType") Integer sortType) {
+//        System.out.println(itemsPerPage + " " + pageNumber + " " + sortType + " " + sortReverse);
+        StudentData studentData;
+        StudentService studentService = new StudentServiceImpl();
+        studentData = studentService.getStudents(itemsPerPage, pageNumber,sortType);
+        if(studentData != null){
+            LOGGER.warn("studData == null");
+        }
+        return studentData;
+//        return "[{\n" +
+//                "    \"id\": 1,\n" +
+//                "    \"name\": \"Abc\",\n" +
+//                "    \"surname\": \"Ogurchik\",\n" +
+//                "    \"isActive\": \"1\",\n" +
+//                "    \"university\": \"KPI\",\n" +
+//                "    \"devMark\": 10,\n" +
+//                "    \"hrMark\": 5,\n" +
+//                "    \"email\" : \"test@gmail.com\",\n" +
+//                "    \"english\" : 5,\n" +
+//                "    \"color\": \"blue\"\n" +
+//                "  },{\n" +
+//                "    \"id\": 2,\n" +
+//                "    \"name\": \"Abc\",\n" +
+//                "    \"surname\": \"Ogurchik\",\n" +
+//                "    \"isActive\": \"1\",\n" +
+//                "    \"university\": \"KPI\",\n" +
+//                "    \"devMark\": 10,\n" +
+//                "    \"hrMark\": 5,\n" +
+//                "    \"email\" : \"test@gmail.com\",\n" +
+//                "    \"english\" : 5,\n" +
+//                "    \"color\": \"blue\"\n" +
+//                "  },{\n" +
+//                "    \"id\": 3,\n" +
+//                "    \"name\": \"Abc\",\n" +
+//                "    \"surname\": \"Ogurchik\",\n" +
+//                "    \"isActive\": \"1\",\n" +
+//                "    \"university\": \"KPI\",\n" +
+//                "    \"devMark\": 10,\n" +
+//                "    \"hrMark\": 5,\n" +
+//                "    \"email\" : \"test@gmail.com\",\n" +
+//                "    \"english\" : 5,\n" +
+//                "    \"color\": \"blue\"\n" +
+//                "  },{\n" +
+//                "    \"id\": 4,\n" +
+//                "    \"name\": \"Abc\",\n" +
+//                "    \"surname\": \"Ogurchik\",\n" +
+//                "    \"isActive\": \"1\",\n" +
+//                "    \"university\": \"KPI\",\n" +
+//                "    \"devMark\": 10,\n" +
+//                "    \"hrMark\": 5,\n" +
+//                "    \"email\" : \"test@gmail.com\",\n" +
+//                "    \"english\" : 5,\n" +
+//                "    \"color\": \"blue\"\n" +
+//                "  },{\n" +
+//                "    \"id\": 5,\n" +
+//                "    \"name\": \"Abc\",\n" +
+//                "    \"surname\": \"Ogurchik\",\n" +
+//                "    \"isActive\": \"1\",\n" +
+//                "    \"university\": \"KPI\",\n" +
+//                "    \"devMark\": 10,\n" +
+//                "    \"hrMark\": 5,\n" +
+//                "    \"email\" : \"test@gmail.com\",\n" +
+//                "    \"english\" : 5,\n" +
+//                "    \"color\": \"blue\"\n" +
+//                "  }]";
 
     }
 
@@ -156,9 +165,9 @@ public class AdminController {
     @ResponseStatus(value = HttpStatus.OK)
     public void studentStatus(@RequestBody StudentStatus studentStatus) {
         StudentStatus status = studentStatus;
-        if (!status.getType().isEmpty() && (status.getValues().size() > 0 )) {
+        if (!status.getType().isEmpty() && (status.getValues().size() > 0)) {
             studentService.changeStatus(status.getType(), status.getValues());
-        }else {
+        } else {
             LOGGER.warn("Request type is not supported");
         }
 

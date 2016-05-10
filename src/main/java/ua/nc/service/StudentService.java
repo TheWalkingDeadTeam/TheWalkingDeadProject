@@ -1,5 +1,7 @@
 package ua.nc.service;
 
+import ua.nc.entity.profile.StudentData;
+
 import java.util.List;
 
 /**
@@ -7,7 +9,7 @@ import java.util.List;
  */
 public interface StudentService {
 
-//    public List<Student> getStudents(Integer id, Integer currentCESId);
+    public StudentData getStudents(Integer itemPerPage, Integer pageNumber, Integer orderBy);
 
 //    public Student findStudentByName(String name, String surname);
 

@@ -171,7 +171,7 @@ app.controller('StudentCtrl', ["$http", "$scope", function ($http, $scope) {
     vm.pageno = 1; // initialize page no to 1
     vm.total_count = 0;
     vm.itemsPerPage = 10; //this could be a dynamic value from a drop down
-    $scope.sortType = 'id';
+    $scope.sortType = 0;
     $scope.sortReverse = false;
 
 
@@ -180,7 +180,7 @@ app.controller('StudentCtrl', ["$http", "$scope", function ($http, $scope) {
         //In practice this should be in a factory.
         vm.users = [];
         // "students/list/"+vm.itemsPerPage+"/"+pageno
-        $http.get("students/list/" + vm.itemsPerPage + "/" + pageno + "/" +$scope.sortType + "/" +$scope.sortReverse).success(function (response) {
+        $http.get("students/list/" + vm.itemsPerPage + "/" + pageno + "/" +$scope.sortType).success(function (response) {
             vm.users = response;
         });
         $http.get("students/size").success(function (response) {
