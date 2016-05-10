@@ -11,6 +11,7 @@ import ua.nc.entity.User;
 import ua.nc.service.*;
 import ua.nc.service.user.UserService;
 import ua.nc.service.user.UserServiceImpl;
+import ua.nc.validator.FeedbackValidator;
 import ua.nc.validator.ValidationError;
 
 import java.util.LinkedHashSet;
@@ -42,7 +43,7 @@ public class InterviewerController {
     @ResponseBody
     @RequestMapping(value = "feedback/{id}/save", method = RequestMethod.POST, produces = "application/json")
     public Set<ValidationError> saveFeedback(@RequestBody Feedback feedback, @PathVariable("id") Integer id){
-        Set<ValidationError> errors = new LinkedHashSet<>();
+        Set<ValidationError> errors = new FeedbackValidator().validate(feedback);
         int interviewerID = userService.getUser(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal()).getUsername()).getId();
         feedback.setInterviewerID(interviewerID);
