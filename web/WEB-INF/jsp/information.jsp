@@ -52,7 +52,7 @@
     </nav>
 </header>
 
-<div id="workspace" class="rounded-corners">
+<div id="workspace" style="margin: 20px;">
 
 
 

@@ -17,7 +17,7 @@ import java.util.Map;
 /**
  * Created by Yaroslav on 09.05.2016.
  */
-public class EnrollOnInterviewingServiceImpl implements CESService {
+class EnrollOnInterviewingServiceImpl implements CESService {
     private final static Logger LOGGER = Logger.getLogger(CESServiceImpl.class);
     private final DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
 
@@ -38,8 +38,18 @@ public class EnrollOnInterviewingServiceImpl implements CESService {
         return ces;
     }
 
+//    @Override
+//    public void enrollAsStudent(Integer userId, Integer cesId) throws DAOException {
+//
+//    }
+
     @Override
-    public void enroll(Integer userId, Integer cesId) throws DAOException {
+    public void enrollAsInterviewer(Integer userId, Integer cesId) throws DAOException {
+
+    }
+
+    @Override
+    public void enrollAsStudent(Integer userId, Integer cesId) throws DAOException {
         Connection connection = daoFactory.getConnection();
         CESDAO CESDAO = new PostgreCESDAO(connection);
         try {
