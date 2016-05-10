@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public interface CESService {
     CES getCurrentCES();
-
+    List<CES> getAllCES();
     void enroll(Integer userId, Integer cesId) throws DAOException;
 
     /**

@@ -31,6 +31,23 @@ public class CESServiceImpl implements CESService {
     private static final int MILLIS_PER_DAY = 1000 * 60 * 60 * 24;
 
     @Override
+    public List<CES> getAllCES() {
+        Connection connection = daoFactory.getConnection();
+        CESDAO cesdao = new PostgreCESDAO(connection);
+        List<CES> allCES = new ArrayList<>();
+        try{
+            allCES = cesdao.getAll();
+            LOGGER.info("Successfully get all CES history");
+        }  catch (DAOException e){
+            LOGGER.warn("Can't get all CES history", e.getCause());
+        } finally {
+            daoFactory.putConnection(connection);
+        }
+        return allCES;
+    }
+
+
+    @Override
     public CES getCurrentCES() {
         Connection connection = daoFactory.getConnection();
         CESDAO cesdao = new PostgreCESDAO(connection);
