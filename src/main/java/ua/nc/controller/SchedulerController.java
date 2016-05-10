@@ -32,7 +32,7 @@ import java.util.*;
 @Controller
 public class SchedulerController {
     private final Logger log = Logger.getLogger(UserController.class);
-    private final static String GEO_CODE_GOOGLE = "AIzaSyCfZKoS6nurd-Hvf-Mb-A3R0yUNFAQ89-c";
+    private final static String GEO_CODE_GOOGLE = "AIzaSyBzqTdqxQtAvZzhVZofehN2mvetgdYpZf0";
     private final static String DEFAULT_PLACE_LINK = "http://www.google.com/maps/place/lat,lng";
     //params
     private final static String LOCATION = "$location";
@@ -101,7 +101,6 @@ public class SchedulerController {
         interviewerParameters.put(CONTACT_INTERVIEWERS, scheduler.getContactStaff());
         studentParameters.put(CONTACT_STUDENTS, scheduler.getContactStudent());
 
-
         try {
             List<Date> interviewDates = cesService.planSchedule();
             CES ces = cesService.getCurrentCES();
@@ -113,14 +112,6 @@ public class SchedulerController {
         } catch (DAOException e) {
             log.warn("Check Scheduler paramters", e);
         }
-
-
-
-//        final long ONE_MINUTE_IN_MILLIS = 60000;//millisecs
-//        Date beforeTime = new Date();
-//        long curTimeInMs = beforeTime.getTime();
-//        Date afterAddingMins = new Date(curTimeInMs + (2 * ONE_MINUTE_IN_MILLIS));
-//        mailService.test(afterAddingMins);
 
     }
 }

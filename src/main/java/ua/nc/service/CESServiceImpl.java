@@ -80,8 +80,8 @@ public class CESServiceImpl implements CESService {
         //calculate end date
         int studentsAmount = studentsList.size();
         int interviewersAmount = interviewersList.size();
-        Date endDate = new Date(startDate.getTime() + studentsAmount / (MINUTES_PER_HOUR / timePerStudent * hoursPerDay)
-                / interviewersAmount * INTERVIEWERS_PER_STUDENT);
+        Date endDate = new Date(startDate.getTime() + (studentsAmount / (MINUTES_PER_HOUR * hoursPerDay / timePerStudent)
+                * INTERVIEWERS_PER_STUDENT / interviewersAmount) * MILLIS_PER_DAY);
         ces.setEndInterviewingDate(endDate);
 
         //make interview dates list
@@ -90,7 +90,7 @@ public class CESServiceImpl implements CESService {
         long currentTime = startDate.getTime();
         while (currentTime < endDate.getTime()) {
             currentTime += MILLIS_PER_DAY;
-            interviewDates.add(startDate);
+            interviewDates.add(new Date(currentTime));
         }
 
         return interviewDates;

@@ -88,8 +88,6 @@ public interface MailService {
      */
     void massDelivery(Date date, final List<User> users, final Mail mail);
 
-    public void test(Date date);
-
         /**
          * Spread all the students by interview dates and send notifications to all the participants.
          *

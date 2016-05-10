@@ -35,14 +35,17 @@ public class MailServiceImpl implements MailService {
     private static final String USERNAME = "netcrackerua@gmail.com";
     private static final String PASSWORD = "netcrackerpwd";
     private static final long SLEEP = 1000;
-    private static final String DATE_PATTERN = "$Date";
-    private static final String NAME_PATTERN = "$Name";
-    private static final String SURNAME_PATTERN = "$Surname";
+    private static final String DATE_PATTERN = "$date";
+    private static final String NAME_PATTERN = "$name";
+    private static final String SURNAME_PATTERN = "$surname";
+    private static final String START_HOURS_PATTERN = "$hours";
+    private static final String START_MINS_PATTERN = "$minutes";
     private DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
     private static final int POOL_SIZE = 2;
     private static final int POOL_SIZE_SCHEDULER = 10;
     private static final int MILLIS_PER_HOUR = 1000 * 60 * 60;
-    private static ThreadPoolTaskScheduler scheduler = scheduler = new ThreadPoolTaskScheduler();
+    private static final int MILLIS_PER_MINUTE = 1000 * 60;
+    private static ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
     private static ThreadPoolTaskScheduler schedulerMassDeliveryService = new ThreadPoolTaskScheduler();
 
     static {
@@ -135,22 +138,6 @@ public class MailServiceImpl implements MailService {
         },date);
     }
 
-
-
-    public void test(final Date date) {
-        System.out.println("OK i am in, and the time is:" + date);
-        schedulerMassDeliveryService.schedule(new Runnable() {
-            @Override
-            public void run() {
-                System.out.println("OK i am in 2222 and the time is:" + date);
-                    sendMail("olexander.halii@gmail.com","hello","bukin");
-            }
-        },date);
-    }
-
-
-
-
     /**
      * Set all the predefined mail parameters.
      *
@@ -162,13 +149,13 @@ public class MailServiceImpl implements MailService {
         //customize mail topic
         String head = mail.getHeadTemplate();
         for (Map.Entry<String, String> param : parameters.entrySet()) {
-            head = head.replaceAll(param.getKey(), param.getValue());
+            head = head.replace(param.getKey(), param.getValue());
         }
 
         //customize mail body
         String body = mail.getBodyTemplate();
         for (Map.Entry<String, String> param : parameters.entrySet()) {
-            body = body.replaceAll(param.getKey(), param.getValue());
+            body = body.replace(param.getKey(), param.getValue());
         }
 
         Mail result = new Mail();
@@ -266,6 +253,12 @@ public class MailServiceImpl implements MailService {
                                        Map<String, String> interviewerParameters, Mail studentMail,
                                        Map<String, String> studentParameters, Set<User> interviewersSet,
                                        Set<User> studentsSet) {
+//        String startHours = studentParameters.get(START_HOURS_PATTERN);
+//        String startMins = studentParameters.get(START_MINS_PATTERN);
+        String startHours = "18";
+        String startMins = "00";
+        int startMillis = Integer.parseInt(startHours) * MILLIS_PER_HOUR +
+                Integer.parseInt(startMins) * MILLIS_PER_MINUTE;
         List<User> interviewersList = new ArrayList<>(interviewersSet);
         List<User> studentsList = new ArrayList<>(studentsSet);
         int reminderMillis = reminderTime * MILLIS_PER_HOUR;
@@ -274,19 +267,20 @@ public class MailServiceImpl implements MailService {
         int todaysLastStudent = studentsPerDay;
         Mail customizedInterviewerMail = customizeMail(interviewerMail, studentParameters);
         Mail customizedStudentMail = customizeMail(studentMail, studentParameters);
-
         //make everyday mail delivery
-        Map<String, String> dateParameter = new HashMap<>();
+        Map<String, String> dateTimeParameters = new HashMap<>();
+        dateTimeParameters.put(START_HOURS_PATTERN, startHours);
+        dateTimeParameters.put(START_MINS_PATTERN, startMins);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyy");
         for (Date interviewDate : interviewDates) {
             List<User> todayStudents = studentsList.subList(todaysFirstStudent,
                     Math.min(todaysLastStudent, studentsList.size()));
             todaysFirstStudent = todaysLastStudent;
             todaysLastStudent += studentsPerDay;
-
-            Date todaysDate = new Date(interviewDate.getTime() - reminderMillis);
-            dateParameter.put(DATE_PATTERN, todaysDate.toString());
-            massDelivery(interviewDate, interviewersList, customizeMail(customizedInterviewerMail, dateParameter));
-            massDelivery(interviewDate, todayStudents, customizeMail(customizedStudentMail, dateParameter));
+            dateTimeParameters.put(DATE_PATTERN, dateFormat.format(interviewDate));
+            Date reminderDate = new Date(interviewDate.getTime() + startMillis - reminderMillis);
+            massDelivery(reminderDate, interviewersList, customizeMail(customizedInterviewerMail, dateTimeParameters));
+            massDelivery(reminderDate, todayStudents, customizeMail(customizedStudentMail, dateTimeParameters));
         }
     }
 
