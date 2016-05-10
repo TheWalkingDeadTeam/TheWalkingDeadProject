@@ -85,74 +85,28 @@ public class AdminController {
         return "{\"size\":2000}";
     }
 
-    @RequestMapping(value = {"/students/list/{itemsPerPage}/{pageNumber}/{sortType}"}, method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = {"/students/list/{itemsPerPage}/{pageNumber}"}, method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public StudentData getStudents(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("sortType") Integer sortType) {
-//        System.out.println(itemsPerPage + " " + pageNumber + " " + sortType + " " + sortReverse);
+    public StudentData getStudents(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber) {
         StudentData studentData;
         StudentService studentService = new StudentServiceImpl();
-        studentData = studentService.getStudents(itemsPerPage, pageNumber,sortType);
-        if(studentData != null){
+        studentData = studentService.getStudents(itemsPerPage, pageNumber);
+        if (studentData == null) {
             LOGGER.warn("studData == null");
         }
         return studentData;
-//        return "[{\n" +
-//                "    \"id\": 1,\n" +
-//                "    \"name\": \"Abc\",\n" +
-//                "    \"surname\": \"Ogurchik\",\n" +
-//                "    \"isActive\": \"1\",\n" +
-//                "    \"university\": \"KPI\",\n" +
-//                "    \"devMark\": 10,\n" +
-//                "    \"hrMark\": 5,\n" +
-//                "    \"email\" : \"test@gmail.com\",\n" +
-//                "    \"english\" : 5,\n" +
-//                "    \"color\": \"blue\"\n" +
-//                "  },{\n" +
-//                "    \"id\": 2,\n" +
-//                "    \"name\": \"Abc\",\n" +
-//                "    \"surname\": \"Ogurchik\",\n" +
-//                "    \"isActive\": \"1\",\n" +
-//                "    \"university\": \"KPI\",\n" +
-//                "    \"devMark\": 10,\n" +
-//                "    \"hrMark\": 5,\n" +
-//                "    \"email\" : \"test@gmail.com\",\n" +
-//                "    \"english\" : 5,\n" +
-//                "    \"color\": \"blue\"\n" +
-//                "  },{\n" +
-//                "    \"id\": 3,\n" +
-//                "    \"name\": \"Abc\",\n" +
-//                "    \"surname\": \"Ogurchik\",\n" +
-//                "    \"isActive\": \"1\",\n" +
-//                "    \"university\": \"KPI\",\n" +
-//                "    \"devMark\": 10,\n" +
-//                "    \"hrMark\": 5,\n" +
-//                "    \"email\" : \"test@gmail.com\",\n" +
-//                "    \"english\" : 5,\n" +
-//                "    \"color\": \"blue\"\n" +
-//                "  },{\n" +
-//                "    \"id\": 4,\n" +
-//                "    \"name\": \"Abc\",\n" +
-//                "    \"surname\": \"Ogurchik\",\n" +
-//                "    \"isActive\": \"1\",\n" +
-//                "    \"university\": \"KPI\",\n" +
-//                "    \"devMark\": 10,\n" +
-//                "    \"hrMark\": 5,\n" +
-//                "    \"email\" : \"test@gmail.com\",\n" +
-//                "    \"english\" : 5,\n" +
-//                "    \"color\": \"blue\"\n" +
-//                "  },{\n" +
-//                "    \"id\": 5,\n" +
-//                "    \"name\": \"Abc\",\n" +
-//                "    \"surname\": \"Ogurchik\",\n" +
-//                "    \"isActive\": \"1\",\n" +
-//                "    \"university\": \"KPI\",\n" +
-//                "    \"devMark\": 10,\n" +
-//                "    \"hrMark\": 5,\n" +
-//                "    \"email\" : \"test@gmail.com\",\n" +
-//                "    \"english\" : 5,\n" +
-//                "    \"color\": \"blue\"\n" +
-//                "  }]";
+    }
 
+    @RequestMapping(value = {"/students/list/{itemsPerPage}/{pageNumber}/{sortType}"}, method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public StudentData getStudentsBySort(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("sortType") Integer sortType) {
+        StudentData studentData;
+        StudentService studentService = new StudentServiceImpl();
+        studentData = studentService.getStudents(itemsPerPage, pageNumber, sortType);
+        if (studentData == null) {
+            LOGGER.warn("studData == null");
+        }
+        return studentData;
     }
 
 

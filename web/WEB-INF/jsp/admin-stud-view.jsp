@@ -121,39 +121,30 @@
                     <span ng-show="sortType == 'name' && sortReverse" class="fa fa-caret-up"></span>
                 </a>
             </td>
-            <td>
-                <a href="#" ng-click="sortType = 'university'; sortReverse = !sortReverse">
-                    University
-                    <span ng-show="sortType == 'university' && !sortReverse" class="fa fa-caret-down"></span>
-                    <span ng-show="sortType == 'university' && sortReverse" class="fa fa-caret-up"></span>
-                </a>
-            </td>
-            <td>
-                <a href="#" ng-click="sortType = 'devMark'; sortReverse = !sortReverse">
-                    Dev Assesment
-                    <span ng-show="sortType == 'devMark' && !sortReverse" class="fa fa-caret-down"></span>
-                    <span ng-show="sortType == 'devMark' && sortReverse" class="fa fa-caret-up"></span>
-                </a>
-            </td>
-            <td>
-                <a href="#" ng-click="sortType = 'hrMark'; sortReverse = !sortReverse">
-                    HR Assesment
-                    <span ng-show="sortType == 'hrMark' && !sortReverse" class="fa fa-caret-down"></span>
-                    <span ng-show="sortType == 'hrMark' && sortReverse" class="fa fa-caret-up"></span>
-                </a>
-            </td>
-            <td>
-                <a href="#" ng-click="sortType = 'color'; sortReverse = !sortReverse">
-                    Color
-                    <span ng-show="sortType == 'color' && !sortReverse" class="fa fa-caret-down"></span>
-                    <span ng-show="sortType == 'color' && sortReverse" class="fa fa-caret-up"></span>
-                </a>
-            </td>
-            <td>
-                <a href="#" ng-click="sortType = 'isActive'; sortReverse = !sortReverse">
-                    Active
-                    <span ng-show="sortType == 'isActive' && !sortReverse" class="fa fa-caret-down"></span>
-                    <span ng-show="sortType == 'isActive' && sortReverse" class="fa fa-caret-up"></span>
+            <%--<td>--%>
+                <%--<a href="#" ng-click="sortType = 'university'; sortReverse = !sortReverse">--%>
+                    <%--University--%>
+                    <%--<span ng-show="sortType == 'university' && !sortReverse" class="fa fa-caret-down"></span>--%>
+                    <%--<span ng-show="sortType == 'university' && sortReverse" class="fa fa-caret-up"></span>--%>
+                <%--</a>--%>
+            <%--</td>--%>
+            <%--<td>--%>
+                <%--<a href="#" ng-click="sortType = 'devMark'; sortReverse = !sortReverse">--%>
+                    <%--Dev Assesment--%>
+                    <%--<span ng-show="sortType == 'devMark' && !sortReverse" class="fa fa-caret-down"></span>--%>
+                    <%--<span ng-show="sortType == 'devMark' && sortReverse" class="fa fa-caret-up"></span>--%>
+                <%--</a>--%>
+            <%--</td>--%>
+            <%--<td>--%>
+                <%--<a href="#" ng-click="sortType = 'hrMark'; sortReverse = !sortReverse">--%>
+                    <%--HR Assesment--%>
+                    <%--<span ng-show="sortType == 'hrMark' && !sortReverse" class="fa fa-caret-down"></span>--%>
+                    <%--<span ng-show="sortType == 'hrMark' && sortReverse" class="fa fa-caret-up"></span>--%>
+                <%--</a>--%>
+            <%--</td>--%>
+            <td ng-repeat = "head in data.header" >
+                <a href="#" ng-click="sortType(head.id)">
+                    {{head.name}}
                 </a>
             </td>
         </tr>
@@ -163,17 +154,20 @@
             <td colspan="5" style="text-align:center;">Bratiska POGODI</td>
         </tr>
         <tr dir-paginate="user in data.users|itemsPerPage:data.itemsPerPage" total-items="data.total_count">
-            <td><input type="checkbox" checklist-model="dataStudents.studId" checklist-value="user.id"></td>
+            <td><input type="checkbox" checklist-model="dataStudents.studId" checklist-value="user.userId"></td>
             <td ng-init="index=$index + 1">{{index}}</td>
-            <td><a href="/admin/students/{{user.id}}" target="_blanks">{{user.name}}{{user.surname}}</a></td>
-            <td>{{user.university}}</td>
-            <td>{{user.devMark}}</td>
-            <td>{{user.hrMark}}</td>
-            <td ng-style="{opacity:0.5,'background-color':'{{user.color}}'}" title="
-            {{ch.color == 'red' ? 'Reject' :
-            ch.color == 'green' ? 'On course' :
-            ch.color == 'blue' ? 'On job' : 'Thinking'}}"></td>
-            <td>{{user.isActive == 1 ? "Active" : "Inactive"}}</td>
+            <td><a href="/admin/students/{{user.userId}}" target="_blanks">{{user.name}}</a></td>
+
+            <td ng-repeat = "head in data.header">
+                {{user.fields[head.id]}}
+            </td>
+            <%--<td>{{user.fields[6]}}</td>--%>
+            <%--<td>{{user.devMark}}</td>--%>
+            <%--<td>{{user.hrMark}}</td>--%>
+            <%--<td ng-style="{opacity:0.5,'background-color':'{{user.color}}'}" title="--%>
+            <%--{{ch.color == 'red' ? 'Reject' :--%>
+            <%--ch.color == 'green' ? 'On course' :--%>
+            <%--ch.color == 'blue' ? 'On job' : 'Thinking'}}"></td>--%>
         </tr>
         </tbody>
     </table>
@@ -181,7 +175,7 @@
             max-size="8"
             direction-links="true"
             boundary-links="true"
-            on-page-change="data.getData(newPageNumber)">
+            on-page-change="data.setPageno(newPageNumber)">
     </dir-pagination-controls>
 
 
