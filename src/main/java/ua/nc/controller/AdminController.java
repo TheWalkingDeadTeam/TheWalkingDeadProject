@@ -183,4 +183,10 @@ public class AdminController {
         return "admin-scheduler";
     }
 
+    @RequestMapping(value = {"/enroll-session"} ,method = RequestMethod.GET)
+    public String enrollmentSessionView() {
+        return "admin-es-view";
+    }
+
+
 }
