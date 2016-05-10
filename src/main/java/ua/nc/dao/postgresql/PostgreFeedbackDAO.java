@@ -85,6 +85,7 @@ public class PostgreFeedbackDAO extends AbstractPostgreDAO<Feedback, Integer> im
         ResultSet resultSet = null;
         try{
             statement = connection.prepareStatement(getSelectQuery());
+            statement.setInt(1,id);
             resultSet = statement.executeQuery();
             List<Feedback> feedbacks = parseResultSet(resultSet);
             return feedbacks.size() < 1 ? null : feedbacks.get(0);
