@@ -85,7 +85,7 @@
         <div class="layout"></div>
         <sec:authorize access="!isAuthenticated()">
             <form id="stupidUser" action="/passwordRecovery">
-                <div id="passwordRecovery"></div>
+                <div id="passwordRecoveryMessage"></div>
                 <div class="row container-fluid recovery-head">
                     <div class="col-lg-6 col-md-8 col-sm-9 col-xs-9">
                         <h2 class="form-signin-heading">Password recovery</h2>
