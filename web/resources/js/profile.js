@@ -1,6 +1,7 @@
 (function () {
     var requestData;
     var id = location.search.substr(1);
+    var isAgree = false;
     $(document).ready(function () {
         $.ajax({
             type: 'get',
@@ -15,11 +16,16 @@
                     $('#fields').on('change, input', enableSave);
                     response.fields.forEach(function (item, i) {
                         typeSwitcher(item, i, '#fields');
+                        if (item.fieldName == 'Phone number' && item.values[0].value) {
+                            isAgree = true;
+                        }
                     });
                     $('<div id="agreement">').appendTo('#fields');
                     $('#agreement').append('<label for="agree">' + "I agree to have my personal information been proceeded " + '</label>');
                     $('<input>').attr({id: "agree", type: "checkbox"}).appendTo('#agreement');
                     $('#agree').on('click', enableSave);
+                    checkAgreement();
+                    enableSave();
                 }
 
             },
@@ -48,11 +54,32 @@
             $.ajax({
                 method: 'GET',
                 contentType: "application/json",
-                url: '/profile/enroll'
+                url: '/profile/enroll',
+                success: function (response) {
+                    if(response.length){
+                        $('#fieldsCheck').removeClass().empty();
+                        var errorMsg = '';
+                        for (var i in response) {
+                            errorMsg += response[i].errorMessage + "</br>";
+                        }
+                        $('#fieldsCheck').addClass('alert alert-danger').html(errorMsg);
+                    } else {
+                        $('#fieldsCheck').removeClass().empty();
+                        $('#fieldsCheck').addClass('alert alert-success').html('You have successfully enrolled on current courses!');
+                    }
+                }
             })
         });
     });
 
+
+    function checkAgreement () {
+        if(isAgree) {
+            $('#agree').prop("checked", true);
+        } else {
+            $('#agree').prop("checked", false);
+        }
+    }
 
     function enableSave() {
 
@@ -63,10 +90,10 @@
             }
         });
 
-        if (empty || !$('#agree').is(':checked') || !checkCheckboxes()) {
+        if (empty || !$('#agree').is(':checked') || !checkCheckboxes() || !checkRadio()) {
             $('#fieldsCheck').addClass('alert alert-danger').html('Please, fill each field and check Agree button');
             $('#save').attr('disabled', 'disabled');
-        } else if (!empty && $('#agree').is(':checked') && checkCheckboxes()) {
+        } else if (!empty && $('#agree').is(':checked') && checkCheckboxes() && checkRadio()) {
             $('#fieldsCheck').removeClass().empty();
             $('#save').prop('disabled', false);
         }
@@ -190,7 +217,7 @@
                     $('<div id=\"block' + i + '\">').appendTo($(divname));
                     $('<span>').attr({for: item.id}).text(item.fieldName + ' ').appendTo($('#block' + i));
                     $('<select>').attr(attributes).attr('ng-model', i).appendTo($('#block' + i));
-                    $('#select' + item.id).append('<option id="00wild" ' + 'disabled' + '>' + 'University' + '</option>');
+                    $('#select' + item.id).append('<option ' + 'disabled' + '>' + 'University' + '</option>');
                     item.values.forEach(function (item_value, j) {
                         var isSelected = item_value.value == "true";
                         $('#select' + item.id)
@@ -203,7 +230,6 @@
                         var updatedSelect = requestData.fields[$(this).attr('ng-model')].values.map(function (item) {
                             allah = $(this).attr('ng-model');
                             if (item.fieldValueName == this.value) {
-                                console.log(item.fieldValueName);
                                 item.value = 'true';
                                 return item;
                             } else {

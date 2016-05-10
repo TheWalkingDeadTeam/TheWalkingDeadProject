@@ -42,7 +42,7 @@ public class ProfileController {
         try {
             profile = profileService.getProfile(id, 1);
         } catch (DAOException e) {
-            e.printStackTrace();
+            e.printStackTrace();// TODO log4j
         }
         return profile;
     }
@@ -71,7 +71,7 @@ public class ProfileController {
         return errors;
     }
 
-    @RequestMapping(value = "profile/enroll", method = RequestMethod.GET)
+    @RequestMapping(value = "/profile/enroll", method = RequestMethod.GET)
     public
     @ResponseBody
     Set<ValidationError> enroll() {
