@@ -108,8 +108,8 @@ public class PostgreFieldValueDAO implements FieldValueDAO {
         try {
             while (rs.next()) {
                 FieldValue fieldValue = new FieldValue(rs.getInt("field_id"), rs.getInt("application_id"),
-                        rs.getString("value_text"), rs.getDouble("value_double"),
-                        rs.getDate("value_date"), rs.getInt("list_value_id"));
+                        rs.getString("value_text"),(Double) rs.getObject("value_double"),
+                        rs.getDate("value_date"),(Integer) rs.getObject("list_value_id"));
                 result.add(fieldValue);
             }
         } catch (Exception e) {

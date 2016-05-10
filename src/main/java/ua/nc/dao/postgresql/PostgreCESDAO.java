@@ -22,9 +22,9 @@ public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements C
     }
 
     private class PersistCES extends CES{
-        public PersistCES(Integer year, Date startRegistrationDate, Date endRegistrationDate,Integer quota,
-                          Integer reminders, Integer statusId, Integer interviewTimeForPerson, Integer interviewTimeForDay) {
-            super(year, startRegistrationDate, endRegistrationDate,quota, reminders, statusId,
+        public PersistCES(Integer year, Date startRegistrationDate, Integer quota, Integer reminders, Integer statusId,
+                          Integer interviewTimeForPerson, Integer interviewTimeForDay) {
+            super(year, startRegistrationDate, quota, reminders, statusId,
                     interviewTimeForPerson, interviewTimeForDay);
         }
 
@@ -47,8 +47,9 @@ public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements C
 
     @Override
     public String getUpdateQuery() {
-        return "UPDATE course_enrollment_session SET start_interviewing_date = ?, end_interviewing_date = ?, " +
-                "quota = ?, reminders = ?, interviewing_time_person = ?, interviewing_time_day = ? WHERE ces_id = ?;";
+        return "UPDATE course_enrollment_session SET end_registration_date = ? ,start_interviewing_date = ?, " +
+                "end_interviewing_date = ?, quota = ?, ces_status_id = ?, reminders = ?, interviewing_time_person = ?, " +
+                "interviewing_time_day = ? WHERE ces_id = ?;";
     }
 
     @Override
@@ -73,10 +74,11 @@ public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements C
         List<CES> result = new ArrayList<>();
         try {
             while (rs.next()) {
-                PersistCES ces = new PersistCES(rs.getInt("year"), rs.getDate("start_registration_date"), rs.getDate("end_registration_date"),
+                PersistCES ces = new PersistCES(rs.getInt("year"), rs.getDate("start_registration_date"),
                         rs.getInt("quota"), rs.getInt("reminders"), rs.getInt("ces_status_id"),
                         rs.getInt("interviewing_time_person"), rs.getInt("interviewing_time_day"));
                 ces.setId(rs.getInt("ces_id"));
+                ces.setEndRegistrationDate(rs.getDate("end_registration_date"));
                 ces.setStartInterviewingDate(rs.getDate("start_interviewing_date"));
                 ces.setEndInterviewingDate(rs.getDate("end_interviewing_date"));
                 result.add(ces);
@@ -92,9 +94,21 @@ public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements C
         try {
             statement.setInt(1, object.getYear());
             statement.setDate(2, new Date(object.getStartRegistrationDate().getTime()));
-            statement.setDate(3, new Date(object.getEndRegistrationDate().getTime()));
-            statement.setDate(4, new Date(object.getStartInterviewingDate().getTime()));
-            statement.setDate(5, new Date(object.getEndInterviewingDate().getTime()));
+            if (object.getEndRegistrationDate() == null){
+                statement.setDate(3, null);
+            } else {
+                statement.setDate(3, new Date(object.getEndRegistrationDate().getTime()));
+            }
+            if (object.getStartInterviewingDate() == null){
+                statement.setDate(4, null);
+            } else {
+                statement.setDate(4, new Date(object.getStartInterviewingDate().getTime()));
+            }
+            if (object.getEndInterviewingDate() == null){
+                statement.setDate(5, null);
+            } else {
+                statement.setDate(5, new Date(object.getEndInterviewingDate().getTime()));
+            }
             statement.setInt(6, object.getQuota());
             statement.setInt(7, object.getStatusId());
             statement.setInt(8, object.getReminders());
@@ -108,13 +122,27 @@ public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements C
     @Override
     protected void prepareStatementForUpdate(PreparedStatement statement, CES object) throws DAOException {
         try {
-            statement.setDate(1, new Date(object.getStartInterviewingDate().getTime()));
-            statement.setDate(2, new Date(object.getEndInterviewingDate().getTime()));
-            statement.setInt(3, object.getQuota());
-            statement.setInt(4, object.getReminders());
-            statement.setInt(5, object.getInterviewTimeForPerson());
-            statement.setInt(6, object.getInterviewTimeForDay());
-            statement.setInt(7, object.getId());
+            if (object.getEndRegistrationDate() == null){
+                statement.setDate(1, null);
+            } else {
+                statement.setDate(1, new Date(object.getEndRegistrationDate().getTime()));
+            }
+            if (object.getStartInterviewingDate() == null){
+                statement.setDate(2, null);
+            } else {
+                statement.setDate(2, new Date(object.getStartInterviewingDate().getTime()));
+            }
+            if (object.getEndInterviewingDate() == null){
+                statement.setDate(3, null);
+            } else {
+                statement.setDate(3, new Date(object.getEndInterviewingDate().getTime()));
+            }
+            statement.setInt(4, object.getQuota());
+            statement.setInt(5, object.getStatusId());
+            statement.setInt(6, object.getReminders());
+            statement.setInt(7, object.getInterviewTimeForPerson());
+            statement.setInt(8, object.getInterviewTimeForDay());
+            statement.setInt(9, object.getId());
         } catch (Exception e) {
             throw new DAOException(e);
         }
@@ -137,8 +165,7 @@ public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements C
             if (!rs.isBeforeFirst() ) {
                 result = null;
             } else {
-                result = parseResultSet(rs).iterator().next();
-            }
+                result = parseResultSet(rs).iterator().next();}
         } catch (Exception e) {
             throw new DAOException(e);
         }

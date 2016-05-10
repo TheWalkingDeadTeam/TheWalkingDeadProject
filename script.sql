@@ -128,7 +128,7 @@ CREATE TABLE Application (
   Application_ID serial PRIMARY KEY,
   System_User_ID int NOT NULL references System_User(System_User_ID)  ON DELETE RESTRICT ON UPDATE CASCADE,
   CES_ID int NOT NULL references Course_Enrollment_Session(CES_ID) ON DELETE RESTRICT ON UPDATE CASCADE,
-  rejected bool,
+  rejected bool DEFAULT false,
   UNIQUE(System_User_ID, CES_ID)
 );
 
