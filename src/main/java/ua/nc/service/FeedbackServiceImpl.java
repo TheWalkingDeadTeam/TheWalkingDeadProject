@@ -38,16 +38,32 @@ public class FeedbackServiceImpl implements FeedbackService {
             if (interviewee == null) {
                 return false;
             }
-            feedback = feedbackDAO.create(feedback);
+            Integer feedbackId = null;
+            Feedback oldFeedback = null;
             User user = userService.getUser(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                     .getPrincipal()).getUsername());
             Set<Role> roles = user.getRoles();
             if (roles.contains(roleDAO.findByName("ROLE_DEV"))){
-                interviewee.setDevFeedbackID(feedback.getId());
+                feedbackId = interviewee.getDevFeedbackID();
             } else if (roles.contains(roleDAO.findByName("ROLE_BA"))||roles.contains(roleDAO.findByName("ROLE_HR"))) {
-                interviewee.setHrFeedbackID(feedback.getId());
+                feedbackId = interviewee.getHrFeedbackID();
             }
-            intervieweeDAO.update(interviewee);
+
+            if (feedbackId == null) {
+                feedback = feedbackDAO.create(feedback);
+
+                if (roles.contains(roleDAO.findByName("ROLE_DEV"))) {
+                    interviewee.setDevFeedbackID(feedback.getId());
+                } else if (roles.contains(roleDAO.findByName("ROLE_BA")) || roles.contains(roleDAO.findByName("ROLE_HR"))) {
+                    interviewee.setHrFeedbackID(feedback.getId());
+                }
+                intervieweeDAO.update(interviewee);
+            } else {
+                oldFeedback = feedbackDAO.getById(feedbackId);
+                oldFeedback.setScore(feedback.getScore());
+                oldFeedback.setComment(feedback.getComment());
+                feedbackDAO.update(oldFeedback);
+            }
             connection.commit();
             return true;
         } catch (SQLException ex){
