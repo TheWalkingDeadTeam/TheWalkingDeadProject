@@ -85,7 +85,7 @@
     </div>
     <br>
 
-    <div id="save_message"></div>
+    <div id="restrict_message"></div>
     <div id="feedback">
         <form id="feedback_form">
             <div>
@@ -95,6 +95,7 @@
             <div><textarea id="feedback_text" placeholder="Put your feedback here" cols="40" rows="10"
                            required></textarea>
             </div>
+            <div id="save_message"></div>
             <div>
                 <button id="submitFeedback" type="submit" title="Submit">Submit</button>
             </div>

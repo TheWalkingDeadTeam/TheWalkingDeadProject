@@ -31,47 +31,24 @@
             dataType: 'json',
             contentType: "application/json",
             success: function (response, textStatus, jqXHR){
-                var foo = jqXHR.getResponseHeader('restricted');
                 if (jqXHR.getResponseHeader('restricted') == 'false') {
                     $('#feedback').show();
                     $('#feedback_score').val(response.score);
                     $('#feedback_text').val(response.comment);
                 } else {
-                    $('#save_message')
+                    $('#restrict_message')
                         .addClass('alert alert-danger')
                         .html('Feedback on this student has already been written by another interviewer');
                 }
             },
             error: function (jqXHR, exception) {
-                var foo = jqXHR.getResponseHeader('restricted');
                 console.log(exception.toString());
                 window.location.href = "/error"
             }
-        }));/*.done(function(response1, response2, jqXHR1, jqXHR2){
-                if (response1.fields.length) {
-                    requestData = response1;
-                    response1.fields.forEach(function (item, i) {
-                        typeSwitcher(item, i, '#profile');
-                    });
-                }
-                if (jqXHR2.getResponseHeader('restricted') == 'false') {
-                    $('#feedback').show();
-
-                    $('#feedback_score').val(response2.score);
-                    $('#feedback_text').val(response2.comment);
-                } else {
-                    $('#save_message')
-                        .addClass('alert alert-danger')
-                        .html('Feedback on this student has already been written by another interviewer');
-                }
-            },function (jqXHR, exception) {
-                console.log(exception.toString());
-                window.location.href = "/error"
-            }
-        )*/
+        }));
     });
 
-    $('#feedback').submit(function (event) {
+    $('#feedback_form').submit(function (event) {
             event.preventDefault();
             $.ajax({
                 type: 'post',

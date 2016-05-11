@@ -184,4 +184,16 @@ body {
     font-size: 16px;
 }
 
+#restrict_message {
+    margin-bottom: 10px;
+    display: block;
+    margin: 0 auto;
+    max-width: 700px;
+}
 
+#save_message {
+    margin-top: 10px;
+    display: block;
+    margin: 0 auto;
+    max-width: 700px;
+}
