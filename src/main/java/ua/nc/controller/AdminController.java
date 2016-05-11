@@ -152,6 +152,66 @@ public class AdminController {
         return "admin-iter-view";
     }
 
+    @RequestMapping(value = {"/students/list/{itemsPerPage}/{pageNumber}"}, method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public String interviewGetJSON(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber) {
+//        StudentData studentData;
+//        StudentService studentService = new StudentServiceImpl();
+//        studentData = studentService.getStudents(itemsPerPage, pageNumber);
+//        if (studentData == null) {
+//            LOGGER.warn("studData == null");
+//        }
+//        return studentData;
+        return "[{\n" +
+                "    \"id\": 2,\n" +
+                "    \"name\": \"Abcac\",\n" +
+                "    \"surname\": \"Pomidorchik\",\n" +
+                "    \"email\" : \"ger@gmail.com\",\n" +
+                "    \"role\" : \"Admin\",\n" +
+                "    \"participation\": true\n" +
+                "  },{\n" +
+                "    \"id\": 2,\n" +
+                "    \"name\": \"Abcac\",\n" +
+                "    \"surname\": \"Pomidorchik\",\n" +
+                "    \"email\" : \"ger@gmail.com\",\n" +
+                "    \"role\" : \"Admin\",\n" +
+                "    \"participation\": true\n" +
+                "  },{\n" +
+                "    \"id\": 2,\n" +
+                "    \"name\": \"Abcac\",\n" +
+                "    \"surname\": \"Pomidorchik\",\n" +
+                "    \"email\" : \"ger@gmail.com\",\n" +
+                "    \"role\" : \"Admin\",\n" +
+                "    \"participation\": true\n" +
+                "  },{\n" +
+                "    \"id\": 2,\n" +
+                "    \"name\": \"Abcac\",\n" +
+                "    \"surname\": \"Pomidorchik\",\n" +
+                "    \"email\" : \"ger@gmail.com\",\n" +
+                "    \"role\" : \"Admin\",\n" +
+                "    \"participation\": true\n" +
+                "  },{\n" +
+                "    \"id\": 2,\n" +
+                "    \"name\": \"Abcac\",\n" +
+                "    \"surname\": \"Pomidorchik\",\n" +
+                "    \"email\" : \"ger@gmail.com\",\n" +
+                "    \"role\" : \"Admin\",\n" +
+                "    \"participation\": true\n" +
+                "  }]";
+    }
+
+    @RequestMapping(value = {"/students/list/{itemsPerPage}/{pageNumber}/{sortType}"}, method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public StudentData interviewGetJSONSort(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("sortType") Integer sortType) {
+        StudentData studentData;
+        StudentService studentService = new StudentServiceImpl();
+        studentData = studentService.getStudents(itemsPerPage, pageNumber, sortType);
+        if (studentData == null) {
+            LOGGER.warn("studData == null");
+        }
+        return studentData;
+    }
+
     @RequestMapping(value = {"/interviewers/list"}, method = RequestMethod.GET, produces = "application/json")
     public
     @ResponseBody
@@ -159,41 +219,40 @@ public class AdminController {
 
 
         return "[{\n" +
-                "    \"id\": 1,\n" +
-                "    \"name\": \"Abc\",\n" +
-                "    \"surname\" : \"Ogurchik\",\n" +
-                "    \"isActive\": \"1\",\n" +
-                "    \"role\" : \"Admin\"\n" +
+                "    \"id\": 2,\n" +
+                "    \"name\": \"Abcac\",\n" +
+                "    \"surname\": \"Pomidorchik\",\n" +
+                "    \"email\" : \"ger@gmail.com\",\n" +
+                "    \"role\" : \"Admin\",\n" +
+                "    \"participation\": true\n" +
                 "  },{\n" +
                 "    \"id\": 2,\n" +
-                "    \"name\": \"Abc\",\n" +
-                "    \"surname\" : \"Ogurchik\",\n" +
-                "    \"isActive\": \"1\",\n" +
-                "    \"role\" : \"Admin\"\n" +
+                "    \"name\": \"Abcac\",\n" +
+                "    \"surname\": \"Pomidorchik\",\n" +
+                "    \"email\" : \"ger@gmail.com\",\n" +
+                "    \"role\" : \"Admin\",\n" +
+                "    \"participation\": true\n" +
                 "  },{\n" +
-                "    \"id\": 3,\n" +
-                "    \"name\": \"Abc\",\n" +
-                "    \"surname\" : \"Ogurchik\",\n" +
-                "    \"isActive\": \"1\",\n" +
-                "    \"role\" : \"Admin\"\n" +
+                "    \"id\": 2,\n" +
+                "    \"name\": \"Abcac\",\n" +
+                "    \"surname\": \"Pomidorchik\",\n" +
+                "    \"email\" : \"ger@gmail.com\",\n" +
+                "    \"role\" : \"Admin\",\n" +
+                "    \"participation\": true\n" +
                 "  },{\n" +
-                "    \"id\": 4,\n" +
-                "    \"name\": \"Abc\",\n" +
-                "    \"surname\" : \"Ogurchik\",\n" +
-                "    \"isActive\": \"1\",\n" +
-                "    \"role\" : \"Admin\"\n" +
+                "    \"id\": 2,\n" +
+                "    \"name\": \"Abcac\",\n" +
+                "    \"surname\": \"Pomidorchik\",\n" +
+                "    \"email\" : \"ger@gmail.com\",\n" +
+                "    \"role\" : \"Admin\",\n" +
+                "    \"participation\": true\n" +
                 "  },{\n" +
-                "    \"id\": 5,\n" +
-                "    \"name\": \"Abc\",\n" +
-                "    \"surname\" : \"Ogurchik\",\n" +
-                "    \"isActive\": \"1\",\n" +
-                "    \"role\" : \"Admin\"\n" +
-                "  },{\n" +
-                "    \"id\": 6,\n" +
-                "    \"name\": \"Abc\",\n" +
-                "    \"surname\" : \"Ogurchik\",\n" +
-                "    \"isActive\": \"1\",\n" +
-                "    \"role\" : \"Admin\"\n" +
+                "    \"id\": 2,\n" +
+                "    \"name\": \"Abcac\",\n" +
+                "    \"surname\": \"Pomidorchik\",\n" +
+                "    \"email\" : \"ger@gmail.com\",\n" +
+                "    \"role\" : \"Admin\",\n" +
+                "    \"participation\": true\n" +
                 "  }]";
 
     }
