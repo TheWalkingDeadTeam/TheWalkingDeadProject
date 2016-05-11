@@ -30,44 +30,6 @@ public class StudentDataServiceImpl implements StudentDataService {
         return null;
     }
 
-    // it's experimental shit, no panic
-    private StudentData getStudentData(Integer userId){
-        Connection connection = daoFactory.getConnection();
-        UserDAO userDAO = daoFactory.getUserDAO(connection);
-        CESDAO cesDAO = daoFactory.getCESDAO(connection);
-        ProfileService profileService = new ProfileServiceImpl();
-        StudentData result = new StudentData();
-        try {
-            int currentCESId = cesDAO.getCurrentCES().getId();
-            User user = null; // = userDAO.read(userId); that DAO has pathetic methods :D
-            result.setId(user.getId());
-            result.setName(user.getName()); // only name here, maybe i'm missing some User.java updates
-            Profile profile = profileService.getProfile(user.getId(), currentCESId);
-            List<ProfileField> profileFields = profile.getFields();
-            for (ProfileField profileField : profile.getFields()){
-                if (profileField.getFieldType().equals("textarea") || profileField.getFieldType().equals("tel")){
-                    profileFields.remove(profileField);
-                }
-                if (profileField.getFieldType().equals("select") || profileField.getFieldType().equals("checkbox")
-                        || profileField.getFieldType().equals("radio")){
-                    List<ProfileFieldValue> profileFieldValues = profileField.getValues();
-                    for (ProfileFieldValue profileFieldValue : profileField.getValues()){
-                        if (!Boolean.parseBoolean(profileFieldValue.getValue())){
-                            profileFieldValues.remove(profileFieldValue);
-                        }
-                    }
-                    profileField.setValues(profileFieldValues);
-                }
-            }
-            profile.setFields(profileFields);
-        } catch (DAOException e) {
-            e.printStackTrace();
-        } finally {
-            daoFactory.putConnection(connection);
-        }
-        return result;
-    }
-
     @Override
     public List<StudentData> findStudentDataByName(String name, String surname) {
         return null;
