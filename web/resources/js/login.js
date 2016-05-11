@@ -11,7 +11,7 @@ $(document).ready(function () {
 
     $('#j_password, #password').hideShowPassword(false, true);
     
-    $("#buttonSignIn").submit(function (event) {
+    $("#buttonSignIn").click(function (event) {
         event.preventDefault();
         $.ajax({
             type: 'post',
