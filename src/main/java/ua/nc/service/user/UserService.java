@@ -13,4 +13,6 @@ public interface UserService {
     void changePassword(User user, String password);
 
     User recoverPass(User user);
+
+    boolean checkRole(User user, String roleName);
 }
