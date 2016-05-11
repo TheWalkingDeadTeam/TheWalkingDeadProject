@@ -1,22 +1,29 @@
 package ua.nc.controller;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.log4j.Logger;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.entity.CES;
+import ua.nc.entity.Interviewer;
+import ua.nc.entity.StudentStatus;
 import ua.nc.entity.User;
 import ua.nc.service.UserDetailsImpl;
 import ua.nc.service.CESService;
 import ua.nc.service.CESServiceImpl;
 import ua.nc.service.UserDetailsImpl;
+import ua.nc.entity.profile.StudentData;
+import ua.nc.service.*;
 import ua.nc.service.user.UserService;
 import ua.nc.service.user.UserServiceImpl;
 import ua.nc.validator.RegistrationValidator;
 import ua.nc.validator.ValidationError;
 import ua.nc.validator.Validator;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -44,6 +51,7 @@ public class AdminController {
     Set<ValidationError> registerUser(@RequestBody User user) {
         Validator validator = new RegistrationValidator();
         Set<ValidationError> errors = validator.validate(user);
+
         if (errors.isEmpty()) {
             if (userService.getUser(user.getEmail()) == null) {
 
@@ -79,7 +87,7 @@ public class AdminController {
         return "admin-stud-view";
     }
 
-    @RequestMapping(value = {"/students/list"}, method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = {"/students/size"}, method = RequestMethod.GET, produces = "application/json")
     public
     @ResponseBody
     String studentsGetJSON() {
@@ -119,9 +127,61 @@ public class AdminController {
                 "    \"hrMark\": 85,\n" +
                 "    \"color\": \"green\"\n" +
                 "  }]";
-
+    String studentsGetJSONSize() {
+        return "{\"size\":2000}";
     }
 
+
+    @RequestMapping(value = {"/students/search"}, method = RequestMethod.GET, produces = "application/json")
+    public
+    @ResponseBody
+    String studentsSearch() {
+        return "{\"result\":\"inProgres\"";
+    }
+
+
+    @RequestMapping(value = {"/students/list/{itemsPerPage}/{pageNumber}"}, method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public StudentData getStudents(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber) {
+        StudentData studentData;
+        StudentService studentService = new StudentServiceImpl();
+        studentData = studentService.getStudents(itemsPerPage, pageNumber);
+        if (studentData == null) {
+            LOGGER.warn("studData == null");
+        }
+        return studentData;
+    }
+
+    @RequestMapping(value = {"/students/list/{itemsPerPage}/{pageNumber}/{sortType}"}, method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public StudentData getStudentsBySort(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("sortType") Integer sortType) {
+        StudentData studentData;
+        StudentService studentService = new StudentServiceImpl();
+        studentData = studentService.getStudents(itemsPerPage, pageNumber, sortType);
+        if (studentData == null) {
+            LOGGER.warn("studData == null");
+        }
+        return studentData;
+    }
+
+
+    /**
+     * Takes a json file with students status changes
+     *
+     * @param studentStatus
+     */
+    @RequestMapping(value = {"/students"}, method = RequestMethod.POST, produces = "application/json")
+    @ResponseStatus(value = HttpStatus.OK)
+    public void studentStatus(@RequestBody StudentStatus studentStatus) {
+        StudentStatus status = studentStatus;
+        if (!status.getType().isEmpty() && (status.getValues().size() > 0)) {
+            studentService.changeStatus(status.getType(), status.getValues());
+        } else {
+            LOGGER.warn("Request type is not supported");
+        }
+
+
+    }
 
     @RequestMapping(value = "/students/{id}", method = RequestMethod.GET, produces = "application/json")
     public String getStudentById(@PathVariable("id") Integer id) {
@@ -138,48 +198,79 @@ public class AdminController {
         return "admin-iter-view";
     }
 
-    @RequestMapping(value = {"/interviewers/list"}, method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = {"/interviewers/list/{itemsPerPage}/{pageNumber}"}, method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public List<Interviewer> interviewGetJSON(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber) {
+//        StudentData studentData;
+//        StudentService studentService = new StudentServiceImpl();
+//        studentData = studentService.getStudents(itemsPerPage, pageNumber);
+//        if (studentData == null) {
+//            LOGGER.warn("studData == null");
+//        }
+//        return studentData;
+        List<Interviewer> interviewers;
+        InterviewerService studentService = new InterviewerServiceImpl();
+        interviewers = studentService.getInterviewer(itemsPerPage, pageNumber);
+        if (interviewers == null) {
+            LOGGER.warn("interviewers == null");
+        }
+        return interviewers;
+//        return "[{\n" +
+//                "    \"id\": 2,\n" +
+//                "    \"name\": \"Abcac\",\n" +
+//                "    \"surname\": \"Pomidorchik\",\n" +
+//                "    \"email\" : \"ger@gmail.com\",\n" +
+//                "    \"role\" : \"Admin\",\n" +
+//                "    \"participation\": true\n" +
+//                "  },{\n" +
+//                "    \"id\": 2,\n" +
+//                "    \"name\": \"Abcac\",\n" +
+//                "    \"surname\": \"Pomidorchik\",\n" +
+//                "    \"email\" : \"ger@gmail.com\",\n" +
+//                "    \"role\" : \"Admin\",\n" +
+//                "    \"participation\": true\n" +
+//                "  },{\n" +
+//                "    \"id\": 2,\n" +
+//                "    \"name\": \"Abcac\",\n" +
+//                "    \"surname\": \"Pomidorchik\",\n" +
+//                "    \"email\" : \"ger@gmail.com\",\n" +
+//                "    \"role\" : \"Admin\",\n" +
+//                "    \"participation\": true\n" +
+//                "  },{\n" +
+//                "    \"id\": 2,\n" +
+//                "    \"name\": \"Abcac\",\n" +
+//                "    \"surname\": \"Pomidorchik\",\n" +
+//                "    \"email\" : \"ger@gmail.com\",\n" +
+//                "    \"role\" : \"Admin\",\n" +
+//                "    \"participation\": true\n" +
+//                "  },{\n" +
+//                "    \"id\": 2,\n" +
+//                "    \"name\": \"Abcac\",\n" +
+//                "    \"surname\": \"Pomidorchik\",\n" +
+//                "    \"email\" : \"ger@gmail.com\",\n" +
+//                "    \"role\" : \"Admin\",\n" +
+//                "    \"participation\": true\n" +
+//                "  }]";
+    }
+
+    @RequestMapping(value = {"/interviewers/list/{itemsPerPage}/{pageNumber}/{sortType}"}, method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public StudentData interviewGetJSONSort(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("sortType") Integer sortType) {
+        StudentData studentData;
+        StudentService studentService = new StudentServiceImpl();
+        studentData = studentService.getStudents(itemsPerPage, pageNumber, sortType);
+        if (studentData == null) {
+            LOGGER.warn("studData == null");
+        }
+        return studentData;
+    }
+
+    @RequestMapping(value = {"/interviewers/size"}, method = RequestMethod.GET, produces = "application/json")
     public
     @ResponseBody
-    String interviewGetJSON() {
-        return "[{\n" +
-                "    \"id\": 1,\n" +
-                "    \"name\": \"Abc\",\n" +
-                "    \"surname\" : \"Ogurchik\",\n" +
-                "    \"isActive\": \"1\",\n" +
-                "    \"role\" : \"Admin\"\n" +
-                "  },{\n" +
-                "    \"id\": 2,\n" +
-                "    \"name\": \"Abc\",\n" +
-                "    \"surname\" : \"Ogurchik\",\n" +
-                "    \"isActive\": \"1\",\n" +
-                "    \"role\" : \"Admin\"\n" +
-                "  },{\n" +
-                "    \"id\": 3,\n" +
-                "    \"name\": \"Abc\",\n" +
-                "    \"surname\" : \"Ogurchik\",\n" +
-                "    \"isActive\": \"1\",\n" +
-                "    \"role\" : \"Admin\"\n" +
-                "  },{\n" +
-                "    \"id\": 4,\n" +
-                "    \"name\": \"Abc\",\n" +
-                "    \"surname\" : \"Ogurchik\",\n" +
-                "    \"isActive\": \"1\",\n" +
-                "    \"role\" : \"Admin\"\n" +
-                "  },{\n" +
-                "    \"id\": 5,\n" +
-                "    \"name\": \"Abc\",\n" +
-                "    \"surname\" : \"Ogurchik\",\n" +
-                "    \"isActive\": \"1\",\n" +
-                "    \"role\" : \"Admin\"\n" +
-                "  },{\n" +
-                "    \"id\": 6,\n" +
-                "    \"name\": \"Abc\",\n" +
-                "    \"surname\" : \"Ogurchik\",\n" +
-                "    \"isActive\": \"1\",\n" +
-                "    \"role\" : \"Admin\"\n" +
-                "  }]";
-
+    Integer interviewGetJSONSize() {
+        InterviewerService interviewerService = new InterviewerServiceImpl();
+        return  interviewerService.getInterviewerSize();
     }
 
 
