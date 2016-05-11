@@ -45,6 +45,7 @@ public class LoginController implements HandlerExceptionResolver {
     private final PhotoService photoService = new PhotoServiceImpl();
     private final CESService cesService = new CESServiceImpl();
 
+
     @Autowired
     @Qualifier("authenticationManager")
     protected AuthenticationManager authenticationManager;
@@ -179,7 +180,6 @@ public class LoginController implements HandlerExceptionResolver {
     @RequestMapping(value = {"/cesPost"}, method = RequestMethod.POST)
     public @ResponseBody
     CES getCES(@RequestBody CES ces) {
-        System.out.println(ces.getQuota() + " " + ces.getReminders() + " " + ces.getEndInterviewingDate());
         try {
             cesService.setCES(ces);
         } catch (DAOException e) {
@@ -187,17 +187,23 @@ public class LoginController implements HandlerExceptionResolver {
         }
         return ces;
     }
+
+
     @RequestMapping(value = {"/cessettings"}, method = RequestMethod.GET)
     public String cesPage() {
         return "cessettings";
     }
+
     @RequestMapping(value = "/cessettings", method = RequestMethod.GET, produces = "application/json")
     public
     @ResponseBody
     CES ces() {
-        if (cesService.getCurrentCES() != null){
-            return cesService.getCurrentCES();
+        try {
+            return cesService.getCES();
+        } catch (DAOException e) {
+            LOGGER.error("DAO error");
+            return null;
         }
-        return null;
     }
+
 }

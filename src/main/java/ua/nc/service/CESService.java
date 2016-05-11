@@ -14,4 +14,6 @@ public interface CESService {
     CES getCES() throws DAOException;
 
     void setCES(CES ces) throws DAOException;
+
+    void deleteCES();
 }

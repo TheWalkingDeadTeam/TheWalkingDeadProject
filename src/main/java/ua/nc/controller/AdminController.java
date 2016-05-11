@@ -4,7 +4,11 @@ import org.apache.log4j.Logger;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import ua.nc.dao.exception.DAOException;
+import ua.nc.entity.CES;
 import ua.nc.entity.User;
+import ua.nc.service.CESService;
+import ua.nc.service.CESServiceImpl;
 import ua.nc.service.UserDetailsImpl;
 import ua.nc.service.user.UserService;
 import ua.nc.service.user.UserServiceImpl;
@@ -26,6 +30,7 @@ import java.util.Set;
 public class AdminController {
     private static final Logger LOGGER = Logger.getLogger(AdminController.class);
     private final UserService userService = new UserServiceImpl();
+    private final CESService cesService = new CESServiceImpl();
 
     @RequestMapping(method = RequestMethod.GET)
     public String login() {
@@ -181,5 +186,36 @@ public class AdminController {
     @RequestMapping(value = {"/mail-template"}, method = RequestMethod.GET)
     public String mail() {
         return "admin-mail-template";
+    }
+
+
+    @RequestMapping(value = {"/cesPost"}, method = RequestMethod.POST)
+    public @ResponseBody
+    CES getCES(@RequestBody CES ces) {
+        try {
+            cesService.setCES(ces);
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+        return ces;
+    }
+
+
+    @RequestMapping(value = {"/cessettings"}, method = RequestMethod.GET)
+    public String cesPage() {
+        return "cessettings";
+    }
+
+    @RequestMapping(value = "/cessettings", method = RequestMethod.GET, produces = "application/json")
+    public
+    @ResponseBody
+    CES ces() {
+        try {
+            System.out.println(cesService.getCES());
+            return cesService.getCES();
+        } catch (DAOException e) {
+            LOGGER.error("DAO error");
+            return null;
+        }
     }
 }
