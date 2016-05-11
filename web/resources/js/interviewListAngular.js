@@ -115,9 +115,9 @@
 //
 
 
-var app = angular.module('interView', ['checklist-model', 'angularUtils.directives.dirPagination']);
+var interView = angular.module('interView', ['checklist-model', 'angularUtils.directives.dirPagination']);
 
-app.controller('interCtrl', ["$http", "$scope", function ($http, $scope) {
+interView.controller('interCtrl', ["$http", "$scope", function ($http, $scope) {
     var vm = this;
     vm.users = []; //declare an empty array
     vm.pageno = 1; // initialize page no to 1
@@ -131,11 +131,10 @@ app.controller('interCtrl', ["$http", "$scope", function ($http, $scope) {
         //In practice this should be in a factory.
         vm.users = [];
         $http.get(vm.selectUrl).success(function (response) {
-            vm.header = response.header;
-            vm.users = response.rows;
+            vm.users = response;
             // vm.order_by = vm.header[0].id;
         });
-        $http.get("students/size").success(function (response) {
+        $http.get("interviewers/size").success(function (response) {
             vm.total_count = response.size;
         });
     };

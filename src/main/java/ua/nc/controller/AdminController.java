@@ -152,7 +152,7 @@ public class AdminController {
         return "admin-iter-view";
     }
 
-    @RequestMapping(value = {"/students/list/{itemsPerPage}/{pageNumber}"}, method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = {"/interviewers/list/{itemsPerPage}/{pageNumber}"}, method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public String interviewGetJSON(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber) {
 //        StudentData studentData;
@@ -200,7 +200,7 @@ public class AdminController {
                 "  }]";
     }
 
-    @RequestMapping(value = {"/students/list/{itemsPerPage}/{pageNumber}/{sortType}"}, method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = {"/interviewers/list/{itemsPerPage}/{pageNumber}/{sortType}"}, method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public StudentData interviewGetJSONSort(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("sortType") Integer sortType) {
         StudentData studentData;
@@ -212,51 +212,12 @@ public class AdminController {
         return studentData;
     }
 
-    @RequestMapping(value = {"/interviewers/list"}, method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = {"/interviewers/size"}, method = RequestMethod.GET, produces = "application/json")
     public
     @ResponseBody
-    String interviewGetJSON() {
-
-
-        return "[{\n" +
-                "    \"id\": 2,\n" +
-                "    \"name\": \"Abcac\",\n" +
-                "    \"surname\": \"Pomidorchik\",\n" +
-                "    \"email\" : \"ger@gmail.com\",\n" +
-                "    \"role\" : \"Admin\",\n" +
-                "    \"participation\": true\n" +
-                "  },{\n" +
-                "    \"id\": 2,\n" +
-                "    \"name\": \"Abcac\",\n" +
-                "    \"surname\": \"Pomidorchik\",\n" +
-                "    \"email\" : \"ger@gmail.com\",\n" +
-                "    \"role\" : \"Admin\",\n" +
-                "    \"participation\": true\n" +
-                "  },{\n" +
-                "    \"id\": 2,\n" +
-                "    \"name\": \"Abcac\",\n" +
-                "    \"surname\": \"Pomidorchik\",\n" +
-                "    \"email\" : \"ger@gmail.com\",\n" +
-                "    \"role\" : \"Admin\",\n" +
-                "    \"participation\": true\n" +
-                "  },{\n" +
-                "    \"id\": 2,\n" +
-                "    \"name\": \"Abcac\",\n" +
-                "    \"surname\": \"Pomidorchik\",\n" +
-                "    \"email\" : \"ger@gmail.com\",\n" +
-                "    \"role\" : \"Admin\",\n" +
-                "    \"participation\": true\n" +
-                "  },{\n" +
-                "    \"id\": 2,\n" +
-                "    \"name\": \"Abcac\",\n" +
-                "    \"surname\": \"Pomidorchik\",\n" +
-                "    \"email\" : \"ger@gmail.com\",\n" +
-                "    \"role\" : \"Admin\",\n" +
-                "    \"participation\": true\n" +
-                "  }]";
-
+    String interviewGetJSONSize() {
+        return "{\"size\":2000}";
     }
-
 
     @RequestMapping(value = {"/mail-template"}, method = RequestMethod.GET)
     public String mail() {
