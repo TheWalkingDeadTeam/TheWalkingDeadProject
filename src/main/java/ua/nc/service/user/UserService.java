@@ -8,6 +8,8 @@ import ua.nc.entity.User;
 public interface UserService {
     User getUser(String email);
 
+    User getUser(int id);
+
     User createUser(User user);
 
     void changePassword(User user, String password);
