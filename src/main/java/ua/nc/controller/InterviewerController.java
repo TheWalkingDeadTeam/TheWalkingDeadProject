@@ -29,6 +29,7 @@ import java.util.Set;
 @RequestMapping("/interviewer")
 public class InterviewerController {
     private final static Logger LOGGER = Logger.getLogger(InterviewerController.class);
+    private final static String ROLE_DEV = "ROLE_DEV";
     private ApplicationService applicationService = new ApplicationServiceImpl();
     private UserService userService = new UserServiceImpl();
     private FeedbackService feedbackService = new FeedbackServiceImpl();
@@ -67,7 +68,7 @@ public class InterviewerController {
                 .getPrincipal()).getUsername());
         Feedback feedback = null;
         Integer feedbackId = null;
-        if(request.isUserInRole("ROLE_DEV")){
+        if(request.isUserInRole(ROLE_DEV)){
             feedbackId = interviewee.getDevFeedbackID();
 
         } else {
@@ -79,11 +80,12 @@ public class InterviewerController {
         if (feedback == null) {
             response.setHeader("restricted", "false");
             try {
-                //костыль со стековерфлоу, не обращайте внимания
                 Writer writer = response.getWriter();
                 writer.write("null");
                 writer.close();
-            } catch (IOException ex){}
+            } catch (IOException ex){
+                LOGGER.warn(ex);
+            }
             return null;
         } else if (feedback.getInterviewerID() == user.getId()) {
             response.setHeader("restricted", "false");
@@ -92,11 +94,12 @@ public class InterviewerController {
             response.setHeader("restricted", "true");
         }
         try {
-            //костыль со стековерфлоу, не обращайте внимания
             Writer writer = response.getWriter();
             writer.write("null");
             writer.close();
-        } catch (IOException ex){}
+        } catch (IOException ex){
+            LOGGER.warn(ex);
+        }
         return null;
     }
 }
