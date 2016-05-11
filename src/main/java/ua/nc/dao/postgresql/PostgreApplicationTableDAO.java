@@ -92,9 +92,11 @@ public class PostgreApplicationTableDAO {
                     "WHERE course_enrollment_session.ces_id = ? " +
                     "GROUP BY system_user.system_user_id "
     );
-
+// TODO 05/11/16 naming convention
     private static final String orderByQuery = " ORDER BY field_{0} ";
     private static final String limitOffsetQuery = " LIMIT {0} OFFSET {1} ";
+    private static final String matchingQuery = "";
+    private static final String orderByBaseFieldQuery = " ORDER BY {0} ";
 
     public StudentData getApplicationsTable(Integer cesId, Integer limit, Integer offset) throws DAOException {
         List<FieldData> fieldData = getFieldIds(cesId);
@@ -174,5 +176,47 @@ public class PostgreApplicationTableDAO {
                 break;
         }
         return result;
+    }
+
+    public void tempMethod(Integer cesId, Integer limit, Integer offset, Object orderBy, String pattern) throws DAOException {
+        if (cesId != null){
+            List<FieldData> fieldData = getFieldIds(cesId);
+            String query = buildBaseFullQuery(fieldData);
+            if (limit != null && offset != null){
+                if (orderBy != null){
+                    if (isInteger(orderBy.toString())){
+                        query = query + MessageFormat.format(orderByQuery, orderBy);
+                    } else {
+                        query = query + MessageFormat.format(orderByBaseFieldQuery, orderBy);
+                    }
+                }
+                query = query + MessageFormat.format(limitOffsetQuery, limit, offset);
+            }
+            System.out.println();
+        }
+    }
+
+    private static boolean isInteger(String str) {
+        if (str == null) {
+            return false;
+        }
+        int length = str.length();
+        if (length == 0) {
+            return false;
+        }
+        int i = 0;
+        if (str.charAt(0) == '-') {
+            if (length == 1) {
+                return false;
+            }
+            i = 1;
+        }
+        for (; i < length; i++) {
+            char c = str.charAt(i);
+            if (c < '0' || c > '9') {
+                return false;
+            }
+        }
+        return true;
     }
 }
