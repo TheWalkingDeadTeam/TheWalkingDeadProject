@@ -84,12 +84,14 @@
   <div id="profile">
   </div>
   <br>
-  <form id="feedback">
-    <div id="save_message"></div>
-    <input type="number" id = "feedback_score" max="100" min="0" align="centre"/>
-    <textarea id="feedback_text" placeholder="Put your feedback here" cols="40" rows="10"></textarea>
-    <button type="submit" title="Submit">Submit</button>
-  </form>
+  <div id="save_message"></div>
+  <div id="feedback">
+    <form id="feedback_form">
+      <input type="number" id = "feedback_score" max="100" min="0" align="centre"/>
+      <textarea id="feedback_text" placeholder="Put your feedback here" cols="40" rows="10"></textarea>
+      <button type="submit" title="Submit">Submit</button>
+    </form>
+  </div>
 
 
 </sec:authorize>

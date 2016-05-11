@@ -17,10 +17,10 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
+import ua.nc.dao.exception.DAOException;
+import ua.nc.entity.CES;
 import ua.nc.entity.User;
-import ua.nc.service.PhotoService;
-import ua.nc.service.PhotoServiceImpl;
-import ua.nc.service.UserDetailsImpl;
+import ua.nc.service.*;
 import ua.nc.service.user.UserDetailsServiceImpl;
 import ua.nc.service.user.UserService;
 import ua.nc.service.user.UserServiceImpl;
@@ -43,6 +43,9 @@ public class LoginController implements HandlerExceptionResolver {
     private static final Logger LOGGER = Logger.getLogger(LoginController.class);
     private final UserService userService = new UserServiceImpl();
     private final PhotoService photoService = new PhotoServiceImpl();
+    private final CESService cesService = new CESServiceImpl();
+
+
     @Autowired
     @Qualifier("authenticationManager")
     protected AuthenticationManager authenticationManager;
@@ -173,6 +176,34 @@ public class LoginController implements HandlerExceptionResolver {
         User user = userService.getUser(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal()).getUsername());
         return photoService.getPhotoById(user.getId());
+    }
+    @RequestMapping(value = {"/cesPost"}, method = RequestMethod.POST)
+    public @ResponseBody
+    CES getCES(@RequestBody CES ces) {
+        try {
+            cesService.setCES(ces);
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+        return ces;
+    }
+
+
+    @RequestMapping(value = {"/cessettings"}, method = RequestMethod.GET)
+    public String cesPage() {
+        return "cessettings";
+    }
+
+    @RequestMapping(value = "/cessettings", method = RequestMethod.GET, produces = "application/json")
+    public
+    @ResponseBody
+    CES ces() {
+        try {
+            return cesService.getCES();
+        } catch (DAOException e) {
+            LOGGER.error("DAO error");
+            return null;
+        }
     }
 
 }

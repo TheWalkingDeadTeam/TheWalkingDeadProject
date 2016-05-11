@@ -12,6 +12,11 @@ import ua.nc.service.user.UserServiceImpl;
 import ua.nc.validator.FeedbackValidator;
 import ua.nc.validator.ValidationError;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.Writer;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
@@ -53,7 +58,7 @@ public class InterviewerController {
         return "profile-for-interviewer";
     }
 
-    @RequestMapping(value = "/feedback/{id}", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "/feedback/{id}", method = RequestMethod.GET, produces = "application/json")
     public Application specificFeedback(@PathVariable("id") Integer id){
         return applicationService.getApplicationByUserForCurrentCES(id);
     }
@@ -73,16 +78,39 @@ public class InterviewerController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "getFeedback/{id}", method = RequestMethod.POST, produces = "application/json")
-    public Feedback getFeedback(@PathVariable("id") Integer id){
+    @RequestMapping(value = "getFeedback/{id}", method = RequestMethod.GET, produces = "application/json")
+    public Feedback getFeedback(@PathVariable("id") Integer id, HttpServletRequest request, HttpServletResponse response){
         Application application = applicationService.getApplicationByUserForCurrentCES(id);
         Interviewee interviewee = intervieweeService.getInterviewee(application.getId());
         User user = userService.getUser(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal()).getUsername());
-        if (userService.checkRole(user,"ROLE_DEV")){
-            return feedbackService.getFeedback(interviewee.getDevFeedbackID());
+        Feedback feedback = null;
+        if(request.isUserInRole("ROLE_DEV")){
+            feedback = feedbackService.getFeedback(interviewee.getDevFeedbackID());
         } else {
-            return feedbackService.getFeedback(interviewee.getHrFeedbackID());
+            feedback = feedbackService.getFeedback(interviewee.getHrFeedbackID());
         }
+        if (feedback == null) {
+            response.setHeader("restricted", "false");
+            try {
+                //������� �� ������������, �� ��������� ��������
+                Writer writer = response.getWriter();
+                writer.write("null");
+                writer.close();
+            } catch (IOException ex){}
+            return null;
+        } else if (feedback.getInterviewerID() == user.getId()) {
+            response.setHeader("restricted", "false");
+            return feedback;
+        } else {
+            response.setHeader("restricted", "true");
+        }
+        try {
+            //������� �� ������������, �� ��������� ��������
+            Writer writer = response.getWriter();
+            writer.write("null");
+            writer.close();
+        } catch (IOException ex){}
+        return null;
     }
 }

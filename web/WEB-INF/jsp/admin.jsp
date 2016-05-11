@@ -91,10 +91,10 @@
                         <h2 class="mdl-card__title-text">Registration period</h2>
                     </div>
                     <div class="mdl-card__supporting-text mdl-color-text--grey-600">
-                        You are able to set registration quota
+                        You are able to set course enroll session settings
                     </div>
                     <div class="mdl-card__actions mdl-card--border">
-                        <a href="#" class="mdl-button mdl-js-button mdl-js-ripple-effect">Set Registration Quota</a>
+                        <a href="/admin/cessettings" class="mdl-button mdl-js-button mdl-js-ripple-effect">Set Course Enroll Settings </a>
                     </div>
                 </div>
                 <div class="demo-separator mdl-cell--1-col"></div>

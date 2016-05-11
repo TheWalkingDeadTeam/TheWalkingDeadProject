@@ -61,6 +61,8 @@ public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements C
             "JOIN ces_status stat ON ces.ces_status_id = stat.ces_status_id AND stat.name = 'Active'";
     private static final String getPendingCESQuery = "SELECT ces.* FROM course_enrollment_session ces " +
             "JOIN ces_status stat ON ces.ces_status_id = stat.ces_status_id WHERE name = 'Pending'";
+    private static final String getCurrentInterviewBegunCESQuery = "SELECT ces.* FROM course_enrollment_session ces " +
+            "JOIN ces_status stat ON ces.ces_status_id = stat.ces_status_id WHERE name = 'ActiveInterviewBegan'";
 
     private static final String addInterviewerForCurrentCES = "INSERT INTO interviewer_participation (ces_id, system_user_id) VALUES (?, ?);";
     private static final String addCESFieldQuery = "INSERT INTO ces_field (ces_id, field_id) VALUES (?, ?);";
@@ -156,6 +158,11 @@ public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements C
     @Override
     public CES getPendingCES() throws DAOException{
         return getSomeCES(getPendingCESQuery);
+    }
+
+    @Override
+    public CES getCurrentInterviewBegunCES() throws DAOException {
+        return getSomeCES(getCurrentInterviewBegunCESQuery);
     }
 
     private CES getSomeCES(String query) throws DAOException {
