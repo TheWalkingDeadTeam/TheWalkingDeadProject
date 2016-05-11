@@ -15,7 +15,7 @@
                 <i class="material-icons">search</i>
             </label>
             <div class="mdl-textfield__expandable-holder">
-                <input class="mdl-textfield__input" type="text" id="search">
+                <form ng-submit = "searchFiltr()"><input  class="mdl-textfield__input" type="text" id="search"></form>
                 <label class="mdl-textfield__label" for="search">Enter your query...</label>
             </div>
         </div>
