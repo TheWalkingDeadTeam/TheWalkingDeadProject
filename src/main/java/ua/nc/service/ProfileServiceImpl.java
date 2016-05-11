@@ -14,14 +14,14 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Pavel on 28.04.2016.
  */
 public class ProfileServiceImpl implements ProfileService {
     private DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
+    private static final Set<String> typesToDeny = new HashSet<>(Arrays.asList("textarea", "tel", "checkbox"));
 
     @Override
     public Profile getProfile(int userId, int cesId) throws DAOException {
@@ -49,14 +49,7 @@ public class ProfileServiceImpl implements ProfileService {
                 } else {
                     FieldValue fieldValue = fieldValueDAO.getFieldValueByUserCESField(
                             userId, cesId, field.getId()).iterator().next();
-                    ProfileFieldValue pfValue = new ProfileFieldValue();
-                    if (fieldValue.getValueText() != null) {
-                        pfValue.setValue(fieldValue.getValueText());
-                    } else if (fieldValue.getValueDouble() != null) {
-                        pfValue.setValue(fieldValue.getValueDouble().toString());
-                    } else if (fieldValue.getValueDate() != null) {
-                        pfValue.setValue(fieldValue.getValueDate().toString());
-                    }
+                    ProfileFieldValue pfValue = setProfileFieldValue(fieldValue);
                     profileFieldValues.add(pfValue);
                     profileField.setValues(profileFieldValues);
                 }
@@ -89,11 +82,72 @@ public class ProfileServiceImpl implements ProfileService {
             profileFields.add(profileField);
         }
         result.setFields(profileFields);
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        daoFactory.putConnection(connection);
+        return result;
+    }
+
+    private ProfileFieldValue setProfileFieldValue(FieldValue fieldValue) {
+        ProfileFieldValue pfValue = new ProfileFieldValue();
+        if (fieldValue.getValueText() != null) {
+            pfValue.setValue(fieldValue.getValueText());
+        } else if (fieldValue.getValueDouble() != null) {
+            pfValue.setValue(fieldValue.getValueDouble().toString());
+        } else if (fieldValue.getValueDate() != null) {
+            pfValue.setValue(fieldValue.getValueDate().toString());
         }
+        return pfValue;
+    }
+
+    @Override
+    public Profile getShortProfile(int userId, int cesId) {
+        Connection connection = daoFactory.getConnection();
+        FieldDAO fieldDAO = daoFactory.getFieldDAO(connection);
+        FieldTypeDAO fieldTypeDAO = daoFactory.getFieldTypeDAO(connection);
+        FieldValueDAO fieldValueDAO = daoFactory.getFieldValueDAO(connection);
+        ListValueDAO listValueDAO = daoFactory.getListValueDAO(connection);
+        Profile result = new Profile();
+        List<ProfileField> profileFields = new ArrayList<>();
+        try {
+            List<Field> fields = fieldDAO.getFieldsForCES(cesId);
+            for (Field field : fields) {
+                if (!typesToDeny.contains(fieldTypeDAO.read(field.getFieldTypeID()).getName())) {
+                    ProfileField profileField = new ProfileField();
+                    profileField.setId(field.getId());
+                    profileField.setFieldName(field.getName());
+                    profileField.setFieldType(fieldTypeDAO.read(field.getFieldTypeID()).getName());
+                    List<ProfileFieldValue> profileFieldValues = new ArrayList<>();
+                    if (field.getListTypeID() == null) {
+                        FieldValue fieldValue = fieldValueDAO.getFieldValueByUserCESField(
+                                userId, cesId, field.getId()).iterator().next();
+                        ProfileFieldValue pfValue = setProfileFieldValue(fieldValue);
+                        profileFieldValues.add(pfValue);
+                        profileField.setValues(profileFieldValues);
+                    } else {
+                        List<ListValue> listValues = listValueDAO.getAllListListValue(field.getListTypeID());
+                        List<FieldValue> fieldValues = fieldValueDAO.getFieldValueByUserCESField(
+                                userId, cesId, field.getId());
+                        for (ListValue listValue : listValues) {
+                            ProfileFieldValue pfValue = new ProfileFieldValue();
+                            pfValue.setId(listValue.getId().toString());
+                            pfValue.setFieldValueName(listValue.getValueText());
+                            for (FieldValue fieldValue : fieldValues) {
+                                if (listValue.getId().equals(fieldValue.getListValueID())) {
+                                    pfValue.setValue(Boolean.TRUE.toString());
+                                    profileFieldValues.add(pfValue);
+                                }
+                            }
+                        }
+                        profileField.setValues(profileFieldValues); ///
+                    }
+                    profileFields.add(profileField);
+                }
+            }
+        } catch (DAOException e) {
+            e.printStackTrace();
+        } finally {
+            daoFactory.putConnection(connection);
+        }
+        result.setFields(profileFields);
         return result;
     }
 
@@ -112,7 +166,7 @@ public class ProfileServiceImpl implements ProfileService {
                             profileField.getValues().get(0).getValue(), null, null, null));
                     break;
                 case "date":
-                    DateFormat format = new SimpleDateFormat();
+                    DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
                     try {
                         result.add(new FieldValue(profileField.getId(), applicationId, null,
                                 null, format.parse(profileField.getValues().get(0).getValue()), null));
@@ -123,8 +177,8 @@ public class ProfileServiceImpl implements ProfileService {
                 case "select":
                 case "checkbox":
                 case "radio":
-                    for (ProfileFieldValue profileFieldValue : profileField.getValues()){
-                        if (Boolean.parseBoolean(profileFieldValue.getValue())){
+                    for (ProfileFieldValue profileFieldValue : profileField.getValues()) {
+                        if (Boolean.parseBoolean(profileFieldValue.getValue())) {
                             result.add(new FieldValue(profileField.getId(), applicationId, null,
                                     null, null, Integer.parseInt(profileFieldValue.getId())));
                         }
@@ -139,11 +193,7 @@ public class ProfileServiceImpl implements ProfileService {
         Connection connection = daoFactory.getConnection();
         ApplicationDAO applicationDAO = daoFactory.getApplicationDAO(connection);
         Application resultSet = applicationDAO.getApplicationByUserCES(userId, cesId);
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        daoFactory.putConnection(connection);
         if (resultSet == null) {
             return false;
         } else {
@@ -167,11 +217,12 @@ public class ProfileServiceImpl implements ProfileService {
         } catch (Exception e) {
             try {
                 connection.rollback();
-                connection.close();
             } catch (SQLException exp) {
                 throw new DAOException(exp);
             }
             throw new DAOException(e);
+        } finally {
+            daoFactory.putConnection(connection);
         }
     }
 
@@ -201,11 +252,12 @@ public class ProfileServiceImpl implements ProfileService {
         } catch (Exception e) {
             try {
                 connection.rollback();
-                connection.close();
             } catch (SQLException exp) {
                 throw new DAOException(exp);
             }
             throw new DAOException(e);
+        } finally {
+            daoFactory.putConnection(connection);
         }
     }
 

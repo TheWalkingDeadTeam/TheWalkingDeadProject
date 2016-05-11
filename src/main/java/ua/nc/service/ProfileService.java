@@ -9,6 +9,7 @@ import ua.nc.entity.profile.Profile;
  */
 public interface ProfileService {
     Profile getProfile(int userId, int cesID) throws DAOException;
+    Profile getShortProfile(int userId, int cesId) throws DAOException;
 
     void setProfile(int userId, Profile profile) throws DAOException;
 }
