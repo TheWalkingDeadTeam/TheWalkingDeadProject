@@ -21,7 +21,7 @@ import java.util.*;
  */
 public class ProfileServiceImpl implements ProfileService {
     private DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
-    private static  final Set<String> typesToDeny = new HashSet<>(Arrays.asList("textarea","tel","checkbox"));
+    private static final Set<String> typesToDeny = new HashSet<>(Arrays.asList("textarea", "tel", "checkbox"));
 
     @Override
     public Profile getProfile(int userId, int cesId) throws DAOException {
@@ -86,7 +86,7 @@ public class ProfileServiceImpl implements ProfileService {
         return result;
     }
 
-    private ProfileFieldValue setProfileFieldValue(FieldValue fieldValue){
+    private ProfileFieldValue setProfileFieldValue(FieldValue fieldValue) {
         ProfileFieldValue pfValue = new ProfileFieldValue();
         if (fieldValue.getValueText() != null) {
             pfValue.setValue(fieldValue.getValueText());
@@ -99,7 +99,7 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public Profile getShortProfile(int userId, int cesId){
+    public Profile getShortProfile(int userId, int cesId) {
         Connection connection = daoFactory.getConnection();
         FieldDAO fieldDAO = daoFactory.getFieldDAO(connection);
         FieldTypeDAO fieldTypeDAO = daoFactory.getFieldTypeDAO(connection);
@@ -177,8 +177,8 @@ public class ProfileServiceImpl implements ProfileService {
                 case "select":
                 case "checkbox":
                 case "radio":
-                    for (ProfileFieldValue profileFieldValue : profileField.getValues()){
-                        if (Boolean.parseBoolean(profileFieldValue.getValue())){
+                    for (ProfileFieldValue profileFieldValue : profileField.getValues()) {
+                        if (Boolean.parseBoolean(profileFieldValue.getValue())) {
                             result.add(new FieldValue(profileField.getId(), applicationId, null,
                                     null, null, Integer.parseInt(profileFieldValue.getId())));
                         }

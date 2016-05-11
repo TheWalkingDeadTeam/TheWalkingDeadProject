@@ -59,7 +59,7 @@
 </head>
 <body>
 <main ng-controller="interCtrl as data"
-     class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
+      class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
     <jsp:include page="admin-header.jsp"/>
 
 
@@ -72,10 +72,6 @@
             <button ng-click="deactivateStud()"
                     class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
                 Deactivate
-            </button>
-            <button ng-click="saveChanges()"
-                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
-                Save
             </button>
         </div>
         <table class="table table-bordered table-striped" style="{margin-top: 200px}">
@@ -101,7 +97,7 @@
                 </td>
                 <td>
                     <a href="#" ng-click="sortType = 'university'; sortReverse = !sortReverse">
-                        Surname {{users[0].name}}
+                        Surname
                                 <span ng-show="sortType == 'university' && !sortReverse"
                                       class="fa fa-caret-down"></span>
                         <span ng-show="sortType == 'university' && sortReverse" class="fa fa-caret-up"></span>
@@ -135,7 +131,7 @@
                 <td colspan="5" style="text-align:center;">Bratiska POGODI</td>
             </tr>
             <tr dir-paginate="user in data.users|itemsPerPage:data.itemsPerPage" total-items="data.total_count">
-                <td><input type="checkbox" checklist-model="dataStudents.studId" checklist-value="user.userId">
+                <td><input type="checkbox" checklist-model="dataStudents.studId" checklist-value="user.id">
                 </td>
                 <td ng-init="index=$index + 1">{{index}}</td>
                 <td>{{user.name}}</td>
@@ -159,15 +155,15 @@
 </main>
 
 
-    <script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
-    <script src="http://code.jquery.com/jquery-latest.js"></script>
-    <script src="/resources/js/admin-create-user.js"></script>
-    <script src="/resources/bootstrap/js/bootstrap.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-route.js"></script>
-    <script src="../../resources/js/interviewListAngular.js"></script>
-    <script src="../../resources/js/dirPagination.js"></script>
-    <script src="http://vitalets.github.io/checklist-model/checklist-model.js"></script>
+<script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="/resources/js/admin-create-user.js"></script>
+<script src="/resources/bootstrap/js/bootstrap.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-route.js"></script>
+<script src="../../resources/js/interviewListAngular.js"></script>
+<script src="../../resources/js/dirPagination.js"></script>
+<script src="http://vitalets.github.io/checklist-model/checklist-model.js"></script>
 </body>
 
 </html>

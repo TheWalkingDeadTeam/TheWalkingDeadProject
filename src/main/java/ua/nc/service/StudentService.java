@@ -24,4 +24,5 @@ public interface StudentService {
 
     public void rejectStudents(List<Integer> studentsId);
 
+    public Integer getStudentsSize();
 }

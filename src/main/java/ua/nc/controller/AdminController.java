@@ -6,18 +6,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import ua.nc.entity.Interviewer;
 import ua.nc.entity.StudentStatus;
 import ua.nc.entity.User;
 import ua.nc.entity.profile.StudentData;
-import ua.nc.service.StudentService;
-import ua.nc.service.StudentServiceImpl;
-import ua.nc.service.UserDetailsImpl;
+import ua.nc.service.*;
 import ua.nc.service.user.UserService;
 import ua.nc.service.user.UserServiceImpl;
 import ua.nc.validator.RegistrationValidator;
 import ua.nc.validator.ValidationError;
 import ua.nc.validator.Validator;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -90,7 +90,7 @@ public class AdminController {
     public
     @ResponseBody
     String studentsSearch() {
-        return "{\"size\":2000}";
+        return "{\"result\":\"inProgres\"";
     }
 
 
@@ -154,7 +154,7 @@ public class AdminController {
 
     @RequestMapping(value = {"/interviewers/list/{itemsPerPage}/{pageNumber}"}, method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public String interviewGetJSON(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber) {
+    public List<Interviewer> interviewGetJSON(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber) {
 //        StudentData studentData;
 //        StudentService studentService = new StudentServiceImpl();
 //        studentData = studentService.getStudents(itemsPerPage, pageNumber);
@@ -162,42 +162,49 @@ public class AdminController {
 //            LOGGER.warn("studData == null");
 //        }
 //        return studentData;
-        return "[{\n" +
-                "    \"id\": 2,\n" +
-                "    \"name\": \"Abcac\",\n" +
-                "    \"surname\": \"Pomidorchik\",\n" +
-                "    \"email\" : \"ger@gmail.com\",\n" +
-                "    \"role\" : \"Admin\",\n" +
-                "    \"participation\": true\n" +
-                "  },{\n" +
-                "    \"id\": 2,\n" +
-                "    \"name\": \"Abcac\",\n" +
-                "    \"surname\": \"Pomidorchik\",\n" +
-                "    \"email\" : \"ger@gmail.com\",\n" +
-                "    \"role\" : \"Admin\",\n" +
-                "    \"participation\": true\n" +
-                "  },{\n" +
-                "    \"id\": 2,\n" +
-                "    \"name\": \"Abcac\",\n" +
-                "    \"surname\": \"Pomidorchik\",\n" +
-                "    \"email\" : \"ger@gmail.com\",\n" +
-                "    \"role\" : \"Admin\",\n" +
-                "    \"participation\": true\n" +
-                "  },{\n" +
-                "    \"id\": 2,\n" +
-                "    \"name\": \"Abcac\",\n" +
-                "    \"surname\": \"Pomidorchik\",\n" +
-                "    \"email\" : \"ger@gmail.com\",\n" +
-                "    \"role\" : \"Admin\",\n" +
-                "    \"participation\": true\n" +
-                "  },{\n" +
-                "    \"id\": 2,\n" +
-                "    \"name\": \"Abcac\",\n" +
-                "    \"surname\": \"Pomidorchik\",\n" +
-                "    \"email\" : \"ger@gmail.com\",\n" +
-                "    \"role\" : \"Admin\",\n" +
-                "    \"participation\": true\n" +
-                "  }]";
+        List<Interviewer> interviewers;
+        InterviewerService studentService = new InterviewerServiceImpl();
+        interviewers = studentService.getInterviewer(itemsPerPage, pageNumber);
+        if (interviewers == null) {
+            LOGGER.warn("interviewers == null");
+        }
+        return interviewers;
+//        return "[{\n" +
+//                "    \"id\": 2,\n" +
+//                "    \"name\": \"Abcac\",\n" +
+//                "    \"surname\": \"Pomidorchik\",\n" +
+//                "    \"email\" : \"ger@gmail.com\",\n" +
+//                "    \"role\" : \"Admin\",\n" +
+//                "    \"participation\": true\n" +
+//                "  },{\n" +
+//                "    \"id\": 2,\n" +
+//                "    \"name\": \"Abcac\",\n" +
+//                "    \"surname\": \"Pomidorchik\",\n" +
+//                "    \"email\" : \"ger@gmail.com\",\n" +
+//                "    \"role\" : \"Admin\",\n" +
+//                "    \"participation\": true\n" +
+//                "  },{\n" +
+//                "    \"id\": 2,\n" +
+//                "    \"name\": \"Abcac\",\n" +
+//                "    \"surname\": \"Pomidorchik\",\n" +
+//                "    \"email\" : \"ger@gmail.com\",\n" +
+//                "    \"role\" : \"Admin\",\n" +
+//                "    \"participation\": true\n" +
+//                "  },{\n" +
+//                "    \"id\": 2,\n" +
+//                "    \"name\": \"Abcac\",\n" +
+//                "    \"surname\": \"Pomidorchik\",\n" +
+//                "    \"email\" : \"ger@gmail.com\",\n" +
+//                "    \"role\" : \"Admin\",\n" +
+//                "    \"participation\": true\n" +
+//                "  },{\n" +
+//                "    \"id\": 2,\n" +
+//                "    \"name\": \"Abcac\",\n" +
+//                "    \"surname\": \"Pomidorchik\",\n" +
+//                "    \"email\" : \"ger@gmail.com\",\n" +
+//                "    \"role\" : \"Admin\",\n" +
+//                "    \"participation\": true\n" +
+//                "  }]";
     }
 
     @RequestMapping(value = {"/interviewers/list/{itemsPerPage}/{pageNumber}/{sortType}"}, method = RequestMethod.GET, produces = "application/json")
@@ -215,8 +222,9 @@ public class AdminController {
     @RequestMapping(value = {"/interviewers/size"}, method = RequestMethod.GET, produces = "application/json")
     public
     @ResponseBody
-    String interviewGetJSONSize() {
-        return "{\"size\":2000}";
+    Integer interviewGetJSONSize() {
+        InterviewerService interviewerService = new InterviewerServiceImpl();
+        return  interviewerService.getInterviewerSize();
     }
 
     @RequestMapping(value = {"/mail-template"}, method = RequestMethod.GET)
