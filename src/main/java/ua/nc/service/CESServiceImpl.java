@@ -4,16 +4,21 @@ import org.apache.log4j.Logger;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import ua.nc.dao.ApplicationDAO;
 import ua.nc.dao.CESDAO;
+import ua.nc.dao.UserDAO;
 import ua.nc.dao.CESStatusDAO;
 import ua.nc.dao.enums.DataBaseType;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.dao.factory.DAOFactory;
 import ua.nc.dao.postgresql.PostgreApplicationDAO;
 import ua.nc.dao.postgresql.PostgreCESDAO;
+import ua.nc.dao.postgresql.PostgreUserDAO;
 import ua.nc.entity.Application;
 import ua.nc.entity.CES;
+import ua.nc.entity.Mail;
+import ua.nc.entity.User;
 
 import java.sql.Connection;
+import java.util.*;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -28,6 +33,10 @@ public class CESServiceImpl implements CESService {
     private final DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
     private ThreadPoolTaskScheduler scheduler;
     private static final int POOL_SIZE = 1;
+
+    private static final int MINUTES_PER_HOUR = 60;
+    private static final int INTERVIEWERS_PER_STUDENT = 2;
+    private static final int MILLIS_PER_DAY = 1000 * 60 * 60 * 24;
 
     @Override
     public CES getCurrentCES() {
@@ -46,7 +55,7 @@ public class CESServiceImpl implements CESService {
     }
 
     @Override
-    public void enroll(Integer userId, Integer currentCESId) throws DAOException {
+    public void enrollAsStudent(Integer userId, Integer currentCESId) throws DAOException {
         Connection connection = daoFactory.getConnection();
         ApplicationDAO applicationDAO = new PostgreApplicationDAO(connection);
         Application application = new Application();
@@ -56,7 +65,7 @@ public class CESServiceImpl implements CESService {
             applicationDAO.create(application);
             LOGGER.info("Successfully enrolled to current CES");
         } catch (DAOException e) {
-            LOGGER.warn("Can't enroll to current CES");
+            LOGGER.warn("Can't enrollAsStudent to current CES");
             throw new DAOException(e);
         } finally {
             daoFactory.putConnection(connection);
@@ -68,6 +77,57 @@ public class CESServiceImpl implements CESService {
         scheduler.setPoolSize(POOL_SIZE);//
         scheduler.initialize();//
     }
+
+    @Override
+    public void enrollAsInterviewer(Integer userId, Integer cesId) throws DAOException {
+        Connection connection = daoFactory.getConnection();
+        CESDAO cesdao = new PostgreCESDAO(connection);
+        try {
+            cesdao.addInterviewerForCurrentCES(cesId, userId);
+            LOGGER.info("Successfully enrolled to current CES");
+        } catch (DAOException e) {
+            LOGGER.warn("Can't enrollAsStudent to current CES");
+            throw new DAOException(e);
+        } finally {
+            daoFactory.putConnection(connection);
+        }
+    }
+
+    @Override
+    public List<Date> planSchedule(Mail interviewerMail, Map<String, String> interviewerParameters,
+                                   Mail studentMail, Map<String, String> studentParameters) throws DAOException {
+        Connection connection = daoFactory.getConnection();
+        UserDAO userDAO = new PostgreUserDAO(connection);
+        CESDAO cesDAO = new PostgreCESDAO(connection);
+        //get parameters
+        CES ces = cesDAO.getCurrentCES();
+        Date startDate = ces.getStartInterviewingDate();
+        int hoursPerDay = ces.getInterviewTimeForDay();
+        int timePerStudent = ces.getInterviewTimeForPerson();
+
+
+        //Changed By Pasha
+        Set<User> interviewersList = userDAO.getInterviewersForCurrentCES();
+        Set<User> studentsList = userDAO.getStudentsForCurrentCES();
+
+        //calculate end date
+        int studentsAmount = studentsList.size();
+        int interviewersAmount = interviewersList.size();
+        Date endDate = new Date(startDate.getTime() + studentsAmount / (MINUTES_PER_HOUR / timePerStudent * hoursPerDay)
+                / interviewersAmount * INTERVIEWERS_PER_STUDENT);
+        ces.setEndInterviewingDate(endDate);
+
+        //make interview dates list
+        List<Date> interviewDates = new ArrayList<>();
+        interviewDates.add(startDate);
+        long currentTime = startDate.getTime();
+        while (currentTime < endDate.getTime()) {
+            currentTime += MILLIS_PER_DAY;
+            interviewDates.add(startDate);
+        }
+        return interviewDates;
+    }
+}
 
 
     @Override

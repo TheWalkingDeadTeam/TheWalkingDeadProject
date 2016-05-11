@@ -4,10 +4,8 @@ import org.apache.log4j.Logger;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import ua.nc.entity.Application;
-import ua.nc.entity.Feedback;
-import ua.nc.entity.Interviewee;
-import ua.nc.entity.User;
+import ua.nc.dao.exception.DAOException;
+import ua.nc.entity.*;
 import ua.nc.service.*;
 import ua.nc.service.user.UserService;
 import ua.nc.service.user.UserServiceImpl;
@@ -33,6 +31,27 @@ public class InterviewerController {
     private UserService userService = new UserServiceImpl();
     private FeedbackService feedbackService = new FeedbackServiceImpl();
     private IntervieweeService intervieweeService = new IntervieweeServiceImpl();
+    private CESService cesService = new CESServiceImpl();
+
+    @RequestMapping(value = "/enroll", method = RequestMethod.GET)
+    public @ResponseBody String enroll() {
+        CES currentCES = cesService.getCurrentCES();
+        if (currentCES != null) {
+            try {
+                cesService.enrollAsInterviewer(((UserDetailsImpl) SecurityContextHolder
+                        .getContext()
+                        .getAuthentication()
+                        .getPrincipal()).getId(), currentCES.getId());
+                return "You has been successfully enrolled to current CES as interviewer";
+            } catch (DAOException e) {
+                LOGGER.info("");
+                return "Can't enrollAsStudent to current CES as interviewer.";
+            }
+        } else {
+            LOGGER.info("Can't enrollAsStudent to current CES. Current CES session is not exist");
+            return  "Can't enrollAsStudent to current CES. Current CES session is not exist";
+        }
+    }
 
     @RequestMapping(value = "/feedback", method = RequestMethod.GET)
     public String feedback(){
@@ -74,7 +93,7 @@ public class InterviewerController {
         if (feedback == null) {
             response.setHeader("restricted", "false");
             try {
-                //костыль со стековерфлоу, не обращайте внимания
+                //пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
                 Writer writer = response.getWriter();
                 writer.write("null");
                 writer.close();
@@ -87,7 +106,7 @@ public class InterviewerController {
             response.setHeader("restricted", "true");
         }
         try {
-            //костыль со стековерфлоу, не обращайте внимания
+            //пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
             Writer writer = response.getWriter();
             writer.write("null");
             writer.close();

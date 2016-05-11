@@ -2,6 +2,7 @@ package ua.nc.dao;
 
 import ua.nc.dao.exception.DAOException;
 import ua.nc.entity.Application;
+import ua.nc.entity.User;
 
 import java.util.List;
 
@@ -12,4 +13,6 @@ public interface ApplicationDAO extends GenericDAO<Application, Integer> {
     Application getApplicationByUserCES(Integer user_id, Integer ces_id) throws DAOException;
 
     List<Application> getAllCESApplications(Integer ces_id) throws DAOException;
+
+    List<User> getStudentsForCurrentCES() throws DAOException;
 }

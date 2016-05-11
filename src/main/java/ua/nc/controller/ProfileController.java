@@ -12,7 +12,6 @@ import ua.nc.validator.ProfileValidator;
 import ua.nc.validator.ValidationError;
 import ua.nc.validator.Validator;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -80,17 +79,17 @@ public class ProfileController {
         CES currentCES = cesService.getCurrentCES();
         if (currentCES != null) {
             try {
-                cesService.enroll(((UserDetailsImpl) SecurityContextHolder
+                cesService.enrollAsStudent(((UserDetailsImpl) SecurityContextHolder
                         .getContext()
                         .getAuthentication()
                         .getPrincipal()).getId(), currentCES.getId());
             } catch (DAOException e) {
-                errors.add(new ValidationError("enroll", "You have already enrolled to current CES"));
+                errors.add(new ValidationError("enrollAsStudent", "You have already enrolled to current CES"));
                 LOGGER.info("You have already enrolled to current CES");
             }
         } else {
-            errors.add(new ValidationError("enroll", "Can't enroll to current CES. Current CES session is not exist"));
-            LOGGER.info("Can't enroll to current CES. Current CES session is not exist");
+            errors.add(new ValidationError("enrollAsStudent", "Can't enrollAsStudent to current CES. Current CES session is not exist"));
+            LOGGER.info("Can't enrollAsStudent to current CES. Current CES session is not exist");
         }
         return errors;
     }

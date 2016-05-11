@@ -62,7 +62,7 @@
                         You are able to create new Schedule
                     </div>
                     <div class="mdl-card__actions mdl-card--border">
-                        <a href="#" class="mdl-button mdl-js-button mdl-js-ripple-effect">Create New Schedule</a>
+                        <a href="/admin/scheduler" class="mdl-button mdl-js-button mdl-js-ripple-effect">Create New Schedule</a>
                     </div>
                 </div>
                 <div class="demo-separator mdl-cell--1-col"></div>

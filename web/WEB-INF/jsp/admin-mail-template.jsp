@@ -36,11 +36,15 @@
     <link rel="canonical" href="http://www.example.com/">
     -->
 
+
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.cyan-light_blue.min.css">
+
     <link rel="stylesheet" href="/resources/css/styles.css">
+    <link href="/resources/css/pnotify.custom.min.css" media="all" rel="stylesheet" type="text/css"/>
+    <link href="/resources/css/custom.css" rel="stylesheet" type="text/css"/>
     <style>
         #view-source {
             position: fixed;
@@ -52,15 +56,37 @@
             z-index: 900;
         }
     </style>
+
+    <script src="http://code.jquery.com/jquery-1.9.0.js"></script>
+    <script type="text/javascript" src="/resources/js/pnotify.custom.min.js"></script>
 </head>
 <body>
 <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
     <jsp:include page="admin-header.jsp"/>
     <main class="mdl-layout__content mdl-color--grey-100">
         <div class="mdl-grid demo-content">
+            <script>
+
+                PNotify.prototype.options.styling = "bootstrap3";
+                        $(function(){
+                            new PNotify({
+                                title: 'Before filling templates!!!',
+                                text: 'Place \'$\' before $location, $contact, $coursetype and $place. The ' +
+                                'system will automatically replace $location with corresponding location parameter, ' +
+                                '$contact with contact , $coursetype with coursetype and $place with place. All this ' +
+                                'parameters will be taken from db or from scheduling form.',
+                                hide: false,
+                                addclass: 'custom',
+                                buttons: {
+                                    sticker: false
+                                }
+                            });
+                        });
+            </script>
 
 
-            <jsp:include page="test.jsp"/>
+
+            <jsp:include page="mail.jsp"/>
 
 
         </div>
@@ -75,7 +101,7 @@
         </mask>
         <g id="piechart">
             <circle cx=0.5 cy=0.5 r=0.5/>
-            <path d="M 0.5 0.5 0.5 0 A 0.5 0.5 0 0 1 0.95 0.28 z" stroke="none" fill="rgba(255, 255, 255, 0.75)"/>
+                <path d="M 0.5 0.5 0.5 0 A 0.5 0.5 0 0 1 0.95 0.28 z" stroke="none" fill="rgba(255, 255, 255, 0.75)"/>
         </g>
     </defs>
 </svg>
@@ -134,4 +160,6 @@
 <script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
 </body>
 <script src="/resources/js/logout.js"></script>
+<script src="http://code.jquery.com/jquery-1.9.0.js"></script>
+<script type="text/javascript" src="/resources/js/pnotify.custom.min.js"></script>
 </html>
