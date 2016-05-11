@@ -206,4 +206,9 @@ public class LoginController implements HandlerExceptionResolver {
         }
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/getPhoto/{id}")
+    public byte[] getPhoto(@PathVariable("id") Integer id) {
+        return photoService.getPhotoById(id);
+    }
 }

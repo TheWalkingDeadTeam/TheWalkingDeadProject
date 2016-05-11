@@ -85,10 +85,15 @@ public class InterviewerController {
         User user = userService.getUser(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal()).getUsername());
         Feedback feedback = null;
+        Integer feedbackId = null;
         if(request.isUserInRole("ROLE_DEV")){
-            feedback = feedbackService.getFeedback(interviewee.getDevFeedbackID());
+            feedbackId = interviewee.getDevFeedbackID();
+
         } else {
-            feedback = feedbackService.getFeedback(interviewee.getHrFeedbackID());
+            feedbackId = interviewee.getHrFeedbackID();
+        }
+        if (feedbackId != null) {
+            feedback = feedbackService.getFeedback(feedbackId);
         }
         if (feedback == null) {
             response.setHeader("restricted", "false");

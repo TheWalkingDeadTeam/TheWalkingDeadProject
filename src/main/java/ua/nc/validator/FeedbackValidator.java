@@ -13,7 +13,7 @@ public class FeedbackValidator implements Validator{
     public Set<ValidationError> validate(Object obj) {
         Set<ValidationError> errors = new HashSet<>();
         Feedback feedback = (Feedback) obj;
-        if(feedback.getScore()<0 || feedback.getScore()>100){
+        if(feedback.getScore() < 1 || feedback.getScore()>100){
             ValidationError error = new ValidationError("feedback","Score must be 1-100");
             errors.add(error);
         }

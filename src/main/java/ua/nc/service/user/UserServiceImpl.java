@@ -45,6 +45,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getUser(int id) {
+        Connection connection = daoFactory.getConnection();
+        UserDAO userDAO = daoFactory.getUserDAO(connection);
+        RoleDAO roleDAO = daoFactory.getRoleDAO(connection);
+        User user = null;
+        try {
+            user = userDAO.read(id);
+            user.setRoles(roleDAO.findByEmail(user.getEmail()));
+        } catch (DAOException e) {
+            LOGGER.info("User not found");
+        } finally {
+            daoFactory.putConnection(connection);
+        }
+        return user;
+    }
+
+    @Override
     public User createUser(User user) {
         Connection connection = daoFactory.getConnection();
         UserDAO userDAO = daoFactory.getUserDAO(connection);
