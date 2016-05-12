@@ -10,7 +10,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -24,7 +23,7 @@ public class PostgreApplicationTableDAO {
         this.connection = connection;
     }
 
-    private static final String getFieldIdsQuery = (
+    private static final String GET_FIELD_IDS_QUERY = (
             "SELECT field.field_id, field.name, field_type.name AS type FROM field " +
                     "JOIN ces_field ON field.field_id = ces_field.field_id " +
                     "JOIN field_type ON field.field_type_id = field_type.field_type_id " +
@@ -34,11 +33,31 @@ public class PostgreApplicationTableDAO {
                     "AND field_type.name != 'textarea'"
     );
 
+    private static final String BASE_QUERY = (
+            "SELECT " +
+                    "system_user.system_user_id, " +
+                    "application.rejected, " +
+                    "system_user.name, " +
+                    "system_user.surname as field_0, {0} " +
+                    "FROM public.application " +
+                    "JOIN public.system_user ON application.system_user_id = system_user.system_user_id " +
+                    "JOIN public.course_enrollment_session ON course_enrollment_session.ces_id = application.ces_id " +
+                    "JOIN public.ces_field ON ces_field.ces_id = course_enrollment_session.ces_id " +
+                    "JOIN public.field ON field.field_id = ces_field.field_id " +
+                    "JOIN public.field_type ON field.field_type_id = field_type.field_type_id " +
+                    "JOIN public.field_value ON field_value.field_id = field.field_id " +
+                    "LEFT JOIN public.list_value ON field_value.list_value_id = list_value.list_value_id " +
+                    "WHERE course_enrollment_session.ces_id = ? AND system_user.surname LIKE ? OR system_user.name LIKE ? " +
+                    "GROUP BY system_user.system_user_id, application.rejected " +
+                    "ORDER BY field_{1} {2} " +
+                    "LIMIT ? OFFSET ?"
+    );
+
     public List<FieldData> getFieldIds(Integer cesId) throws DAOException {
-        try (PreparedStatement statement = this.connection.prepareStatement(getFieldIdsQuery)) {
+        try (PreparedStatement statement = this.connection.prepareStatement(GET_FIELD_IDS_QUERY)) {
             statement.setInt(1, cesId);
             ResultSet rs = statement.executeQuery();
-            List<FieldData> fieldData = new ArrayList<>();
+            List<FieldData> fieldData = new LinkedList<>();
             while (rs.next()){
                 FieldData field = new FieldData();
                 field.id = rs.getInt("field_id");
@@ -76,49 +95,44 @@ public class PostgreApplicationTableDAO {
         return MessageFormat.format(template, fieldId, pattern);
     }
 
-    private static final String baseQuery = (
-            "SELECT " +
-                    "system_user.system_user_id, " +
-                    "system_user.name, " +
-                    "system_user.surname, {0} " +
-                    "FROM public.application " +
-                    "JOIN public.system_user ON application.system_user_id = system_user.system_user_id " +
-                    "JOIN public.course_enrollment_session ON course_enrollment_session.ces_id = application.ces_id " +
-                    "JOIN public.ces_field ON ces_field.ces_id = course_enrollment_session.ces_id " +
-                    "JOIN public.field ON field.field_id = ces_field.field_id " +
-                    "JOIN public.field_type ON field.field_type_id = field_type.field_type_id " +
-                    "JOIN public.field_value ON field_value.field_id = field.field_id " +
-                    "LEFT JOIN public.list_value ON field_value.list_value_id = list_value.list_value_id " +
-                    "WHERE course_enrollment_session.ces_id = ? " +
-                    "GROUP BY system_user.system_user_id "
-    );
 
-    private static final String orderByQuery = " ORDER BY field_{0} ";
-    private static final String limitOffsetQuery = " LIMIT {0} OFFSET {1} ";
+    public StudentData getApplicationsTable(Integer cesId) throws DAOException {
+        return getApplications(cesId, null, null, 0, "", true);
+    }
 
     public StudentData getApplicationsTable(Integer cesId, Integer limit, Integer offset) throws DAOException {
-        List<FieldData> fieldData = getFieldIds(cesId);
-        String baseQuery = buildBaseFullQuery(fieldData);
-        String fullQuery = baseQuery + MessageFormat.format(limitOffsetQuery, limit, offset);
-        return getApplications(cesId, fullQuery, fieldData);
+        return getApplications(cesId, limit, offset, 0, "", true);
     }
 
     public StudentData getApplicationsTable(Integer cesId, Integer limit, Integer offset, Integer orderBy) throws DAOException {
-        List<FieldData> fieldData = getFieldIds(cesId);
-        String baseQuery = buildBaseFullQuery(fieldData);
-        String almostFullQuery = baseQuery + MessageFormat.format(orderByQuery, orderBy);
-        String fullQuery = almostFullQuery + MessageFormat.format(limitOffsetQuery, limit, offset);
-        return getApplications(cesId, fullQuery, fieldData);
+        return getApplications(cesId, limit, offset, orderBy, "", true);
     }
 
-    public StudentData getApplicationsTable(Integer cesId) throws DAOException {
-        List<FieldData> fieldData = getFieldIds(cesId);
-        return getApplications(cesId, buildBaseFullQuery(fieldData), fieldData);
+    public StudentData getApplicationsTable(Integer cesId, Integer limit, Integer offset, Integer orderBy, Boolean asc) throws DAOException {
+        return getApplications(cesId, limit, offset, orderBy, "", asc);
     }
 
-    private StudentData getApplications(Integer cesId, String fullQuery, List<FieldData> fieldData) throws DAOException {
-        try (PreparedStatement statement = this.connection.prepareStatement(fullQuery)) {
+    public StudentData getApplicationsTable(Integer cesId, Integer limit, Integer offset, String pattern) throws DAOException {
+        return getApplications(cesId, limit, offset, 0, pattern, true);
+    }
+
+    public StudentData getApplicationsTable(Integer cesId, Integer limit, Integer offset, Integer orderBy, String pattern) throws DAOException {
+        return getApplications(cesId, limit, offset, orderBy, pattern, true);
+    }
+
+    public StudentData getApplicationsTable(Integer cesId, Integer limit, Integer offset, Integer orderBy, String pattern, Boolean asc) throws DAOException {
+        return getApplications(cesId, limit, offset, orderBy, pattern, asc);
+    }
+
+    private StudentData getApplications(Integer cesId, Integer limit, Integer offset, Integer orderBy, String pattern, Boolean asc) throws DAOException {
+        List<FieldData> fieldData = getFieldIds(cesId);
+        String baseQuery = buildBaseFullQuery(fieldData, orderBy, asc);
+        try (PreparedStatement statement = this.connection.prepareStatement(baseQuery)) {
             statement.setInt(1, cesId);
+            statement.setString(2, "%" + pattern + "%");
+            statement.setString(3, "%" + pattern + "%");
+            statement.setObject(4, limit);
+            statement.setObject(5, offset);
             ResultSet rs = statement.executeQuery();
             return parseResultSet(rs, fieldData);
         } catch (Exception e) {
@@ -126,7 +140,7 @@ public class PostgreApplicationTableDAO {
         }
     }
 
-    private String buildBaseFullQuery(List<FieldData> fieldData) throws DAOException {
+    private String buildBaseFullQuery(List<FieldData> fieldData, Integer fieldId, Boolean asc) throws DAOException {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < fieldData.size() - 1; i++) {
             builder.append(subQuery(fieldData.get(i).id, fieldData.get(i).type));
@@ -134,7 +148,8 @@ public class PostgreApplicationTableDAO {
         }
         builder.append(subQuery(fieldData.get(fieldData.size() - 1).id, fieldData.get(fieldData.size() - 1).type));
         String sub = builder.toString();
-        return MessageFormat.format(baseQuery, sub);
+        String order = asc ? "ASC" : "DESC";
+        return MessageFormat.format(BASE_QUERY, sub, fieldId, order);
     }
 
     private StudentData parseResultSet(ResultSet rs, List<FieldData> fieldData) throws SQLException {
@@ -144,7 +159,8 @@ public class PostgreApplicationTableDAO {
         while (rs.next()){
             RowValue rowValue = new RowValue();
             rowValue.userId = rs.getInt("system_user_id");
-            rowValue.name = rs.getString("name") + " " + rs.getString("surname");
+            rowValue.rejected = rs.getBoolean("rejected");
+            rowValue.name = rs.getString("field_0")+ " " + rs.getString("name");
             for (FieldData i : fieldData) {
                 rowValue.fields.put(i.id, getField(rs, i));
             }
