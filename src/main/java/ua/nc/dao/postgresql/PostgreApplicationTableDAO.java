@@ -47,7 +47,7 @@ public class PostgreApplicationTableDAO {
                     "JOIN public.field_type ON field.field_type_id = field_type.field_type_id " +
                     "JOIN public.field_value ON field_value.field_id = field.field_id " +
                     "LEFT JOIN public.list_value ON field_value.list_value_id = list_value.list_value_id " +
-                    "WHERE course_enrollment_session.ces_id = ? AND system_user.surname LIKE ? OR system_user.name LIKE ? " +
+                    "WHERE course_enrollment_session.ces_id = ? AND (system_user.surname LIKE ? OR system_user.name LIKE ? )" +
                     "GROUP BY system_user.system_user_id, application.rejected " +
                     "ORDER BY field_{1} {2} " +
                     "LIMIT ? OFFSET ?"
