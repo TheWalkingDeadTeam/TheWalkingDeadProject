@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.entity.CES;
 import ua.nc.entity.profile.Profile;
+import ua.nc.entity.profile.ProfileField;
 import ua.nc.service.*;
 import ua.nc.validator.ProfileValidator;
 import ua.nc.validator.ValidationError;

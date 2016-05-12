@@ -43,7 +43,7 @@
                     <li><a href="/information">Information</a></li>
                     <li><a href="/contacts">Contacts</a></li>
                     <sec:authorize access="hasRole('ROLE_STUDENT')">
-                        <li><a href="/profile/{id}">Profile</a></li>
+                        <li><a href="/account/profile">Profile</a></li>
                     </sec:authorize>
                     <li><a href="/logout">Logout</a></li>
                 </ul>
