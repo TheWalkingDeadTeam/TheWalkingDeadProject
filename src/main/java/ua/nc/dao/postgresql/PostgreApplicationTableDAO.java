@@ -116,6 +116,10 @@ public class PostgreApplicationTableDAO {
         return getApplications(cesId, limit, offset, 0, pattern, true);
     }
 
+    public StudentData getApplicationsTable(Integer cesId, Integer limit, Integer offset, Integer orderBy, String pattern) throws DAOException {
+        return getApplications(cesId, limit, offset, orderBy, pattern, true);
+    }
+
     public StudentData getApplicationsTable(Integer cesId, Integer limit, Integer offset, Integer orderBy, String pattern, Boolean asc) throws DAOException {
         return getApplications(cesId, limit, offset, orderBy, pattern, asc);
     }
