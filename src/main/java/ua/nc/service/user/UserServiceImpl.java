@@ -1,5 +1,6 @@
 package ua.nc.service.user;
 
+
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -110,7 +111,7 @@ public class UserServiceImpl implements UserService {
         try {
             user.setPassword(encoder.encode(testPassword));
             userDAO.updateUser(user);
-            mailService.sendMail(user.getEmail(), "Password recovery", "Welcome " + user.getName() + " ! \n NetCracker[TheWalkingDeadTeam] " + user.getPassword());
+            mailService.sendMail(user.getEmail(), "Password recovery", "Welcome " + user.getName() + " ! \n NetCracker[TheWalkingDeadTeam] \n New password \n" + testPassword);
             return user;
         } catch (DAOException e) {
             LOGGER.info("Password recovery failed for user " + user.getEmail());
