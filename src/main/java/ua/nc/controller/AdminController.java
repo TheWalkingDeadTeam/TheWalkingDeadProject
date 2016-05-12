@@ -90,7 +90,7 @@ public class AdminController {
     public
     @ResponseBody
     String studentsSearch() {
-        return "{\"size\":2000}";
+        return "{\"result\": \"in progress\"}";
     }
 
 

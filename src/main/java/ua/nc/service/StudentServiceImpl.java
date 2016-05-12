@@ -78,7 +78,6 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public void activateStudents(List<Integer> studentsId) {
         // StudentListDAO
-        //метод, который активирует список студентов
     }
 
     /**
@@ -87,7 +86,6 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public void deactivateStudents(List<Integer> studentsId) {
         // StudentListDAO
-        //метод, которые деактивирует список студентов
     }
 
     /**
