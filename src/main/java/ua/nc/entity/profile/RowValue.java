@@ -9,6 +9,7 @@ import java.util.Map;
  */
 public class RowValue {
     public int userId;
+    public Boolean rejected;
     public String name;
     public Map<Integer, Object> fields = new LinkedHashMap<>();
 }
