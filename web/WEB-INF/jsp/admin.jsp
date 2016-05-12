@@ -78,7 +78,7 @@
                         You are able to edit form template
                     </div>
                     <div class="mdl-card__actions mdl-card--border">
-                        <a href="#" class="mdl-button mdl-js-button mdl-js-ripple-effect">Edit Form Template</a>
+                        <a href="/admin/edit-form" class="mdl-button mdl-js-button mdl-js-ripple-effect">Edit Form Template</a>
                     </div>
                 </div>
                 <div class="demo-separator mdl-cell--1-col"></div>
