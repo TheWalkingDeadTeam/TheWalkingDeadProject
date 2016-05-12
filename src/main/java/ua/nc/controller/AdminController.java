@@ -39,6 +39,7 @@ public class AdminController {
     private static final Logger LOGGER = Logger.getLogger(AdminController.class);
     private final UserService userService = new UserServiceImpl();
     private final CESService cesService = new CESServiceImpl();
+    private final StudentService studentService = new StudentServiceImpl();
 
     @RequestMapping(method = RequestMethod.GET)
     public String login() {
@@ -90,43 +91,6 @@ public class AdminController {
     @RequestMapping(value = {"/students/size"}, method = RequestMethod.GET, produces = "application/json")
     public
     @ResponseBody
-    String studentsGetJSON() {
-        return "[{\n" +
-                "    \"id\": 1,\n" +
-                "    \"name\": \"Abc Ogurchik\",\n" +
-                "    \"isActive\": \"1\",\n" +
-                "    \"university\": \"KPI\",\n" +
-                "    \"devMark\": 10,\n" +
-                "    \"hrMark\": 5,\n" +
-                "    \"color\": \"blue\"\n" +
-                "  },\n" +
-                "  {\n" +
-                "    \"id\": 7,\n" +
-                "    \"name\": \"Bcd Ananas\",\n" +
-                "    \"isActive\": \"0\",\n" +
-                "    \"university\": \"NAU\",\n" +
-                "    \"devMark\": 15,\n" +
-                "    \"hrMark\": 10,\n" +
-                "    \"color\": \"yellow\"\n" +
-                "  },\n" +
-                "  {\n" +
-                "    \"id\": 8,\n" +
-                "    \"name\": \"TEST Apelsin\",\n" +
-                "    \"isActive\": \"1\",\n" +
-                "    \"university\": \"NAU\",\n" +
-                "    \"devMark\": 15,\n" +
-                "    \"hrMark\": 10,\n" +
-                "    \"color\": \"yellow\"\n" +
-                "  },\n" +
-                "  {\n" +
-                "    \"id\": 2,\n" +
-                "    \"name\": \"Bcd Kokos\",\n" +
-                "    \"isActive\": \"1\",\n" +
-                "    \"university\": \"KPI\",\n" +
-                "    \"devMark\": 10,\n" +
-                "    \"hrMark\": 85,\n" +
-                "    \"color\": \"green\"\n" +
-                "  }]";
     String studentsGetJSONSize() {
         return "{\"size\":2000}";
     }

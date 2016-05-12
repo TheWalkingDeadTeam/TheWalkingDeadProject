@@ -28,7 +28,7 @@ public class ExportXLS implements Export {
         sheet.setFitToPage(true);
         sheet.setHorizontallyCenter(true);
         try {
-        InputStream inputStream = new FileInputStream("E:\\TheWalkingDeadProject\\web\\resources\\images\\logo.png");
+        InputStream inputStream = new FileInputStream("D:\\TheWalkingDeadProject\\web\\resources\\images\\logo.png");
         //Get the contents of an InputStream as a byte[].
         byte[] bytes = IOUtils.toByteArray(inputStream);
         //Adds a picture to the workbook
@@ -91,7 +91,7 @@ public class ExportXLS implements Export {
         // Write the output to a file
         String file = "report_" + report.getName() + ".xls";
         FileOutputStream out = null;
-            out = new FileOutputStream("E:\\TheWalkingDeadProject\\" +file);
+            out = new FileOutputStream("D:\\TheWalkingDeadProject\\" +file);
             wb.write(out);
             out.close();
         } catch (FileNotFoundException e) {

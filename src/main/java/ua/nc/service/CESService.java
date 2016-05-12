@@ -14,8 +14,6 @@ import java.util.Map;
 public interface CESService {
     CES getCurrentCES();
 
-    void enroll(Integer userId, Integer currentCESId) throws DAOException;
-
     CES getCES() throws DAOException;
 
     void setCES(CES ces) throws DAOException;

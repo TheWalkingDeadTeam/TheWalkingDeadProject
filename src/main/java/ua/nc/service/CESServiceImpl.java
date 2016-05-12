@@ -4,8 +4,8 @@ import org.apache.log4j.Logger;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import ua.nc.dao.ApplicationDAO;
 import ua.nc.dao.CESDAO;
-import ua.nc.dao.UserDAO;
 import ua.nc.dao.CESStatusDAO;
+import ua.nc.dao.UserDAO;
 import ua.nc.dao.enums.DataBaseType;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.dao.factory.DAOFactory;
@@ -14,16 +14,16 @@ import ua.nc.dao.postgresql.PostgreCESDAO;
 import ua.nc.dao.postgresql.PostgreUserDAO;
 import ua.nc.entity.Application;
 import ua.nc.entity.CES;
-import ua.nc.entity.Mail;
 import ua.nc.entity.User;
 
-import java.util.*;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Pavel on 06.05.2016.
@@ -44,10 +44,10 @@ public class CESServiceImpl implements CESService {
         Connection connection = daoFactory.getConnection();
         CESDAO cesdao = new PostgreCESDAO(connection);
         List<CES> allCES = new ArrayList<>();
-        try{
+        try {
             allCES = cesdao.getAll();
             LOGGER.info("Successfully get all CES history");
-        }  catch (DAOException e){
+        } catch (DAOException e) {
             LOGGER.warn("Can't get all CES history", e.getCause());
         } finally {
             daoFactory.putConnection(connection);
@@ -71,6 +71,7 @@ public class CESServiceImpl implements CESService {
         }
         return ces;
     }
+
 
     @Override
     public void enrollAsStudent(Integer userId, Integer currentCESId) throws DAOException {
@@ -144,18 +145,17 @@ public class CESServiceImpl implements CESService {
         }
         return interviewDates;
     }
-}
 
 
     @Override
     public CES getCES() throws DAOException {
         Connection connection = daoFactory.getConnection();
         CESDAO cesDAO = daoFactory.getCESDAO(connection);
-        if (cesDAO.getCurrentCES() != null){
+        if (cesDAO.getCurrentCES() != null) {
             return cesDAO.getCurrentCES();
-        } else if(cesDAO.getPendingCES() != null){
+        } else if (cesDAO.getPendingCES() != null) {
             return cesDAO.getPendingCES();
-        } else if (cesDAO.getCurrentInterviewBegunCES() != null){
+        } else if (cesDAO.getCurrentInterviewBegunCES() != null) {
             return cesDAO.getCurrentInterviewBegunCES();
         }
         return null;
@@ -167,7 +167,7 @@ public class CESServiceImpl implements CESService {
         CESDAO cesDAO = daoFactory.getCESDAO(connection);
         CES cesFromDb;
         try {
-            if (cesDAO.getCurrentInterviewBegunCES() != null){
+            if (cesDAO.getCurrentInterviewBegunCES() != null) {
                 cesFromDb = cesDAO.getCurrentCES();
                 cesFromDb.setQuota(ces.getQuota());
                 cesDAO.update(cesFromDb);
@@ -218,7 +218,6 @@ public class CESServiceImpl implements CESService {
     }
 
 
-
     private void checkInterviewDate() throws DAOException {
         CES ces = getCES();
         if ((ces.getEndInterviewingDate() != null) && (ces.getStartInterviewingDate() != null)) {
@@ -255,6 +254,7 @@ public class CESServiceImpl implements CESService {
         }, new Date(expiredDate));
 
     }
+
     private void startSessionDate() throws DAOException {
         String startDate = getCES().getStartRegistrationDate().toString() + " 00:00:00";
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
@@ -282,6 +282,7 @@ public class CESServiceImpl implements CESService {
             }
         }, new Date(startDate));
     }
+
     private void switchToInterviewBegan() throws DAOException {
         String startInterviewDate = getCES().getStartInterviewingDate().toString() + " 00:00:00";
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");

@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <!DOCTYPE html>
-<html ng-app="reporter">
+<html>
 
 <head>
     <link data-require="bootstrap-css@3.2.0" data-semver="3.2.0" rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
@@ -24,13 +24,13 @@
 --%>
 </head>
 
-<body ng-controller="ReportController">
-<table >
+<body ng-app="reporter">
+<table ng-controller="ReportController as rc">
     HELLOU FROME INDIA
     <thead>
 
-    <tr ng-repeat="d in ReportController.reports">
-        <th>{{d.name}}</th>
+    <tr ng-repeat="r in rc.reports">
+        <th>{{r.name}}</th>
     </tr>
     </thead>
     <tbody>

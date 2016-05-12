@@ -153,9 +153,6 @@
         <div id="logoDiv" class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
             <div id="thisDiv">
                 <img id="mainLogo" class='img-responsive' src='/resources/images/main.jpg'>
-                <iframe id="mainLolo" width="640" height="360"
-                        src="https://www.youtube.com/embed/BcmUOmvl1N8?rel=0&amp;controls=0&amp;showinfo=0"
-                        frameborder="0" allowfullscreen></iframe>
             </div>
         </div>
     </div>
