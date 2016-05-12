@@ -105,7 +105,23 @@ public class CESServiceImpl implements CESService {
             cesdao.addInterviewerForCurrentCES(cesId, userId);
             LOGGER.info("Successfully enrolled to current CES");
         } catch (DAOException e) {
-            LOGGER.warn("Can't enrollAsStudent to current CES");
+            LOGGER.warn("Can't enroll as interviewer to current CES");
+            throw new DAOException(e);
+        } finally {
+            daoFactory.putConnection(connection);
+        }
+    }
+
+    @Override
+    public void removeInterviewer(Integer interviewerId, Integer cesId) throws DAOException {
+        Connection connection = daoFactory.getConnection();
+        CESDAO cesdao = new PostgreCESDAO(connection);
+        try {
+            cesdao.removeInterviewerForCurrentCES(cesId,interviewerId);
+
+            LOGGER.info("Successfully remove interviewer from current CES");
+        } catch (DAOException e) {
+            LOGGER.warn("Can't remove interviewer from current CES");
             throw new DAOException(e);
         } finally {
             daoFactory.putConnection(connection);

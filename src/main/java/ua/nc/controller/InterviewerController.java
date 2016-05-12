@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.Writer;
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
@@ -45,11 +44,11 @@ public class InterviewerController {
                 return "You has been successfully enrolled to current CES as interviewer";
             } catch (DAOException e) {
                 LOGGER.info("");
-                return "Can't enrollAsStudent to current CES as interviewer.";
+                return "Can't enroll to current CES as interviewer.";
             }
         } else {
-            LOGGER.info("Can't enrollAsStudent to current CES. Current CES session is not exist");
-            return  "Can't enrollAsStudent to current CES. Current CES session is not exist";
+            LOGGER.info("Can't enroll to current CES. Current CES session is not exist");
+            return  "Can't enroll to current CES. Current CES session is not exist";
         }
     }
 

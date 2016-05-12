@@ -2,11 +2,9 @@ package ua.nc.service;
 
 import ua.nc.dao.exception.DAOException;
 import ua.nc.entity.CES;
-import ua.nc.entity.Mail;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Pavel on 03.05.2016.
@@ -22,6 +20,7 @@ public interface CESService {
     void enrollAsStudent(Integer userId, Integer cesId) throws DAOException;
 
     void enrollAsInterviewer(Integer userId, Integer cesId) throws DAOException;
+    void removeInterviewer(Integer interviewerId, Integer cesId)throws DAOException;
     List<CES> getAllCES();
 
     /**
