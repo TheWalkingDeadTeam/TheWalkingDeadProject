@@ -1,6 +1,5 @@
 package ua.nc.controller;
 
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -11,10 +10,6 @@ import ua.nc.entity.CES;
 import ua.nc.entity.Interviewer;
 import ua.nc.entity.StudentStatus;
 import ua.nc.entity.User;
-import ua.nc.service.UserDetailsImpl;
-import ua.nc.service.CESService;
-import ua.nc.service.CESServiceImpl;
-import ua.nc.service.UserDetailsImpl;
 import ua.nc.entity.profile.StudentData;
 import ua.nc.service.*;
 import ua.nc.service.user.UserService;
@@ -23,6 +18,8 @@ import ua.nc.validator.RegistrationValidator;
 import ua.nc.validator.ValidationError;
 import ua.nc.validator.Validator;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -75,6 +72,22 @@ public class AdminController {
     @RequestMapping(value = {"/create"})
     public String createUser() {
         return "admin-create-user";
+    }
+
+    @RequestMapping(value = {"/remove"},method = RequestMethod.POST)
+    public void removeInterviewers(@RequestBody ArrayList<Integer> interviewersId){
+            CESService cesService = new  CESServiceImpl();
+            int cesId = cesService.getCurrentCES().getId();
+            Iterator<Integer> iterator = interviewersId.iterator();
+            while (iterator.hasNext()){
+                try {
+                    cesService.removeInterviewer( iterator.next(),cesId);
+                } catch (DAOException e) {
+                    LOGGER.error("Can't Sign out interviewer");
+                    LOGGER.error(e);
+                }
+            }
+
     }
 
     /**
