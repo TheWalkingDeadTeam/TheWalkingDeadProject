@@ -59,8 +59,16 @@ public class InterviewerController {
     }
 
     @RequestMapping(value = "/feedback/{id}", method = RequestMethod.GET, produces = "application/json")
-    public Application specificFeedback(@PathVariable("id") Integer id){
-        return applicationService.getApplicationByUserForCurrentCES(id);
+    public Application specificFeedback(@PathVariable("id") Integer id, HttpServletResponse response){
+        Application application = applicationService.getApplicationByUserForCurrentCES(id);
+        if (application == null){
+            try {
+                Writer writer = response.getWriter();
+                writer.write("null");
+                writer.close();
+            } catch (IOException ex){}
+        }
+        return application;
     }
 
     @ResponseBody
@@ -81,7 +89,18 @@ public class InterviewerController {
     @RequestMapping(value = "getFeedback/{id}", method = RequestMethod.GET, produces = "application/json")
     public Feedback getFeedback(@PathVariable("id") Integer id, HttpServletRequest request, HttpServletResponse response){
         Application application = applicationService.getApplicationByUserForCurrentCES(id);
+        if(application == null){
+            response.setHeader("interviewee", "null");
+            fillNullResponse(response);
+            return null;
+        }
         Interviewee interviewee = intervieweeService.getInterviewee(application.getId());
+        if (interviewee == null){
+            response.setHeader("interviewee", "application");
+            fillNullResponse(response);
+            return null;
+        }
+        response.setHeader("interviewee", "interviewee");
         User user = userService.getUser(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal()).getUsername());
         Feedback feedback = null;
@@ -97,12 +116,7 @@ public class InterviewerController {
         }
         if (feedback == null) {
             response.setHeader("restricted", "false");
-            try {
-                //������� �� ������������, �� ��������� ��������
-                Writer writer = response.getWriter();
-                writer.write("null");
-                writer.close();
-            } catch (IOException ex){}
+            fillNullResponse(response);
             return null;
         } else if (feedback.getInterviewerID() == user.getId()) {
             response.setHeader("restricted", "false");
@@ -110,12 +124,15 @@ public class InterviewerController {
         } else {
             response.setHeader("restricted", "true");
         }
+        fillNullResponse(response);
+        return null;
+    }
+
+    private void fillNullResponse(HttpServletResponse response){
         try {
-            //������� �� ������������, �� ��������� ��������
             Writer writer = response.getWriter();
             writer.write("null");
             writer.close();
         } catch (IOException ex){}
-        return null;
     }
 }

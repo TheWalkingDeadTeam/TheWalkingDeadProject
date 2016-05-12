@@ -7,7 +7,7 @@
     var id = location.search.substr(1);
     $(document).ready(function () {
         $('#feedback').hide();
-        $.when($.ajax({
+        $.ajax({
             type: 'get',
             url: "/profile/" + id,
             dataType: 'json',
@@ -18,34 +18,44 @@
                     response.fields.forEach(function (item, i) {
                         typeSwitcher(item, i, '#profile');
                     });
-                }
-            },
-            error: function (jqXHR, exception) {
-                console.log(exception.toString());
-                window.location.href = "/error"
-            }
-        }),
-        $.ajax({
-            type: 'get',
-            url: 'getFeedback/' + id,
-            dataType: 'json',
-            contentType: "application/json",
-            success: function (response, textStatus, jqXHR){
-                if (jqXHR.getResponseHeader('restricted') == 'false') {
-                    $('#feedback').show();
-                    $('#feedback_score').val(response.score);
-                    $('#feedback_text').val(response.comment);
+                    $.ajax({
+                        type: 'get',
+                        url: 'getFeedback/' + id,
+                        dataType: 'json',
+                        contentType: "application/json",
+                        success: function (response, textStatus, jqXHR) {
+                            if (jqXHR.getResponseHeader('interviewee') == 'true') {
+                                if (jqXHR.getResponseHeader('restricted') == 'false') {
+                                    $('#feedback').show();
+                                    $('#feedback_score').val(response.score);
+                                    $('#feedback_text').val(response.comment);
+                                } else {
+                                    $('#restrict_message')
+                                        .addClass('alert alert-danger')
+                                        .html('Feedback for this student has already been written by another interviewer');
+                                }
+                            } else {
+                                $('#restrict_message')
+                                    .addClass('alert alert-danger')
+                                    .html('This studen\'t wasn\'t interviewed');
+                            }
+                        },
+                        error: function (jqXHR, exception) {
+                            console.log(exception.toString());
+                            window.location.href = "/error"
+                        }
+                    });
                 } else {
                     $('#restrict_message')
                         .addClass('alert alert-danger')
-                        .html('Feedback on this student has already been written by another interviewer');
+                        .html('This student doesn\'t have thr application');
                 }
             },
             error: function (jqXHR, exception) {
                 console.log(exception.toString());
                 window.location.href = "/error"
             }
-        }));
+        });
     });
 
     $('#feedback_form').submit(function (event) {
