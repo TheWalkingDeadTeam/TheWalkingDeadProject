@@ -60,13 +60,13 @@ public class StudentServiceImpl implements StudentService {
     public void changeStatus(String action, List<Integer> studentsId) {
         if (Objects.equals(action, "activate")) {
             activateStudents(studentsId);
-            log.info("Sudent list activate"+ studentsId.toString());
+            log.info("Sudent list activate" + studentsId.toString());
         } else if (Objects.equals(action, "deactivate")) {
             deactivateStudents(studentsId);
-            log.info("Sudent list deactivate"+ studentsId.toString());
+            log.info("Sudent list deactivate" + studentsId.toString());
         } else if (Objects.equals(action, "reject")) {
             rejectStudents(studentsId);
-            log.info("Sudent list reject"+ studentsId.toString());
+            log.info("Sudent list reject" + studentsId.toString());
         } else {
             log.error(action + " action not supported");
         }

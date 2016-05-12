@@ -224,7 +224,7 @@ public class AdminController {
     @ResponseBody
     Integer interviewGetJSONSize() {
         InterviewerService interviewerService = new InterviewerServiceImpl();
-        return  interviewerService.getInterviewerSize();
+        return interviewerService.getInterviewerSize();
     }
 
     @RequestMapping(value = {"/mail-template"}, method = RequestMethod.GET)
