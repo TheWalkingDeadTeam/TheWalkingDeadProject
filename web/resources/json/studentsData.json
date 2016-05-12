@@ -15,12 +15,8 @@
     "id": 2,
     "name": "Abcac",
     "surname": "Pomidorchik",
-    "isActive": "1",
-    "university": "NAU",
-    "devMark": 15,
-    "hrMark": 25,
     "email" : "ger@gmail.com",
-    "english" : 7,
-    "color": "green"
+    "role" : "Admin",
+    "participation": true
   }
 ]
