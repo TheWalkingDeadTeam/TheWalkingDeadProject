@@ -8,6 +8,8 @@ import ua.nc.dao.factory.DAOFactory;
 import ua.nc.entity.Application;
 import ua.nc.entity.CES;
 import ua.nc.entity.profile.*;
+import ua.nc.service.user.UserService;
+import ua.nc.service.user.UserServiceImpl;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -22,10 +24,16 @@ import java.util.*;
 public class ProfileServiceImpl implements ProfileService {
     private DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
     private static final Set<String> typesToDeny = new HashSet<>(Arrays.asList("textarea", "tel", "checkbox"));
+    private static final String ROLE_STUDENT = "ROLE_STUDENT";
 
     @Override
     public Profile getProfile(int userId, int cesId) throws DAOException {
         Connection connection = daoFactory.getConnection();
+        RoleDAO roleDAO = daoFactory.getRoleDAO(connection);
+        UserService userService = new UserServiceImpl();
+        if (userService.getUser(userId).getRoles().contains(roleDAO.findByName(ROLE_STUDENT))){
+            return null;
+        }
         FieldDAO fieldDAO = daoFactory.getFieldDAO(connection);
         FieldTypeDAO fieldTypeDAO = daoFactory.getFieldTypeDAO(connection);
         FieldValueDAO fieldValueDAO = daoFactory.getFieldValueDAO(connection);
