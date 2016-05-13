@@ -10,6 +10,7 @@ import ua.nc.service.EditFormService;
 import ua.nc.service.EditFormServiceImpl;
 import ua.nc.service.user.UserService;
 import ua.nc.service.user.UserServiceImpl;
+import ua.nc.validator.NewQuestionValidator;
 import ua.nc.validator.RegistrationValidator;
 import ua.nc.validator.ValidationError;
 import ua.nc.validator.Validator;
@@ -225,18 +226,23 @@ public class AdminController {
         return "appformfield";
     }
 
-    @RequestMapping(value="/edit-form/new-question", method = RequestMethod.GET)
+    @RequestMapping(value = "/edit-form/new-question", method = RequestMethod.GET)
     public String addNewQuestion() {
         System.out.println("addNewQuestion");
         return "new-question";
     }
 
     @RequestMapping(value = "/edit-form/new-question", method = RequestMethod.POST, produces = "application/json")
-    public @ResponseBody Set<ValidationError> sendNewQuestion () {
-        Validator validator = new RegistrationValidator();
-        Set<ValidationError> errors = validator.validate("");
+    public
+    @ResponseBody
+    Set<ValidationError> sendNewQuestion(@RequestBody Field field) {
+        Validator validator = new NewQuestionValidator();
+        Set<ValidationError> errors = validator.validate(field);
+        System.out.println("post in controller");
         if (errors.isEmpty()) {
-            System.out.println("POBEDA, BRATOK!");
+            System.out.println("post in controller with no errors");
+            EditFormService efs = new EditFormServiceImpl();
+            efs.addNewQuestion(field);
         }
         return errors;
     }

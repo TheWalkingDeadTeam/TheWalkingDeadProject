@@ -114,7 +114,7 @@
                         </div>
                         <label for="fieldType">Field type</label>
                         <select id="fieldType" class="form-control" ng-model="sef.newQuestion.fieldTypeID" required>
-                            <option disabled>Type</option>
+                            <option ng-selected="true" value="" disabled>Type</option>
                             <option value="1">Number</option>
                             <option value="2">Text</option>
                             <option value="3">Textarea</option>
@@ -126,7 +126,7 @@
                         </select>
                         <label for="multiple">Multiple choice</label>
                         <select id="multiple" class="form-control" ng-model="sef.newQuestion.multipleChoice" required>
-                            <option disabled>true/false</option>
+                            <option ng-selected="true" value="" disabled>True/False</option>
                             <option value="true">True</option>
                             <option value="false">False</option>
                         </select>
@@ -138,9 +138,10 @@
                             <label for="listType">ListTypeId</label>
                             <input type="number" min="1" max="50" class="form-control" ng-model="sef.newQuestion.listTypeID" id="listType" placeholder="Enter listtypeid">
                         </div>
+                        <div id="messageDiv"></div>
                         <button type="submit">Save</button>
-                        <button onclick="back()">Back</button>
                     </form>
+                    <button onclick="back()" style="margin-top: 10px;">Back</button>
             </div>
         </div>
     </main>

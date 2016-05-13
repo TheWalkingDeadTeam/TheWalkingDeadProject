@@ -21,8 +21,9 @@ var sendNewQuestForm = angular.module('sendForm', ['sendController']);
 var sendConrtoller = angular.module('sendController', []);
 
 sendConrtoller.controller('sendFr', ["$scope", "$http", function ($scope, $http) {
-    
-    this.newQuestion = {
+    var vm = this;
+
+    vm.newQuestion = {
         name: '',
         fieldTypeID: '',
         multipleChoice: '',
@@ -30,20 +31,33 @@ sendConrtoller.controller('sendFr', ["$scope", "$http", function ($scope, $http)
         listTypeID: ''
     };
 
-
-    // $scope.sef.newQuestion.name
-
-    this.save = function () {
-        $http.post('/admin/edit-form/new-question', this.newQuestion).success(function() {
-            $scope.postSuccess = true
-        }).error(function(){
+    vm.save = function () {
+        $http.post('/admin/edit-form/new-question', vm.newQuestion).success(function (responseData) {
+            if (responseData.length) {
+                var errors_out = "";
+                for (var i in responseData) {
+                    errors_out += responseData[i].errorMessage + "</br>"
+                }
+                $('#messageDiv')
+                    .removeClass()
+                    .empty()
+                    .addClass('alert alert-danger')
+                    .html(errors_out);
+            } else {
+                $scope.postSuccess = true;
+                $('#messageDiv')
+                    .removeClass()
+                    .empty()
+                    .addClass('alert alert-success')
+                    .html('Saved successfully');
+            }
+        }).error(function () {
             $scope.postError = true;
         });
     }
 
-    
-}]);
 
+}]);
 
 
 /*
@@ -53,7 +67,7 @@ sendConrtoller.controller('sendFr', ["$scope", "$http", function ($scope, $http)
  * @update Sergey Kupletsky 2014, www.design4net.ru
  */
 
-var wskCheckbox = function() {
+var wskCheckbox = function () {
     var wskCheckboxes = [];
     var SPACE_KEY = 32;
 

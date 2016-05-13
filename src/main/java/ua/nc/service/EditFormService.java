@@ -10,8 +10,10 @@ import java.util.List;
  */
 public interface EditFormService{
 
-    public List<Field> getAllFields(Integer ces_id);
+    public List<Field> getAllFields(Integer ces_id);// TODO pass proper ces_id
 
     public List<ListValue> getListValues(Integer listId);
+
+    public void addNewQuestion(Field field);
 
 }
