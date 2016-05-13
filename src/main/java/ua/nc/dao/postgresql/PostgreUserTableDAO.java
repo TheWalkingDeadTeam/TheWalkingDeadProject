@@ -54,11 +54,8 @@ public class PostgreUserTableDAO {
     }
 
     private Integer getCount(ResultSet rs) throws SQLException {
-        Integer result = 0;
-        while (rs.next()) {
-            result = rs.getInt("count");
-        }
-        return result;
+        rs.next();
+        return rs.getInt("count");
     }
 
     private String buildQuery(String orderBy, Boolean asc) throws DAOException {

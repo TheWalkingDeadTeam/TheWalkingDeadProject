@@ -56,11 +56,8 @@ public class PostgreInterviewerTableDAO {
     }
 
     private Integer getCount(ResultSet rs) throws SQLException {
-        Integer result = 0;
-        while (rs.next()) {
-            result = rs.getInt("count");
-        }
-        return result;
+        rs.next();
+        return rs.getInt("count");
     }
 
     public List<Interviewer> getInterviewersTable(Integer cesId) throws DAOException {

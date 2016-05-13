@@ -162,6 +162,7 @@ public class PostgreIntervieweeTableDAO {
                     } else {
                         interviewee.setSpecialMark(null);
                     }
+
                 }
             }
         } catch (Exception e) {
@@ -182,10 +183,7 @@ public class PostgreIntervieweeTableDAO {
     }
 
     private Integer getCount(ResultSet rs) throws SQLException {
-        Integer result = 0;
-        while (rs.next()) {
-            result = rs.getInt("count");
-        }
-        return result;
+        rs.next();
+        return rs.getInt("count");
     }
 }
