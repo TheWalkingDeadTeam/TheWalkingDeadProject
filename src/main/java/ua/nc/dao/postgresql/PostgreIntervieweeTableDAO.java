@@ -151,8 +151,8 @@ public class PostgreIntervieweeTableDAO {
     public void updateIntervieweeTable(Integer cesId, Integer quota) throws DAOException {
         try (PreparedStatement statement = this.connection.prepareStatement(SORT_QUERY)) {
             statement.setInt(1, cesId);
-            PostgreIntervieweeDAO subDAO = new PostgreIntervieweeDAO(connection);
-            List<Interviewee> interviewees = subDAO.parseResultSet(statement.executeQuery());
+            PostgreIntervieweeDAO intervieweeDAO = new PostgreIntervieweeDAO(connection);
+            List<Interviewee> interviewees = intervieweeDAO.parseResultSet(statement.executeQuery());
             int counter = 0;
             for (Interviewee interviewee : interviewees){
                 if (!SPECIAL_MARKS.contains(interviewee.getSpecialMark())){
@@ -162,7 +162,7 @@ public class PostgreIntervieweeTableDAO {
                     } else {
                         interviewee.setSpecialMark(null);
                     }
-
+                    intervieweeDAO.update(interviewee);
                 }
             }
         } catch (Exception e) {
