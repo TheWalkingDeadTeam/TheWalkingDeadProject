@@ -37,7 +37,7 @@
                     <div class="form-group col-md-12">
                         <label class="col-md-2 control-lable" for="file">Mail Topic</label>
                         <div class="col-md-7">
-                            <textarea  rows="5" cols="20" type="text" ng-model="ctrl.mail.headTemplate" name="mhead" class="mailhead form-control input-sm" placeholder="Enter mail topic" required ng-minlength="3"> </textarea>
+                            <input type="text" ng-model="ctrl.mail.headTemplate" name="mhead" class="mailhead form-control input-sm" placeholder="Enter mail topic" required ng-minlength="3"> </textarea>
                             <div class="has-error" ng-show="myForm.$dirty">
                                 <span ng-show="myForm.mhead.$error.required">This is a required field</span>
                                 <span ng-show="myForm.mhead.$error.minlength">Minimum length required is 3</span>

@@ -79,6 +79,10 @@
                     class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
                 Reject
             </button>
+            <button id="popupContainer" ng-click="sendMail($event)"
+                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
+                Mail
+            </button>
             <%--<button ng-click="saveChanges()"--%>
             <%--class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">--%>
             <%--Save--%>
@@ -188,6 +192,7 @@
 <script src="../../resources/js/studentListAngular.js"></script>
 <script src="../../resources/js/dirPagination.js"></script>
 <script src="http://vitalets.github.io/checklist-model/checklist-model.js"></script>
+<script src="/resources/js/ngDialog.js"></script>
 
 </body>
 

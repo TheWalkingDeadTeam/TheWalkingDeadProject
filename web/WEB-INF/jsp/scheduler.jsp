@@ -28,7 +28,7 @@
                 <%-- Interview Start Date --%>
                 <div class="row">
                     <div class="form-group col-md-12">
-                        <label class="col-md-2 control-lable" for="file">Interviewers Contact Information</label>
+                        <label class="col-md-2 control-lable" for="file">Start Time</label>
                         <div class="col-md-7">
 
                             <div class="input-group bootstrap-timepicker timepicker">
@@ -47,7 +47,7 @@
                 <%-- Interview contact info--%>
                 <div class="row">
                     <div class="form-group col-md-12">
-                        <label class="col-md-2 control-lable" for="file">Interviewers Contact Information</label>
+                        <label class="col-md-2 control-lable" for="file">Interviewer Contact Information</label>
                         <div class="col-md-7">
                             <input type="text" data-ng-model="contactStaff" name="contactStaff"
                                    class="contact form-control input-sm" placeholder="Enter contact information"
@@ -121,7 +121,7 @@
                             </thead>
                             <tbody>
                             <tr ng-repeat="m in ctrl.mails">
-                                <td><input type="radio" data-ng-model="$parent.mailIdUser" ng-value="{{m.id}}"></td>
+                                <td><input type="radio" data-ng-model="$parent.mailIdUser" ng-value="{{m.id}}" ></td>
                                 <td><span ng-bind="m.bodyTemplate"></span></td>
                                 <td><span ng-bind="m.headTemplate"></span></td>
                             </tr>

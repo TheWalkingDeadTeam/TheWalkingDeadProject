@@ -163,9 +163,9 @@
 //     // }
 // }]);
 
-var app = angular.module('studentView', ['checklist-model', 'angularUtils.directives.dirPagination']);
+var app = angular.module('studentView', ['checklist-model', 'angularUtils.directives.dirPagination','ngDialog']);
 
-app.controller('StudentCtrl', ["$http", "$scope", function ($http, $scope) {
+app.controller('StudentCtrl', ["$http", "$scope", function ($http, $scope ,ngDialog) {
     var vm = this;
     vm.users = []; //declare an empty array
     vm.pageno = 1; // initialize page no to 1
@@ -174,6 +174,11 @@ app.controller('StudentCtrl', ["$http", "$scope", function ($http, $scope) {
     vm.selectUrl = "students/list/" + vm.itemsPerPage + "/" + vm.pageno;
     vm.order_by = null;
     $scope.sortReverse = false;
+
+    $scope.clickToOpen = function () {
+        ngDialog.open({ template: 'login', className: 'ngdialog-theme-default' });
+    };
+
 
 
     vm.getData = function () { // This would fetch the data on page change.
