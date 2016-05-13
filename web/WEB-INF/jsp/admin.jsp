@@ -34,6 +34,8 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.cyan-light_blue.min.css">
     <link rel="stylesheet" href="/resources/css/styles.css">
+    <link rel="stylesheet" type="text/css" href="/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/resources/bootstrap/js/bootstrap.min.js" defer></script>
     <style>
         #view-source {
             position: fixed;

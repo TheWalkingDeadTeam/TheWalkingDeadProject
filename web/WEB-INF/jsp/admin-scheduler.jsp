@@ -109,7 +109,9 @@
         </g>
     </defs>
 </svg>
+<%--
 <a href="/logout" target="_blank" id="view-source" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">Exit</a>
+--%>
 <script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
 </body>
 <script src="/resources/js/logout.js"></script>

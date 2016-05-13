@@ -37,7 +37,7 @@
                     <path>/</path>
                     <update>true</update>
                     <username>admin</username>
-                    <password>admin</password>
+                    <password>netcrackerpwd</password>
                 </configuration>
             </plugin>
         </plugins>
