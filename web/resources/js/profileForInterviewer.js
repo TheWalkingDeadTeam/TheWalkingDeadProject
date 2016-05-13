@@ -24,7 +24,7 @@
                         dataType: 'json',
                         contentType: "application/json",
                         success: function (response, textStatus, jqXHR) {
-                            if (jqXHR.getResponseHeader('interviewee') == 'true') {
+                            if (jqXHR.getResponseHeader('interviewee') == 'interviewee') {
                                 if (jqXHR.getResponseHeader('restricted') == 'false') {
                                     $('#feedback').show();
                                     $('#feedback_score').val(response.score);
@@ -48,7 +48,7 @@
                 } else {
                     $('#restrict_message')
                         .addClass('alert alert-danger')
-                        .html('This student doesn\'t have thr application');
+                        .html('This user doesn\'t have the application');
                 }
             },
             error: function (jqXHR, exception) {

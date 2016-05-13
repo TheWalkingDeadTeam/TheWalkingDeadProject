@@ -7,6 +7,8 @@ import ua.nc.dao.exception.DAOException;
 import ua.nc.dao.factory.DAOFactory;
 import ua.nc.entity.Application;
 import ua.nc.entity.CES;
+import ua.nc.entity.Role;
+import ua.nc.entity.User;
 import ua.nc.entity.profile.*;
 import ua.nc.service.user.UserService;
 import ua.nc.service.user.UserServiceImpl;
@@ -31,7 +33,11 @@ public class ProfileServiceImpl implements ProfileService {
         Connection connection = daoFactory.getConnection();
         RoleDAO roleDAO = daoFactory.getRoleDAO(connection);
         UserService userService = new UserServiceImpl();
-        if (userService.getUser(userId).getRoles().contains(roleDAO.findByName(ROLE_STUDENT))){
+        User user = userService.getUser(userId);
+        Set<Role> roles = user.getRoles();
+        Role roleStudent = roleDAO.findByName(ROLE_STUDENT);
+        boolean contains = roles.contains(roleStudent);
+        if (!contains){
             return null;
         }
         FieldDAO fieldDAO = daoFactory.getFieldDAO(connection);

@@ -62,25 +62,29 @@ public class InterviewerController {
     public Application specificFeedback(@PathVariable("id") Integer id, HttpServletResponse response){
         Application application = applicationService.getApplicationByUserForCurrentCES(id);
         if (application == null){
-            try {
-                Writer writer = response.getWriter();
-                writer.write("null");
-                writer.close();
-            } catch (IOException ex){}
+           fillNullResponse(response);
         }
         return application;
     }
 
     @ResponseBody
     @RequestMapping(value = "feedback/{id}/save", method = RequestMethod.POST, produces = "application/json")
-    public Set<ValidationError> saveFeedback(@RequestBody Feedback feedback, @PathVariable("id") Integer id){
+    public Set<ValidationError> saveFeedback(@RequestBody Feedback feedback, @PathVariable("id") Integer id, HttpServletRequest request){
         Set<ValidationError> errors = new FeedbackValidator().validate(feedback);
         int interviewerID = userService.getUser(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal()).getUsername()).getId();
         feedback.setInterviewerID(interviewerID);
         Application application = applicationService.getApplicationByUserForCurrentCES(id);
-        if  (!feedbackService.saveFeedback(feedback, application)){
-            errors.add(new ValidationError("save", "Unable to save feedback"));
+        Interviewee interviewee = intervieweeService.getInterviewee(application.getId());
+        boolean restricted = request.isUserInRole("ROLE_DEV")
+                ? feedbackService.getFeedback(interviewee.getDevFeedbackID()).getId().equals(interviewerID)
+                : feedbackService.getFeedback(interviewee.getDevFeedbackID()).getId().equals(interviewerID);
+        if (!restricted) {
+            if (!feedbackService.saveFeedback(feedback, application)) {
+                errors.add(new ValidationError("save", "Unable to save feedback"));
+            }
+        } else {
+            errors.add(new ValidationError("save", "You are not allowed to rate this student"));
         }
         return  errors;
     }
@@ -133,6 +137,8 @@ public class InterviewerController {
             Writer writer = response.getWriter();
             writer.write("null");
             writer.close();
-        } catch (IOException ex){}
+        } catch (IOException ex){
+            LOGGER.warn(ex);
+        }
     }
 }
