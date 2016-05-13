@@ -60,7 +60,7 @@
         </div>
     </nav>
 </header>
-
+<sec:authorize access="isAuthenticated()">
 <form id="accountForm">
     <div class="container-fluid  smprofile">
         <div class="row">
@@ -92,7 +92,7 @@
         </div>
     </div>
 </form>
-
+</sec:authorize>
 
 <footer class="footer container-fluid">
     <div class="footerLg container visible-md visible-lg">

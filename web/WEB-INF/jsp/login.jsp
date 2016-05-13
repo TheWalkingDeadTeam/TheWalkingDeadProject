@@ -145,7 +145,9 @@
                     <p><img id="photo_img" src="/getPhoto" alt="User's photo" width="100" height="100"
                             onError="this.src='/resources/images/user-photo.png'"/></p>
                 </div>
+<%--
                 <p><a id="buttonLogout" class="btn btn-lg btn-danger" href="/logout" role="button">Logout</a></p>
+--%>
 
             </sec:authorize>
         </div>

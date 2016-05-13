@@ -59,25 +59,30 @@ public class RegistrationValidator implements Validator {
         } else {
             errors.add(new ValidationError("password", "Password shouldn't be empty"));
         }
-        if (!(user.getRoles() != null && user.getRoles().isEmpty()))
+
+
+        if (!(user.getRoles() != null && user.getRoles().isEmpty())) {
+            Set<UserRoles> rolesConflict = new LinkedHashSet<>();
+            rolesConflict.add(UserRoles.ROLE_BA);
+            rolesConflict.add(UserRoles.ROLE_HR);
+            rolesConflict.add(UserRoles.ROLE_DEV);
+            int roleConflictAmount = rolesConflict.size() - 1;
             for (Role role : user.getRoles()) {
-                if (!(contains(role.getName()))) {
-                    errors.add(new ValidationError("roles", "Role not exist "));
+                if (!(UserRoles.contains(role.getName()))) {
+                    errors.add(new ValidationError("roles", "Role not exist"));
+                    break;
                 }
+                rolesConflict.remove(UserRoles.valueOf(role.getName()));
             }
-        else {
-            errors.add(new ValidationError("roles", "No roles "));
+            if (roleConflictAmount > rolesConflict.size()) {
+                errors.add(new ValidationError("roles", "Role conflict"));
+            }
+        } else {
+            errors.add(new ValidationError("roles", "Choose role"));
         }
 
         return errors;
     }
 
-    private Boolean contains(String string) {
-        for (UserRoles userRole : UserRoles.values()) {
-            if (userRole.name().equals(string))
-                return true;
-        }
-        return false;
-    }
 }
 

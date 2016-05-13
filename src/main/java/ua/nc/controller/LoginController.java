@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
+import ua.nc.dao.enums.UserRoles;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.entity.CES;
 import ua.nc.entity.User;
@@ -64,10 +65,13 @@ public class LoginController implements HandlerExceptionResolver {
 
     @RequestMapping(value = {"/", "/login"}, method = RequestMethod.GET)
     public String login(HttpServletRequest request) {
-        if (request.isUserInRole("ROLE_ADMIN")) {
+        if (request.isUserInRole(UserRoles.ROLE_ADMIN.name())) {
             return "admin";
         } else {
-            if (request.isUserInRole("ROLE_HR") || request.isUserInRole("ROLE_DEV") || request.isUserInRole("ROLE_BA") || request.isUserInRole("ROLE_STUDENT")) {
+            if (request.isUserInRole(UserRoles.ROLE_HR.name())
+                    || request.isUserInRole(UserRoles.ROLE_BA.name())
+                    || request.isUserInRole(UserRoles.ROLE_DEV.name())
+                    || request.isUserInRole(UserRoles.ROLE_STUDENT.name())) {
                 return "account";
             } else {
                 return "login";
