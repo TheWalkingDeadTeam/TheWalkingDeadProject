@@ -112,14 +112,14 @@ public class PostgreUserTableDAO {
     private List<UserRow> parseResultSet(ResultSet rs) throws SQLException {
         List<UserRow> result = new LinkedList<>();
         while (rs.next()){
-            UserRow interviewer = new UserRow();
-            interviewer.id = rs.getInt("system_user_id");
-            interviewer.name = rs.getString("name");
-            interviewer.surname = rs.getString("surname");
-            interviewer.email = rs.getString("email");
-            interviewer.role = rs.getString("role");
-            interviewer.status = rs.getString("status");
-            result.add(interviewer);
+            UserRow userRow = new UserRow();
+            userRow.id = rs.getInt("system_user_id");
+            userRow.name = rs.getString("name");
+            userRow.surname = rs.getString("surname");
+            userRow.email = rs.getString("email");
+            userRow.role = rs.getString("role");
+            userRow.status = rs.getString("status");
+            result.add(userRow);
         }
         return result;
     }
