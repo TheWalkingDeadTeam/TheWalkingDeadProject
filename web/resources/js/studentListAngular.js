@@ -163,9 +163,9 @@
 //     // }
 // }]);
 
-var app = angular.module('studentView', ['checklist-model', 'angularUtils.directives.dirPagination','ngDialog']);
+var app = angular.module('studentView', ['ngMaterial','ngMessages','material.svgAssetsCache','checklist-model', 'angularUtils.directives.dirPagination']);
 
-app.controller('StudentCtrl', ["$http", "$scope", function ($http, $scope ,ngDialog) {
+app.controller('StudentCtrl', ["$http", "$scope", "$mdDialog", "$mdMedia", function ($http, $scope,$mdDialog, $mdMedia) {
     var vm = this;
     vm.users = []; //declare an empty array
     vm.pageno = 1; // initialize page no to 1
@@ -175,9 +175,62 @@ app.controller('StudentCtrl', ["$http", "$scope", function ($http, $scope ,ngDia
     vm.order_by = null;
     $scope.sortReverse = false;
 
-    $scope.clickToOpen = function () {
-        ngDialog.open({ template: 'login', className: 'ngdialog-theme-default' });
+    $scope.dataStudents = {
+        studId: []
     };
+
+    //Alexander Haliy script
+
+    vm.users_by_mail = []
+    vm.user_name = {id:null,name:''};
+    $scope.status = '  ';
+    $scope.customFullscreen = $mdMedia('xs') || $mdMedia('sm');
+    $scope.showCustom = function(event) {
+        var dataObj = {
+            values: $scope.dataStudents.studId
+        };
+        if ($scope.dataStudents.studId.length != 0) {
+
+            vm.users_by_mail =  function() {
+                return $http.get('/admin/users-mail-id',dataObj)
+                    .then(
+                        function(response){
+                            return response.data;
+                        },
+                        function(errResponse){
+                            console.error('Error while fetching mail');
+                            return $q.reject(errResponse);
+                        }
+                    );
+            }
+                
+
+            $mdDialog.show({
+                clickOutsideToClose: true,
+                scope: $scope,
+                preserveScope: true,
+                targetEvent: event,
+                fullscreen: $scope.customFullscreen,
+                templateUrl: '/admin/mail-personal',
+                parent: angular.element(document.querySelector('#dialogContainer')),
+                controller: function DialogController($scope, $mdDialog) {
+                    $scope.closeDialog = function () {
+                        $mdDialog.hide();
+                    }
+                }
+            });
+        }
+    };
+
+    $scope.$watch(function() {
+        return $mdMedia('xs') || $mdMedia('sm');
+    }, function(wantsFullScreen) {
+        $scope.customFullscreen = (wantsFullScreen === true);
+    });
+
+
+    //ALEXANDER BYE BYE
+    
 
 
 
@@ -195,9 +248,7 @@ app.controller('StudentCtrl', ["$http", "$scope", function ($http, $scope ,ngDia
         });
     };
 
-    $scope.dataStudents = {
-        studId: []
-    };
+
 
     $scope.columnsType = {
         columns: []
@@ -261,6 +312,8 @@ app.controller('StudentCtrl', ["$http", "$scope", function ($http, $scope ,ngDia
                 });
         }
     };
+    
+    
     $scope.deactivateStud = function () {
         var dataObj = {
             type: 'deactivate',
@@ -317,3 +370,5 @@ it('should change state', function () {
     expect(isActive.getText()).toContain('0');
 
 });
+
+

@@ -22,6 +22,8 @@
     <link rel="stylesheet" type="text/css" href="/resources/css/registration.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/bootstrap/css/bootstrap.css"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+
 </head>
 
 <body id="document">
@@ -77,6 +79,7 @@
                        value="">
                 <div class="correct-password"></div>
                 <button id="buttonRegistration" class="btn btn-lg btn-primary btn-block">Register</button>
+                <div class="g-recaptcha" data-sitekey="6LcE2B8TAAAAAJ6gYSw2nDgxJcpRnVXWZoNEZLV7"></div>
             </form>
         </sec:authorize>
     </div>

@@ -24,7 +24,7 @@
         }
     </style>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <link href="<c:url value='/resources/css/app.css' />" rel="stylesheet"></link>
+    <link href="<c:url value='/resources/css/app.css' />" rel="stylesheet">
 </head>
 <body ng-app="mailer" class="ng-cloak">
 <div class="generic-container" ng-controller="MailController as ctrl">

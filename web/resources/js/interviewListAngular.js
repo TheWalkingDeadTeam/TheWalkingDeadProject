@@ -114,45 +114,10 @@
 // });
 //
 
-//Alexander added ngMaterial
-var interView = angular.module('interView', ['checklist-model', 'angularUtils.directives.dirPagination','ngMaterial']);
 
-interView.controller('interCtrl', ["$http", "$scope", function ($http, $scope,$mdDialog, $mdMedia) {
+var interView = angular.module('interView', ['checklist-model', 'angularUtils.directives.dirPagination']);
 
-    //Alexander
-    $scope.status = '  ';
-    $scope.customFullscreen = $mdMedia('xs') || $mdMedia('sm');
-
-    $scope.showTabDialog = function(ev) {
-        $mdDialog.show({
-            controller: DialogController,
-            templateUrl: 'mail',
-            parent: angular.element(document.body),
-            targetEvent: ev,
-            clickOutsideToClose:true
-        })
-            .then(function(answer) {
-                $scope.status = 'You said the information was "' + answer + '".';
-            }, function() {
-                $scope.status = 'You cancelled the dialog.';
-            });
-    };
-
-
-    function DialogController($scope, $mdDialog) {
-        $scope.hide = function() {
-            $mdDialog.hide();
-        };
-        $scope.cancel = function() {
-            $mdDialog.cancel();
-        };
-        $scope.answer = function(answer) {
-            $mdDialog.hide(answer);
-        };
-    }
-    
-
-
+interView.controller('interCtrl', ["$http", "$scope", function ($http, $scope) {
     var vm = this;
     vm.users = []; //declare an empty array
     vm.pageno = 1; // initialize page no to 1
