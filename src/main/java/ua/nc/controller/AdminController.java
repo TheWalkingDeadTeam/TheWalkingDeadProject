@@ -215,14 +215,15 @@ public class AdminController {
 
     @RequestMapping(value = {"/interviewers/list/{itemsPerPage}/{pageNumber}/{sortType}"}, method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public StudentData interviewGetJSONSort(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("sortType") Integer sortType) {
-        StudentData studentData;
-        StudentService studentService = new StudentServiceImpl();
-        studentData = studentService.getStudents(itemsPerPage, pageNumber, sortType);
-        if (studentData == null) {
-            LOGGER.warn("studData == null");
-        }
-        return studentData;
+    public void interviewGetJSONSort(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("sortType") String sortType) {
+//        StudentData studentData;
+//        StudentService studentService = new StudentServiceImpl();
+//        studentData = studentService.getStudents(itemsPerPage, pageNumber, sortType);
+//        if (studentData == null) {
+//            LOGGER.warn("studData == null");
+//        }
+//        return studentData;
+
     }
 
     @RequestMapping(value = {"/interviewers/size"}, method = RequestMethod.GET, produces = "application/json")
