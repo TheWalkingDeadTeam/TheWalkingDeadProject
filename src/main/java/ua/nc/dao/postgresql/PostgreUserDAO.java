@@ -42,6 +42,8 @@ public class PostgreUserDAO extends AbstractPostgreDAO<User, Integer> implements
             " WHERE r.name = ?";
     private final String GET_STATUS_ID = "SELECT system_user_status_id FROM system_user_status WHERE name = ?";
     private final String SELECT = "SELECT * FROM system_user u WHERE u.system_user_id = ?";
+    private static final String CHANGE_USER_STATUS_QUERY = "UPDATE system_user SET system_user_status_id = ? WHERE system_user_id = ?;";
+
     public PostgreUserDAO(Connection connection) {
         super(connection);
     }
@@ -302,12 +304,22 @@ public class PostgreUserDAO extends AbstractPostgreDAO<User, Integer> implements
 
     @Override
     public void activateUser(Integer id) throws DAOException {
-
+        try (PreparedStatement statement = this.connection.prepareStatement(CHANGE_USER_STATUS_QUERY)) {
+            statement.setInt(1, 1);
+            statement.setInt(2, id);
+        } catch (Exception e) {
+            throw new DAOException(e);
+        }
     }
 
     @Override
     public void deactivateUser(Integer id) throws DAOException {
-
+        try (PreparedStatement statement = this.connection.prepareStatement(CHANGE_USER_STATUS_QUERY)) {
+            statement.setInt(1, 2);
+            statement.setInt(2, id);
+        } catch (Exception e) {
+            throw new DAOException(e);
+        }
     }
 
     private class PersistUser extends User {
