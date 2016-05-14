@@ -58,31 +58,56 @@ public class InterviewerController {
     }
 
     @RequestMapping(value = "/feedback/{id}", method = RequestMethod.GET, produces = "application/json")
-    public Application specificFeedback(@PathVariable("id") Integer id){
-        return applicationService.getApplicationByUserForCurrentCES(id);
+    public Application specificFeedback(@PathVariable("id") Integer id, HttpServletResponse response){
+        Application application = applicationService.getApplicationByUserForCurrentCES(id);
+        if (application == null){
+           fillNullResponse(response);
+        }
+        return application;
     }
 
     @ResponseBody
     @RequestMapping(value = "feedback/{id}/save", method = RequestMethod.POST, produces = "application/json")
-    public Set<ValidationError> saveFeedback(@RequestBody Feedback feedback, @PathVariable("id") Integer id){
+    public Set<ValidationError> saveFeedback(@RequestBody FeedbackAndSpecialMark feedbackAndSpecialMark, @PathVariable("id") Integer id, HttpServletRequest request){
+        Feedback feedback = feedbackAndSpecialMark.getFeedback();
         Set<ValidationError> errors = new FeedbackValidator().validate(feedback);
         int interviewerID = userService.getUser(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal()).getUsername()).getId();
         feedback.setInterviewerID(interviewerID);
         Application application = applicationService.getApplicationByUserForCurrentCES(id);
-        if  (!feedbackService.saveFeedback(feedback, application)){
-            errors.add(new ValidationError("save", "Unable to save feedback"));
+        Interviewee interviewee = intervieweeService.getInterviewee(application.getId());
+        boolean restricted = request.isUserInRole("ROLE_DEV")
+                ? feedbackService.getFeedback(interviewee.getDevFeedbackID()).getId().equals(interviewerID)
+                : feedbackService.getFeedback(interviewee.getDevFeedbackID()).getId().equals(interviewerID);
+        if (!restricted) {
+            if (!feedbackService.saveFeedback(feedbackAndSpecialMark, application)) {
+                errors.add(new ValidationError("save", "Unable to save feedback"));
+            }
+        } else {
+            errors.add(new ValidationError("save", "You are not allowed to rate this student"));
         }
         return  errors;
     }
 
     @ResponseBody
     @RequestMapping(value = "getFeedback/{id}", method = RequestMethod.GET, produces = "application/json")
-    public Feedback getFeedback(@PathVariable("id") Integer id, HttpServletRequest request, HttpServletResponse response){
+    public FeedbackAndSpecialMark getFeedback(@PathVariable("id") Integer id, HttpServletRequest request, HttpServletResponse response){
         Application application = applicationService.getApplicationByUserForCurrentCES(id);
+        if(application == null){
+            response.setHeader("interviewee", "null");
+            fillNullResponse(response);
+            return null;
+        }
         Interviewee interviewee = intervieweeService.getInterviewee(application.getId());
+        if (interviewee == null){
+            response.setHeader("interviewee", "application");
+            fillNullResponse(response);
+            return null;
+        }
+        response.setHeader("interviewee", "interviewee");
         User user = userService.getUser(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal()).getUsername());
+        FeedbackAndSpecialMark feedbackAndSpecialMark = new FeedbackAndSpecialMark();
         Feedback feedback = null;
         Integer feedbackId = null;
         if(request.isUserInRole("ROLE_DEV")){
@@ -96,25 +121,28 @@ public class InterviewerController {
         }
         if (feedback == null) {
             response.setHeader("restricted", "false");
-            try {
-                //������� �� ������������, �� ��������� ��������
-                Writer writer = response.getWriter();
-                writer.write("null");
-                writer.close();
-            } catch (IOException ex){}
-            return null;
+            feedbackAndSpecialMark.setSpecialMark(interviewee.getSpecialMark());
+            fillNullResponse(response);
+            return feedbackAndSpecialMark;
         } else if (feedback.getInterviewerID() == user.getId()) {
             response.setHeader("restricted", "false");
-            return feedback;
+            feedbackAndSpecialMark.setFeedback(feedback);
+            feedbackAndSpecialMark.setSpecialMark(interviewee.getSpecialMark());
+            return feedbackAndSpecialMark;
         } else {
             response.setHeader("restricted", "true");
         }
+        fillNullResponse(response);
+        return null;
+    }
+
+    private void fillNullResponse(HttpServletResponse response){
         try {
-            //������� �� ������������, �� ��������� ��������
             Writer writer = response.getWriter();
             writer.write("null");
             writer.close();
-        } catch (IOException ex){}
-        return null;
+        } catch (IOException ex){
+            LOGGER.warn(ex);
+        }
     }
 }
