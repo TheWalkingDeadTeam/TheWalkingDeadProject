@@ -17,6 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -135,6 +137,23 @@ public class InterviewerController {
         }
         fillNullResponse(response);
         return null;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "getallfeedbacks/{id}", method = RequestMethod.GET, produces = "application/json")
+    public List<FeedbackAndSpecialMark> getAllFeedbacks(@PathVariable("id") Integer id)
+    {
+        Application application = applicationService.getApplicationByUserForCurrentCES(id);
+        Interviewee interviewee = intervieweeService.getInterviewee(application.getId());
+        List<FeedbackAndSpecialMark> feedbackAndSpecialMarks = new LinkedList<>();
+        FeedbackAndSpecialMark feedbackAndSpecialMark = new FeedbackAndSpecialMark();
+        feedbackAndSpecialMark.setSpecialMark(interviewee.getSpecialMark());
+        feedbackAndSpecialMark.setFeedback(feedbackService.getFeedback(interviewee.getDevFeedbackID()));
+        feedbackAndSpecialMarks.add(feedbackAndSpecialMark);
+        feedbackAndSpecialMark = new FeedbackAndSpecialMark();
+        feedbackAndSpecialMark.setFeedback(feedbackService.getFeedback(interviewee.getHrFeedbackID()));
+        feedbackAndSpecialMarks.add(feedbackAndSpecialMark);
+        return feedbackAndSpecialMarks;
     }
 
     private void fillNullResponse(HttpServletResponse response){

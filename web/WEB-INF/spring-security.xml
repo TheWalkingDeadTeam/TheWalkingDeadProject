@@ -18,8 +18,6 @@
         <intercept-url pattern="/login" access="permitAll" />
         <intercept-url pattern="/admin**" access="hasRole('ROLE_ADMIN')"/>
         <intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
-        <!--<intercept-url pattern="/interviewer/feedback**" access="@feedbackPermissions.isInterviewingPeriod()"/>
-        <intercept-url pattern="/interviewer/feedback/**" access="@feedbackPermissions.isInterviewingPeriod()"/>-->
         <intercept-url pattern="/interviewer**" access="hasAnyRole('ROLE_HR','ROLE_DEV','ROLE_BA')"/>
         <intercept-url pattern="/interviewer/**" access="hasAnyRole('ROLE_HR','ROLE_DEV','ROLE_BA')"/>
         <intercept-url pattern="/profile**"
