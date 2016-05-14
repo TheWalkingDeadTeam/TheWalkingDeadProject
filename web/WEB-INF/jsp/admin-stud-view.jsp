@@ -165,10 +165,10 @@
                 <%--<td>{{user.fields[6]}}</td>--%>
                 <%--<td>{{user.devMark}}</td>--%>
                 <%--<td>{{user.hrMark}}</td>--%>
-                <td ng-style="{opacity:0.5,'background-color':'{{user.color}}'}" title="
-                {{ch.color == 'red' ? 'Reject' :
-                ch.color == 'green' ? 'On course' :
-                ch.color == 'blue' ? 'On job' : 'Thinking'}}"></td>
+                <%--<td ng-style="{opacity:0.5,'background-color':'{{user.color}}'}" title="--%>
+                <%--{{ch.color == 'red' ? 'Reject' :--%>
+                <%--ch.color == 'green' ? 'On course' :--%>
+                <%--ch.color == 'blue' ? 'On job' : 'Thinking'}}"></td>--%>
             </tr>
             </tbody>
         </table>
