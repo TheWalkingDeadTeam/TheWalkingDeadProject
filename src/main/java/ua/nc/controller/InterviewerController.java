@@ -69,7 +69,8 @@ public class InterviewerController {
 
     @ResponseBody
     @RequestMapping(value = "feedback/{id}/save", method = RequestMethod.POST, produces = "application/json")
-    public Set<ValidationError> saveFeedback(@RequestBody Feedback feedback, @PathVariable("id") Integer id, HttpServletRequest request){
+    public Set<ValidationError> saveFeedback(@RequestBody FeedbackAndSpecialMark feedbackAndSpecialMark, @PathVariable("id") Integer id, HttpServletRequest request){
+        Feedback feedback = feedbackAndSpecialMark.getFeedback();
         Set<ValidationError> errors = new FeedbackValidator().validate(feedback);
         int interviewerID = userService.getUser(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal()).getUsername()).getId();
@@ -80,7 +81,7 @@ public class InterviewerController {
                 ? feedbackService.getFeedback(interviewee.getDevFeedbackID()).getId().equals(interviewerID)
                 : feedbackService.getFeedback(interviewee.getDevFeedbackID()).getId().equals(interviewerID);
         if (!restricted) {
-            if (!feedbackService.saveFeedback(feedback, application)) {
+            if (!feedbackService.saveFeedback(feedbackAndSpecialMark, application)) {
                 errors.add(new ValidationError("save", "Unable to save feedback"));
             }
         } else {
@@ -91,7 +92,7 @@ public class InterviewerController {
 
     @ResponseBody
     @RequestMapping(value = "getFeedback/{id}", method = RequestMethod.GET, produces = "application/json")
-    public Feedback getFeedback(@PathVariable("id") Integer id, HttpServletRequest request, HttpServletResponse response){
+    public FeedbackAndSpecialMark getFeedback(@PathVariable("id") Integer id, HttpServletRequest request, HttpServletResponse response){
         Application application = applicationService.getApplicationByUserForCurrentCES(id);
         if(application == null){
             response.setHeader("interviewee", "null");
@@ -107,6 +108,7 @@ public class InterviewerController {
         response.setHeader("interviewee", "interviewee");
         User user = userService.getUser(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal()).getUsername());
+        FeedbackAndSpecialMark feedbackAndSpecialMark = new FeedbackAndSpecialMark();
         Feedback feedback = null;
         Integer feedbackId = null;
         if(request.isUserInRole("ROLE_DEV")){
@@ -120,11 +122,14 @@ public class InterviewerController {
         }
         if (feedback == null) {
             response.setHeader("restricted", "false");
+            feedbackAndSpecialMark.setSpecialMark(interviewee.getSpecialMark());
             fillNullResponse(response);
-            return null;
+            return feedbackAndSpecialMark;
         } else if (feedback.getInterviewerID() == user.getId()) {
             response.setHeader("restricted", "false");
-            return feedback;
+            feedbackAndSpecialMark.setFeedback(feedback);
+            feedbackAndSpecialMark.setSpecialMark(interviewee.getSpecialMark());
+            return feedbackAndSpecialMark;
         } else {
             response.setHeader("restricted", "true");
         }

@@ -30,12 +30,13 @@ public class FeedbackServiceImpl implements FeedbackService {
 
 
     @Override
-    public boolean saveFeedback(Feedback feedback, Application application) {
+    public boolean saveFeedback(FeedbackAndSpecialMark feedbackAndSpecialMark, Application application) {
         Connection connection = daoFactory.getConnection();
         FeedbackDAO feedbackDAO = daoFactory.getFeedbackDAO(connection);
         IntervieweeDAO intervieweeDAO = daoFactory.getIntervieweeDAO(connection);
         Connection connection1 = daoFactory.getConnection();
         RoleDAO roleDAO = daoFactory.getRoleDAO(connection1);
+        Feedback feedback = feedbackAndSpecialMark.getFeedback();
         try {
             connection.setAutoCommit(false);
             Interviewee interviewee = intervieweeDAO.getById(application.getId());
@@ -61,12 +62,15 @@ public class FeedbackServiceImpl implements FeedbackService {
                 } else if (roles.contains(roleDAO.findByName(ROLE_BA)) || roles.contains(roleDAO.findByName(ROLE_HR))) {
                     interviewee.setHrFeedbackID(feedback.getId());
                 }
+                interviewee.setSpecialMark(feedbackAndSpecialMark.getSpecialMark());
                 intervieweeDAO.update(interviewee);
             } else {
                 oldFeedback = feedbackDAO.getById(feedbackId);
                 oldFeedback.setScore(feedback.getScore());
                 oldFeedback.setComment(feedback.getComment());
                 feedbackDAO.update(oldFeedback);
+                interviewee.setSpecialMark(feedbackAndSpecialMark.getSpecialMark());
+                intervieweeDAO.update(interviewee);
             }
             connection.commit();
             return true;

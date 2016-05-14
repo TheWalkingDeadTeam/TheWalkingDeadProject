@@ -95,6 +95,15 @@
             <div><textarea id="feedback_text" placeholder="Put your feedback here" cols="40" rows="10"
                            required></textarea>
             </div>
+            <div>
+                <select id = "special_mark">
+                    <option disabled>Special mark</option>
+                    <option value="none" id = "none">None</option>
+                    <option value="reject" id = "reject">Reject</option>
+                    <option value="take on courses" id="take_on_courses">Take on courses</option>
+                    <option value="job offer" id="job_offer">Job offer</option>
+                </select>
+            </div>
             <div id="save_message"></div>
             <div>
                 <button id="submitFeedback" type="submit" title="Submit">Submit</button>

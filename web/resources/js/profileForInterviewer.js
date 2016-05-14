@@ -27,8 +27,9 @@
                             if (jqXHR.getResponseHeader('interviewee') == 'interviewee') {
                                 if (jqXHR.getResponseHeader('restricted') == 'false') {
                                     $('#feedback').show();
-                                    $('#feedback_score').val(response.score);
-                                    $('#feedback_text').val(response.comment);
+                                    $('#feedback_score').val(response.feedback.score);
+                                    $('#feedback_text').val(response.feedback.comment);
+                                    $('#special_mark').val(response.specialMark);
                                 } else {
                                     $('#restrict_message')
                                         .addClass('alert alert-danger')
@@ -66,8 +67,11 @@
                 dataType: 'json',
                 contentType: 'application/json',
                 data: JSON.stringify({
-                    score: $('#feedback_score').val(),
-                    comment: $('#feedback_text').val()
+                    feedback: {
+                        score: $('#feedback_score').val(),
+                        comment: $('#feedback_text').val()
+                    },
+                    specialMark: $('#special_mark').val()
                 }),
                 success: function (response){
                     if (response.length){
