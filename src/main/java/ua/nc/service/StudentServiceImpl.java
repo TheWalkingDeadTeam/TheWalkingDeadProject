@@ -52,6 +52,21 @@ public class StudentServiceImpl implements StudentService {
         return null;
     }
 
+    @Override
+    public StudentData getStudents(Integer itemPerPage, Integer pageNumber, String pattern) {
+        Connection connection = daoFactory.getConnection();
+        PostgreApplicationTableDAO applicationTableDAO = new PostgreApplicationTableDAO(connection);
+        CESServiceImpl cesService = new CESServiceImpl();
+        CES ces = cesService.getCurrentCES();
+        try {
+            //ORDER BY
+            return applicationTableDAO.getApplicationsTable(ces.getId(), itemPerPage, pageNumber, pattern);
+        } catch (DAOException e) {
+            log.warn("Can't get students", e.getCause());
+        }
+        return null;
+    }
+
     /**
      * @param action
      * @param studentsId list of Integer

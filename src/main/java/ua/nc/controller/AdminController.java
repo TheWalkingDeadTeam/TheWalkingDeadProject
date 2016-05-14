@@ -86,11 +86,17 @@ public class AdminController {
     }
 
 
-    @RequestMapping(value = {"/students/search"}, method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = {"/students/search/{itemsPerPage}/{pageNumber}/{pattern}"}, method = RequestMethod.GET, produces = "application/json")
     public
     @ResponseBody
-    String studentsSearch() {
-        return "{\"result\":\"inProgres\"";
+    StudentData studentsSearch(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("pattern") String pattern) {
+        StudentData studentData;
+        StudentService studentService = new StudentServiceImpl();
+        studentData = studentService.getStudents(itemsPerPage, (pageNumber * itemsPerPage - 10), pattern);
+        if (studentData == null) {
+            LOGGER.warn("studData == null");
+        }
+        return studentData;
     }
 
 
@@ -99,7 +105,7 @@ public class AdminController {
     public StudentData getStudents(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber) {
         StudentData studentData;
         StudentService studentService = new StudentServiceImpl();
-        studentData = studentService.getStudents(itemsPerPage, pageNumber);
+        studentData = studentService.getStudents(itemsPerPage, (pageNumber * itemsPerPage - 10));
         if (studentData == null) {
             LOGGER.warn("studData == null");
         }
@@ -111,7 +117,7 @@ public class AdminController {
     public StudentData getStudentsBySort(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("sortType") Integer sortType) {
         StudentData studentData;
         StudentService studentService = new StudentServiceImpl();
-        studentData = studentService.getStudents(itemsPerPage, pageNumber, sortType);
+        studentData = studentService.getStudents(itemsPerPage, (pageNumber * itemsPerPage - 10), sortType);
         if (studentData == null) {
             LOGGER.warn("studData == null");
         }
