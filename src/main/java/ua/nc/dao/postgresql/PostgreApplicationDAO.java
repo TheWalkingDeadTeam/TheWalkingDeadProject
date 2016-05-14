@@ -16,9 +16,9 @@ import java.util.List;
  * Created by Rangar on 02.05.2016.
  */
 public class PostgreApplicationDAO extends AbstractPostgreDAO<Application, Integer> implements ApplicationDAO {
-    public static final String getApplicationByUserCES = "SELECT * FROM Application WHERE system_user_id = ? AND ces_id = ?";
-    public static final String getAllCESApplicationsQuery = "SELECT * FROM Application WHERE ces_id = ?";
-    public static final String getAllUsersForCurrentCES = "Select u.* from system_user u JOIN application a " +
+    public static final String GET_APPLICATION_BY_USER_CES = "SELECT * FROM Application WHERE system_user_id = ? AND ces_id = ?";
+    public static final String GET_ALL_CES_APPLICATIONS_QUERY = "SELECT * FROM Application WHERE ces_id = ?";
+    public static final String GET_ALL_USERS_FOR_CURRENT_CES = "Select u.* from system_user u JOIN application a " +
             "ON u.system_user_id = a.system_user_id WHERE ces_id = " +
             "(SELECT ces.ces_id from course_enrollment_session ces " +
             "JOIN ces_status stat ON ces.ces_status_id = stat.ces_status_id AND stat.name = 'Active')";
@@ -86,7 +86,7 @@ public class PostgreApplicationDAO extends AbstractPostgreDAO<Application, Integ
     @Override
     public Application getApplicationByUserCES(Integer user_id, Integer ces_id) throws DAOException {
         Application result;
-        try (PreparedStatement statement = connection.prepareStatement(getApplicationByUserCES)) {
+        try (PreparedStatement statement = connection.prepareStatement(GET_APPLICATION_BY_USER_CES)) {
             statement.setInt(1, user_id);
             statement.setInt(2, ces_id);
             ResultSet rs = statement.executeQuery();
@@ -104,7 +104,7 @@ public class PostgreApplicationDAO extends AbstractPostgreDAO<Application, Integ
     @Override
     public List<Application> getAllCESApplications(Integer ces_id) throws DAOException {
         List<Application> result;
-        try (PreparedStatement statement = connection.prepareStatement(getAllCESApplicationsQuery)) {
+        try (PreparedStatement statement = connection.prepareStatement(GET_ALL_CES_APPLICATIONS_QUERY)) {
             statement.setInt(1, ces_id);
             ResultSet rs = statement.executeQuery();
             if (!rs.isBeforeFirst() ) {
