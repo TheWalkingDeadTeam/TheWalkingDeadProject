@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -32,23 +34,21 @@ public class InterviewerController {
     private IntervieweeService intervieweeService = new IntervieweeServiceImpl();
     private CESService cesService = new CESServiceImpl();
 
-    @RequestMapping(value = "/enroll", method = RequestMethod.GET)
-    public @ResponseBody String enroll() {
+    @RequestMapping(value = "/enroll",method = RequestMethod.POST, produces = "application/json")
+    public void enroll(@RequestBody ArrayList<Integer> interviewersId) {
         CES currentCES = cesService.getCurrentCES();
         if (currentCES != null) {
-            try {
-                cesService.enrollAsInterviewer(((UserDetailsImpl) SecurityContextHolder
-                        .getContext()
-                        .getAuthentication()
-                        .getPrincipal()).getId(), currentCES.getId());
-                return "You has been successfully enrolled to current CES as interviewer";
-            } catch (DAOException e) {
-                LOGGER.info("");
-                return "Can't enroll to current CES as interviewer.";
+            int cesId = cesService.getCurrentCES().getId();
+            Iterator<Integer> iterator = interviewersId.iterator();
+            while (iterator.hasNext()) {
+                try {
+                    cesService.enrollAsInterviewer(iterator.next(), cesId);
+                } catch (DAOException e) {
+                    LOGGER.info(e);
+                }
             }
-        } else {
+        }else{
             LOGGER.info("Can't enroll to current CES. Current CES session is not exist");
-            return  "Can't enroll to current CES. Current CES session is not exist";
         }
     }
 

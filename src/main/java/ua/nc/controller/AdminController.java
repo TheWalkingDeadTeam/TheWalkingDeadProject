@@ -76,18 +76,19 @@ public class AdminController {
 
     @RequestMapping(value = {"/remove"},method = RequestMethod.POST, produces = "application/json")
     public void removeInterviewers(@RequestBody ArrayList<Integer> interviewersId){
-            CESService cesService = new  CESServiceImpl();
+        CESService cesService = new  CESServiceImpl();
+        if(cesService!=null) {
             int cesId = cesService.getCurrentCES().getId();
             Iterator<Integer> iterator = interviewersId.iterator();
-            while (iterator.hasNext()){
+            while (iterator.hasNext()) {
                 try {
-                    cesService.removeInterviewer( iterator.next(),cesId);
+                    cesService.removeInterviewer(iterator.next(), cesId);
                 } catch (DAOException e) {
                     LOGGER.error("Can't Sign out interviewer");
                     LOGGER.error(e);
                 }
             }
-
+        }
     }
 
     /**
