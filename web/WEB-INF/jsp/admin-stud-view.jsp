@@ -143,6 +143,11 @@
                         {{head.name}}
                     </a>
                 </td>
+                <td>
+                    <a href="#" ng-click="sortType = 'rejected'; sortReverse = !sortReverse">
+                        Rejected
+                    </a>
+                </td>
             </tr>
             </thead>
             <tbody>
@@ -153,10 +158,10 @@
                 <td><input type="checkbox" checklist-model="dataStudents.studId" checklist-value="user.userId"></td>
                 <td ng-init="index=$index + 1">{{index}}</td>
                 <td><a href="/admin/students/{{user.userId}}" target="_blanks">{{user.name}}</a></td>
-
                 <td ng-repeat="head in data.header">
                     {{user.fields[head.id]}}
                 </td>
+                <td>{{user.rejected}}</td>
                 <%--<td>{{user.fields[6]}}</td>--%>
                 <%--<td>{{user.devMark}}</td>--%>
                 <%--<td>{{user.hrMark}}</td>--%>

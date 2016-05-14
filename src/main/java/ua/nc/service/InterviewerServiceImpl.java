@@ -7,7 +7,7 @@ import ua.nc.dao.enums.DataBaseType;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.dao.factory.DAOFactory;
 import ua.nc.dao.postgresql.PostgreApplicationTableDAO;
-import ua.nc.dao.postgresql.PostgreUserInterviewerTableDAO;
+import ua.nc.dao.postgresql.PostgreInterviewerTableDAO;
 import ua.nc.entity.Application;
 import ua.nc.entity.CES;
 import ua.nc.entity.Interviewer;
@@ -28,7 +28,7 @@ public class InterviewerServiceImpl implements InterviewerService {
     @Override
     public List<Interviewer> getInterviewer(Integer itemPerPage, Integer pageNumber) {
         Connection connection = daoFactory.getConnection();
-        PostgreUserInterviewerTableDAO userInterviewerTableDAO = new PostgreUserInterviewerTableDAO(connection);
+        PostgreInterviewerTableDAO userInterviewerTableDAO = new PostgreInterviewerTableDAO(connection);
         CESServiceImpl cesService = new CESServiceImpl();
         CES ces = cesService.getCurrentCES();
         try {
@@ -47,13 +47,13 @@ public class InterviewerServiceImpl implements InterviewerService {
     public void changeStatus(String action, List<Integer> studentsId) {
         if (Objects.equals(action, "activate")) {
             activateInterviewer(studentsId);
-            log.info("Sudent list activate"+ studentsId.toString());
+            log.info("Sudent list activate" + studentsId.toString());
         } else if (Objects.equals(action, "deactivate")) {
             deactivateInterviewer(studentsId);
-            log.info("Sudent list deactivate"+ studentsId.toString());
+            log.info("Sudent list deactivate" + studentsId.toString());
         } else if (Objects.equals(action, "reject")) {
             rejectInterviewer(studentsId);
-            log.info("Sudent list reject"+ studentsId.toString());
+            log.info("Sudent list reject" + studentsId.toString());
         } else {
             log.error(action + " action not supported");
         }
@@ -101,11 +101,11 @@ public class InterviewerServiceImpl implements InterviewerService {
     @Override
     public Integer getInterviewerSize() {
         Connection connection = daoFactory.getConnection();
-        PostgreUserInterviewerTableDAO userInterviewerTableDAO = new PostgreUserInterviewerTableDAO(connection);
+        PostgreInterviewerTableDAO userInterviewerTableDAO = new PostgreInterviewerTableDAO(connection);
         try {
-            return userInterviewerTableDAO.getInterviewersCount();
+            return userInterviewerTableDAO.getInterviewersCount("");
         } catch (DAOException e) {
-            log.error("Can`t get Interviewers size "+e.getCause());
+            log.error("Can`t get Interviewers size " + e.getCause());
         }
         return null;
     }
