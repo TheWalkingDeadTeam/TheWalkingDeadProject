@@ -131,13 +131,15 @@ public class AdminController {
      * @param studentStatus
      */
     @RequestMapping(value = {"/students"}, method = RequestMethod.POST, produces = "application/json")
-    @ResponseStatus(value = HttpStatus.OK)
-    public void studentStatus(@RequestBody StudentStatus studentStatus) {
+    @ResponseBody
+    public HttpStatus studentStatus(@RequestBody StudentStatus studentStatus) {
         StudentStatus status = studentStatus;
         if (!status.getType().isEmpty() && (status.getValues().size() > 0)) {
             studentService.changeStatus(status.getType(), status.getValues());
+            return HttpStatus.OK;
         } else {
             LOGGER.warn("Request type is not supported");
+            return HttpStatus.BAD_REQUEST;
         }
 
 

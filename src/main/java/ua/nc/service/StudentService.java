@@ -20,11 +20,13 @@ public interface StudentService {
 
     public void changeStatus(String action, List<Integer> studentsId);
 
-    public void activateStudents(List<Integer> studentsId);
-
-    public void deactivateStudents(List<Integer> studentsId);
+//    public void activateStudents(List<Integer> studentsId);
+//
+//    public void deactivateStudents(List<Integer> studentsId);
 
     public void rejectStudents(List<Integer> studentsId);
+
+    public void unrejectStudents(List<Integer> studentsId);
 
     public Integer getStudentsSize();
 }

@@ -73,35 +73,30 @@ public class StudentServiceImpl implements StudentService {
      */
     @Override
     public void changeStatus(String action, List<Integer> studentsId) {
-        if (Objects.equals(action, "activate")) {
-            activateStudents(studentsId);
-            log.info("Sudent list activate" + studentsId.toString());
-        } else if (Objects.equals(action, "deactivate")) {
-            deactivateStudents(studentsId);
-            log.info("Sudent list deactivate" + studentsId.toString());
-        } else if (Objects.equals(action, "reject")) {
+        if (Objects.equals(action, "reject")) {
             rejectStudents(studentsId);
-            log.info("Sudent list reject" + studentsId.toString());
+        } else if (Objects.equals(action, "unreject")) {
+            unrejectStudents(studentsId);
         } else {
             log.error(action + " action not supported");
         }
     }
 
-    /**
-     * @param studentsId list of Integer
-     */
-    @Override
-    public void activateStudents(List<Integer> studentsId) {
-        // StudentListDAO
-    }
-
-    /**
-     * @param studentsId list of Integer
-     */
-    @Override
-    public void deactivateStudents(List<Integer> studentsId) {
-        // StudentListDAO
-    }
+//    /**
+//     * @param studentsId list of Integer
+//     */
+//    @Override
+//    public void activateStudents(List<Integer> studentsId) {
+//        // StudentListDAO
+//    }
+//
+//    /**
+//     * @param studentsId list of Integer
+//     */
+//    @Override
+//    public void deactivateStudents(List<Integer> studentsId) {
+//        // StudentListDAO
+//    }
 
     /**
      * @param studentsId list of Integer
@@ -122,6 +117,26 @@ public class StudentServiceImpl implements StudentService {
         } finally {
             daoFactory.putConnection(connection);
         }
+        log.info("Sudent list rejected" + studentsId.toString());
+    }
+
+    @Override
+    public void unrejectStudents(List<Integer> studentsId) {
+        Connection connection = daoFactory.getConnection();
+        ApplicationDAO applicationDAO = daoFactory.getApplicationDAO(connection);
+        CESDAO cesDAO = daoFactory.getCESDAO(connection);
+        try {
+            List<Application> applications = applicationDAO.getAllCESApplications(cesDAO.getCurrentCES().getId());
+            for (Application application : applications) {
+                application.setRejected(false);
+                applicationDAO.update(application);
+            }
+        } catch (DAOException e) {
+            e.printStackTrace();
+        } finally {
+            daoFactory.putConnection(connection);
+        }
+        log.info("Sudent list unrejected" + studentsId.toString());
     }
 
     @Override

@@ -240,25 +240,40 @@ app.controller('StudentCtrl', ["$http", "$scope", function ($http, $scope) {
     };
 
 
-    $scope.activateStud = function () {
+    // $scope.activateStud = function () {
+    //     var dataObj = {
+    //         type: 'activate',
+    //         values: $scope.dataStudents.studId
+    //     };
+    //     if ($scope.dataStudents.studId.length != 0) {
+    //         $http.post('students', dataObj)
+    //             .success(function (data, status, headers, config) {
+    //                 $scope.message = data;
+    //             })
+    //             .error(function (data, status, headers, config) {
+    //                 // alert("failure message: " + JSON.stringify({data: data}));
+    //                 // alert($scope.message = data);
+    //             });
+    //     }
+    // };
+    // $scope.deactivateStud = function () {
+    //     var dataObj = {
+    //         type: 'deactivate',
+    //         values: $scope.dataStudents.studId
+    //     };
+    //     if ($scope.dataStudents.studId.length != 0) {
+    //         var res = $http.post('students', dataObj);
+    //         res.success(function (data, status, headers, config) {
+    //             $scope.message = data;
+    //         });
+    //         res.error(function (data, status, headers, config) {
+    //             alert("failure message: " + JSON.stringify({data: data}));
+    //         });
+    //     }
+    // };
+    $scope.rejectStud = function () {
         var dataObj = {
-            type: 'activate',
-            values: $scope.dataStudents.studId
-        };
-        if ($scope.dataStudents.studId.length != 0) {
-            $http.post('students', dataObj)
-                .success(function (data, status, headers, config) {
-                    $scope.message = data;
-                })
-                .error(function (data, status, headers, config) {
-                    // alert("failure message: " + JSON.stringify({data: data}));
-                    // alert($scope.message = data);
-                });
-        }
-    };
-    $scope.deactivateStud = function () {
-        var dataObj = {
-            type: 'deactivate',
+            type: 'reject',
             values: $scope.dataStudents.studId
         };
         if ($scope.dataStudents.studId.length != 0) {
@@ -271,9 +286,10 @@ app.controller('StudentCtrl', ["$http", "$scope", function ($http, $scope) {
             });
         }
     };
-    $scope.rejectStud = function () {
+
+    $scope.unrejectStud = function () {
         var dataObj = {
-            type: 'reject',
+            type: 'unreject',
             values: $scope.dataStudents.studId
         };
         if ($scope.dataStudents.studId.length != 0) {

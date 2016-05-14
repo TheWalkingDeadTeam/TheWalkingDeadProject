@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
-  User: Alexander
-  Date: 29.04.2016
-  Time: 22:26
+  User: creed
+  Date: 14.05.16
+  Time: 17:33
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -59,7 +59,7 @@
     </style>
 </head>
 <body>
-<main ng-controller="StudentCtrl as data"
+<main ng-controller="StudentCtrl2 as data"
       class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
 
     <jsp:include page="admin-header.jsp"/>
@@ -67,32 +67,18 @@
 
     <main class="mdl-layout__content mdl-color--grey-100">
         <div>
-            <%--<button ng-click="activateStud()"--%>
-                    <%--class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">--%>
-                <%--Activate--%>
-            <%--</button>--%>
-            <%--<button ng-click="deactivateStud()"--%>
-                    <%--class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">--%>
-                <%--Deactivate--%>
-            <%--</button>--%>
+            <button ng-click="activateStud()"
+                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
+                Activate
+            </button>
+            <button ng-click="deactivateStud()"
+                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
+                Deactivate
+            </button>
             <button ng-click="rejectStud()"
                     class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
                 Reject
             </button>
-            <button ng-click="unrejectStud()"
-                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
-                Unreject
-            </button>
-
-            <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
-                <label class="mdl-button mdl-js-button mdl-button--icon" for="search">
-                    <i class="material-icons">search</i>
-                </label>
-                <div class="mdl-textfield__expandable-holder">
-                    <form ng-submit = "searchFiltr(field)"><input  class="mdl-textfield__input" type="text" id="search" name="field" ng-model="field"></form>
-                    <label class="mdl-textfield__label" for="search">Enter your query...</label>
-                </div>
-            </div>
             <%--<button ng-click="saveChanges()"--%>
             <%--class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">--%>
             <%--Save--%>
@@ -122,12 +108,12 @@
                     <input type="checkbox" ng-model="selectedAll" ng-click="checkAll()">
                 </td>
                 <td>
-                    <a href="#" ng-click="sortType = 'id'; sortReverse = !sortReverse; n">
+                    <a href="#" ng-click="sortType = 'id'; sortReverse = !sortReverse">
                         #
                     </a>
                 </td>
                 <td>
-                    <a href="#" ng-click="sortReverse = !sortReverse; sortType(0)">
+                    <a href="#" ng-click="sortType = 'name'; sortReverse = !sortReverse">
                         Full Name
                     </a>
                 </td>
