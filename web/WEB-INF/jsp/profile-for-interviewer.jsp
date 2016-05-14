@@ -1,6 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
-<>
 <head>
     <title>Profile For Interviewer</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -111,6 +110,18 @@
     </div>
     <%--</sec:authorize>--%>
 
+    <sec:authorize access="@feedbackPermissions.isInterviewingPeriod()">
+        <div id = "all_feedbacks">
+            <p id = "dev_feedback">Dev's feedback<br></p>
+            <p id = "dev_score">Dev's score: <br></p>
+            <p id = "hr_feedback">HR's feedback<br></p>
+            <p id = "hr_score">HR's score: <br></p>
+            <p id = "special_mark_display">Special mark: </p>
+        </div>
+
+    </sec:authorize>
+
+
 
 <footer class="footer container-fluid">
     <div class="footerLg container visible-md visible-lg">
@@ -166,6 +177,9 @@
 <script src="/resources/js/profileForInterviewer.js"></script>
 <script src="/resources/js/photo.js"></script>
 <script src="/resources/js/account.js"></script>
+<sec:authorize access="@feedbackPermissions.isInterviewingPeriod()">
+<script src="/resources/js/getAllFeedbacks.js"></script>
+</sec:authorize>
 
 </body>
 </html>
