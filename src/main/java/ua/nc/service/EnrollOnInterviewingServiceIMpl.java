@@ -39,20 +39,45 @@ public class EnrollOnInterviewingServiceImpl implements CESService {
     }
 
     @Override
-    public void enroll(Integer userId, Integer cesId) throws DAOException {
-        Connection connection = daoFactory.getConnection();
-        CESDAO CESDAO = new PostgreCESDAO(connection);
-        try {
-            CESDAO.addInterviewerForCurrentCES(cesId,userId);
-            LOGGER.info("Successfully enrolled to current CES");
-        } catch (DAOException e) {
-            LOGGER.warn("Can't enroll to current CES");
-            throw new DAOException(e);
-        } finally {
-            daoFactory.putConnection(connection);
-        }
+    public CES getCES() throws DAOException {
+        return null;
+    }
+
+    @Override
+    public void setCES(CES ces) throws DAOException {
 
     }
+
+    @Override
+    public void deleteCES() {
+
+    }
+
+    @Override
+    public void enrollAsStudent(Integer userId, Integer cesId) throws DAOException {
+
+    }
+
+    @Override
+    public void enrollAsInterviewer(Integer userId, Integer cesId) throws DAOException {
+
+    }
+
+//    @Override
+//    public void enroll(Integer userId, Integer cesId) throws DAOException {
+//        Connection connection = daoFactory.getConnection();
+//        CESDAO CESDAO = new PostgreCESDAO(connection);
+//        try {
+//            CESDAO.addInterviewerForCurrentCES(cesId,userId);
+//            LOGGER.info("Successfully enrolled to current CES");
+//        } catch (DAOException e) {
+//            LOGGER.warn("Can't enroll to current CES");
+//            throw new DAOException(e);
+//        } finally {
+//            daoFactory.putConnection(connection);
+//        }
+//
+//    }
 
     /**
      * Plan current interview schedule and send notifications to all the participants.

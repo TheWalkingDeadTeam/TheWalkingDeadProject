@@ -18,6 +18,10 @@ public class PostgreConnectionPool extends ConnectionPool {
     private final String DATABASE_NAME = "postgres";
     private final String USER = "postgres";
     private final String PASSWORD = "999666";
+//    private final String SERVER_NAME = "130.211.149.11";
+//    private final String DATABASE_NAME = "WD_Project";
+//    private final String USER = "postgres";
+//    private final String PASSWORD = "netcrackerpwd";
     private PGPoolingDataSource dataSource;
 
     private PostgreConnectionPool() {

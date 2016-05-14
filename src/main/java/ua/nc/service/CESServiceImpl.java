@@ -28,7 +28,7 @@ import java.util.Date;
 /**
  * Created by Pavel on 06.05.2016.
  */
-public class CESServiceImpl implements CESService {
+public class    CESServiceImpl implements CESService {
     private final static Logger LOGGER = Logger.getLogger(CESServiceImpl.class);
     private final DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
     private ThreadPoolTaskScheduler scheduler;
@@ -127,7 +127,7 @@ public class CESServiceImpl implements CESService {
         }
         return interviewDates;
     }
-}
+
 
 
     @Override
@@ -138,8 +138,8 @@ public class CESServiceImpl implements CESService {
             return cesDAO.getCurrentCES();
         } else if(cesDAO.getPendingCES() != null){
             return cesDAO.getPendingCES();
-        } else if (cesDAO.getCurrentInterviewBegunCES() != null){
-            return cesDAO.getCurrentInterviewBegunCES();
+        } else if (cesDAO.getRegistrationOngoingCES() != null){
+            return cesDAO.getRegistrationOngoingCES();
         }
         return null;
     }
@@ -150,7 +150,7 @@ public class CESServiceImpl implements CESService {
         CESDAO cesDAO = daoFactory.getCESDAO(connection);
         CES cesFromDb;
         try {
-            if (cesDAO.getCurrentInterviewBegunCES() != null){
+            if (cesDAO.getRegistrationOngoingCES() != null){
                 cesFromDb = cesDAO.getCurrentCES();
                 cesFromDb.setQuota(ces.getQuota());
                 cesDAO.update(cesFromDb);
