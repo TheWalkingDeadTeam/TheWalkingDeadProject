@@ -9,13 +9,17 @@ import ua.nc.dao.UserDAO;
 import ua.nc.dao.enums.DataBaseType;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.dao.factory.DAOFactory;
+import ua.nc.dao.postgresql.PostgreDAOFactory;
+import ua.nc.dao.postgresql.PostgreUserDAO;
 import ua.nc.entity.Role;
 import ua.nc.entity.User;
 import ua.nc.service.MailService;
 import ua.nc.service.MailServiceImpl;
 
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -131,5 +135,33 @@ public class UserServiceImpl implements UserService {
             LOGGER.warn(ex);
         }
         return false;
+    }
+
+    @Override
+    public void activateUsers(List<Integer> userIds) {
+        DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
+        Connection connection = daoFactory.getConnection();
+        PostgreUserDAO userDAO = (PostgreUserDAO) daoFactory.getUserDAO(connection);
+        for(Integer id : userIds) {
+            try {
+                userDAO.activateUser(id);
+            } catch (DAOException e) {
+                LOGGER.warn("Cannot activate user with id " + id);
+            }
+        }
+    }
+
+    @Override
+    public void deactivateUsers(List<Integer> userIds) {
+        DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
+        Connection connection = daoFactory.getConnection();
+        PostgreUserDAO userDAO = (PostgreUserDAO) daoFactory.getUserDAO(connection);
+        for(Integer id : userIds) {
+            try {
+                userDAO.deactivateUser(id);
+            } catch (DAOException e) {
+                LOGGER.warn("Cannot deactivate user with id " + id);
+            }
+        }
     }
 }

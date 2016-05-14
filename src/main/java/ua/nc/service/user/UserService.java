@@ -2,6 +2,9 @@ package ua.nc.service.user;
 
 import ua.nc.entity.User;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Pavel on 18.04.2016.
  */
@@ -17,4 +20,9 @@ public interface UserService {
     User recoverPass(User user);
 
     boolean checkRole(User user, String roleName);
+
+    void activateUsers(List<Integer> userIds);
+
+    void deactivateUsers(List<Integer> userIds);
+
 }
