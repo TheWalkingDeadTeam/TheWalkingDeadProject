@@ -87,24 +87,6 @@ public class PostgreIntervieweeDAO extends AbstractPostgreDAO<Interviewee, Integ
         return persist(object);
     }
 
-    @Override
-    public Interviewee getById(int applicationId) throws DAOException{
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-        try{
-            statement = connection.prepareStatement(getSelectQuery());
-            statement.setInt(1, applicationId);
-            resultSet = statement.executeQuery();
-            List<Interviewee> interviewees = parseResultSet(resultSet);
-            if (interviewees.size() < 1) {
-                throw new DAOException("No interviewees for this application");
-            }
-            return interviewees.get(0);
-        } catch (SQLException ex) {
-            throw new DAOException(ex);
-        }
-    }
-
     private class PersistInterviewee extends Interviewee{
         @Override
         public void setId(int id) {
