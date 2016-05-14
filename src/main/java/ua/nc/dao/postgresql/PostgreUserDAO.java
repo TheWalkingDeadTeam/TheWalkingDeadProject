@@ -300,6 +300,16 @@ public class PostgreUserDAO extends AbstractPostgreDAO<User, Integer> implements
         }
     }
 
+    @Override
+    public void activateUser(Integer id) throws DAOException {
+
+    }
+
+    @Override
+    public void deactivateUser(Integer id) throws DAOException {
+
+    }
+
     private class PersistUser extends User {
         public PersistUser(Integer id, String name, String surname, String email, String password, Set<Role> roles) {
             super(id, name, surname, email, password, roles);
