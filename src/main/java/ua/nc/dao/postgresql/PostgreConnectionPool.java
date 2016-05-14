@@ -17,7 +17,7 @@ public class PostgreConnectionPool extends ConnectionPool {
     private final String SERVER_NAME = "localhost:5432";//"23.251.143.100";
     private final String DATABASE_NAME = "postgres";//"WD_Project";
     private final String USER = "postgres";
-    private final String PASSWORD = "123488";//"netcrackerpwd";
+    private final String PASSWORD = "postgres";//"netcrackerpwd";
     private PGPoolingDataSource dataSource;
 
     private PostgreConnectionPool() {
