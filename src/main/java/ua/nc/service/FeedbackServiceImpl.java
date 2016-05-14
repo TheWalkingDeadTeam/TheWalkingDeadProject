@@ -39,7 +39,7 @@ public class FeedbackServiceImpl implements FeedbackService {
         Feedback feedback = feedbackAndSpecialMark.getFeedback();
         try {
             connection.setAutoCommit(false);
-            Interviewee interviewee = intervieweeDAO.getById(application.getId());
+            Interviewee interviewee = intervieweeDAO.read(application.getId());
             if (interviewee == null) {
                 return false;
             }

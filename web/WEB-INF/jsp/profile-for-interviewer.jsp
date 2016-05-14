@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
-<html>
+<>
 <head>
     <title>Profile For Interviewer</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -22,7 +22,6 @@
     <%--/*<img src='images/error.gif' class="img-responsive profile-photo">*/--%>
     <%--/*<img class='img-responsive' src="images/logo-gray.png">*/--%>
 </head>
-<body>
 <header>
     <nav class="navbar navbar-default">
         <div class="container-fluid">
@@ -50,8 +49,6 @@
         </div>
     </nav>
 </header>
-
-<sec:authorize access="hasAnyRole('ROLE_BA','ROLE_HR','ROLE_DEV')">
 
     <div class="container smprofile">
         <div class="row">
@@ -85,6 +82,8 @@
     </div>
     <br>
 
+    <%--<sec:authorize access="@feedbackPermissions.isInterviewingPeriod()">--%>
+
     <div id="restrict_message"></div>
     <div id="feedback">
         <form id="feedback_form">
@@ -110,9 +109,7 @@
             </div>
         </form>
     </div>
-
-
-</sec:authorize>
+    <%--</sec:authorize>--%>
 
 
 <footer class="footer container-fluid">
