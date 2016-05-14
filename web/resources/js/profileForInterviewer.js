@@ -7,6 +7,7 @@
     var id = location.search.substr(1);
     $(document).ready(function () {
         $('#feedback').hide();
+        $('#photo_img').attr('src','/getPhoto/'+id);
         $.ajax({
             type: 'get',
             url: "/profile/" + id,
@@ -100,7 +101,7 @@
 
     function typeSwitcher(item, i, divname){
             $('<div id=\"block' + i + '\">').appendTo($(divname));
-            $('<label>').attr({for: item.id}).text(item.fieldName + '\t ').appendTo($('#block' + i));
+            $('<label>').attr({for: item.id}).text(item.fieldName + ':  ').appendTo($('#block' + i));
                 switch (item.fieldType) {
                 case 'number':
                 case 'text':
@@ -111,13 +112,13 @@
                 case 'select':
                 case 'checkbox':
                 case 'radio':
-                        var text = ',';
+                        var text = new Array;
                         item.values.forEach(function(item_value){
                             if (item_value.value == 'true'){
-                                text = text + ',' + item_value.fieldValueName + ',';
+                                text.push(item_value.fieldValueName);
                             }
                         })
-                        $('<label>').text(text).appendTo($('#block' + i));
+                        $('<label>').text(text.toString()).appendTo($('#block' + i));
                         break;
             }
     }

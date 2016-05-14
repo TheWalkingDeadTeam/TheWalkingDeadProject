@@ -76,9 +76,8 @@ public class InterviewerController {
         feedback.setInterviewerID(interviewerID);
         Application application = applicationService.getApplicationByUserForCurrentCES(id);
         Interviewee interviewee = intervieweeService.getInterviewee(application.getId());
-        boolean restricted = request.isUserInRole("ROLE_DEV")
-                ? feedbackService.getFeedback(interviewee.getDevFeedbackID()).getId().equals(interviewerID)
-                : feedbackService.getFeedback(interviewee.getDevFeedbackID()).getId().equals(interviewerID);
+        Integer feedbackId = request.isUserInRole("ROLE_DEV") ? interviewee.getDevFeedbackID() : interviewee.getHrFeedbackID();
+        boolean restricted = feedbackId != null && feedbackService.getFeedback(feedbackId).getId().equals(interviewerID);
         if (!restricted) {
             if (!feedbackService.saveFeedback(feedbackAndSpecialMark, application)) {
                 errors.add(new ValidationError("save", "Unable to save feedback"));
