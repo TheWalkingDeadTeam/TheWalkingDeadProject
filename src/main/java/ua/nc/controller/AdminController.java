@@ -3,6 +3,7 @@ package ua.nc.controller;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import ua.nc.entity.ListWrapper;
 import ua.nc.entity.User;
 import ua.nc.entity.profile.Field;
 import ua.nc.entity.profile.ListValue;
@@ -10,14 +11,9 @@ import ua.nc.service.EditFormService;
 import ua.nc.service.EditFormServiceImpl;
 import ua.nc.service.user.UserService;
 import ua.nc.service.user.UserServiceImpl;
-import ua.nc.validator.NewQuestionValidator;
-import ua.nc.validator.RegistrationValidator;
-import ua.nc.validator.ValidationError;
-import ua.nc.validator.Validator;
+import ua.nc.validator.*;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Pavel on 18.04.2016.
@@ -246,4 +242,24 @@ public class AdminController {
         }
         return errors;
     }
+
+    @RequestMapping(value = "/edit-form", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+    public
+    @ResponseBody Set<ValidationError> deleteQuestion(@RequestBody ListWrapper id) {
+        System.out.println("attempt to delete");
+        Validator validator = new DeleteQuestionValidator();
+        Set<ValidationError> errors = validator.validate(id);
+        System.out.println("deleting question");
+        System.out.println(id.getId());
+        if (errors.isEmpty()) {
+            System.out.println("no errors today");
+            EditFormService efs = new EditFormServiceImpl();
+            for (Integer idToWrite: id) {
+                efs.deleteQuestionFromCES(1, idToWrite);// TODO remove hardcode
+            }
+        }
+        return errors;
+//        return new LinkedHashSet<>();
+    }
+
 }

@@ -16,4 +16,6 @@ public interface EditFormService{
 
     public void addNewQuestion(Field field);
 
+    public void deleteQuestionFromCES(Integer ces_id, Integer field_id);
+
 }

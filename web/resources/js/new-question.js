@@ -23,12 +23,40 @@ var sendConrtoller = angular.module('sendController', []);
 sendConrtoller.controller('sendFr', ["$scope", "$http", function ($scope, $http) {
     var vm = this;
 
+    vm.isShown = false;
+    vm.isRequired = false;
+
     vm.newQuestion = {
         name: '',
         fieldTypeID: '',
         multipleChoice: '',
         orderNum: '',
         listTypeID: ''
+    };
+
+    $scope.change = function () {
+        var flag = (vm.newQuestion.fieldTypeID == 4 || vm.newQuestion.fieldTypeID == 5 || vm.newQuestion.fieldTypeID == 6);
+        if (flag == true) {
+            if (vm.newQuestion.fieldTypeID == 5) {
+                vm.newQuestion.multipleChoice = "true";
+            } else {
+                vm.newQuestion.multipleChoice = "false";
+            }
+            if (flag == true) {
+                $('.newInputs').attr('required', 'true');
+            } else {
+                $('.newInputs').removeAttr('required');
+            }
+            vm.isShown = true;
+        } else {
+            $('.newInputs').removeAttr('required');
+            vm.newQuestion.newOpt = '';
+            vm.newQuestion.listTypeID = '';
+            vm.newQuestion.multipleChoice = "false";
+            vm.isShown = false;
+        }
+
+        
     };
 
     vm.save = function () {
@@ -56,8 +84,34 @@ sendConrtoller.controller('sendFr', ["$scope", "$http", function ($scope, $http)
         });
     }
 
+    // $scope.items = [];
+    //
+    // $scope.add = function () {
+    //     $scope.items.push({
+    //         inlineChecked: false,
+    //         question: '',
+    //         questionPlaceholder: 'Option name',
+    //         text: ''
+    //     });
+    // };
+    
+    $scope.items = [];
+    // vm.newQuestion.newOpt = [];
+    
+    $scope.add = function() {
+        var newItemNo = $scope.items.length+1;
+        $scope.items.push({});
+        $('.newInputs').attr('required', 'true');
+        // $('.newInputs').attr('ng-model', 'newOpt');
+    };
+
+    $scope.removeChoice = function() {
+        var lastItem = $scope.items.length-1;
+        $scope.items.splice(lastItem);
+    };
 
 }]);
+
 
 
 /*

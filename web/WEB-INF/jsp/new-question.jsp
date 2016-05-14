@@ -71,77 +71,90 @@
             <div style="margin: 20px;">
                 <%--<form id="newQuestionForm">--%>
 
-                    <%--<div class="group">--%>
-                        <%--<input type="text" required>--%>
-                        <%--<span class="highlight"></span>--%>
-                        <%--<span class="bar"></span>--%>
-                        <%--<label>Field name</label>--%>
-                    <%--</div>--%>
+                <%--<div class="group">--%>
+                <%--<input type="text" required>--%>
+                <%--<span class="highlight"></span>--%>
+                <%--<span class="bar"></span>--%>
+                <%--<label>Field name</label>--%>
+                <%--</div>--%>
 
-                    <%--<div class="group">--%>
-                        <%--<select type="select" required>--%>
-                        <%--<option disabled>true\false</option>--%>
-                        <%--<option value="true">True</option>--%>
-                        <%--<option value="false">False</option>--%>
-                        <%--</select>--%>
-                        <%--<span class="highlight"></span>--%>
-                        <%--<span class="bar"></span>--%>
-                        <%--<label>Multiple choice</label>--%>
-                    <%--</div>--%>
+                <%--<div class="group">--%>
+                <%--<select type="select" required>--%>
+                <%--<option disabled>true\false</option>--%>
+                <%--<option value="true">True</option>--%>
+                <%--<option value="false">False</option>--%>
+                <%--</select>--%>
+                <%--<span class="highlight"></span>--%>
+                <%--<span class="bar"></span>--%>
+                <%--<label>Multiple choice</label>--%>
+                <%--</div>--%>
 
-                    <%--<div class="group">--%>
-                        <%--<input type="text" required>--%>
-                        <%--<span class="highlight"></span>--%>
-                        <%--<span class="bar"></span>--%>
-                        <%--<label>Order number</label>--%>
-                    <%--</div>--%>
+                <%--<div class="group">--%>
+                <%--<input type="text" required>--%>
+                <%--<span class="highlight"></span>--%>
+                <%--<span class="bar"></span>--%>
+                <%--<label>Order number</label>--%>
+                <%--</div>--%>
 
-                    <%--<div class="group">--%>
-                        <%--<input type="text" required>--%>
-                        <%--<span class="highlight"></span>--%>
-                        <%--<span class="bar"></span>--%>
-                        <%--<label>Field type</label>--%>
-                    <%--</div>--%>
-                    <%--<div>--%>
-                        <%--<button type="submit" for="newQuestionForm">Save</button>--%>
-                        <%--<button type="button" onclick="back()" >Back</button>--%>
-                    <%--</div>--%>
+                <%--<div class="group">--%>
+                <%--<input type="text" required>--%>
+                <%--<span class="highlight"></span>--%>
+                <%--<span class="bar"></span>--%>
+                <%--<label>Field type</label>--%>
+                <%--</div>--%>
+                <%--<div>--%>
+                <%--<button type="submit" for="newQuestionForm">Save</button>--%>
+                <%--<button type="button" onclick="back()" >Back</button>--%>
+                <%--</div>--%>
                 <%--</form>--%>
-                    <form role="form" ng-submit="sef.save()">
-                        <div class="form-group">
-                            <label for="fieldName">Field name</label>
-                            <input type="text" ng-model="sef.newQuestion.name" class="form-control" id="fieldName" placeholder="Enter field name" required>
+                <form role="form" ng-submit="sef.save()">
+                    <div class="form-group">
+                        <label for="fieldName">Field name</label>
+                        <input type="text" ng-model="sef.newQuestion.name" class="form-control" id="fieldName"
+                               placeholder="Enter field name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="orderNum">Order number</label>
+                        <input type="number" min="1" max="50" class="form-control" ng-model="sef.newQuestion.orderNum"
+                               id="orderNum" placeholder="Enter order number" required>
+                    </div>
+                    <label for="fieldType">Field type</label>
+                    <select id="fieldType" class="form-control" style="
+    margin-bottom: 10px;" ng-change="change()"
+                            ng-model="sef.newQuestion.fieldTypeID" required>
+                        <option ng-selected="true" value="" disabled>Type</option>
+                        <option value="1">Number</option>
+                        <option value="2">Text</option>
+                        <option value="3">Textarea</option>
+                        <option value="4">Select</option>
+                        <option value="5">Checkbox</option>
+                        <option value="6">Radio</option>
+                        <option value="7">Tel</option>
+                        <option value="8">Date</option>
+                    </select>
+                    <%--<label for="multiple">Multiple choice</label>--%>
+                    <%--<select id="multiple" class="form-control" ng-model="sef.newQuestion.multipleChoice" ng-change="change()" required>--%>
+                    <%--<option ng-selected="true" value="" disabled>True/False</option>--%>
+                    <%--<option value="true">True</option>--%>
+                    <%--<option value="false">False</option>--%>
+                    <%--</select>--%>
+                    <%--<div class="form-group" ng-show="sef.isShown">--%>
+                    <%--<label for="listType">ListTypeId</label>--%>
+                    <%--<input id="listTypeId" type="number" min="1" max="50" class="form-control" ng-model="sef.newQuestion.listTypeID" id="listType" placeholder="Enter listtypeid">--%>
+                    <%--</div>--%>
+
+                    <div id="newOptions">
+                        <div ng-repeat="item in items" ng-show="sef.isShown">
+                            <input class="newInputs" type="text" placeholder="Option text here"
+                                   ng-model="sef.newQuestion.newOpt">
+                            <button class="remove" ng-show="$last" ng-click="removeChoice()">-</button>
                         </div>
-                        <label for="fieldType">Field type</label>
-                        <select id="fieldType" class="form-control" ng-model="sef.newQuestion.fieldTypeID" required>
-                            <option ng-selected="true" value="" disabled>Type</option>
-                            <option value="1">Number</option>
-                            <option value="2">Text</option>
-                            <option value="3">Textarea</option>
-                            <option value="4">Select</option>
-                            <option value="5">Checkbox</option>
-                            <option value="6">Radio</option>
-                            <option value="7">Tel</option>
-                            <option value="8">Date</option>
-                        </select>
-                        <label for="multiple">Multiple choice</label>
-                        <select id="multiple" class="form-control" ng-model="sef.newQuestion.multipleChoice" required>
-                            <option ng-selected="true" value="" disabled>True/False</option>
-                            <option value="true">True</option>
-                            <option value="false">False</option>
-                        </select>
-                        <div class="form-group">
-                            <label for="orderNum">Order number</label>
-                            <input type="number" min="1" max="50" class="form-control" ng-model="sef.newQuestion.orderNum" id="orderNum" placeholder="Enter order number" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="listType">ListTypeId</label>
-                            <input type="number" min="1" max="50" class="form-control" ng-model="sef.newQuestion.listTypeID" id="listType" placeholder="Enter listtypeid">
-                        </div>
-                        <div id="messageDiv"></div>
-                        <button type="submit">Save</button>
-                    </form>
-                    <button onclick="back()" style="margin-top: 10px;">Back</button>
+                    </div>
+                    <div id="messageDiv"></div>
+                    <button type="submit">Save</button>
+                </form>
+                <button ng-click="add()" ng-show="sef.isShown">New Item</button>
+                <button onclick="back()" style="margin-top: 10px;">Back</button>
             </div>
         </div>
     </main>

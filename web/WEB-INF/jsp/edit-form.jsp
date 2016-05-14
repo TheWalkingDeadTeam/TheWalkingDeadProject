@@ -62,12 +62,12 @@
 
     <main class="mdl-layout__content mdl-color--grey-100">
 
-        <div>
-            <button ng-click="addQuestion()"
+        <div style="margin: 20px;">
+            <button style="margin-bottom: 15px;" ng-click="addQuestion()"
                     class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
                 Add question
             </button>
-            <button ng-click=""
+            <button style="margin-bottom: 15px;" ng-click="deleteQuestion()"
                     class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
                 Delete question
             </button>
@@ -78,10 +78,10 @@
                 <td>
                     <input type="checkbox" ng-model="selectedAll" ng-click="checkAll()">
                 </td>
-                <td>
-                    Display order
-                </td>
                 <td>Id</td>
+                <td>
+                    Position
+                </td>
                 <td>Up</td>
                 <td>Down</td>
                 <td>
@@ -92,16 +92,15 @@
                 <tbody>
                 <tr ng-repeat="ch in fields">
                     <td><input type="checkbox" checklist-model="dataFields.fieldId" checklist-value="ch.id"></td>
-                    <td>{{ch.orderNum}}</td>
                     <td>{{ch.id}}</td>
+                    <td>{{ch.orderNum}}</td>
                     <td>Up</td>
                     <td>Down</td>
                     <td><a href="/admin/edit-form/appformfield?{{ch.listTypeID}}" target="_blanks">{{ch.name}}</a></td>
                 </tr>
                 </tbody>
             </table>
-
-
+            <div id="errorsDiv"></div>
         </div>
     </main>
 </div>

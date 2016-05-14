@@ -3,9 +3,7 @@ package ua.nc.service;
 import org.apache.log4j.Logger;
 import ua.nc.dao.CESDAO;
 import ua.nc.dao.FieldDAO;
-import ua.nc.dao.ListTypeDAO;
 import ua.nc.dao.ListValueDAO;
-import ua.nc.dao.enums.DataBaseType;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.dao.factory.DAOFactory;
 import ua.nc.dao.postgresql.PostgreDAOFactory;
@@ -19,10 +17,10 @@ import java.util.List;
 /**
  * Created by Neltarion on 12.05.2016.
  */
-public class EditFormServiceImpl implements EditFormService{
+public class EditFormServiceImpl implements EditFormService {
 
     private final static Logger LOGGER = Logger.getLogger(EditFormServiceImpl.class);
-//    private final static DAOFactory daoFactory  = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
+    //    private final static DAOFactory daoFactory  = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
     private final DAOFactory daoFactory = new PostgreDAOFactory();
 
     @Override
@@ -70,6 +68,19 @@ public class EditFormServiceImpl implements EditFormService{
         } finally {
             daoFactory.putConnection(connection);
             daoFactory.putConnection(connection1);
+        }
+    }
+
+    @Override
+    public void deleteQuestionFromCES(Integer ces_id, Integer field_id) {
+        Connection connection = daoFactory.getConnection();
+        CESDAO cesDAO = daoFactory.getCESDAO(connection);
+        try {
+            cesDAO.removeCESField(ces_id, field_id);
+        } catch (DAOException e) {
+            LOGGER.error(e);
+        } finally {
+            daoFactory.putConnection(connection);
         }
     }
 
