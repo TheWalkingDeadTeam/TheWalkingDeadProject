@@ -14,5 +14,5 @@ public interface ApplicationDAO extends GenericDAO<Application, Integer> {
 
     List<Application> getAllCESApplications(Integer ces_id) throws DAOException;
 
-    List<User> getStudentsForCurrentCES() throws DAOException;
+    List<Application> getApplicationsByCesIdUserId(Integer cesId, List<Integer> userIds) throws DAOException;
 }

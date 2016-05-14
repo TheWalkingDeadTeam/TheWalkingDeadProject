@@ -16,12 +16,17 @@ import java.util.List;
  * Created by Rangar on 02.05.2016.
  */
 public class PostgreApplicationDAO extends AbstractPostgreDAO<Application, Integer> implements ApplicationDAO {
-    public static final String GET_APPLICATION_BY_USER_CES = "SELECT * FROM Application WHERE system_user_id = ? AND ces_id = ?";
-    public static final String GET_ALL_CES_APPLICATIONS_QUERY = "SELECT * FROM Application WHERE ces_id = ?";
-    public static final String GET_ALL_USERS_FOR_CURRENT_CES = "Select u.* from system_user u JOIN application a " +
+    private static final String GET_APPLICATION_BY_USER_CES = "SELECT * FROM Application WHERE system_user_id = ? AND ces_id = ?";
+    private static final String GET_ALL_CES_APPLICATIONS_QUERY = "SELECT * FROM Application WHERE ces_id = ?";
+    private static final String GET_ALL_USERS_FOR_CURRENT_CES = "Select u.* from system_user u JOIN application a " +
             "ON u.system_user_id = a.system_user_id WHERE ces_id = " +
             "(SELECT ces.ces_id from course_enrollment_session ces " +
             "JOIN ces_status stat ON ces.ces_status_id = stat.ces_status_id AND stat.name = 'Active')";
+
+    private static final String GET_APPLICATIONS_BY_CES_ID_USER_ID = "SELECT application.* " +
+            "FROM application  " +
+            "JOIN system_user ON application.system_user_id = system_user.system_user_id  " +
+            "WHERE application.ces_id = ? AND system_user.system_user_id = ANY (?) ";
 
     public PostgreApplicationDAO(Connection connection) {
         super(connection);
@@ -118,9 +123,14 @@ public class PostgreApplicationDAO extends AbstractPostgreDAO<Application, Integ
         return result;
     }
 
-    @Override
-    public List<User> getStudentsForCurrentCES() throws DAOException {
-        return null;
+    public List<Application> getApplicationsByCesIdUserId(Integer cesId, List<Integer> userIds) throws DAOException {
+        try (PreparedStatement statement = connection.prepareStatement(GET_APPLICATIONS_BY_CES_ID_USER_ID)) {
+            statement.setInt(1, cesId);
+            statement.setArray(2, connection.createArrayOf("integer", userIds.toArray()));
+            return parseResultSet(statement.executeQuery());
+        } catch (Exception e) {
+            throw new DAOException(e);
+        }
     }
 
     @Override
