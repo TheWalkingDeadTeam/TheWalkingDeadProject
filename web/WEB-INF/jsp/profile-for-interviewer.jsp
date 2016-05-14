@@ -56,7 +56,7 @@
     <div class="container smprofile">
         <div class="row">
             <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4">
-                <img id="photo_img" src="/getPhoto" alt="User's photo" width="100" height="100"
+                <img id="photo_img" alt="User's photo" width="100" height="100"
                      onError="this.src='/resources/images/user-photo.png'" class="profile-photo">
             </div>
             <div class='col-lg-3 col-md-3 col-sm-3 col-xs-8'>
@@ -168,6 +168,7 @@
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="/resources/js/profileForInterviewer.js"></script>
 <script src="/resources/js/photo.js"></script>
+<script src="/resources/js/account.js"></script>
 
 </body>
 </html>

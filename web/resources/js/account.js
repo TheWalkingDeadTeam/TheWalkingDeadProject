@@ -3,9 +3,10 @@
  */
 
 $(document).ready(function(){
+    var id = location.search.substr(1);
     $.ajax({
         type: 'get',
-        url: '/getUser',
+        url: isNaN(id) ? '/getUser' : '/getUser/'+id,
         dataType: 'json',
         success: function(response){
             $('#userName').text(response.name);
