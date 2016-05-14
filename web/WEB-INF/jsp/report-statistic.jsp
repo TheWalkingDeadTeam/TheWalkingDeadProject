@@ -1,3 +1,10 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: Pavel
+  Date: 14.05.2016
+  Time: 1:52
+  To change this template use File | Settings | File Templates.
+--%>
 <!--Created by Alexander Haliy on 05.05.2016. !-->
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
 <html>
@@ -174,6 +181,6 @@
 </div>
 <script src="/resources/js/google-api.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
-<script src="<c:url value='/resources/js/mail_controller.js' />"></script>
+<script src="<c:url value='/resources/js/report.js' />"></script>
 </body>
 </html>

@@ -113,6 +113,6 @@ public class ReportController {
 
     @RequestMapping(value = "/report", method = RequestMethod.GET)
     public String report() {
-        return "report";
+        return "report-statistic";
     }
 }

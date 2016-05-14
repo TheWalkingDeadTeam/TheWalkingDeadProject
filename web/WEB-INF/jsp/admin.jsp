@@ -195,7 +195,7 @@
                         You are able to view statistic and reports
                     </div>
                     <div class="mdl-card__actions mdl-card--border">
-                        <a href="/admin/enroll-session" class="mdl-button mdl-js-button mdl-js-ripple-effect">Statistic & Reports</a>
+                        <a href="/report" class="mdl-button mdl-js-button mdl-js-ripple-effect">Statistic & Reports</a>
                     </div>
                 </div>
                 <div class="demo-separator mdl-cell--1-col"></div>

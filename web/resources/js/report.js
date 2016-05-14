@@ -1,3 +1,4 @@
+'use strict';
 /**
  * Created by Pavel on 11.05.2016.
  */
@@ -20,6 +21,7 @@ reporter.controller('ReportController', ['$scope', 'ReportService','$http', func
                 }
             );
     };
+    self.fetchReports();
 }]);
 
 reporter.factory('ReportService', ['$http', '$q', function($http, $q){
@@ -27,7 +29,7 @@ reporter.factory('ReportService', ['$http', '$q', function($http, $q){
     return {
 
         fetchReports: function() {
-            return $http.get('/reports/view/1')
+            return $http.get('/reports/view/2')
                 .then(
                     function(response){
                         console.info(response.data);

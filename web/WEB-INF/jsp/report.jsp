@@ -11,38 +11,30 @@
 <html>
 
 <head>
-    <link data-require="bootstrap-css@3.2.0" data-semver="3.2.0" rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
+
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
-    <script data-require="ui-bootstrap@0.11.0" data-semver="0.11.0" src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.0.min.js"></script>
-    <script data-require="lodash.js@3.10.0" data-semver="3.10.0" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.0/lodash.js"></script>
-<%--
-    <script src="/resources/js/script.js"></script>
---%>
     <script src="/resources/js/report.js"></script>
-<%--
-    <script src="/resources/js/smart-table.js"></script>
---%>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+    <link href="<c:url value='/resources/css/app.css' />" rel="stylesheet"/>
+
+
 </head>
 
 <body ng-app="reporter">
-<table ng-controller="ReportController as rc">
-    HELLOU FROME INDIA
-    <thead>
-
-    <tr ng-repeat="r in rc.reports">
-        <th>{{r.name}}</th>
-    </tr>
-    </thead>
-    <tbody>
-<%--    <tr ng-repeat="row in displayed">
-        <td>{{row.firstName}}</td>
-        <td>{{row.lastName | uppercase}}</td>
-        <td>{{row.nationality}}</td>
-        <td>{{row.education}}</td>
-    </tr>--%>
-    </tbody>
-    <tfoot></tfoot>
-</table>
+<div class="table-responsive">
+    <table ng-controller="ReportController as rc" class="table">
+        <thead>
+        <tr>
+            <th ng-repeat="(key, val) in rc.reports[0]">{{key}}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="r in rc.reports">
+            <td ng-repeat="(key,val) in r">{{val}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 </body>
 
 </html>
