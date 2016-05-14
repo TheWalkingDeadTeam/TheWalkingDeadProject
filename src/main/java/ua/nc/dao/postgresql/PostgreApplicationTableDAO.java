@@ -53,6 +53,20 @@ public class PostgreApplicationTableDAO {
                     "LIMIT ? OFFSET ?"
     );
 
+    private static final String COUNT_QUERY = (
+            "SELECT count (*) " +
+                    "FROM public.application " +
+                    "JOIN public.system_user " +
+                    "    ON application.system_user_id = system_user.system_user_id " +
+                    "JOIN public.course_enrollment_session " +
+                    "    ON course_enrollment_session.ces_id = application.ces_id " +
+                    "WHERE course_enrollment_session.ces_id = ? " +
+                    "        AND (system_user.surname LIKE ? " +
+                    "        OR system_user.name LIKE ? )"
+    );
+
+
+
     public List<FieldData> getFieldIds(Integer cesId) throws DAOException {
         try (PreparedStatement statement = this.connection.prepareStatement(GET_FIELD_IDS_QUERY)) {
             statement.setInt(1, cesId);
@@ -190,5 +204,21 @@ public class PostgreApplicationTableDAO {
                 break;
         }
         return result;
+    }
+
+    public Integer getApplicationsCount(Integer cesId, String pattern) throws DAOException {
+        try (PreparedStatement statement = this.connection.prepareStatement(COUNT_QUERY)) {
+            statement.setInt(1, cesId);
+            statement.setString(2, "%" + pattern + "%");
+            statement.setString(3, "%" + pattern + "%");
+            return getCount(statement.executeQuery());
+        } catch (Exception e) {
+            throw new DAOException(e);
+        }
+    }
+
+    private Integer getCount(ResultSet rs) throws SQLException {
+        rs.next();
+        return rs.getInt("count");
     }
 }
