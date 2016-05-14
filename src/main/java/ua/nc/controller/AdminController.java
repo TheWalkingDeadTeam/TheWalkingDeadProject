@@ -74,7 +74,7 @@ public class AdminController {
         return "admin-create-user";
     }
 
-    @RequestMapping(value = {"/remove"},method = RequestMethod.POST)
+    @RequestMapping(value = {"/remove"},method = RequestMethod.POST, produces = "application/json")
     public void removeInterviewers(@RequestBody ArrayList<Integer> interviewersId){
             CESService cesService = new  CESServiceImpl();
             int cesId = cesService.getCurrentCES().getId();
