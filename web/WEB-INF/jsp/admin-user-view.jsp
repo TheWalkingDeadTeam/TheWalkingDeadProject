@@ -152,7 +152,7 @@
             </thead>
             <tbody>
             <tr ng-show="data.users.length <= 0">
-                <td colspan="5" style="text-align:center;">Bratiska POGODI</td>
+                <td colspan="5" style="text-align:center;">Please Wait</td>
             </tr>
             <tr dir-paginate="user in data.users|itemsPerPage:data.itemsPerPage" total-items="data.total_count">
                 <td><input type="checkbox" checklist-model="dataStudents.studId" checklist-value="user.userId"></td>
@@ -161,7 +161,7 @@
                 <td ng-repeat="head in data.header">
                     {{user.fields[head.id]}}
                 </td>
-                <td>{{user.rejected}}</td>
+                <td ng-style="{opacity:0.5,'background-color':'{{user.rejected ? 'red' : 'green'}}'}">{{user.rejected}}</td>
                 <%--<td>{{user.fields[6]}}</td>--%>
                 <%--<td>{{user.devMark}}</td>--%>
                 <%--<td>{{user.hrMark}}</td>--%>

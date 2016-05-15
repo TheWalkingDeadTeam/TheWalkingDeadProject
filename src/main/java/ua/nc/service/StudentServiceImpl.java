@@ -68,6 +68,21 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    public StudentData getStudents(Integer itemPerPage, Integer pageNumber, Integer sortType, Boolean asc) {
+        Connection connection = daoFactory.getConnection();
+        PostgreApplicationTableDAO applicationTableDAO = new PostgreApplicationTableDAO(connection);
+        CESServiceImpl cesService = new CESServiceImpl();
+        CES ces = cesService.getCurrentCES();
+        try {
+            //ORDER BY
+            return applicationTableDAO.getApplicationsTable(ces.getId(), itemPerPage, pageNumber, sortType, asc);
+        } catch (DAOException e) {
+            log.warn("Can't get students", e.getCause());
+        }
+        return null;
+    }
+
+    @Override
     public Integer getSize() {
         Connection connection = daoFactory.getConnection();
         PostgreApplicationTableDAO applicationTableDAO = new PostgreApplicationTableDAO(connection);
@@ -111,7 +126,7 @@ public class StudentServiceImpl implements StudentService {
         log.info("List of applications was accepted " + studentsId);
     }
 
-    private void changeApplicationStatus(List<Integer> studentsId, Boolean status){
+    private void changeApplicationStatus(List<Integer> studentsId, Boolean status) {
         Connection connection = daoFactory.getConnection();
         ApplicationDAO applicationDAO = daoFactory.getApplicationDAO(connection);
         CESDAO cesDAO = daoFactory.getCESDAO(connection);

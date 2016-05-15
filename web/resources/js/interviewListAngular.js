@@ -173,9 +173,9 @@ interView.controller('interCtrl', ["$http", "$scope", function ($http, $scope) {
 
     };
 
-    $scope.sortType = function (type) {
+    $scope.sortType = function (type,asc) {
         vm.order_by = type;
-        vm.selectUrl = "interviewers/list/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by;
+        vm.selectUrl = "interviewers/list/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by + "/" + asc;
         vm.getData()
     };
 

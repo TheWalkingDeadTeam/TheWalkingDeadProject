@@ -91,32 +91,32 @@
                     <input type="checkbox" ng-model="selectedAll" ng-click="checkAll()">
                 </td>
                 <td>
-                    <a href="#" ng-click="order_by = 'id'; sortReverse = !sortReverse; sortType(order_by)">
+                    <a href="#" ng-click="order_by = 'id'; sortReverse = !sortReverse; sortType(order_by,sortReverse)">
                         #
                     </a>
                 </td>
                 <td>
-                    <a href="#" ng-click="order_by = 'name'; sortReverse = !sortReverse; sortType(order_by)">
+                    <a href="#" ng-click="order_by = 'name'; sortReverse = !sortReverse; sortType(order_by,sortReverse)">
                         Name
                     </a>
                 </td>
                 <td>
-                    <a href="#" ng-click="order_by = 'surname'; sortReverse = !sortReverse; sortType(order_by)">
+                    <a href="#" ng-click="order_by = 'surname'; sortReverse = !sortReverse; sortType(order_by,sortReverse)">
                         Surname
                     </a>
                 </td>
                 <td>
-                    <a href="#" ng-click="order_by = 'email'; sortReverse = !sortReverse; sortType(order_by)">
+                    <a href="#" ng-click="order_by = 'email'; sortReverse = !sortReverse; sortType(order_by,sortReverse)">
                         Email
                     </a>
                 </td>
                 <td>
-                    <a href="#" ng-click="order_by = 'role'; sortReverse = !sortReverse; sortType(order_by)">
+                    <a href="#" ng-click="order_by = 'role'; sortReverse = !sortReverse; sortType(order_by,sortReverse)">
                         Role
                     </a>
                 </td>
                 <td>
-                    <a href="#" ng-click="order_by = 'participation'; sortReverse = !sortReverse; sortType(order_by)">
+                    <a href="#" ng-click="order_by = 'participation'; sortReverse = !sortReverse; sortType(order_by,sortReverse)">
                         Participation
                     </a>
                 </td>
@@ -124,7 +124,7 @@
             </thead>
             <tbody>
             <tr ng-show="data.users.length <= 0">
-                <td colspan="5" style="text-align:center;">Bratiska POGODI</td>
+                <td colspan="5" style="text-align:center;">Please Wait</td>
             </tr>
             <tr dir-paginate="user in data.users|itemsPerPage:data.itemsPerPage" total-items="data.total_count">
                 <td><input type="checkbox" checklist-model="dataStudents.studId" checklist-value="user.id">
@@ -134,7 +134,7 @@
                 <td>{{user.surname}}</td>
                 <td>{{user.email}}</td>
                 <td>{{user.role}}</td>
-                <td>{{user.participation}}</td>
+                <td ng-style="{opacity:0.5,'background-color':'{{user.participation ? 'green' : 'red'}}'}">{{user.participation}}</td>
             </tr>
             </tbody>
         </table>

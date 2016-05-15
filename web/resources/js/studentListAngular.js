@@ -202,10 +202,10 @@ app.controller('StudentCtrl', ["$http", "$scope", function ($http, $scope) {
 
     vm.setPageno = function (pageno) {
         vm.pageno = pageno;
-        if(vm.order_by === null){
-            vm.selectUrl = "students/list/"+vm.itemsPerPage+"/"+vm.pageno;
-        }else{
-            vm.selectUrl = "students/list/"+vm.itemsPerPage+"/"+vm.pageno+"/"+vm.order_by;
+        if (vm.order_by === null) {
+            vm.selectUrl = "students/list/" + vm.itemsPerPage + "/" + vm.pageno;
+        } else {
+            vm.selectUrl = "students/list/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by;
         }
         vm.getData();
     };
@@ -224,10 +224,10 @@ app.controller('StudentCtrl', ["$http", "$scope", function ($http, $scope) {
 
     };
 
-    $scope.sortType = function (type) {
+    $scope.sortType = function (type, revers) {
         // vm.users = [];
         vm.order_by = type;
-        vm.selectUrl = "students/list/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by;
+        vm.selectUrl = "students/list/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by + "/" + revers;
         // // "students/list/"+vm.itemsPerPage+"/"+pageno
         // $http.get("students/list/" + vm.itemsPerPage + "/" + vm.pageno + "/" + type).success(function (response) {
         //     vm.header = response.header;
@@ -308,10 +308,10 @@ app.controller('StudentCtrl', ["$http", "$scope", function ($http, $scope) {
             type: "search",
             values: [$scope.searchFilt]
         };
-        if(vm.order_by === null){
-            vm.selectUrl = "students/search/"+vm.itemsPerPage+"/"+vm.pageno+"/"+pattern;
-        }else{
-            vm.selectUrl = "students/search/"+vm.itemsPerPage+"/"+vm.pageno+"/"+vm.order_by+"/"+pattern;
+        if (vm.order_by === null) {
+            vm.selectUrl = "students/search/" + vm.itemsPerPage + "/" + vm.pageno + "/" + pattern;
+        } else {
+            vm.selectUrl = "students/search/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by + "/" + pattern;
         }
         vm.getData();
         // var res = $http.get('students/search/', dataObj);
