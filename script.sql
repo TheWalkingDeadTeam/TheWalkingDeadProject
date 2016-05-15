@@ -91,9 +91,12 @@ CREATE TABLE CES_Status (
 );
 
 INSERT INTO CES_Status (Name) VALUES
-('Active'),
-('Closed'),
-('Pending');
+('Pending'),
+('RegistrationOngoing'),
+('BetweenRegistrationAndInterviewing'),
+('InterviewingOngoing'),
+('PostInterviewing'),
+('Closed');
 
 CREATE TABLE Course_Enrollment_Session (
   CES_ID serial PRIMARY KEY,
