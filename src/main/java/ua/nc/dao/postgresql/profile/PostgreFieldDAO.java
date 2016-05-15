@@ -15,7 +15,7 @@ import java.util.List;
  * Created by Rangar on 24.04.2016.
  */
 public class PostgreFieldDAO extends AbstractPostgreDAO<Field, Integer> implements FieldDAO {
-    private static final String getFieldsForCESQuery = "SELECT * FROM field f " +
+    private static final String GET_FIELDS_FOR_CES_QUERY = "SELECT * FROM field f " +
             "JOIN ces_field cf ON f.field_id = cf.field_id WHERE cf.ces_id = ?";
 
     public PostgreFieldDAO(Connection connection) {
@@ -25,7 +25,7 @@ public class PostgreFieldDAO extends AbstractPostgreDAO<Field, Integer> implemen
     @Override
     public List<Field> getFieldsForCES(Integer ces_id) throws DAOException {
         List<Field> result;
-        try (PreparedStatement statement = connection.prepareStatement(getFieldsForCESQuery)) {
+        try (PreparedStatement statement = connection.prepareStatement(GET_FIELDS_FOR_CES_QUERY)) {
             statement.setInt(1, ces_id);
             ResultSet rs = statement.executeQuery();
             result = parseResultSet(rs);

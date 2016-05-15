@@ -1,5 +1,6 @@
 package ua.nc.dao;
 
+import ua.nc.dao.exception.DAOException;
 import ua.nc.entity.Interviewee;
 
 /**

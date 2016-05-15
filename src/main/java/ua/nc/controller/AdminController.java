@@ -1,11 +1,12 @@
 package ua.nc.controller;
 
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import ua.nc.dao.exception.DAOException;
+import ua.nc.entity.CES;
 import ua.nc.entity.Interviewer;
 import ua.nc.entity.StudentStatus;
 import ua.nc.entity.User;
@@ -17,6 +18,8 @@ import ua.nc.validator.RegistrationValidator;
 import ua.nc.validator.ValidationError;
 import ua.nc.validator.Validator;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -24,12 +27,16 @@ import java.util.Set;
  * Created by Pavel on 18.04.2016.
  */
 
+/**
+ * Created by Pavel on 18.04.2016.
+ */
 @Controller
 @RequestMapping(value = "/admin")
 public class AdminController {
     private static final Logger LOGGER = Logger.getLogger(AdminController.class);
     private final UserService userService = new UserServiceImpl();
-    StudentService studentService = new StudentServiceImpl();
+    private final CESService cesService = new CESServiceImpl();
+    private final StudentService studentService = new StudentServiceImpl();
 
     @RequestMapping(method = RequestMethod.GET)
     public String login() {
@@ -51,7 +58,7 @@ public class AdminController {
                     LOGGER.warn("Register failed " + user.getEmail());
                     errors.add(new ValidationError("register", "Register failed"));
                 } else {
-                    LOGGER.info("Admin" + ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+                    LOGGER.info(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                             .getPrincipal()).getUsername() + " create user " + user.getEmail());
                 }
             } else {
@@ -65,6 +72,22 @@ public class AdminController {
     @RequestMapping(value = {"/create"})
     public String createUser() {
         return "admin-create-user";
+    }
+
+    @RequestMapping(value = {"/remove"},method = RequestMethod.POST, produces = "application/json")
+    public void removeInterviewers(@RequestBody ArrayList<Integer> interviewersId){
+            CESService cesService = new  CESServiceImpl();
+            int cesId = cesService.getCurrentCES().getId();
+            Iterator<Integer> iterator = interviewersId.iterator();
+            while (iterator.hasNext()){
+                try {
+                    cesService.removeInterviewer( iterator.next(),cesId);
+                } catch (DAOException e) {
+                    LOGGER.error("Can't Sign out interviewer");
+                    LOGGER.error(e);
+                }
+            }
+
     }
 
     /**
@@ -236,8 +259,53 @@ public class AdminController {
         return interviewerService.getInterviewerSize();
     }
 
+
     @RequestMapping(value = {"/mail-template"}, method = RequestMethod.GET)
     public String mail() {
         return "admin-mail-template";
     }
+
+
+    @RequestMapping(value = {"/cesPost"}, method = RequestMethod.POST)
+    public @ResponseBody
+    CES getCES(@RequestBody CES ces) {
+        try {
+            cesService.setCES(ces);
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+        return ces;
+    }
+
+
+    @RequestMapping(value = {"/cessettings"}, method = RequestMethod.GET)
+    public String cesPage() {
+        return "cessettings";
+    }
+
+    @RequestMapping(value = "/cessettings", method = RequestMethod.GET, produces = "application/json")
+    public
+    @ResponseBody
+    CES ces() {
+        try {
+            System.out.println(cesService.getCES());
+            return cesService.getCES();
+        } catch (DAOException e) {
+            LOGGER.error("DAO error");
+            return null;
+        }
+    }
+
+
+    @RequestMapping(value = {"/scheduler"} ,method = RequestMethod.GET)
+    public String schedulerView() {
+        return "admin-scheduler";
+    }
+
+    @RequestMapping(value = {"/enroll-session"}, method = RequestMethod.GET)
+    public String enrollmentSessionView() {
+        return "admin-es-view";
+    }
+
+
 }

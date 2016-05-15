@@ -1,13 +1,15 @@
 (function () {
-
     var requestData;
-    var id = $(location).attr('search');
-
+    var id = location.search.substr(1);
+    var isAgree = false;
+/*
+    $('#photo_img').attr({'src':('/getPhoto/'+id)});
+*/
     $(document).ready(function () {
         $.ajax({
             type: 'get',
-            /*  url: "/profile/" + id,*/
-            url: "/resources/json/myJSON.json",
+            url: "/profile/" + id,
+            // url: "/resources/json/myJSON.json",
             dataType: 'json',
             contentType: "application/json",
             success: function (response) {
@@ -17,15 +19,21 @@
                     $('#fields').on('change, input', enableSave);
                     response.fields.forEach(function (item, i) {
                         typeSwitcher(item, i, '#fields');
+                        if (item.fieldName == 'Phone number' && item.values[0].value) {
+                            isAgree = true;
+                        }
                     });
                     $('<div id="agreement">').appendTo('#fields');
                     $('#agreement').append('<label for="agree">' + "I agree to have my personal information been proceeded " + '</label>');
                     $('<input>').attr({id: "agree", type: "checkbox"}).appendTo('#agreement');
                     $('#agree').on('click', enableSave);
+                    checkAgreement();
+                    enableSave();
                 }
 
             },
             error: function (jqXHR, exception) {
+                console.log(exception.toString());
                 window.location.href = "/error"
             }
         });
@@ -35,8 +43,12 @@
             $.ajax({
                 method: 'POST',
                 contentType: "application/json",
-                url: 'profile',
-                data: JSON.stringify(requestData)
+                url: '/profile',
+                data: JSON.stringify(requestData),
+                success: function () {
+                    $('#fieldsCheck').removeClass().empty();
+                    $('#fieldsCheck').addClass('alert alert-success').html('Profile saved successfully');
+                }
             })
         });
 
@@ -45,11 +57,32 @@
             $.ajax({
                 method: 'GET',
                 contentType: "application/json",
-                url: '/profile/enroll'
+                url: '/profile/enroll',
+                success: function (response) {
+                    if(response.length){
+                        $('#fieldsCheck').removeClass().empty();
+                        var errorMsg = '';
+                        for (var i in response) {
+                            errorMsg += response[i].errorMessage + "</br>";
+                        }
+                        $('#fieldsCheck').addClass('alert alert-danger').html(errorMsg);
+                    } else {
+                        $('#fieldsCheck').removeClass().empty();
+                        $('#fieldsCheck').addClass('alert alert-success').html('You have successfully enrolled on current courses!');
+                    }
+                }
             })
         });
     });
 
+
+    function checkAgreement () {
+        if(isAgree) {
+            $('#agree').prop("checked", true);
+        } else {
+            $('#agree').prop("checked", false);
+        }
+    }
 
     function enableSave() {
 
@@ -60,10 +93,10 @@
             }
         });
 
-        if (empty || !$('#agree').is(':checked') || !checkCheckboxes()) {
+        if (empty || !$('#agree').is(':checked') || !checkCheckboxes() || !checkRadio()) {
             $('#fieldsCheck').addClass('alert alert-danger').html('Please, fill each field and check Agree button');
             $('#save').attr('disabled', 'disabled');
-        } else if (!empty && $('#agree').is(':checked') && checkCheckboxes()) {
+        } else if (!empty && $('#agree').is(':checked') && checkCheckboxes() && checkRadio()) {
             $('#fieldsCheck').removeClass().empty();
             $('#save').prop('disabled', false);
         }
@@ -96,39 +129,39 @@
 
     function typeSwitcher(item, i, divname) {
 
-        if (!item.multiple) {
-            switch (item.type) {
+        if (!item.multipleChoice) {
+            switch (item.fieldType) {
                 case 'number':
                     $('<div id=\"block' + i + '\">').appendTo($(divname));
-                    $('<label>').attr({for: item.id}).text(item.name + ' ').appendTo($('#block' + i));
-                    var attributes = {type: 'number', id: item.id, min: '0', max: '10', value: item.value[0].value};
+                    $('<label>').attr({for: item.id}).text(item.fieldName + ' ').appendTo($('#block' + i));
+                    var attributes = {type: 'number', id: item.id, min: '0', max: '10', value: item.values[0].value};
                     attributes.required = "required";
                     $('<input>')
                         .attr(attributes)
                         .attr('ng-model', i)
                         .appendTo($('#block' + i))
                         .bind('input', function () {
-                            requestData['fields'][$(this).attr('ng-model')].value[0].value = $(this).val();
+                            requestData['fields'][$(this).attr('ng-model')].values[0].value = $(this).val();
                         });
                     break;
 
                 case 'radio':
                     $('<div id=\"radioBlock' + i + '\">').appendTo($(divname));
-                    $('<span>').text(item.name + ': ').appendTo($('#radioBlock' + i));
-                    item.value.forEach(function (item_value, j) {
-                        var isChecked = item_value.value ? 'checked' : '',
+                    $('<span>').text(item.fieldName + ': ').appendTo($('#radioBlock' + i));
+                    item.values.forEach(function (item_value, j) {
+                        var isChecked = (item_value.value == "true") ? 'checked' : '',
                             attributes = {type: 'radio', id: item_value.id, name: item.id};
                         attributes.required = "required";
                         if (isChecked) {
                             attributes.checked = isChecked;
                         }
-                        $('<label>').attr({for: item_value.id}).text(' ' + item_value.name).appendTo($('#radioBlock' + i));
+                        $('<label>').attr({for: item_value.id}).text(' ' + item_value.fieldValueName).appendTo($('#radioBlock' + i));
                         $('<input>')
                             .attr(attributes)
                             .attr('ng-model', i)
                             .appendTo($('#radioBlock' + i))
                             .on('change', function () {
-                                var updatedRadios = requestData.fields[$(this).attr('ng-model')].value.map(function (item) {
+                                var updatedRadios = requestData.fields[$(this).attr('ng-model')].values.map(function (item) {
                                     if (item.id == this.id) {
                                         item.value = true;
                                         return item;
@@ -137,24 +170,24 @@
                                         return item;
                                     }
                                 }, this);
-                                enableSave()
-                                requestData.fields[$(this).attr('ng-model')].value = updatedRadios;
+                                enableSave();
+                                requestData.fields[$(this).attr('ng-model')].values = updatedRadios;
 
                             });
                     })
                     break;
 
                 case 'text':
-                    var attributes = {type: 'text', id: item.id, value: item.value[0].value};
+                    var attributes = {type: 'text', id: item.id, value: item.values[0].value};
                     attributes.required = "required";
                     $('<div id=\"block' + i + '\">').appendTo($(divname));
-                    $('<label>').attr({for: item.id}).text(item.name + ' ').appendTo($('#block' + i));
+                    $('<label>').attr({for: item.id}).text(item.fieldName + ' ').appendTo($('#block' + i));
                     $('<input>')
                         .attr(attributes)
                         .attr('ng-model', i)
                         .appendTo($('#block' + i))
                         .bind('input', function () {
-                            requestData['fields'][$(this).attr('ng-model')].value[0].value = $(this).val();
+                            requestData['fields'][$(this).attr('ng-model')].values[0].value = $(this).val();
                         });
                     break;
                 case 'tel':
@@ -166,82 +199,87 @@
                         min: 10,
                         pattern: pattern,
                         placeholder: "+380662281488",
-                        value: item.value[0].value
+                        value: item.values[0].value
                     };
                     attributes.required = "required";
                     $('<div id=\"block' + i + '\">').appendTo($(divname));
-                    $('<label>').attr({for: item.id}).text(item.name + ' ').appendTo($('#block' + i));
+                    $('<label>').attr({for: item.id}).text(item.fieldName + ' ').appendTo($('#block' + i));
                     $('<input>')
                         .attr(attributes)
                         .attr('ng-model', i)
                         .appendTo($('#block' + i))
                         .bind('input', function () {
-                            requestData['fields'][$(this).attr('ng-model')].value[0].value = $(this).val();
+                            requestData['fields'][$(this).attr('ng-model')].values[0].value = $(this).val();
                         });
                     break;
 
                 case 'select':
-                    var attributes = {type: 'select', id: item.id};
+
+                    var attributes = {type: 'select', id: 'select' + item.id};
                     attributes.required = "required";
                     $('<div id=\"block' + i + '\">').appendTo($(divname));
-                    $('<span>').attr({for: item.id}).text(item.name + ' ').appendTo($('#block' + i));
+                    $('<span>').attr({for: item.id}).text(item.fieldName + ' ').appendTo($('#block' + i));
                     $('<select>').attr(attributes).attr('ng-model', i).appendTo($('#block' + i));
-                    $('#' + item.id).append('<option ' + 'disabled' + '>' + 'University' + '</option>');
-                    item.value.forEach(function (item_value, j) {
-                        var isSelected = item_value.value ? 'selected' : '';
-                        $('#' + item.id)
-                            .append('<option id="' + item_value.id + '" value="' + item_value.name + '" ' + isSelected + '>' + item_value.name + '</option>')
-                            .on('change', function () {
-                                var updatedSelect = requestData.fields[$(this).attr('ng-model')].value.map(function (item) {
-                                    if (item.name == this.value) {
-                                        item.value = true;
-                                        return item;
-                                    } else {
-                                        item.value = false;
-                                        return item;
-                                    }
-                                }, this);
+                    $('#select' + item.id).append('<option ' + 'disabled' + '>' + 'University' + '</option>');
+                    item.values.forEach(function (item_value, j) {
+                        var isSelected = item_value.value == "true";
+                        $('#select' + item.id)
+                            .append('<option id="' + item_value.id + '" value="' + item_value.fieldValueName + '">' + item_value.fieldValueName + '</option>');
+                        if(isSelected) {
+                            $("#select" + item.id + " option[value='" + item_value.fieldValueName + "']").prop('selected', true);
+                        }
+                    });
+                    $('#select' + item.id).on('change', function () {
+                        var updatedSelect = requestData.fields[$(this).attr('ng-model')].values.map(function (item) {
+                            allah = $(this).attr('ng-model');
+                            if (item.fieldValueName == this.value) {
+                                item.value = 'true';
+                                return item;
+                            } else {
+                                item.value = 'false';
+                                return item;
+                            }
+                        }, this);
 
-                                requestData.fields[$(this).attr('ng-model')].value = updatedSelect;
-                            });
-                    })
+                        requestData.fields[$(this).attr('ng-model')].values = updatedSelect;
+                    });
                     break;
 
                 case 'textarea':
-                    var attributes = {id: item.id, cols: 40, rows: 4};
+                    var attributes = {id: 'textarea' + item.id, cols: 40, rows: 4};
                     attributes.required = "required";
                     $('<div id=\"block' + i + '\">').appendTo($(divname));
-                    $('<span>').attr({for: item.id}).text(item.name + ' ').appendTo($('#block' + i));
+                    $('<span>').attr({for: item.id}).text(item.fieldName + ' ').appendTo($('#block' + i));
                     $('<textarea>')
                         .attr(attributes)
                         .attr('ng-model', i)
                         .appendTo($('#block' + i))
                         .bind('input', function () {
-                            requestData['fields'][$(this).attr('ng-model')].value[0].value = $(this).val();
+                            requestData['fields'][$(this).attr('ng-model')].values[0].value = $(this).val();
                         });
-                    $('#' + item.id).val(item.value[0].value);
+                    $('#textarea' + item.id).val(item.values[0].value);
                     break;
             }
-        } else if (item.multiple) {
+        } else if (item.multipleChoice) {
 
-            switch (item.type) {
+            switch (item.fieldType) {
                 case 'checkbox':
                     $('<div id=\"checkBlock' + i + '\">').appendTo($(divname));
-                    $('<span>').text(item.name + ': ').appendTo($('#checkBlock' + i));
-                    item.value.forEach(function (item_value, j) {
-                        var isChecked = item_value.value ? 'checked' : '',
+                    $('<span>').text(item.fieldName + ': ').appendTo($('#checkBlock' + i));
+                    item.values.forEach(function (item_value, j) {
+                        var isChecked = (item_value.value == "true") ? 'checked' : '',
                             attributes = {type: 'checkbox', id: item_value.id, value: item_value.value};
                         if (isChecked) {
                             attributes.checked = isChecked;
                         }
-                        $('<label>').attr({for: item_value.id}).text(' ' + item_value.name).appendTo($('#checkBlock' + i));
+                        $('<label>').attr({for: item_value.id}).text(' ' + item_value.fieldValueName).appendTo($('#checkBlock' + i));
                         $('<input>')
                             .attr(attributes)
                             .attr('ng-model', i)
                             .appendTo($('#checkBlock' + i))
                             .on('change', function () {
                                 enableSave()
-                                requestData.fields[$(this).attr('ng-model')].value[j].value = this.checked;
+                                requestData.fields[$(this).attr('ng-model')].values[j].value = this.checked;
                             });
                     });
                     break;

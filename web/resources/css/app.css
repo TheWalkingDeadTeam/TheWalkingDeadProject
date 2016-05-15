@@ -13,7 +13,7 @@ body, .form-control {
 }
 
 .has-error {
-    color: red;
+    color: #e83e35;
 }
 
 .formcontainer {

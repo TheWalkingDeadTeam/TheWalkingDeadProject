@@ -21,14 +21,30 @@ public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements C
             "JOIN ces_status stat ON ces.ces_status_id = stat.ces_status_id AND stat.name = 'Active'";
     private static final String getPendingCESQuery = "SELECT ces.* FROM course_enrollment_session ces " +
             "JOIN ces_status stat ON ces.ces_status_id = stat.ces_status_id WHERE name = 'Pending'";
+    private static final String getCurrentInterviewBegunCESQuery = "SELECT ces.* FROM course_enrollment_session ces " +
+            "JOIN ces_status stat ON ces.ces_status_id = stat.ces_status_id WHERE name = 'ActiveInterviewBegan'";
+
     private static final String addInterviewerForCurrentCES = "INSERT INTO interviewer_participation (ces_id, system_user_id) VALUES (?, ?);";
     private static final String addCESFieldQuery = "INSERT INTO ces_field (ces_id, field_id) VALUES (?, ?);";
+
     private static final String removeCESFieldQuery = "DELETE FROM ces_field WHERE ces_id = ? AND field_id = ?";
     private static final String removeInterviewerForCurrentCESQuery = "DELETE FROM interviewer_participation" +
             " WHERE ces_id = ? AND system_user_id = ?";
 
     public PostgreCESDAO(Connection connection) {
         super(connection);
+    }
+
+    private class PersistCES extends CES{
+        public PersistCES(Integer year, Date startRegistrationDate, Integer quota, Integer reminders, Integer statusId,
+                          Integer interviewTimeForPerson, Integer interviewTimeForDay) {
+            super(year, startRegistrationDate, quota, reminders, statusId,
+                    interviewTimeForPerson, interviewTimeForDay);
+        }
+
+        public void setId(int id) {
+            super.setId(id);
+        }
     }
 
     @Override
@@ -54,6 +70,7 @@ public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements C
     public String getAllQuery() {
         return "SELECT * FROM course_enrollment_session";
     }
+
 
     @Override
     protected List<CES> parseResultSet(ResultSet rs) throws DAOException {
@@ -144,6 +161,11 @@ public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements C
         return getSomeCES(getPendingCESQuery);
     }
 
+    @Override
+    public CES getCurrentInterviewBegunCES() throws DAOException {
+        return getSomeCES(getCurrentInterviewBegunCESQuery);
+    }
+
     private CES getSomeCES(String query) throws DAOException {
         CES result;
         try (PreparedStatement statement = connection.prepareStatement(query)) {
@@ -197,15 +219,4 @@ public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements C
         return persist(object);
     }
 
-    private class PersistCES extends CES {
-        public PersistCES(Integer year, Date startRegistrationDate, Integer quota, Integer reminders, Integer statusId,
-                          Integer interviewTimeForPerson, Integer interviewTimeForDay) {
-            super(year, startRegistrationDate, quota, reminders, statusId,
-                    interviewTimeForPerson, interviewTimeForDay);
-        }
-
-        public void setId(int id) {
-            super.setId(id);
-        }
-    }
 }

@@ -1,8 +1,8 @@
-$(document).ready(function () {
+    $(document).ready(function () {
     // popup-------------------------------------------------------------------------------popup
     $('.regbut').bind('click', function () {
         $('.reg').fadeIn(500); //openpopup
-        openValidate();
+        // openValidate();
     });
 
     $('.closebtn').bind('click', function () {

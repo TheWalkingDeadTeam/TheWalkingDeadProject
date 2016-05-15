@@ -8,10 +8,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <sec:authorize access="isAuthenticated()">
-    <div class="alert alert-info" role="alert">
+    <div class="" role="alert">
         <div id="messageCheckPassword"></div>
         <form>
-            <input id="changePassword" name="password" class="form-control" placeholder="Password" type="text"
+            <input id="changePassword" name="password" class="form-control" placeholder="Password" type="password"
                    value="">
             <button id="buttonChangePassword" class="btn btn-lg btn-primary btn-block changebtn">ChangePassword</button>
         </form>

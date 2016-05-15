@@ -10,15 +10,25 @@
 <html>
 <head>
     <title>Account Information</title>
+
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" sizes="32x32" href="/resources/images/ico.png"/>
+    <%--<link rel="stylesheet" type="text/css" href="/resources/css/reset.css"/>--%>
+    <%--<link rel="stylesheet" type="text/css" href="/resources/css/styles.css"/>--%>
+    <%--<link rel="stylesheet" type="text/css" href="/resources/bootstrap/css/bootstrap.css"/>--%>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
     <link rel="icon" type="image/png" sizes="32x32" href="/images/ico.png">
     <link rel="stylesheet" type="text/css" href="resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="resources/css/style.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="resources/css/media.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="resources/css/style-profile.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="resources/css/media-profile.css" rel="stylesheet">
     <script src="resources/bootstrap/js/jquery-2.2.2.min.js" defer></script>
     <script src="resources/bootstrap/js/bootstrap.min.js" defer></script>
+    <%--<style type="text/css">--%>
+    <%--/*<img src='images/logo.png' alt="Brand" class="header-img">*/--%>
+    <%--/*<img src='images/error.gif' class="img-responsive profile-photo">*/--%>
+    <%--/*<img class='img-responsive' src="images/logo-gray.png">*/--%>
 </head>
 <body>
 <header>
@@ -38,11 +48,11 @@
             </div>
             <div id='collapsed-menu' class='navbar-collapse collapse'>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="">Home</a></li>
-                    <li><a href="">Information</a></li>
+                    <li><a href="/login">Home</a></li>
+                    <li><a href="/information">Information</a></li>
+                    <li><a href="/contacts">Contacts</a></li>
                     <sec:authorize access="hasRole('ROLE_STUDENT')">
-
-                        <li><a href="/profile">Profile</a></li>
+                        <li><a href="/account/profile">Profile</a></li>
                     </sec:authorize>
                     <li><a href="/logout">Logout</a></li>
                 </ul>
@@ -50,7 +60,7 @@
         </div>
     </nav>
 </header>
-
+<sec:authorize access="isAuthenticated()">
 <form id="accountForm">
     <div class="container-fluid  smprofile">
         <div class="row">
@@ -69,9 +79,11 @@
                 <h4>E-mail:</h4>
             </div>
             <div class="col-lg-2 col-md-2 col-sm-2 col-xs-3">
-                <span>Ivan</span>
-                <span>Ivanovich</span>
-                <span>ivanovivanovich@gmail.com</span>
+                <sec:authentication var="principal" property="principal"/>
+                <span>${principal.username}</span>
+                <span>${principal.username}</span>
+                <span>${principal.username}</span>
+
 
             </div>
             <div class="col-lg-6 col-md-4 col-xs-3">
@@ -80,7 +92,7 @@
         </div>
     </div>
 </form>
-
+</sec:authorize>
 
 <footer class="footer container-fluid">
     <div class="footerLg container visible-md visible-lg">
@@ -123,5 +135,10 @@
 <script src="/resources/js/changePassword.js"></script>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="/resources/js/photo.js"></script>
+<script src="/resources/js/hideShowPassword.min.js"></script>
+<script>
+    $('#changePassword').hideShowPassword(false, true);
+
+</script>
 </body>
 </html>

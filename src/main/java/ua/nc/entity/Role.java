@@ -42,4 +42,28 @@ public class Role implements Identified<Integer> {
     public void setUsers(List<User> users) {
         this.users = users;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Role)) return false;
+
+        Role role = (Role) o;
+
+        if (getId() != null ? !getId().equals(role.getId()) : role.getId() != null) return false;
+        if (getName() != null ? !getName().equals(role.getName()) : role.getName() != null) return false;
+        if (getDescription() != null ? !getDescription().equals(role.getDescription()) : role.getDescription() != null)
+            return false;
+        return !(getUsers() != null ? !getUsers().equals(role.getUsers()) : role.getUsers() != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getId() != null ? getId().hashCode() : 0;
+        result = 31 * result + (getName() != null ? getName().hashCode() : 0);
+        result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
+        result = 31 * result + (getUsers() != null ? getUsers().hashCode() : 0);
+        return result;
+    }
 }
