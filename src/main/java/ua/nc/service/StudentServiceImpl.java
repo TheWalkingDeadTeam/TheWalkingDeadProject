@@ -90,7 +90,7 @@ public class StudentServiceImpl implements StudentService {
         if (Objects.equals(action, "reject")) {
             rejectStudents(studentsId);
         } else if (Objects.equals(action, "unreject")) {
-            unrejectStudents(studentsId);
+            acceptStudents(studentsId);
         } else {
             log.error(action + " action not supported");
         }
@@ -102,11 +102,13 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public void rejectStudents(List<Integer> studentsId) {
         changeApplicationStatus(studentsId, true);
+        log.info("List of applications was rejected " + studentsId);
     }
 
     @Override
     public void acceptStudents(List<Integer> studentsId) {
         changeApplicationStatus(studentsId, false);
+        log.info("List of applications was accepted " + studentsId);
     }
 
     private void changeApplicationStatus(List<Integer> studentsId, Boolean status){
@@ -117,7 +119,7 @@ public class StudentServiceImpl implements StudentService {
             Integer cesId = cesDAO.getCurrentCES().getId();
             List<Application> applications = applicationDAO.getApplicationsByCesIdUserId(cesId, studentsId);
             for (Application application : applications) {
-                application.setRejected(true);
+                application.setRejected(status);
                 applicationDAO.update(application);
             }
         } catch (DAOException e) {
