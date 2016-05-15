@@ -67,6 +67,20 @@ public class StudentServiceImpl implements StudentService {
         return null;
     }
 
+    @Override
+    public Integer getSize() {
+        Connection connection = daoFactory.getConnection();
+        PostgreApplicationTableDAO applicationTableDAO = new PostgreApplicationTableDAO(connection);
+        CESServiceImpl cesService = new CESServiceImpl();
+        CES ces = cesService.getCurrentCES();
+        try {
+            return applicationTableDAO.getApplicationsCount(ces.getId(), "");
+        } catch (DAOException e) {
+            log.warn("Can't get students", e.getCause());
+        }
+        return null;
+    }
+
     /**
      * @param action
      * @param studentsId list of Integer

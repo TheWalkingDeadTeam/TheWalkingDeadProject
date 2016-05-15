@@ -59,7 +59,7 @@
     </style>
 </head>
 <body>
-<main ng-controller="StudentCtrl2 as data"
+<main ng-controller="UserCtrl as data"
       class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
 
     <jsp:include page="admin-header.jsp"/>
@@ -190,7 +190,7 @@
 <script src="/resources/js/checkboxScript.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-route.js"></script>
-<script src="../../resources/js/studentListAngular.js"></script>
+<script src="../../resources/js/userListAngular.js"></script>
 <script src="../../resources/js/dirPagination.js"></script>
 <script src="http://vitalets.github.io/checklist-model/checklist-model.js"></script>
 

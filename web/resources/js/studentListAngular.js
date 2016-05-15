@@ -186,7 +186,7 @@ app.controller('StudentCtrl', ["$http", "$scope", function ($http, $scope) {
             // vm.order_by = vm.header[0].id;
         });
         $http.get("students/size").success(function (response) {
-            vm.total_count = response.size;
+            vm.total_count = response;
         });
     };
 

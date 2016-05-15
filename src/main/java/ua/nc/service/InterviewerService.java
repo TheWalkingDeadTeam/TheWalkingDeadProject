@@ -12,6 +12,13 @@ import java.util.List;
 public interface InterviewerService {
     public List<Interviewer> getInterviewer(Integer itemPerPage, Integer pageNumber);
 
+    public List<Interviewer> getInterviewer(Integer itemPerPage, Integer pageNumber, String orderBy);
+
+    public List<Interviewer> getInterviewer(Integer itemPerPage, Integer pageNumber, String orderBy, Boolean asc);
+
+    public List<Interviewer> getInterviewer(Integer itemPerPage, Integer pageNumber, String orderBy, String pattern);
+
+
 //    public StudentData getInterviewer(Integer itemPerPage, Integer pageNumber, Integer orderBy);
 
 //    public Student findInterviewerByName(String name, String surname);
@@ -20,11 +27,15 @@ public interface InterviewerService {
 
     public void changeStatus(String action, List<Integer> studentsId);
 
-    public void activateInterviewer(List<Integer> studentsId);
+//    public void activateInterviewer(List<Integer> studentsId);
+//
+//    public void deactivateInterviewer(List<Integer> studentsId);
+//
+//    public void rejectInterviewer(List<Integer> studentsId);
 
-    public void deactivateInterviewer(List<Integer> studentsId);
+    public void subscribeInterviewer(List<Integer> studentsId);
 
-    public void rejectInterviewer(List<Integer> studentsId);
+    public void unsubscribeInterviewer(List<Integer> studentsId);
 
     public Integer getInterviewerSize();
 

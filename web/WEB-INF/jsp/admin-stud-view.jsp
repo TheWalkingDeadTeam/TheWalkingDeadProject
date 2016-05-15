@@ -81,7 +81,7 @@
             </button>
             <button ng-click="unrejectStud()"
                     class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
-                Unreject
+                Accept
             </button>
 
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">

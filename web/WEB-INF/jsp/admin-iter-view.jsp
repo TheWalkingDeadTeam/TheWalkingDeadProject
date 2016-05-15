@@ -65,14 +65,23 @@
 
     <main class="mdl-layout__content mdl-color--grey-100">
         <div>
-            <button ng-click="activateStud()"
+            <button ng-click="subscribeInterviewer()"
                     class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
-                Activate
+                Subscribe from CES
             </button>
-            <button ng-click="deactivateStud()"
+            <button ng-click="unsubscribeInterviewer()"
                     class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
-                Deactivate
+                Unsubscribe from CES
             </button>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+                <label class="mdl-button mdl-js-button mdl-button--icon" for="search">
+                    <i class="material-icons">search</i>
+                </label>
+                <div class="mdl-textfield__expandable-holder">
+                    <form ng-submit = "searchFiltr(field)"><input  class="mdl-textfield__input" type="text" id="search" name="field" ng-model="field"></form>
+                    <label class="mdl-textfield__label" for="search">Enter your query...</label>
+                </div>
+            </div>
         </div>
         <table class="table table-bordered table-striped" style="{margin-top: 200px}">
 
@@ -92,7 +101,7 @@
                     </a>
                 </td>
                 <td>
-                    <a href="#" ng-click="order_by = 'university'; sortReverse = !sortReverse; sortType(order_by)">
+                    <a href="#" ng-click="order_by = 'surname'; sortReverse = !sortReverse; sortType(order_by)">
                         Surname
                     </a>
                 </td>

@@ -180,38 +180,38 @@ interView.controller('interCtrl', ["$http", "$scope", function ($http, $scope) {
     };
 
 
-    $scope.activateStud = function () {
+    // $scope.activateStud = function () {
+    //     var dataObj = {
+    //         type: 'activate',
+    //         values: $scope.dataStudents.studId
+    //     };
+    //     if ($scope.dataStudents.studId.length != 0) {
+    //         $http.post('interviewers', dataObj)
+    //             .success(function (data, status, headers, config) {
+    //                 $scope.message = data;
+    //             })
+    //             .error(function (data, status, headers, config) {
+    //             });
+    //     }
+    // };
+    // $scope.deactivateStud = function () {
+    //     var dataObj = {
+    //         type: 'deactivate',
+    //         values: $scope.dataStudents.studId
+    //     };
+    //     if ($scope.dataStudents.studId.length != 0) {
+    //         var res = $http.post('interviewers', dataObj);
+    //         res.success(function (data, status, headers, config) {
+    //             $scope.message = data;
+    //         });
+    //         res.error(function (data, status, headers, config) {
+    //             alert("failure message: " + JSON.stringify({data: data}));
+    //         });
+    //     }
+    // };
+    $scope.subscribeInterviewer = function () {
         var dataObj = {
-            type: 'activate',
-            values: $scope.dataStudents.studId
-        };
-        if ($scope.dataStudents.studId.length != 0) {
-            $http.post('interviewers', dataObj)
-                .success(function (data, status, headers, config) {
-                    $scope.message = data;
-                })
-                .error(function (data, status, headers, config) {
-                });
-        }
-    };
-    $scope.deactivateStud = function () {
-        var dataObj = {
-            type: 'deactivate',
-            values: $scope.dataStudents.studId
-        };
-        if ($scope.dataStudents.studId.length != 0) {
-            var res = $http.post('interviewers', dataObj);
-            res.success(function (data, status, headers, config) {
-                $scope.message = data;
-            });
-            res.error(function (data, status, headers, config) {
-                alert("failure message: " + JSON.stringify({data: data}));
-            });
-        }
-    };
-    $scope.rejectStud = function () {
-        var dataObj = {
-            type: 'reject',
+            type: 'subscribe',
             values: $scope.dataStudents.studId
         };
         if ($scope.dataStudents.studId.length != 0) {
@@ -225,18 +225,41 @@ interView.controller('interCtrl', ["$http", "$scope", function ($http, $scope) {
         }
     };
 
-    $scope.searchFiltr = function () {
+    $scope.unsubscribeInterviewer = function () {
+        var dataObj = {
+            type: 'unsubscribe',
+            values: $scope.dataStudents.studId
+        };
+        if ($scope.dataStudents.studId.length != 0) {
+            var res = $http.post('interviewers', dataObj);
+            res.success(function (data, status, headers, config) {
+                $scope.message = data;
+            });
+            res.error(function (data, status, headers, config) {
+                alert("failure message: " + JSON.stringify({data: data}));
+            });
+        }
+    };
+
+
+    $scope.searchFiltr = function (pattern) {
         var dataObj = {
             type: "search",
             values: [$scope.searchFilt]
         };
-        var res = $http.get('interviewers/search', dataObj);
-        res.success(function (data, status, headers, config) {
-            $scope.message = data;
-        });
-        res.error(function (data, status, headers, config) {
-            alert("failure message: " + JSON.stringify({data: data}));
-        });
+        if(vm.order_by === null){
+            vm.selectUrl = "interviewer/search/"+vm.itemsPerPage+"/"+vm.pageno+"/name/"+pattern;
+        }else{
+            vm.selectUrl = "interviewer/search/"+vm.itemsPerPage+"/"+vm.pageno+"/"+vm.order_by+"/"+pattern;
+        }
+        vm.getData();
+        // var res = $http.get('students/search/', dataObj);
+        // res.success(function (data, status, headers, config) {
+        //     $scope.message = data;
+        // });
+        // res.error(function (data, status, headers, config) {
+        //     alert("failure message: " + JSON.stringify({data: data}));
+        // });
     }
 }]);
 
