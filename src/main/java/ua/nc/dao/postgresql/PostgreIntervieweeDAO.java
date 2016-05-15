@@ -28,7 +28,7 @@ public class PostgreIntervieweeDAO extends AbstractPostgreDAO<Interviewee, Integ
 
     @Override
     public String getCreateQuery() {
-        return "INSERT INTO interviewee (application_id) VALUES (?);";
+        return "INSERT INTO interviewee (application_id, interview_time) VALUES (?, ?);";
     }
 
     @Override
@@ -47,8 +47,7 @@ public class PostgreIntervieweeDAO extends AbstractPostgreDAO<Interviewee, Integ
         List<Interviewee> result = new ArrayList<>();
         try {
             while (rs.next()) {
-                Interviewee interviewee = new Interviewee(rs.getInt("application_id"));
-                interviewee.setInterviewTime(rs.getDate("interview_time"));
+                Interviewee interviewee = new Interviewee(rs.getInt("application_id"),rs.getDate("interview_time"));
                 interviewee.setSpecialMark(rs.getString("special_mark"));
                 interviewee.setDevFeedbackID((Integer) rs.getObject("dev_feedback_id"));
                 interviewee.setHrFeedbackID((Integer) rs.getObject("hr_feedback_id"));
@@ -64,6 +63,7 @@ public class PostgreIntervieweeDAO extends AbstractPostgreDAO<Interviewee, Integ
     protected void prepareStatementForInsert(PreparedStatement statement, Interviewee object) throws DAOException {
         try {
             statement.setInt(1, object.getId());
+            statement.setObject(2, object.getInterviewTime());
         } catch (Exception e) {
             throw new DAOException(e);
         }
@@ -85,12 +85,5 @@ public class PostgreIntervieweeDAO extends AbstractPostgreDAO<Interviewee, Integ
     @Override
     public Interviewee create(Interviewee object) throws DAOException {
         return persist(object);
-    }
-
-    private class PersistInterviewee extends Interviewee{
-        @Override
-        public void setId(int id) {
-            super.setId(id);
-        }
     }
 }
