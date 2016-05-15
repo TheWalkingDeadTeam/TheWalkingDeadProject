@@ -108,7 +108,7 @@ public class StudentServiceImpl implements StudentService {
             Integer cesId = cesDAO.getCurrentCES().getId();
             List<Application> applications = applicationDAO.getApplicationsByCesIdUserId(cesId, studentsId);
             for (Application application : applications) {
-                application.setRejected(true);
+                application.setRejected(status);
                 applicationDAO.update(application);
             }
         } catch (DAOException e) {
