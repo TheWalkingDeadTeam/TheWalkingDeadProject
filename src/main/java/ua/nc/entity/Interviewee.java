@@ -12,8 +12,9 @@ public class Interviewee implements Identified<Integer> {
     private Integer devFeedbackID;
     private Integer hrFeedbackID;
 
-    public Interviewee(int id) {
+    public Interviewee(int id, Date interviewTime) {
         this.applicationID = id;
+        this.interviewTime = interviewTime;
     }
     public Interviewee(){}
 
