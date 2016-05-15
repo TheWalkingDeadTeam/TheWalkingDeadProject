@@ -6,10 +6,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ua.nc.dao.exception.DAOException;
-import ua.nc.entity.CES;
-import ua.nc.entity.Interviewer;
-import ua.nc.entity.Status;
-import ua.nc.entity.User;
+import ua.nc.entity.*;
 import ua.nc.entity.profile.StudentData;
 import ua.nc.service.*;
 import ua.nc.service.user.UserService;
@@ -245,6 +242,81 @@ public class AdminController {
             LOGGER.warn("Request type is not supported");
             return HttpStatus.BAD_REQUEST;
         }
+    }
+
+    @RequestMapping(value = {"/users"}, method = RequestMethod.GET)
+    public String usersView() {
+
+        return "admin-user-view";
+    }
+
+    @RequestMapping(value = {"/users/size"}, method = RequestMethod.GET, produces = "application/json")
+    public
+    @ResponseBody
+    Integer usersGetJSONSize() {
+        UserServiceImpl userService = new UserServiceImpl();
+        return userService.getSize();
+    }
+
+
+    @RequestMapping(value = {"/users/search/{itemsPerPage}/{pageNumber}/{sortType}/{pattern}"}, method = RequestMethod.GET, produces = "application/json")
+    public
+    @ResponseBody
+    List<UserRow> usersSearch(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("sortType") String sortType, @PathVariable("pattern") String pattern) {
+        List<UserRow> userRows;
+        UserService userService = new UserServiceImpl();
+        userRows = userService.getUser(itemsPerPage, (pageNumber * itemsPerPage - 10),sortType, pattern);
+        if (userRows == null) {
+            LOGGER.warn("users == null");
+        }
+        return userRows;
+    }
+
+
+    @RequestMapping(value = {"/users/list/{itemsPerPage}/{pageNumber}"}, method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public List<UserRow> getUsers(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber) {
+        List<UserRow> userRows;
+        UserService userService = new UserServiceImpl();
+        userRows = userService.getUser(itemsPerPage, (pageNumber * itemsPerPage - 10));
+        if (userRows == null) {
+            LOGGER.warn("users == null");
+        }
+        LOGGER.warn("users != null");
+        return userRows;
+    }
+
+    @RequestMapping(value = {"/users/list/{itemsPerPage}/{pageNumber}/{sortType}/{type}"}, method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public List<UserRow> getUsersBySort(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("sortType") String sortType, @PathVariable("type") Boolean asc) {
+        List<UserRow> userRows;
+        UserService userService = new UserServiceImpl();
+        userRows = userService.getUser(itemsPerPage, (pageNumber * itemsPerPage - 10), sortType, asc);
+        if (userRows == null) {
+            LOGGER.warn("users == null");
+        }
+        return userRows;
+    }
+
+
+    /**
+     * Takes a json file with students status changes
+     *
+     * @param status
+     */
+    @RequestMapping(value = {"/users"}, method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public HttpStatus userStatus(@RequestBody Status status) {
+        Status userStatus = status;
+        if (!status.getType().isEmpty() && (status.getValues().size() > 0)) {
+            userService.changeStatus(userStatus.getType(), userStatus.getValues());
+            return HttpStatus.OK;
+        } else {
+            LOGGER.warn("Request type is not supported");
+            return HttpStatus.BAD_REQUEST;
+        }
+
+
     }
 
     @RequestMapping(value = {"/mail-template"}, method = RequestMethod.GET)
