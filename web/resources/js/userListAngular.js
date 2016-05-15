@@ -44,7 +44,7 @@ app.controller('UserCtrl', ["$http", "$scope", function ($http, $scope) {
     $scope.checkAll = function () {
         if ($scope.selectedAll) {
             $scope.dataStudents.studId = vm.users.map(function (item) {
-                return item.userId;
+                return item.id;
             });
             $scope.selectdAll = true;
         }

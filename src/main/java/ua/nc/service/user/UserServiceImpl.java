@@ -87,8 +87,6 @@ public class UserServiceImpl implements UserService {
     public Integer getSize() {
         Connection connection = daoFactory.getConnection();
         PostgreUserTableDAO postgreUserTableDAO = new PostgreUserTableDAO(connection);
-        CESServiceImpl cesService = new CESServiceImpl();
-        CES ces = cesService.getCurrentCES();
         try {
             return postgreUserTableDAO.getUsersCount("");
         } catch (DAOException e) {
