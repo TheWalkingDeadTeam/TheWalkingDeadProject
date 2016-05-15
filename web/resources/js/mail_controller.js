@@ -62,7 +62,6 @@ mailer.controller('MailController', ['$scope', 'MailService','$http', function($
 
     self.updateMail = function(mail, id){
         MailService.updateMail(mail, id)
-        MailService.updateMail(mail, id)
             .then(
                 self.fetchAllMails,
                 function(errResponse){

@@ -2,10 +2,13 @@ package ua.nc.controller;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.log4j.Logger;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.entity.CES;
 import ua.nc.entity.Interviewer;
@@ -23,8 +26,8 @@ import ua.nc.validator.RegistrationValidator;
 import ua.nc.validator.ValidationError;
 import ua.nc.validator.Validator;
 
-import java.util.List;
-import java.util.Set;
+import javax.management.relation.Role;
+import java.util.*;
 
 /**
  * Created by Pavel on 18.04.2016.
@@ -130,6 +133,35 @@ public class AdminController {
 
 
     /**
+     * Get only selected users to send them emails
+     *
+     * @param students
+     * @return list of selected students
+     */
+
+
+    @RequestMapping(value = "/users-mail-id", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity<List<User>> listUsers(@RequestBody StudentStatus students) {
+        System.out.println("OK I AM IN");
+        List<User> users = new ArrayList<>();
+//            for (Integer i : students.getValues()){
+//                System.out.println(i);
+//                User user = userService.getUser(i);
+//                System.out.println(user.getName());
+//                users.add(user);
+//            }
+//            if (users.isEmpty()) {
+//                return new ResponseEntity<List<User>>(HttpStatus.NO_CONTENT);
+//            }
+        Set<ua.nc.entity.Role> role = new HashSet<>();
+        User user = new User(new Integer(10),"alexander","olex","haliy","kzevytef", role);
+        User user1 = new User(new Integer(11),"alexander2","olex","haliy","kzevytef", role);
+        users.add(user);
+        users.add(user1);
+            return new ResponseEntity<List<User>>(users, HttpStatus.OK);
+    }
+
+    /**
      * Takes a json file with students status changes
      *
      * @param studentStatus
@@ -143,8 +175,6 @@ public class AdminController {
         } else {
             LOGGER.warn("Request type is not supported");
         }
-
-
     }
 
     @RequestMapping(value = "/students/{id}", method = RequestMethod.GET, produces = "application/json")
@@ -153,7 +183,7 @@ public class AdminController {
     }
 
     /**
-     * Method for view interview list from admin controlle panel
+     * Method for view interview list from admin controller panel
      *
      * @return page with interviewer data
      */
@@ -234,7 +264,7 @@ public class AdminController {
     @ResponseBody
     Integer interviewGetJSONSize() {
         InterviewerService interviewerService = new InterviewerServiceImpl();
-        return  interviewerService.getInterviewerSize();
+        return interviewerService.getInterviewerSize();
     }
 
 
@@ -243,9 +273,15 @@ public class AdminController {
         return "admin-mail-template";
     }
 
+    @RequestMapping(value = {"/hello"}, method = RequestMethod.GET)
+    public String hello() {
+        return "temp-test";
+    }
+
 
     @RequestMapping(value = {"/cesPost"}, method = RequestMethod.POST)
-    public @ResponseBody
+    public
+    @ResponseBody
     CES getCES(@RequestBody CES ces) {
         try {
             cesService.setCES(ces);
@@ -275,7 +311,7 @@ public class AdminController {
     }
 
 
-    @RequestMapping(value = {"/scheduler"} ,method = RequestMethod.GET)
+    @RequestMapping(value = {"/scheduler"}, method = RequestMethod.GET)
     public String schedulerView() {
         return "admin-scheduler";
     }
@@ -285,5 +321,10 @@ public class AdminController {
         return "admin-es-view";
     }
 
+
+    @RequestMapping(value = {"/mail-personal"}, method = RequestMethod.GET)
+    public String mailSend() {
+        return "mail-send";
+    }
 
 }

@@ -11,7 +11,7 @@
     <title>Mail</title>
     <!-- Compiled and minified JavaScript -->
 </head>
-<body ng-controller="StudentCtrl as mail">
+<body ng-controller="StudentCtrl">
 
 <md-dialog aria-label="Mango (Fruit)">
     <form>
@@ -32,10 +32,14 @@
                 <md-tab label="one">
                     <md-content class="md-padding">
                         <h1 class="md-display-2">Users</h1>
+                        
+                            From jsp: {{dialogCtrl.parent.redirectArray.usersWithMail}};
 
-                        <tr ng-repeat="u in mail.users_by_mail">
+
+
+                        <tr ng-repeat="u in dialogCtrl.redirectArray.usersWithMail">
                             <td><span ng-bind="u.id"></span></td>
-                            <td><span ng-bind="m.name"></span></td>
+                            <td><span ng-bind="u.email"></span></td>
                         </tr>
 
                     </md-content>
@@ -71,5 +75,7 @@
     </form>
 </md-dialog>
 
-</body>
+</body ng-controller="StudentCtrl">
+<script src="/resources/js/studentListAngular.js" ></script>
+
 </html>
