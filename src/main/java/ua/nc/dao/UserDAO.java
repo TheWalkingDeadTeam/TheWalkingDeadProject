@@ -26,4 +26,8 @@ public interface UserDAO extends GenericDAO<User, Integer> {
     Set<User> getStudentsForCurrentCES() throws DAOException;
 
     Set<User> getInterviewersForCurrentCES() throws DAOException;
+
+    Set<User> getAllAcceptedStudents(Integer cesId) throws DAOException;
+
+    Set<User> getAllRejectedStudents(Integer cesId) throws DAOException;
 }
