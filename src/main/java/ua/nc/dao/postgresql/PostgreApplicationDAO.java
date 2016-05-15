@@ -18,15 +18,13 @@ import java.util.List;
 public class PostgreApplicationDAO extends AbstractPostgreDAO<Application, Integer> implements ApplicationDAO {
     private static final String GET_APPLICATION_BY_USER_CES = "SELECT * FROM Application WHERE system_user_id = ? AND ces_id = ?";
     private static final String GET_ALL_CES_APPLICATIONS_QUERY = "SELECT * FROM Application WHERE ces_id = ?";
-    private static final String GET_ALL_USERS_FOR_CURRENT_CES = "Select u.* from system_user u JOIN application a " +
-            "ON u.system_user_id = a.system_user_id WHERE ces_id = " +
-            "(SELECT ces.ces_id from course_enrollment_session ces " +
-            "JOIN ces_status stat ON ces.ces_status_id = stat.ces_status_id AND stat.name = 'Active')";
 
     private static final String GET_APPLICATIONS_BY_CES_ID_USER_ID = "SELECT application.* " +
             "FROM application  " +
             "JOIN system_user ON application.system_user_id = system_user.system_user_id  " +
             "WHERE application.ces_id = ? AND system_user.system_user_id = ANY (?) ";
+
+    private static final String GET_ALL_ACCEPTED_APPLICATIONS_QUERY = "SELECT * FROM application WHERE ces_id = ? AND rejected = FALSE";
 
     public PostgreApplicationDAO(Connection connection) {
         super(connection);
@@ -89,38 +87,24 @@ public class PostgreApplicationDAO extends AbstractPostgreDAO<Application, Integ
     }
 
     @Override
-    public Application getApplicationByUserCES(Integer user_id, Integer ces_id) throws DAOException {
-        Application result;
+    public Application getApplicationByUserCES(Integer userId, Integer cesId) throws DAOException {
         try (PreparedStatement statement = connection.prepareStatement(GET_APPLICATION_BY_USER_CES)) {
-            statement.setInt(1, user_id);
-            statement.setInt(2, ces_id);
+            statement.setInt(1, userId);
+            statement.setInt(2, cesId);
             ResultSet rs = statement.executeQuery();
             if (!rs.isBeforeFirst() ) {
-                result = null;
+                return null;
             } else {
-                result = parseResultSet(rs).iterator().next();
+                return parseResultSet(rs).iterator().next();
             }
         } catch (Exception e) {
             throw new DAOException(e);
         }
-        return result;
     }
 
     @Override
-    public List<Application> getAllCESApplications(Integer ces_id) throws DAOException {
-        List<Application> result;
-        try (PreparedStatement statement = connection.prepareStatement(GET_ALL_CES_APPLICATIONS_QUERY)) {
-            statement.setInt(1, ces_id);
-            ResultSet rs = statement.executeQuery();
-            if (!rs.isBeforeFirst() ) {
-                result = null;
-            } else {
-                result = parseResultSet(rs);
-            }
-        } catch (Exception e) {
-            throw new DAOException(e);
-        }
-        return result;
+    public List<Application> getAllCESApplications(Integer cesId) throws DAOException {
+        return getSomeApplications(GET_ALL_CES_APPLICATIONS_QUERY, cesId);
     }
 
     public List<Application> getApplicationsByCesIdUserId(Integer cesId, List<Integer> userIds) throws DAOException {
@@ -128,6 +112,25 @@ public class PostgreApplicationDAO extends AbstractPostgreDAO<Application, Integ
             statement.setInt(1, cesId);
             statement.setArray(2, connection.createArrayOf("integer", userIds.toArray()));
             return parseResultSet(statement.executeQuery());
+        } catch (Exception e) {
+            throw new DAOException(e);
+        }
+    }
+
+    @Override
+    public List<Application> getAllAcceptedApplications(Integer cesId) throws DAOException {
+        return getSomeApplications(GET_ALL_ACCEPTED_APPLICATIONS_QUERY, cesId);
+    }
+
+    private List<Application> getSomeApplications(String query, Integer cesId) throws DAOException {
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, cesId);
+            ResultSet rs = statement.executeQuery();
+            if (!rs.isBeforeFirst() ) {
+                return null;
+            } else {
+                return parseResultSet(rs);
+            }
         } catch (Exception e) {
             throw new DAOException(e);
         }
