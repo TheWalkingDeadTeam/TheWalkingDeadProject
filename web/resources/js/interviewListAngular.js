@@ -247,10 +247,17 @@ interView.controller('interCtrl', ["$http", "$scope", function ($http, $scope) {
             type: "search",
             values: [$scope.searchFilt]
         };
-        if(vm.order_by === null){
-            vm.selectUrl = "interviewer/search/"+vm.itemsPerPage+"/"+vm.pageno+"/name/"+pattern;
-        }else{
-            vm.selectUrl = "interviewer/search/"+vm.itemsPerPage+"/"+vm.pageno+"/"+vm.order_by+"/"+pattern;
+        if(pattern == undefined  || pattern == "" || pattern == null){
+            vm.selectUrl = "interviewers/list/"+vm.itemsPerPage+"/"+vm.pageno;
+
+        }
+        else {
+            console.log("Privet2");
+            if (vm.order_by === null) {
+                vm.selectUrl = "interviewer/search/" + vm.itemsPerPage + "/" + vm.pageno + "/name/" + pattern;
+            } else {
+                vm.selectUrl = "interviewer/search/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by + "/" + pattern;
+            }
         }
         vm.getData();
         // var res = $http.get('students/search/', dataObj);

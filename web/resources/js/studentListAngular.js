@@ -308,10 +308,15 @@ app.controller('StudentCtrl', ["$http", "$scope", function ($http, $scope) {
             type: "search",
             values: [$scope.searchFilt]
         };
-        if (vm.order_by === null) {
-            vm.selectUrl = "students/search/" + vm.itemsPerPage + "/" + vm.pageno + "/" + pattern;
-        } else {
-            vm.selectUrl = "students/search/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by + "/" + pattern;
+        if(pattern == undefined || pattern == "" || pattern == null){
+            vm.selectUrl = "students/list/"+vm.itemsPerPage+"/"+vm.pageno;
+
+        }else {
+            if (vm.order_by === null) {
+                vm.selectUrl = "students/search/" + vm.itemsPerPage + "/" + vm.pageno + "/" + pattern;
+            } else {
+                vm.selectUrl = "students/search/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by + "/" + pattern;
+            }
         }
         vm.getData();
         // var res = $http.get('students/search/', dataObj);
