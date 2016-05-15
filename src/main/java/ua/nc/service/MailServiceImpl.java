@@ -123,16 +123,16 @@ public class MailServiceImpl implements MailService {
             @Override
             public void run() {
                 try {
-                    Map<String, String> nameParameter = new HashMap<>();
+                    Map<String, String> nameParameters = new HashMap<>();
                     for (User i : users) {
                         //Sleep for a while, google may think you're spamming :(
                         Thread.sleep(SLEEP);
-                        nameParameter.put(NAME_PATTERN, i.getName());
-                        nameParameter.put(SURNAME_PATTERN, i.getSurname());
-                        sendMail(i.getEmail(), customizeMail(mail, nameParameter));
+                        nameParameters.put(NAME_PATTERN, i.getName());
+                        nameParameters.put(SURNAME_PATTERN, i.getSurname());
+                        sendMail(i.getEmail(), customizeMail(mail, nameParameters));
                     }
                 } catch (Exception e) {
-                    LOGGER.warn("Failed to send email", e);
+                    LOGGER.error("Failed to send email", e);
                 }
             }
         },date);
@@ -253,25 +253,42 @@ public class MailServiceImpl implements MailService {
                                        Map<String, String> interviewerParameters, Mail studentMail,
                                        Map<String, String> studentParameters, Set<User> interviewersSet,
                                        Set<User> studentsSet) {
-//        String startHours = studentParameters.get(START_HOURS_PATTERN);
-//        String startMins = studentParameters.get(START_MINS_PATTERN);
-        String startHours = "18";
-        String startMins = "00";
-        int startMillis = Integer.parseInt(startHours) * MILLIS_PER_HOUR +
-                Integer.parseInt(startMins) * MILLIS_PER_MINUTE;
-        List<User> interviewersList = new ArrayList<>(interviewersSet);
-        List<User> studentsList = new ArrayList<>(studentsSet);
         int reminderMillis = reminderTime * MILLIS_PER_HOUR;
-        int studentsPerDay = (int) Math.ceil(studentsList.size() / interviewDates.size());
-        int todaysFirstStudent = 0;
-        int todaysLastStudent = studentsPerDay;
         Mail customizedInterviewerMail = customizeMail(interviewerMail, studentParameters);
         Mail customizedStudentMail = customizeMail(studentMail, studentParameters);
-        //make everyday mail delivery
+        String startHours = studentParameters.get(START_HOURS_PATTERN);
+        String startMins = studentParameters.get(START_MINS_PATTERN);
+        int startMillis = Integer.parseInt(startHours) * MILLIS_PER_HOUR +
+                Integer.parseInt(startMins) * MILLIS_PER_MINUTE;
         Map<String, String> dateTimeParameters = new HashMap<>();
         dateTimeParameters.put(START_HOURS_PATTERN, startHours);
         dateTimeParameters.put(START_MINS_PATTERN, startMins);
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyy");
+        everydaySend(interviewDates, interviewersSet, studentsSet, reminderMillis, customizedInterviewerMail,
+                customizedStudentMail, startMillis, dateTimeParameters, dateFormat);
+    }
+
+    /**
+     * Divide list of students to parts and send emails to each part in special day.
+     *
+     * @param interviewDates all the dates when the interviews are performed.
+     * @param interviewersSet all the interviewers that take part in the CES.
+     * @param studentsSet all the students invited to interview.
+     * @param reminderMillis amount of milliseconds during that the reminder on a special date will be sent.
+     * @param interviewerMail email template to send to all the interviewers.
+     * @param studentMail email template to send to all the students.
+     * @param startMillis interview start time in milliseconds.
+     * @param dateTimeParameters interview start hours and minutes.
+     * @param dateFormat date formatter that transforms interview date to regional standard.
+     */
+    private void everydaySend(List<Date> interviewDates, Set<User> interviewersSet, Set<User> studentsSet,
+                              int reminderMillis, Mail interviewerMail, Mail studentMail, int startMillis,
+                              Map<String, String> dateTimeParameters, SimpleDateFormat dateFormat) {
+        List<User> interviewersList = new ArrayList<>(interviewersSet);
+        List<User> studentsList = new ArrayList<>(studentsSet);
+        int studentsPerDay = (int) Math.ceil(studentsList.size() / interviewDates.size());
+        int todaysFirstStudent = 0;
+        int todaysLastStudent = studentsPerDay;
         for (Date interviewDate : interviewDates) {
             List<User> todayStudents = studentsList.subList(todaysFirstStudent,
                     Math.min(todaysLastStudent, studentsList.size()));
@@ -279,8 +296,8 @@ public class MailServiceImpl implements MailService {
             todaysLastStudent += studentsPerDay;
             dateTimeParameters.put(DATE_PATTERN, dateFormat.format(interviewDate));
             Date reminderDate = new Date(interviewDate.getTime() + startMillis - reminderMillis);
-            massDelivery(reminderDate, interviewersList, customizeMail(customizedInterviewerMail, dateTimeParameters));
-            massDelivery(reminderDate, todayStudents, customizeMail(customizedStudentMail, dateTimeParameters));
+            massDelivery(reminderDate, interviewersList, customizeMail(interviewerMail, dateTimeParameters));
+            massDelivery(reminderDate, todayStudents, customizeMail(studentMail, dateTimeParameters));
         }
     }
 

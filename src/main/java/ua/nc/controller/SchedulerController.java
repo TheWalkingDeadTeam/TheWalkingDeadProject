@@ -103,12 +103,15 @@ public class SchedulerController {
 
         try {
             List<Date> interviewDates = cesService.planSchedule();
+            System.out.println(interviewDates);
             CES ces = cesService.getCurrentCES();
             int reminderTime = ces.getReminders();
             Set<User> interviewersList = userDAO.getInterviewersForCurrentCES();
             Set<User> studentsList = userDAO.getStudentsForCurrentCES();
+            System.out.println("!!!");
             mailService.sendInterviewReminders(interviewDates, reminderTime, interviewerMail, interviewerParameters,
                     studentMail, studentParameters, interviewersList, studentsList);
+            System.out.println("%%%%%%");
         } catch (DAOException e) {
             log.warn("Check Scheduler paramters", e);
         }
