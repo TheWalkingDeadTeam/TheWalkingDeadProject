@@ -21,7 +21,7 @@ public class PostgreFieldTypeDAO extends AbstractPostgreDAO<FieldType, Integer> 
 
     @Override
     public String getSelectQuery() {
-        return "SELECT * FROM field_type WHERE field_type.field_type_id = ?;";
+        return "SELECT * FROM field_type WHERE field_type_id = ?;";
     }
 
     @Override
@@ -31,7 +31,7 @@ public class PostgreFieldTypeDAO extends AbstractPostgreDAO<FieldType, Integer> 
 
     @Override
     public String getUpdateQuery() {
-        return "UPDATE field_type SET field_type.name = ? WHERE field_type.field_type_id = ?;";
+        return "UPDATE field_type SET name = ? WHERE field_type_id = ?;";
     }
 
     @Override

@@ -47,8 +47,8 @@ public class PostgreFieldDAO extends AbstractPostgreDAO<Field, Integer> implemen
 
     @Override
     public String getUpdateQuery() {
-        return "UPDATE field SET field.name = ?, field_type_id = ?, multiple_choice = ?, order_num = ?, list_id = ? " +
-                "WHERE field.field_id = ?;";
+        return "UPDATE field SET name = ?, field_type_id = ?, multiple_choice = ?, order_num = ?, list_id = ? " +
+                "WHERE field_id = ?;";
     }
 
     @Override
