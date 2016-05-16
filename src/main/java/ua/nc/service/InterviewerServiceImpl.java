@@ -82,7 +82,7 @@ public class InterviewerServiceImpl implements InterviewerService {
      */
     @Override
     public void rejectInterviewer(List<Integer> studentsId) {
-        Connection connection = daoFactory.getConnection();
+        /*Connection connection = daoFactory.getConnection();
         ApplicationDAO applicationDAO = daoFactory.getApplicationDAO(connection);
         CESDAO cesDAO = daoFactory.getCESDAO(connection);
         try {
@@ -95,7 +95,7 @@ public class InterviewerServiceImpl implements InterviewerService {
             e.printStackTrace();
         } finally {
             daoFactory.putConnection(connection);
-        }
+        }*/
     }
 
     @Override
