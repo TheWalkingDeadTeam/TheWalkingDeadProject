@@ -176,10 +176,11 @@ public class UserServiceImpl implements UserService {
             System.out.println(user.getName());
             RoleDAO roleDAO = daoFactory.getRoleDAO(connection);
             System.out.println(roleDAO);
+            Set<Role> newRoles = new HashSet<>();
             for (Role role : roles) {
-                System.out.println(role.getId());
+                newRoles.add(roleDAO.findByName(role.getName()));
             }
-            roleDAO.setRoleToUser(roles, user);
+            roleDAO.setRoleToUser(newRoles, user);
             System.out.println("***");
         } catch (DAOException e) {
             System.out.println("@@@");
