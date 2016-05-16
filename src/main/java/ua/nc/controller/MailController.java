@@ -129,41 +129,46 @@ public class MailController {
     }
 
 
-
-    private Mail customization (Mail mail , Map<String,String> parameters){
+    /**
+     * Customization email body template. The email template will be modified according
+     * to parameters from Map
+     * @param mail template to be modified
+     * @param parameters to be changed in template
+     * @return modified email template
+     */
+    private Mail customization(Mail mail, Map<String, String> parameters) {
         Mail mailRes = new Mail();
         String body = mail.getBodyTemplate();
         for (Map.Entry<String, String> param : parameters.entrySet()) {
             body = body.replace(param.getKey(), param.getValue());
         }
-        System.out.println("BODY :"+body);
         mailRes.setBodyTemplate(body);
         mailRes.setHeadTemplate(mail.getHeadTemplate());
         return mailRes;
     }
 
     /**
-     *
+     * Controller to handle custom/template mail from admin
+     * @param mail
      */
     @RequestMapping(value = "/admin/users-mail-id", method = RequestMethod.POST, produces = "application/json")
     public void sendMail(@RequestBody Mail mail) {
         List<Integer> userId = mail.getUsersId();
-        if (mail.getMailIdUser()!= null) {
+        if (mail.getMailIdUser() != null) {
             Mail studentMail = mailService.getMail(mail.getMailIdUser());
-            for(Integer i: userId){
-                User user  = userService.getUser(i);
-                Map<String,String> customizeMail = new HashMap<>();
-                customizeMail.put("$name",user.getName());
-                customizeMail.put("$surname",user.getName());
-                Mail mailUpdate = customization(studentMail,customizeMail);
-                mailService.sendMail(user.getEmail(),mailUpdate);
+            for (Integer i : userId) {
+                User user = userService.getUser(i);
+                Map<String, String> customizeMail = new HashMap<>();
+                customizeMail.put("$name", user.getName());
+                customizeMail.put("$surname", user.getName());
+                Mail mailUpdate = customization(studentMail, customizeMail);
+                mailService.sendMail(user.getEmail(), mailUpdate);
             }
-        } else{
-           for (Integer i: userId){
-               User user = userService.getUser(i);
-               mailService.sendMail(user.getEmail(),mail.getHeadTemplate(),mail.getBodyTemplate());
-           }
+        } else {
+            for (Integer i : userId) {
+                User user = userService.getUser(i);
+                mailService.sendMail(user.getEmail(), mail.getHeadTemplate(), mail.getBodyTemplate());
+            }
         }
     }
-
 }

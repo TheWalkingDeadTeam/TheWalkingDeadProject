@@ -163,7 +163,7 @@
 //     // }
 // }]);
 
-var app = angular.module('studentView', ['checklist-model', 'angularUtils.directives.dirPagination']);
+var app = angular.module('studentView', ['checklist-model', 'angularUtils.directives.dirPagination','ui-notification']);
 
 app.factory('MailService', ['$http', '$q', function ($http, $q) {
 
@@ -226,7 +226,7 @@ app.factory('MailService', ['$http', '$q', function ($http, $q) {
 }]);
 
 
-app.controller('StudentCtrl', ["$http", "$scope", 'MailService', function ($http, $scope, MailService) {
+app.controller('StudentCtrl', ["$http", "$scope", 'MailService','Notification', function ($http, $scope, MailService,Notification) {
     var vm = this;
     vm.users = []; //declare an empty array
     vm.pageno = 1; // initialize page no to 1
@@ -259,9 +259,10 @@ app.controller('StudentCtrl', ["$http", "$scope", 'MailService', function ($http
             response.error(function (data, status, headers, config) {
                 alert("Exception details: " + JSON.stringify({data: data}));
             });
+            Notification.success({message: 'Mail successful sent', delay: 1000});
             $scope.list = [];
         } else {
-            alert('Notify');
+            Notification.error({message: 'You should choose users', delay: 2000});
         }
     };
     
@@ -283,9 +284,10 @@ app.controller('StudentCtrl', ["$http", "$scope", 'MailService', function ($http
             response.error(function (data, status, headers, config) {
                 alert("Exception details: " + JSON.stringify({data: data}));
             });
+            Notification.success({message: 'Mail successful sent', delay: 1000});
             $scope.list = [];
         } else {
-            alert('Notify');
+            Notification.error({message: 'You should choose users', delay: 2000});
         }
     };
     
