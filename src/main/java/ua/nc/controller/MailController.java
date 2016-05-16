@@ -14,7 +14,6 @@ import ua.nc.service.MailServiceImpl;
 import ua.nc.service.user.UserService;
 import ua.nc.service.user.UserServiceImpl;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +29,7 @@ public class MailController {
     UserService userService = new UserServiceImpl();
 
     /**
-     * Retrieve all mail
+     * Retrieve all mail list from database
      *
      * @return mail list
      */
@@ -46,8 +45,8 @@ public class MailController {
     /**
      * Retrieve mail by id
      *
-     * @param id
-     * @return
+     * @param id of the mail to be retrieved
+     * @return mail
      */
     @RequestMapping(value = "/mails/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Mail> getMail(@PathVariable("id") Integer id) {
@@ -60,11 +59,11 @@ public class MailController {
     }
 
     /**
-     * Create mail
+     * Create mail from template
      *
-     * @param mail
-     * @param ucBuilder
-     * @return
+     * @param mail      template to be created
+     * @param ucBuilder new Uri for currently created mail
+     * @return headers and HTTP Created Status
      */
     @RequestMapping(value = "/mails/", method = RequestMethod.POST)
     public ResponseEntity<Void> createMail(@RequestBody Mail mail, UriComponentsBuilder ucBuilder) {
@@ -78,9 +77,9 @@ public class MailController {
     /**
      * Update mail
      *
-     * @param id
-     * @param mail
-     * @return
+     * @param id   of the mail to be updated
+     * @param mail will replace origin mail
+     * @return current updated mail
      */
     @RequestMapping(value = "/mails/{id}", method = RequestMethod.POST)
     public ResponseEntity<Mail> updateMail(@PathVariable("id") Integer id, @RequestBody Mail mail) {
@@ -99,8 +98,8 @@ public class MailController {
     /**
      * Delete mail by id
      *
-     * @param id
-     * @return
+     * @param id of the mail to be deleted
+     * @return success response
      */
     @RequestMapping(value = "/mails/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Mail> deleteMail(@PathVariable("id") Integer id) {
@@ -114,9 +113,9 @@ public class MailController {
     }
 
     /**
-     * Delete all mail
+     * Delete all mail from database
      *
-     * @return
+     * @return HTTP STATUS.NO_CONTENT
      */
     @RequestMapping(value = "/mails/", method = RequestMethod.DELETE)
     public ResponseEntity<Mail> deleteAllMail() {
@@ -132,7 +131,8 @@ public class MailController {
     /**
      * Customization email body template. The email template will be modified according
      * to parameters from Map
-     * @param mail template to be modified
+     *
+     * @param mail       template to be modified
      * @param parameters to be changed in template
      * @return modified email template
      */
@@ -149,6 +149,7 @@ public class MailController {
 
     /**
      * Controller to handle custom/template mail from admin
+     *
      * @param mail
      */
     @RequestMapping(value = "/admin/users-mail-id", method = RequestMethod.POST, produces = "application/json")
@@ -160,7 +161,7 @@ public class MailController {
                 User user = userService.getUser(i);
                 Map<String, String> customizeMail = new HashMap<>();
                 customizeMail.put("$name", user.getName());
-                customizeMail.put("$surname", user.getName());
+                customizeMail.put("$surname", user.getSurname());
                 Mail mailUpdate = customization(studentMail, customizeMail);
                 mailService.sendMail(user.getEmail(), mailUpdate);
             }
