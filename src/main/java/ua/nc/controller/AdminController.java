@@ -1,23 +1,15 @@
 package ua.nc.controller;
 
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.log4j.Logger;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.entity.CES;
 import ua.nc.entity.Interviewer;
 import ua.nc.entity.StudentStatus;
 import ua.nc.entity.User;
-import ua.nc.service.UserDetailsImpl;
-import ua.nc.service.CESService;
-import ua.nc.service.CESServiceImpl;
-import ua.nc.service.UserDetailsImpl;
 import ua.nc.entity.profile.StudentData;
 import ua.nc.service.*;
 import ua.nc.service.user.UserService;
@@ -155,7 +147,6 @@ public class AdminController {
     }
 
 
-
     /**
      * Takes a json file with students status changes
      *
@@ -209,16 +200,17 @@ public class AdminController {
 
     }
 
-    @RequestMapping(value = {"/interviewers/list/{itemsPerPage}/{pageNumber}/{sortType}"}, method = RequestMethod.GET, produces = "application/json")
+/*    @RequestMapping(value = {"/interviewers/list/{itemsPerPage}/{pageNumber}/{sortType}"}, method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public void interviewGetJSONSort(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("sortType") String sortType) {
-//        StudentData studentData;
-//        StudentService studentService = new StudentServiceImpl();
-//        studentData = studentService.getStudents(itemsPerPage, pageNumber, sortType);
-//        if (studentData == null) {
-//            LOGGER.warn("studData == null");
-//        }
-//        return studentData;
+        StudentData studentData;
+        StudentService studentService = new StudentServiceImpl();
+        studentData = studentService.getStudents(itemsPerPage, pageNumber, sortType);
+        if (studentData == null) {
+            LOGGER.warn("studData == null");
+        }
+        return studentData;
+    }*/
 
     @RequestMapping(value = {"/interviewers/size"}, method = RequestMethod.GET, produces = "application/json")
     public
@@ -290,10 +282,10 @@ public class AdminController {
         return "admin-report-template";
     }
 
-        @RequestMapping(value = {"/mail-personal"}, method = RequestMethod.GET)
-        public String mailSend() {
-            return "mail-send";
-        }
+    @RequestMapping(value = {"/mail-personal"}, method = RequestMethod.GET)
+    public String mailSend() {
+        return "mail-send";
+    }
 
 
 }
