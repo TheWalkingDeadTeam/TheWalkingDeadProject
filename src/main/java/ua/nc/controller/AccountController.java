@@ -27,6 +27,12 @@ public class AccountController {
         return "account";
     }
 
+    @RequestMapping(value = "/account/{id}", method = RequestMethod.GET)
+    public User account(@PathVariable("id") Integer id) {
+        User user = userService.getUser(id);
+        return user;
+    }
+
     @RequestMapping(value = "/account/profile", method = RequestMethod.GET)
     public String profileTest(HttpServletRequest request) {
         if (request.isUserInRole("ROLE_STUDENT")) {

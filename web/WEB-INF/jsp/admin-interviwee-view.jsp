@@ -92,7 +92,7 @@
                     <input type="checkbox" ng-model="selectedAll" ng-click="checkAll()">
                 </td>
                 <td>
-                    <a href="#" ng-click="sortType('id',sortReverse); sortReverse = !sortReverse">
+                    <a href="#" ng-click="sortType('system_user_id',sortReverse); sortReverse = !sortReverse">
                         Id
                     </a>
                 </td>
@@ -134,7 +134,7 @@
             </tr>
             <tr dir-paginate="interviewee in data.users|itemsPerPage:data.itemsPerPage" total-items="data.total_count">
                 <td><input type="checkbox" checklist-model="dataStudents.studId" checklist-value="interviewee.id"></td>
-                <td><a href="/interviewer/feedback?{{interviewee.id}}" target="_blanks">{{interviewee.id}}</a></td>
+                <td><a href="/interviewee/feedback?{{interviewee.id}}" target="_blanks">{{interviewee.id}}</a></td>
                 <td>{{interviewee.name}}</td>
                 <td>{{interviewee.surname}}</td>
                 <td>{{interviewee.special_mark}}</td>
@@ -142,10 +142,10 @@
                 <td>{{interviewee.hr_score}}</td>
                <td ng-style="{opacity:0.5,'background-color':'{{interviewee.color == '1' ? 'blue' :
                                 interviewee.color == '2' ? 'green' :
-                                interviewee.color == '3' ? 'yellow' : 'red'}}'}" title="
+                                interviewee.color == '4' ? 'yellow' : 'red'}}'}" title="
                               {{interviewee.color == '1' ? 'blue' :
                                 interviewee.color == '2' ? 'green' :
-                                interviewee.color == '3' ? 'yellow' : 'red'}}"></td>
+                                interviewee.color == '4' ? 'yellow' : 'red'}}"></td>
             </tr>
             </tbody>
         </table>
