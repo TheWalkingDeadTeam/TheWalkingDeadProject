@@ -34,7 +34,6 @@ public class InterviewerController {
 
     @RequestMapping(value = "/enroll-ces-interviewer",method = RequestMethod.POST)
     public void enroll(@RequestBody IntegerList integerList) {
-        System.out.println(integerList.getInterviewersId().size());
         CES currentCES = cesService.getCurrentCES();
         if (currentCES != null) {
             int cesId = cesService.getCurrentCES().getId();
@@ -50,7 +49,6 @@ public class InterviewerController {
             LOGGER.info("Can't enroll to current CES. Current CES session is not exist");
         }
     }
-
 
 
     @RequestMapping(value = "/feedback", method = RequestMethod.GET)
