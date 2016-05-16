@@ -63,7 +63,7 @@
                         </div>
                         <div id="regform" class="col-lg-11 col-md-8 col-sm-9 col-xs-9">
                             <input id="name" name="name" class="form-control" placeholder="Name" type="text" value="">
-                            <div class="correct-name"></div>
+                            <div class="correct-"></div>
                             <input id="surname" name="surname" class="form-control" placeholder="Surname" type="text"
                                    value="">
                             <div class="correct-surname"></div>
