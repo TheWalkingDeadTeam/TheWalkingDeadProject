@@ -7,13 +7,16 @@
     "university": "KPI",
     "devMark": 10,
     "hrMark": 5,
+    "email" : "test@gmail.com",
+    "english" : 5,
     "color": "blue"
   },
   {
-    "id": 1,
-    "name": "Abc",
-    "surname": "Ogurchik",
-    "isActive": "1",
-    "role": "Admin"
+    "id": 2,
+    "name": "Abcac",
+    "surname": "Pomidorchik",
+    "email" : "ger@gmail.com",
+    "role" : "Admin",
+    "participation": true
   }
 ]

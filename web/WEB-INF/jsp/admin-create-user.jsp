@@ -61,7 +61,7 @@
                                 <h2 class="form-signin-heading">Interviewer Registration</h2>
                             </div>
                         </div>
-                        <div id="regform" class="col-lg-11 col-md-8 col-sm-9 col-xs-9">
+                        <div id="regform" class="col-lg-10 col-md-8 col-sm-9 col-xs-9">
                             <input id="name" name="name" class="form-control" placeholder="Name" type="text" value="">
                             <div class="correct-name"></div>
                             <input id="surname" name="surname" class="form-control" placeholder="Surname" type="text"
@@ -76,11 +76,11 @@
                             <div class="correct-password"></div>
                             <button id="buttonRegistration" class="btn btn-lg btn-primary btn-block">Register</button>
                         </div>
-                        <div id="check" class="col-lg-1 col-md-4 col-sm-6 col-xs-6">
+                        <div id="roleAdmin" class="col-lg-2 col-md-4 col-sm-6 col-xs-6">
                             <label class="checkbox">
                                 <input type="checkbox" id="checkbox_admin" value="ROLE_ADMIN" class="roles"> Admin
                             </label>
-                            <label class="checkbox">
+<%--                            <label class="checkbox">
                                 <input type="checkbox" id="checkbox_hr" value="ROLE_HR" class="roles"> HR
                             </label>
                             <label class="checkbox">
@@ -88,14 +88,19 @@
                             </label>
                             <label class="checkbox">
                                 <input type="checkbox" id="checkbox_ba" value="ROLE_BA" class="roles"> BA
-                            </label>
+                            </label>--%>
                         </div>
+                        <select id="role" class="col-lg-2 col-md-4 col-sm-6 col-xs-6">
+                            <option value="ROLE_HR">HR</option>
+                            <option value="ROLE_DEV">DEV</option>
+                            <option value="ROLE_BA">BA</option>
+                        </select>
                         </form>
                     </div>
                 </div>
             </div>
-            <a href="/logout" target="_blank" id="view-source"
-               class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">Exit</a>
+            <%--<a href="/logout" target="_blank" id="view-source"
+               class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">Exit</a>--%>
     </div></main>
 
 </div>

@@ -6,10 +6,11 @@
     var requestData;
     var id = location.search.substr(1);
     $(document).ready(function () {
+        $('#feedback').hide();
+        $('#photo_img').attr('src','/getPhoto/'+id);
         $.ajax({
             type: 'get',
             url: "/profile/" + id,
-            // url: "/resources/json/myJSON.json",
             dataType: 'json',
             contentType: "application/json",
             success: function (response) {
@@ -18,6 +19,38 @@
                     response.fields.forEach(function (item, i) {
                         typeSwitcher(item, i, '#profile');
                     });
+                    $.ajax({
+                        type: 'get',
+                        url: 'getFeedback/' + id,
+                        dataType: 'json',
+                        contentType: "application/json",
+                        success: function (response, textStatus, jqXHR) {
+                            if (jqXHR.getResponseHeader('interviewee') == 'interviewee') {
+                                if (jqXHR.getResponseHeader('restricted') == 'false') {
+                                    $('#feedback').show();
+                                    $('#feedback_score').val(response.feedback.score);
+                                    $('#feedback_text').val(response.feedback.comment);
+                                    $('#special_mark').val(response.specialMark);
+                                } else {
+                                    $('#restrict_message')
+                                        .addClass('alert alert-danger')
+                                        .html('Feedback for this student has already been written by another interviewer');
+                                }
+                            } else {
+                                $('#restrict_message')
+                                    .addClass('alert alert-danger')
+                                    .html('This studen\'t wasn\'t interviewed');
+                            }
+                        },
+                        error: function (jqXHR, exception) {
+                            console.log(exception.toString());
+                            window.location.href = "/error"
+                        }
+                    });
+                } else {
+                    $('#restrict_message')
+                        .addClass('alert alert-danger')
+                        .html('This user doesn\'t have the application');
                 }
             },
             error: function (jqXHR, exception) {
@@ -25,10 +58,9 @@
                 window.location.href = "/error"
             }
         });
-
     });
 
-    $('#feedback').submit(function (event) {
+    $('#feedback_form').submit(function (event) {
             event.preventDefault();
             $.ajax({
                 type: 'post',
@@ -36,8 +68,11 @@
                 dataType: 'json',
                 contentType: 'application/json',
                 data: JSON.stringify({
-                    score: $('#feedback_score').val(),
-                    comment: $('#feedback_text').val()
+                    feedback: {
+                        score: $('#feedback_score').val(),
+                        comment: $('#feedback_text').val()
+                    },
+                    specialMark: $('#special_mark').val()
                 }),
                 success: function (response){
                     if (response.length){
@@ -48,6 +83,12 @@
                         $('#save_message')
                             .addClass('alert alert-danger')
                             .html(errors_out);
+                    }
+                    else {
+                        $('#save_message')
+                            .removeClass()
+                            .addClass('alert alert-success')
+                            .html('Successfully saved');
                     }
                 },
                 error: function (jqXHR, exception) {
@@ -60,7 +101,7 @@
 
     function typeSwitcher(item, i, divname){
             $('<div id=\"block' + i + '\">').appendTo($(divname));
-            $('<label>').attr({for: item.id}).text(item.fieldName + '\t ').appendTo($('#block' + i));
+            $('<label>').attr({for: item.id}).text(item.fieldName + ':  ').appendTo($('#block' + i));
                 switch (item.fieldType) {
                 case 'number':
                 case 'text':
@@ -71,13 +112,13 @@
                 case 'select':
                 case 'checkbox':
                 case 'radio':
-                        var text = ',';
+                        var text = new Array;
                         item.values.forEach(function(item_value){
                             if (item_value.value == 'true'){
-                                text = text + ',' + item_value.fieldValueName + ',';
+                                text.push(item_value.fieldValueName);
                             }
                         })
-                        $('<label>').text(text).appendTo($('#block' + i));
+                        $('<label>').text(text.toString()).appendTo($('#block' + i));
                         break;
             }
     }

@@ -22,6 +22,7 @@
     <link rel="stylesheet" type="text/css" href="/resources/css/registration.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/bootstrap/css/bootstrap.css"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
 </head>
 
 <body id="document">
@@ -45,7 +46,6 @@
                     <li><a href="/login">Home</a></li>
                     <li><a href="/information">Information</a></li>
                     <li><a href="/contacts">Contacts</a></li>
-                    <li><a href="/logout">Logout</a></li>
                 </ul>
             </div>
         </div>
@@ -76,7 +76,9 @@
                 <input id="password" name="password" class="form-control login-field  login-field-password" placeholder="Password" type="password"
                        value="">
                 <div class="correct-password"></div>
+                <div class="g-recaptcha" data-sitekey="6LdZ1R8TAAAAAMwVjN-N-oTtZR51Li8QmKoSYEiF"></div>
                 <button id="buttonRegistration" class="btn btn-lg btn-primary btn-block">Register</button>
+
             </form>
         </sec:authorize>
     </div>
@@ -85,7 +87,7 @@
         <div class="layout"></div>
         <sec:authorize access="!isAuthenticated()">
             <form id="stupidUser" action="/passwordRecovery">
-                <div id="passwordRecovery"></div>
+                <div id="passwordRecoveryMessage"></div>
                 <div class="row container-fluid recovery-head">
                     <div class="col-lg-6 col-md-8 col-sm-9 col-xs-9">
                         <h2 class="form-signin-heading">Password recovery</h2>
@@ -146,16 +148,15 @@
                     <p><img id="photo_img" src="/getPhoto" alt="User's photo" width="100" height="100"
                             onError="this.src='/resources/images/user-photo.png'"/></p>
                 </div>
+<%--
                 <p><a id="buttonLogout" class="btn btn-lg btn-danger" href="/logout" role="button">Logout</a></p>
+--%>
 
             </sec:authorize>
         </div>
         <div id="logoDiv" class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
             <div id="thisDiv">
                 <img id="mainLogo" class='img-responsive' src='/resources/images/main.jpg'>
-                <iframe id="mainLolo" width="640" height="360"
-                        src="https://www.youtube.com/embed/BcmUOmvl1N8?rel=0&amp;controls=0&amp;showinfo=0"
-                        frameborder="0" allowfullscreen></iframe>
             </div>
         </div>
     </div>

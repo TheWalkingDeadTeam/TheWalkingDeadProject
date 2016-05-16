@@ -2,6 +2,7 @@ package ua.nc.controller;
 
 import org.apache.log4j.Logger;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ua.nc.dao.exception.DAOException;
@@ -24,16 +25,6 @@ public class ProfileController {
     private static final Logger LOGGER = Logger.getLogger(ProfileController.class);
     private ProfileService profileService = new ProfileServiceImpl();
     private CESService cesService = new CESServiceImpl();
-
-//  @RequestMapping(value = "/profile", method = RequestMethod.GET)
-//    public
-//    @ResponseBody
-//    Profile profile() {
-//        return profileService.getProfile((UserDetailsImpl) SecurityContextHolder
-//                .getContext()
-//                .getAuthentication()
-//                .getPrincipal());
-//    }
 
     @RequestMapping(value = "/profile/{id}", method = RequestMethod.GET, produces = "application/json")
     public
@@ -86,7 +77,7 @@ public class ProfileController {
                         .getPrincipal()).getId(), currentCES.getId());
             } catch (DAOException e) {
                 errors.add(new ValidationError("enrollAsStudent", "You have already enrolled to current CES"));
-                LOGGER.info("You have already enrolled to current CES");
+                LOGGER.info("You have already enrolled to current CES", e.getCause());
             }
         } else {
             errors.add(new ValidationError("enrollAsStudent", "Can't enrollAsStudent to current CES. Current CES session is not exist"));
@@ -94,6 +85,4 @@ public class ProfileController {
         }
         return errors;
     }
-
-
 }

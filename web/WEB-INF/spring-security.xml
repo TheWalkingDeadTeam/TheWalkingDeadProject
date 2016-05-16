@@ -8,6 +8,9 @@
            http://www.springframework.org/schema/security/spring-security.xsd">
 
     <global-method-security pre-post-annotations="enabled"/>
+    <beans:bean id="feedbackPermissions" name="feedbackPermissions"
+                class="ua.nc.security.FeedbackPermissions">
+    </beans:bean>
 
     <http use-expressions="true">
         <csrf disabled="true"/>

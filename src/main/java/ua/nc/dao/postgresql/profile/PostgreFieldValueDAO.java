@@ -15,15 +15,15 @@ import java.util.List;
  */
 public class PostgreFieldValueDAO implements FieldValueDAO {
 
-    private static final String getFieldValueByUserCESFieldQuery = "SELECT * FROM field_value WHERE Application_id = " +
+    private static final String GET_FIELD_VALUE_BY_USER_CES_FIELD_QUERY = "SELECT * FROM field_value WHERE Application_id = " +
             "(SELECT Application_id from Application WHERE system_user_id = ? AND CES_id = ?) AND Field_id = ?";
-    private static final String updateQuery = "UPDATE field_value " +
+    private static final String UPDATE_QUERY = "UPDATE field_value " +
             "SET value_text = ?, value_double = ?, value_date = ?, list_value_id = ? " +
             "WHERE Application_id = ? AND Field_id = ?";
-    private static final String createQuery = "INSERT INTO field_value " +
+    private static final String CREATE_QUERY = "INSERT INTO field_value " +
             "(field_id, application_id, value_text, value_double, value_date, list_value_id) " +
             "VALUES (?, ?, ?, ?, ?, ?);";
-    private static final String deleteQuery = "DELETE FROM field_value WHERE Application_id = " +
+    private static final String DELETE_QUERY = "DELETE FROM field_value WHERE Application_id = " +
             "(SELECT Application_id from Application WHERE system_user_id = ? AND CES_id = ?) AND Field_id = ?";
 
     private Connection connection;
@@ -35,7 +35,7 @@ public class PostgreFieldValueDAO implements FieldValueDAO {
     @Override
     public List<FieldValue> getFieldValueByUserCESField(Integer user_id, Integer ces_id, Integer field_id) throws DAOException {
         List<FieldValue> result;
-        try (PreparedStatement statement = connection.prepareStatement(getFieldValueByUserCESFieldQuery)) {
+        try (PreparedStatement statement = connection.prepareStatement(GET_FIELD_VALUE_BY_USER_CES_FIELD_QUERY)) {
             statement.setInt(1, user_id);
             statement.setInt(2, ces_id);
             statement.setInt(3, field_id);
@@ -48,7 +48,7 @@ public class PostgreFieldValueDAO implements FieldValueDAO {
 
     @Override
     public void update(FieldValue fieldValue) throws DAOException {
-        try (PreparedStatement statement = connection.prepareStatement(updateQuery)) {
+        try (PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY)) {
             statement.setString(1, fieldValue.getValueText());
             statement.setObject(2, fieldValue.getValueDouble());
             if (fieldValue.getValueDate() == null){
@@ -70,7 +70,7 @@ public class PostgreFieldValueDAO implements FieldValueDAO {
 
     @Override
     public FieldValue create(FieldValue fieldValue) throws DAOException {
-        try (PreparedStatement statement = connection.prepareStatement(createQuery)) {
+        try (PreparedStatement statement = connection.prepareStatement(CREATE_QUERY)) {
             statement.setInt(1, fieldValue.getFieldID());
             statement.setInt(2, fieldValue.getApplicationID());
             statement.setString(3, fieldValue.getValueText());
@@ -93,7 +93,7 @@ public class PostgreFieldValueDAO implements FieldValueDAO {
 
     @Override
     public void deleteMultiple(Integer user_id, Integer ces_id, Integer field_id) throws DAOException {
-        try (PreparedStatement statement = connection.prepareStatement(deleteQuery)) {
+        try (PreparedStatement statement = connection.prepareStatement(DELETE_QUERY)) {
             statement.setInt(1, user_id);
             statement.setInt(2, ces_id);
             statement.setInt(3, field_id);

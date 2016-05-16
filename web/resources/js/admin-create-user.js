@@ -3,8 +3,9 @@ $(document).ready(function () {
     $("#buttonRegistration").click(function () {
         var checkroles = [];
         $("input:checked").each(function () {
-            checkroles.push({name: $(this).val()});    //toDO look after
+            checkroles.push({name: $(this).val()});
         });
+        checkroles.push({name: $("#role").val()});
         event.preventDefault();
         $.ajax({
             type: 'post',
