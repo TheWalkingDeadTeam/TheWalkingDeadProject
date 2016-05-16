@@ -1,6 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
-<html>
 <head>
     <title>Profile For Interviewer</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -22,7 +21,6 @@
     <%--/*<img src='images/error.gif' class="img-responsive profile-photo">*/--%>
     <%--/*<img class='img-responsive' src="images/logo-gray.png">*/--%>
 </head>
-<body>
 <header>
     <nav class="navbar navbar-default">
         <div class="container-fluid">
@@ -51,12 +49,10 @@
     </nav>
 </header>
 
-<sec:authorize access="hasAnyRole('ROLE_BA','ROLE_HR','ROLE_DEV')">
-
     <div class="container smprofile">
         <div class="row">
             <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4">
-                <img id="photo_img" src="/getPhoto" alt="User's photo" width="100" height="100"
+                <img id="photo_img" alt="User's photo" width="100" height="100"
                      onError="this.src='/resources/images/user-photo.png'" class="profile-photo">
             </div>
             <div class='col-lg-3 col-md-3 col-sm-3 col-xs-8'>
@@ -85,6 +81,8 @@
     </div>
     <br>
 
+    <%--<sec:authorize access="@feedbackPermissions.isInterviewingPeriod()">--%>
+
     <div id="restrict_message"></div>
     <div id="feedback">
         <form id="feedback_form">
@@ -110,9 +108,19 @@
             </div>
         </form>
     </div>
+    <%--</sec:authorize>--%>
 
+    <sec:authorize access="@feedbackPermissions.isInterviewingPeriod()">
+        <div id = "all_feedbacks">
+            <p id = "dev_feedback">Dev's feedback<br></p>
+            <p id = "dev_score">Dev's score: <br></p>
+            <p id = "hr_feedback">HR's feedback<br></p>
+            <p id = "hr_score">HR's score: <br></p>
+            <p id = "special_mark_display">Special mark: </p>
+        </div>
 
-</sec:authorize>
+    </sec:authorize>
+
 
 
 <footer class="footer container-fluid">
@@ -168,6 +176,10 @@
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="/resources/js/profileForInterviewer.js"></script>
 <script src="/resources/js/photo.js"></script>
+<script src="/resources/js/account.js"></script>
+<sec:authorize access="@feedbackPermissions.isInterviewingPeriod()">
+<script src="/resources/js/getAllFeedbacks.js"></script>
+</sec:authorize>
 
 </body>
 </html>

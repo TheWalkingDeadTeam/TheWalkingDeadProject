@@ -74,11 +74,11 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public void changeStatus(String action, List<Integer> studentsId) {
         if (Objects.equals(action, "activate")) {
-            activateStudents(studentsId);
-            log.info("Sudent list activate" + studentsId.toString());
+            //activateStudents(studentsId);
+            //log.info("Sudent list activate" + studentsId.toString());
         } else if (Objects.equals(action, "deactivate")) {
-            deactivateStudents(studentsId);
-            log.info("Sudent list deactivate" + studentsId.toString());
+            //deactivateStudents(studentsId);
+            //log.info("Sudent list deactivate" + studentsId.toString());
         } else if (Objects.equals(action, "reject")) {
             rejectStudents(studentsId);
             log.info("Sudent list reject" + studentsId.toString());
@@ -91,30 +91,24 @@ public class StudentServiceImpl implements StudentService {
      * @param studentsId list of Integer
      */
     @Override
-    public void activateStudents(List<Integer> studentsId) {
-        // StudentListDAO
-    }
-
-    /**
-     * @param studentsId list of Integer
-     */
-    @Override
-    public void deactivateStudents(List<Integer> studentsId) {
-        // StudentListDAO
-    }
-
-    /**
-     * @param studentsId list of Integer
-     */
-    @Override
     public void rejectStudents(List<Integer> studentsId) {
+        changeApplicationStatus(studentsId, true);
+    }
+
+    @Override
+    public void acceptStudents(List<Integer> studentsId) {
+        changeApplicationStatus(studentsId, false);
+    }
+
+    private void changeApplicationStatus(List<Integer> studentsId, Boolean status){
         Connection connection = daoFactory.getConnection();
         ApplicationDAO applicationDAO = daoFactory.getApplicationDAO(connection);
         CESDAO cesDAO = daoFactory.getCESDAO(connection);
         try {
-            List<Application> applications = applicationDAO.getAllCESApplications(cesDAO.getCurrentCES().getId());
+            Integer cesId = cesDAO.getCurrentCES().getId();
+            List<Application> applications = applicationDAO.getApplicationsByCesIdUserId(cesId, studentsId);
             for (Application application : applications) {
-                application.setRejected(true);
+                application.setRejected(status);
                 applicationDAO.update(application);
             }
         } catch (DAOException e) {
