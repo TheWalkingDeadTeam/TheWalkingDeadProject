@@ -84,7 +84,8 @@ $(document).ready(function () {
                     $('#passwordRecoveryMessage')
                         .addClass('alert alert-success')
                         .html('Request was sent successfully');
-                    $('#userEmail').val("");
+                    $('#userEmail').hide();
+                    $('#buttonRecoverPassword').hide();
                 }
             },
             error: function (jqXHR, exception) {

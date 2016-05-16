@@ -1,7 +1,6 @@
 package ua.nc.controller;
 
 import org.apache.log4j.Logger;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -17,9 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.Writer;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Hlib on 09.05.2016.
@@ -35,25 +32,26 @@ public class InterviewerController {
     private IntervieweeService intervieweeService = new IntervieweeServiceImpl();
     private CESService cesService = new CESServiceImpl();
 
-    @RequestMapping(value = "/enroll", method = RequestMethod.GET)
-    public @ResponseBody String enroll() {
+    @RequestMapping(value = "/enroll-ces-interviewer",method = RequestMethod.POST)
+    public void enroll(@RequestBody IntegerList integerList) {
+        System.out.println(integerList.getInterviewersId().size());
         CES currentCES = cesService.getCurrentCES();
         if (currentCES != null) {
-            try {
-                cesService.enrollAsInterviewer(((UserDetailsImpl) SecurityContextHolder
-                        .getContext()
-                        .getAuthentication()
-                        .getPrincipal()).getId(), currentCES.getId());
-                return "You has been successfully enrolled to current CES as interviewer";
-            } catch (DAOException e) {
-                LOGGER.info("");
-                return "Can't enroll to current CES as interviewer.";
+            int cesId = cesService.getCurrentCES().getId();
+            Iterator<Integer> iterator = integerList.getInterviewersId().iterator();
+            while (iterator.hasNext()) {
+                try {
+                    cesService.enrollAsInterviewer(iterator.next(), cesId);
+                } catch (DAOException e) {
+                    LOGGER.info(e);
+                }
             }
-        } else {
+        }else{
             LOGGER.info("Can't enroll to current CES. Current CES session is not exist");
-            return  "Can't enroll to current CES. Current CES session is not exist";
         }
     }
+
+
 
     @RequestMapping(value = "/feedback", method = RequestMethod.GET)
     public String feedback(){
@@ -69,7 +67,6 @@ public class InterviewerController {
         return application;
     }
 
-    @PreAuthorize("@feedbackPermissions.isInterviewingPeriod()")
     @ResponseBody
     @RequestMapping(value = "feedback/{id}/save", method = RequestMethod.POST, produces = "application/json")
     public Set<ValidationError> saveFeedback(@RequestBody FeedbackAndSpecialMark feedbackAndSpecialMark, @PathVariable("id") Integer id, HttpServletRequest request){
@@ -80,8 +77,9 @@ public class InterviewerController {
         feedback.setInterviewerID(interviewerID);
         Application application = applicationService.getApplicationByUserForCurrentCES(id);
         Interviewee interviewee = intervieweeService.getInterviewee(application.getId());
-        Integer feedbackId = request.isUserInRole("ROLE_DEV") ? interviewee.getDevFeedbackID() : interviewee.getHrFeedbackID();
-        boolean restricted = feedbackId != null && feedbackService.getFeedback(feedbackId).getId().equals(interviewerID);
+        boolean restricted = request.isUserInRole("ROLE_DEV")
+                ? feedbackService.getFeedback(interviewee.getDevFeedbackID()).getId().equals(interviewerID)
+                : feedbackService.getFeedback(interviewee.getDevFeedbackID()).getId().equals(interviewerID);
         if (!restricted) {
             if (!feedbackService.saveFeedback(feedbackAndSpecialMark, application)) {
                 errors.add(new ValidationError("save", "Unable to save feedback"));
@@ -137,23 +135,6 @@ public class InterviewerController {
         }
         fillNullResponse(response);
         return null;
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "getallfeedbacks/{id}", method = RequestMethod.GET, produces = "application/json")
-    public List<FeedbackAndSpecialMark> getAllFeedbacks(@PathVariable("id") Integer id)
-    {
-        Application application = applicationService.getApplicationByUserForCurrentCES(id);
-        Interviewee interviewee = intervieweeService.getInterviewee(application.getId());
-        List<FeedbackAndSpecialMark> feedbackAndSpecialMarks = new LinkedList<>();
-        FeedbackAndSpecialMark feedbackAndSpecialMark = new FeedbackAndSpecialMark();
-        feedbackAndSpecialMark.setSpecialMark(interviewee.getSpecialMark());
-        feedbackAndSpecialMark.setFeedback(feedbackService.getFeedback(interviewee.getDevFeedbackID()));
-        feedbackAndSpecialMarks.add(feedbackAndSpecialMark);
-        feedbackAndSpecialMark = new FeedbackAndSpecialMark();
-        feedbackAndSpecialMark.setFeedback(feedbackService.getFeedback(interviewee.getHrFeedbackID()));
-        feedbackAndSpecialMarks.add(feedbackAndSpecialMark);
-        return feedbackAndSpecialMarks;
     }
 
     private void fillNullResponse(HttpServletResponse response){

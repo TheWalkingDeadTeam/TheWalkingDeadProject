@@ -14,15 +14,19 @@ import javax.servlet.http.HttpServletRequest;
  * Created by Pavel on 18.04.2016.
  */
 @ControllerAdvice
+@Controller
 public class ExceptionController {
-    @ExceptionHandler(NoHandlerFoundException.class)
-    public String handleError404()   {
-        return "/error-404";
-    }
 
     @RequestMapping(value = {"/error", "/403"}, method = RequestMethod.GET)
     public String login() {
         return "error";
     }
+
+
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public String handleError404()   {
+        return "/error-404";
+    }
+
 
 }

@@ -100,7 +100,7 @@
         <a class="mdl-navigation__link" href="/admin/enroll-session"><i
                 class="mdl-color-text--blue-grey-400 material-icons"
                 role="presentation">schedule</i>Enrollment History</a>
-        <a class="mdl-navigation__link" href="/report"><i
+        <a class="mdl-navigation__link" href="/admin/report"><i
                 class="mdl-color-text--blue-grey-400 material-icons"
                 role="presentation">show_chart</i>Statistic & Reports</a>
     </nav>

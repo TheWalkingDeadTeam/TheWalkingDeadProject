@@ -77,14 +77,16 @@
                 <h4>Name:</h4>
                 <h4>Surname:</h4>
                 <h4>E-mail:</h4>
+                <sec:authorize access="!hasRole('ROLE_STUDENT')">
+                    <div id="enrollMessages"></div>
+                    <button id="enroll_button" type="submit">Enroll</button>
+                </sec:authorize>
             </div>
             <div class="col-lg-2 col-md-2 col-sm-2 col-xs-3">
                 <sec:authentication var="principal" property="principal"/>
                 <span>${principal.username}</span>
                 <span>${principal.username}</span>
                 <span>${principal.username}</span>
-
-
             </div>
             <div class="col-lg-6 col-md-4 col-xs-3">
                 <jsp:include page="change-password.jsp"/>
