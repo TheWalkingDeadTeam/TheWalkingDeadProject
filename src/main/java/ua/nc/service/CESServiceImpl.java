@@ -156,9 +156,19 @@ public class CESServiceImpl implements CESService {
      */
     private Date calculateEndDate(CES ces, Date startDate, int hoursPerDay, int timePerStudent,
                                   Set<User> interviewersList, Set<User> studentsList) {
+        int studentsAmount = studentsList.size();
+
+        int studsPerDayPerOneIntrwr = MINUTES_PER_HOUR * hoursPerDay / timePerStudent;
+        int studentsPerDay = studsPerDayPerOneIntrwr * getMinimalInterviewersAmount(interviewersList);
+        Date endDate = new Date(startDate.getTime() + (studentsAmount / studentsPerDay) * MILLIS_PER_DAY);
+        ces.setEndInterviewingDate(endDate);
+        return endDate;
+    }
+
+    @Override
+    public int getMinimalInterviewersAmount(Set<User> interviewersList) {
         Connection connection = daoFactory.getConnection();
         RoleDAO roleDAO = new PostgreRoleDAO(connection);
-        int studentsAmount = studentsList.size();
         int devAmount = 0;
         int hrbaAmount = 0;
         for (User intrwr : interviewersList) {
@@ -176,11 +186,7 @@ public class CESServiceImpl implements CESService {
                 }
             }
         }
-        int studsPerDayPerOneIntrwr = MINUTES_PER_HOUR * hoursPerDay / timePerStudent;
-        int studentsPerDay = studsPerDayPerOneIntrwr * Math.min(devAmount, hrbaAmount);
-        Date endDate = new Date(startDate.getTime() + (studentsAmount / studentsPerDay) * MILLIS_PER_DAY);
-        ces.setEndInterviewingDate(endDate);
-        return endDate;
+        return Math.min(devAmount, hrbaAmount);
     }
 
 

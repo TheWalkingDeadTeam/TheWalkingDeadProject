@@ -7,15 +7,14 @@ import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import ua.nc.dao.ApplicationDAO;
 import ua.nc.dao.UserDAO;
 import ua.nc.dao.enums.DataBaseType;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.dao.factory.DAOFactory;
+import ua.nc.dao.postgresql.PostgreApplicationDAO;
 import ua.nc.dao.postgresql.PostgreUserDAO;
-import ua.nc.entity.CES;
-import ua.nc.entity.Mail;
-import ua.nc.entity.Scheduler;
-import ua.nc.entity.User;
+import ua.nc.entity.*;
 import ua.nc.service.CESService;
 import ua.nc.service.CESServiceImpl;
 import ua.nc.service.MailService;
@@ -44,6 +43,7 @@ public class SchedulerController {
     private final DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
     private final Connection connection = daoFactory.getConnection();
     private final UserDAO userDAO = new PostgreUserDAO(connection);
+    private final ApplicationDAO appDAO = new PostgreApplicationDAO(connection);
     private final CESService cesService = new CESServiceImpl();
     private final MailService mailService = new MailServiceImpl();
 
@@ -107,10 +107,11 @@ public class SchedulerController {
             CES ces = cesService.getCurrentCES();
             int reminderTime = ces.getReminders();
             Set<User> interviewersList = userDAO.getInterviewersForCurrentCES();
-            Set<User> studentsList = userDAO.getStudentsForCurrentCES();
+            List<Application> applicationList = appDAO.getAllAcceptedApplications(ces.getId());
+            Set<User> studentsList = userDAO.getAllAcceptedStudents(ces.getId());
             System.out.println("!!!");
             mailService.sendInterviewReminders(interviewDates, reminderTime, interviewerMail, interviewerParameters,
-                    studentMail, studentParameters, interviewersList, studentsList);
+                    studentMail, studentParameters, interviewersList, studentsList, applicationList);
             System.out.println("%%%%%%");
         } catch (DAOException e) {
             log.warn("Check Scheduler paramters", e);

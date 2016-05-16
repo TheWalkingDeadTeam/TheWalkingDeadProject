@@ -17,7 +17,7 @@ $(document).ready(function () {
             dataType: 'json',
             contentType: "application/json",
             data: JSON.stringify({
-                email: "kirkorov@gmail.com",
+                email: "dd@sf.bbh",
                 roles: checkroles
             }),
             success: function (response) {
