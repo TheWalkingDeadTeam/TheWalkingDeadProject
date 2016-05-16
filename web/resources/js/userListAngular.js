@@ -1,30 +1,36 @@
-var app = angular.module('studentView', ['checklist-model', 'angularUtils.directives.dirPagination']);
+var app = angular.module('userView', ['checklist-model', 'angularUtils.directives.dirPagination']);
 
-app.controller('StudentCtrl', ["$http", "$scope", function ($http, $scope) {
+app.controller('UserCtrl', ["$http", "$scope", function ($http, $scope) {
     var vm = this;
     vm.users = []; //declare an empty array
     vm.pageno = 1; // initialize page no to 1
     vm.total_count = 0;
     vm.itemsPerPage = 10; //this could be a dynamic value from a drop down
-    vm.selectUrl = "students/list/" + vm.itemsPerPage + "/" + vm.pageno;
+    vm.selectUrl = "users/list/" + vm.itemsPerPage + "/" + vm.pageno;
     vm.order_by = null;
+    vm.sortAsc = null;
+    vm.pattern = null;
     $scope.sortReverse = false;
 
 
-    vm.getData = function () { // This would fetch the data on page change.
-        //In practice this should be in a factory.
+    vm.getData = function () {
         vm.users = [];
-        // "students/list/"+vm.itemsPerPage+"/"+pageno
         $http.get(vm.selectUrl).success(function (response) {
-            vm.header = response.header;
-            vm.users = response.rows;
-            // vm.order_by = vm.header[0].id;
-        });
-        $http.get("students/size").success(function (response) {
-            vm.total_count = response;
+            vm.users = response;
         });
     };
-
+    vm.getSize = function () {
+        if(vm.pattern == null) {
+            $http.get("users/size").success(function (response) {
+                vm.total_count = response;
+            });
+        }else{
+            $http.get("users/size/"+vm.pattern).success(function (response) {
+                vm.total_count = response;
+            });
+        }
+    };
+    
     $scope.dataStudents = {
         studId: []
     };
@@ -34,21 +40,22 @@ app.controller('StudentCtrl', ["$http", "$scope", function ($http, $scope) {
     };
 
     vm.getData(); // Call the function to fetch initial data on page load.
-
+    vm.getSize();
     vm.setPageno = function (pageno) {
         vm.pageno = pageno;
         if (vm.order_by === null) {
-            vm.selectUrl = "students/list/" + vm.itemsPerPage + "/" + vm.pageno;
+            vm.selectUrl = "users/list/" + vm.itemsPerPage + "/" + vm.pageno;
         } else {
-            vm.selectUrl = "students/list/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by;
+            vm.selectUrl = "users/list/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by + "/" + vm.sortAsc;
         }
         vm.getData();
+        vm.getSize();
     };
 
     $scope.checkAll = function () {
         if ($scope.selectedAll) {
             $scope.dataStudents.studId = vm.users.map(function (item) {
-                return item.userId;
+                return item.id;
             });
             $scope.selectdAll = true;
         }
@@ -59,21 +66,21 @@ app.controller('StudentCtrl', ["$http", "$scope", function ($http, $scope) {
 
     };
 
-    $scope.sortType = function (type, revers) {
-
+    $scope.sortType = function (type,revers) {
         vm.order_by = type;
-        vm.selectUrl = "students/list/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by + "/" + revers;
-
+        vm.sortAsc = revers;
+        vm.selectUrl = "users/list/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by + "/" + vm.sortAsc;
         vm.getData()
+        vm.getSize();
     };
 
-    $scope.rejectStud = function () {
+    $scope.activateUser = function () {
         var dataObj = {
-            type: 'reject',
+            type: 'activate',
             values: $scope.dataStudents.studId
         };
         if ($scope.dataStudents.studId.length != 0) {
-            var res = $http.post('students', dataObj);
+            var res = $http.post('users', dataObj);
             res.success(function (data, status, headers, config) {
                 $scope.message = data;
                 vm.getData();
@@ -84,19 +91,19 @@ app.controller('StudentCtrl', ["$http", "$scope", function ($http, $scope) {
         }
     };
 
-    $scope.unrejectStud = function () {
+    $scope.deactivateUser = function () {
         var dataObj = {
-            type: 'unreject',
+            type: 'deactivate',
             values: $scope.dataStudents.studId
         };
         if ($scope.dataStudents.studId.length != 0) {
-            var res = $http.post('students', dataObj);
+            var res = $http.post('users', dataObj);
             res.success(function (data, status, headers, config) {
                 $scope.message = data;
                 vm.getData();
             });
-            res.error(function (data, status, headers, config) {
-                alert("failure message: " + JSON.stringify({data: data}));
+            res.error(function (data) {
+                alert("failure message: ");
             });
         }
     };
@@ -107,17 +114,18 @@ app.controller('StudentCtrl', ["$http", "$scope", function ($http, $scope) {
             values: [$scope.searchFilt]
         };
         if (pattern == undefined || pattern == "" || pattern == null) {
-            vm.selectUrl = "students/list/" + vm.itemsPerPage + "/" + vm.pageno;
+            vm.selectUrl = "users/list/" + vm.itemsPerPage + "/" + vm.pageno;
 
         } else {
+            vm.pattern = pattern;
             if (vm.order_by === null) {
-                vm.selectUrl = "students/search/" + vm.itemsPerPage + "/" + vm.pageno + "/" + pattern;
+                vm.selectUrl = "users/search/" + vm.itemsPerPage + "/" + vm.pageno + "/system_user_id/" + pattern;
             } else {
-                vm.selectUrl = "students/search/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by + "/" + pattern;
+                vm.selectUrl = "users/search/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by + "/" + pattern;
             }
         }
         vm.getData();
-        
+        vm.getSize();
     }
 }]);
 
