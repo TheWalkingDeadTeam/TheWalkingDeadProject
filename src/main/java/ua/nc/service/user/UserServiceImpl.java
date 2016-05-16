@@ -233,10 +233,7 @@ public class UserServiceImpl implements UserService {
                 userDAO.updateUser(getUser(id));
             } catch (DAOException e) {
                 LOGGER.warn("Cannot activate user with id " + id);
-            } finally {
-                daoFactory.putConnection(connection);
             }
-
         }
         LOGGER.info("activation users - OK");
     }
