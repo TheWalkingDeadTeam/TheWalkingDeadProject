@@ -352,9 +352,17 @@ public class AdminController {
     @RequestMapping(value = {"/interviewee/size"}, method = RequestMethod.GET, produces = "application/json")
     public
     @ResponseBody
-    Integer intervieeGetJSONSize() {
+    Integer intervieweeGetJSONSize() {
         IntervieweeService intervieweeService = new IntervieweeServiceImpl();
         return intervieweeService.getIntervieweeSize();
+    }
+
+    @RequestMapping(value = {"/interviewee/size/{pattern}"}, method = RequestMethod.GET, produces = "application/json")
+    public
+    @ResponseBody
+    Integer intervieweeGetJSONSize(@PathVariable("pattern") String pattern) {
+        IntervieweeService intervieweeService = new IntervieweeServiceImpl();
+        return intervieweeService.getIntervieweeSize(pattern);
     }
 
     @RequestMapping(value = {"/interviewee/search/{itemsPerPage}/{pageNumber}/{sortType}/{pattern}"}, method = RequestMethod.GET, produces = "application/json")

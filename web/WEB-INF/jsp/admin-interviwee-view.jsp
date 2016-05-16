@@ -7,7 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!doctype html>
-<html lang="en" ng-app="interView">
+<html lang="en" ng-app="userView">
 <head>
 
     <meta charset="utf-8">
@@ -44,6 +44,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.cyan-light_blue.min.css">
     <link rel="stylesheet" href="/resources/css/styles.css">
+    <link rel="stylesheet" href="/resources/css/checkbox.css">
 
     <style>
         #view-source {
@@ -58,57 +59,71 @@
     </style>
 </head>
 <body>
-<main ng-controller="interCtrl3 as data"
+<main ng-controller="IntervieweeCtrl as data"
       class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
+
     <jsp:include page="admin-header.jsp"/>
 
 
     <main class="mdl-layout__content mdl-color--grey-100">
         <div>
-            <button ng-click="activateStud()"
-                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
-                Activate
-            </button>
-            <button ng-click="deactivateStud()"
-                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
-                Deactivate
-            </button>
+            <%--<button ng-click="activateUser()"--%>
+                    <%--class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">--%>
+                <%--Activate--%>
+            <%--</button>--%>
+            <%--<button ng-click="deactivateUser()"--%>
+                    <%--class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">--%>
+                <%--Deactivate--%>
+            <%--</button>--%>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+                <label class="mdl-button mdl-js-button mdl-button--icon" for="search">
+                    <i class="material-icons">search</i>
+                </label>
+                <div class="mdl-textfield__expandable-holder">
+                    <form ng-submit = "searchFiltr(field)"><input  class="mdl-textfield__input" type="text" id="search" name="field" ng-model="field"></form>
+                    <label class="mdl-textfield__label" for="search">Enter your query...</label>
+                </div>
+            </div>
         </div>
-        <table class="table table-bordered table-striped" style="{margin-top: 200px}">
-
+        <table class="table table-striped table-hover">
             <thead>
             <tr>
                 <td>
                     <input type="checkbox" ng-model="selectedAll" ng-click="checkAll()">
                 </td>
                 <td>
-                    <a href="#" ng-click="order_by = 'id'; sortReverse = !sortReverse; sortType(order_by)">
-                        #
+                    <a href="#" ng-click="sortType('id',sortReverse); sortReverse = !sortReverse">
+                        Id
                     </a>
                 </td>
                 <td>
-                    <a href="#" ng-click="order_by = 'name'; sortReverse = !sortReverse; sortType(order_by)">
+                    <a href="#" ng-click="sortType('name',sortReverse); sortReverse = !sortReverse">
                         Name
                     </a>
                 </td>
                 <td>
-                    <a href="#" ng-click="order_by = 'university'; sortReverse = !sortReverse; sortType(order_by)">
+                    <a ng-click="sortType('surname',sortReverse); sortReverse = !sortReverse">
                         Surname
                     </a>
                 </td>
                 <td>
-                    <a href="#" ng-click="order_by = 'email'; sortReverse = !sortReverse; sortType(order_by)">
-                        Email
+                    <a ng-click="sortType('special_mark',sortReverse); sortReverse = !sortReverse">
+                        Special Mark
                     </a>
                 </td>
                 <td>
-                    <a href="#" ng-click="order_by = 'role'; sortReverse = !sortReverse; sortType(order_by)">
-                        Role
+                    <a ng-click="sortType('dev_score',sortReverse); sortReverse = !sortReverse">
+                        Dev Score
                     </a>
                 </td>
                 <td>
-                    <a href="#" ng-click="order_by = 'participation'; sortReverse = !sortReverse; sortType(order_by)">
-                        Participation
+                    <a ng-click="sortType('hr_score',sortReverse); sortReverse = !sortReverse">
+                        Hr Score
+                    </a>
+                </td>
+                <td>
+                    <a href="#" ng-click="sortType('color',sortReverse); sortReverse = !sortReverse">
+                        Color
                     </a>
                 </td>
             </tr>
@@ -117,19 +132,23 @@
             <tr ng-show="data.users.length <= 0">
                 <td colspan="5" style="text-align:center;">Please Wait</td>
             </tr>
-            <tr dir-paginate="user in data.users|itemsPerPage:data.itemsPerPage" total-items="data.total_count">
-                <td><input type="checkbox" checklist-model="dataStudents.studId" checklist-value="user.id">
-                </td>
-                <td ng-init="index=$index + 1">{{index}}</td>
-                <td>{{user.name}}</td>
-                <td>{{user.surname}}</td>
-                <td>{{user.email}}</td>
-                <td>{{user.role}}</td>
-                <td>{{user.participation}}</td>
+            <tr dir-paginate="interviewee in data.users|itemsPerPage:data.itemsPerPage" total-items="data.total_count">
+                <td><input type="checkbox" checklist-model="dataStudents.studId" checklist-value="interviewee.id"></td>
+                <td><a href="/interviewer/feedback?{{interviewee.id}}" target="_blanks">{{interviewee.id}}</a></td>
+                <td>{{interviewee.name}}</td>
+                <td>{{interviewee.surname}}</td>
+                <td>{{interviewee.special_mark}}</td>
+                <td>{{interviewee.dev_scope}}</td>
+                <td>{{interviewee.hr_score}}</td>
+               <td ng-style="{opacity:0.5,'background-color':'{{interviewee.color == '1' ? 'blue' :
+                                interviewee.color == '2' ? 'green' :
+                                interviewee.color == '3' ? 'yellow' : 'red'}}'}" title="
+                              {{interviewee.color == '1' ? 'blue' :
+                                interviewee.color == '2' ? 'green' :
+                                interviewee.color == '3' ? 'yellow' : 'red'}}"></td>
             </tr>
             </tbody>
         </table>
-
         <dir-pagination-controls
                 max-size="8"
                 direction-links="true"
@@ -141,16 +160,18 @@
     </main>
 </main>
 
-
 <script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="/resources/js/admin-create-user.js"></script>
 <script src="/resources/bootstrap/js/bootstrap.js"></script>
+<script src="/resources/js/checkboxScript.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-route.js"></script>
-<script src="../../resources/js/interviewListAngular.js"></script>
+<script src="../../resources/js/intervieweeListAngular.js"></script>
 <script src="../../resources/js/dirPagination.js"></script>
 <script src="http://vitalets.github.io/checklist-model/checklist-model.js"></script>
+
 </body>
+
 
 </html>
