@@ -97,6 +97,10 @@
                     </a>
                 </td>
                 <td>
+                    <a href="#" ng-click="sortType('id',sortReverse); sortReverse = !sortReverse">
+                        Id
+                    </a>
+                </td> <td>
                     <a href="#" ng-click="sortType('name',sortReverse); sortReverse = !sortReverse">
                         Name
                     </a>
@@ -130,6 +134,7 @@
             <tr dir-paginate="user in data.users|itemsPerPage:data.itemsPerPage" total-items="data.total_count">
                 <td><input type="checkbox" checklist-model="dataStudents.studId" checklist-value="user.id"></td>
                 <td ng-init="index=$index + 1">{{index}}</td>
+                <td>{{user.id}}</td>
                 <td>{{user.name}}</td>
                 <td>{{user.surname}}</td>
                 <td>{{user.email}}</td>

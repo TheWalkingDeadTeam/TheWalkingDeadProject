@@ -71,6 +71,18 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+    @Override
+    public List<UserRow> getUser(Integer itemPerPage, Integer pageNumber, String pattern) {
+        Connection connection = daoFactory.getConnection();
+        PostgreUserTableDAO postgreUserTableDAO = new PostgreUserTableDAO(connection);
+        try {
+            return postgreUserTableDAO.getUsersTable(itemPerPage, pageNumber,pattern);
+        } catch (DAOException e) {
+            LOGGER.warn("Can't get students", e.getCause());
+        }
+        return null;
+    }
+
 
     @Override
     public void changeStatus(String action, List<Integer> userIds) {

@@ -258,6 +258,18 @@ public class AdminController {
         return userService.getSize();
     }
 
+    @RequestMapping(value = {"/users/search/{itemsPerPage}/{pageNumber}/{pattern}"}, method = RequestMethod.GET, produces = "application/json")
+    public
+    @ResponseBody
+    List<UserRow> usersSearch(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("pattern") String pattern) {
+        List<UserRow> userRows;
+        UserService userService = new UserServiceImpl();
+        userRows = userService.getUser(itemsPerPage, (pageNumber * itemsPerPage - 10), pattern);
+        if (userRows == null) {
+            LOGGER.warn("users == null");
+        }
+        return userRows;
+    }
 
     @RequestMapping(value = {"/users/search/{itemsPerPage}/{pageNumber}/{sortType}/{pattern}"}, method = RequestMethod.GET, produces = "application/json")
     public

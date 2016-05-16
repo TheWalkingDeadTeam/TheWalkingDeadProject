@@ -13,6 +13,8 @@ public interface UserService {
 
     public List<UserRow> getUser(Integer itemPerPage, Integer pageNumber, String orderBy,String pattern);
 
+    public List<UserRow> getUser(Integer itemPerPage, Integer pageNumber, String pattern);
+
     public List<UserRow> getUser(Integer itemPerPage, Integer pageNumber, String orderBy, Boolean asc);
 
     public void changeStatus(String action, List<Integer> userIds);
