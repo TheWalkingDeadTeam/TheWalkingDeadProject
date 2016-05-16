@@ -10,6 +10,8 @@ public class Mail implements Identified<Integer> {
     private String bodyTemplate;
     private String headTemplate;
     private List<Integer> usersId;
+    private Integer mailIdUser;
+
 
     public Integer getMailIdUser() {
         return mailIdUser;
@@ -18,8 +20,6 @@ public class Mail implements Identified<Integer> {
     public void setMailIdUser(Integer mailIdUser) {
         this.mailIdUser = mailIdUser;
     }
-
-    private Integer mailIdUser;
 
     public List<Integer> getUsersId() {
         return usersId;
@@ -51,5 +51,17 @@ public class Mail implements Identified<Integer> {
 
     public void setHeadTemplate(String headTemplate) {
         this.headTemplate = headTemplate;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Mail{" +
+                "id=" + id +
+                ", bodyTemplate='" + bodyTemplate + '\'' +
+                ", headTemplate='" + headTemplate + '\'' +
+                ", usersId=" + usersId +
+                ", mailIdUser=" + mailIdUser +
+                '}';
     }
 }

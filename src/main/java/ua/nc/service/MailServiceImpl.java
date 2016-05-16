@@ -146,7 +146,7 @@ public class MailServiceImpl implements MailService {
      * @param parameters set of parameters in form : "{pattern1:meaning1, ..., patternN:meaningN}".
      * @return customized mail.
      */
-    private Mail customizeMail(Mail mail, Map<String, String> parameters) {
+    public Mail customizeMail(Mail mail, Map<String, String> parameters) {
         //customize mail topic
         String head = mail.getHeadTemplate();
         for (Map.Entry<String, String> param : parameters.entrySet()) {

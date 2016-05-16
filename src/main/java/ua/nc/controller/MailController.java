@@ -15,7 +15,9 @@ import ua.nc.service.user.UserService;
 import ua.nc.service.user.UserServiceImpl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Alexander on 30.04.2016.
@@ -127,23 +129,40 @@ public class MailController {
     }
 
 
+
+    private Mail customization (Mail mail , Map<String,String> parameters){
+        Mail mailRes = new Mail();
+        String body = mail.getBodyTemplate();
+        for (Map.Entry<String, String> param : parameters.entrySet()) {
+            body = body.replace(param.getKey(), param.getValue());
+        }
+        System.out.println("BODY :"+body);
+        mailRes.setBodyTemplate(body);
+        mailRes.setHeadTemplate(mail.getHeadTemplate());
+        return mailRes;
+    }
+
     /**
      *
      */
     @RequestMapping(value = "/admin/users-mail-id", method = RequestMethod.POST, produces = "application/json")
-    @ResponseBody
     public void sendMail(@RequestBody Mail mail) {
-        System.out.println("I am in");
-        if (mail.getMailIdUser() != null) {
-            List<Integer> userId = mail.getUsersId();
+        List<Integer> userId = mail.getUsersId();
+        if (mail.getMailIdUser()!= null) {
             Mail studentMail = mailService.getMail(mail.getMailIdUser());
             for(Integer i: userId){
-                System.out.println("user id"+i);
                 User user  = userService.getUser(i);
-                System.out.println(user.getName());
+                Map<String,String> customizeMail = new HashMap<>();
+                customizeMail.put("$name",user.getName());
+                customizeMail.put("$surname",user.getName());
+                Mail mailUpdate = customization(studentMail,customizeMail);
+                mailService.sendMail(user.getEmail(),mailUpdate);
             }
         } else{
-            System.out.println("NULL");
+           for (Integer i: userId){
+               User user = userService.getUser(i);
+               mailService.sendMail(user.getEmail(),mail.getHeadTemplate(),mail.getBodyTemplate());
+           }
         }
     }
 

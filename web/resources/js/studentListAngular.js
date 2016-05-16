@@ -272,7 +272,6 @@ app.controller('StudentCtrl', ["$http", "$scope", 'MailService', function ($http
         };
         
         if(dataObj.values.length != 0){
-            alert('Not empty');
             var formData = {
                 "usersId": dataObj.values,
                 "mailIdUser": $scope.mailIdUser,
