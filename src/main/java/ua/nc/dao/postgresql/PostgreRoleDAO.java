@@ -104,16 +104,25 @@ public class PostgreRoleDAO extends AbstractPostgreDAO<Role, Integer> implements
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
+            System.out.println("###");
             connection.setAutoCommit(false);
             statement = connection.prepareStatement(sql);
+            System.out.println("$$$");
+            System.out.println(roles.size());
             for (Role role : roles) {
+                System.out.println(role.getId());
                 statement.setInt(1, role.getId());
+                System.out.println(user.getEmail());
                 statement.setString(2, user.getEmail());
+                System.out.println("batch");
                 statement.addBatch();
+                System.out.println("%%%");
             }
             statement.executeBatch();
             connection.commit();
+            System.out.println("^^^");
         } catch (SQLException e) {
+            System.out.println("&&&");
             LOGGER.info("Cant set roles to user" + user.getName());
             throw new DAOException(e);
         } finally {
@@ -122,7 +131,9 @@ public class PostgreRoleDAO extends AbstractPostgreDAO<Role, Integer> implements
                     resultSet.close();
                 if (statement != null)
                     statement.close();
+                System.out.println(")))");
             } catch (Exception e) {
+                System.out.println("(((");
                 throw new DAOException(e);
             }
         }

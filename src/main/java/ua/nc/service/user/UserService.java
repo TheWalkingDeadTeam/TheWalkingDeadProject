@@ -1,9 +1,11 @@
 package ua.nc.service.user;
 
+import ua.nc.entity.Role;
 import ua.nc.entity.User;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Pavel on 18.04.2016.
@@ -25,4 +27,5 @@ public interface UserService {
 
     void deactivateUsers(List<Integer> userIds);
 
+    void changeRoles(String email, Set<Role> roles);
 }
