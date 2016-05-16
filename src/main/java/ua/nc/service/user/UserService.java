@@ -17,12 +17,13 @@ public interface UserService {
 
     public void changeStatus(String action, List<Integer> userIds);
 
+    public Integer getSize(String pattern);
 
     public Integer getSize();
 
     User getUser(String email);
 
-    User getUser(int id);
+    User getUser(Integer id);
 
     User createUser(User user);
 

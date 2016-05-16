@@ -257,6 +257,13 @@ public class AdminController {
         UserServiceImpl userService = new UserServiceImpl();
         return userService.getSize();
     }
+    @RequestMapping(value = {"/users/size/{pattern}"}, method = RequestMethod.GET, produces = "application/json")
+    public
+    @ResponseBody
+    Integer usersGetJSONSize(@PathVariable("pattern") String pattern) {
+        UserServiceImpl userService = new UserServiceImpl();
+        return userService.getSize(pattern);
+    }
 
 
     @RequestMapping(value = {"/users/search/{itemsPerPage}/{pageNumber}/{sortType}/{pattern}"}, method = RequestMethod.GET, produces = "application/json")

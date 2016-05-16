@@ -76,6 +76,7 @@ app.controller('StudentCtrl', ["$http", "$scope", function ($http, $scope) {
             var res = $http.post('students', dataObj);
             res.success(function (data, status, headers, config) {
                 $scope.message = data;
+                vm.getData();
             });
             res.error(function (data, status, headers, config) {
                 alert("failure message: " + JSON.stringify({data: data}));
@@ -92,6 +93,7 @@ app.controller('StudentCtrl', ["$http", "$scope", function ($http, $scope) {
             var res = $http.post('students', dataObj);
             res.success(function (data, status, headers, config) {
                 $scope.message = data;
+                vm.getData();
             });
             res.error(function (data, status, headers, config) {
                 alert("failure message: " + JSON.stringify({data: data}));
