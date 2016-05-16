@@ -1,26 +1,10 @@
 /**
  * Created by Neltarion on 12.05.2016.
  */
-// $(document).ready(function() {
-//
-//     $('input').blur(function() {
-//
-//         // check if the input has any value (if we've typed into it)
-//         if ($(this).val())
-//             $(this).addClass('used');
-//         else
-//             $(this).removeClass('used');
-//     });
-//
-//
-//
-// });
 
-var sendNewQuestForm = angular.module('sendForm', ['sendController']);
+var sendFormModule = angular.module('sendFormModule', []);
 
-var sendConrtoller = angular.module('sendController', []);
-
-sendConrtoller.controller('sendFr', ["$scope", "$http", function ($scope, $http) {
+sendFormModule.controller('sendFr', ["$scope", "$http", function ($scope, $http) {
     var vm = this;
 
     vm.isShown = false;
@@ -31,11 +15,14 @@ sendConrtoller.controller('sendFr', ["$scope", "$http", function ($scope, $http)
         fieldTypeID: '',
         multipleChoice: '',
         orderNum: '',
-        listTypeID: ''
+        listTypeID: '',
+        inputOptionsFields: []
     };
 
     $scope.change = function () {
         var flag = (vm.newQuestion.fieldTypeID == 4 || vm.newQuestion.fieldTypeID == 5 || vm.newQuestion.fieldTypeID == 6);
+        vm.newQuestion.inputOptionsFields = [];
+        
         if (flag == true) {
             if (vm.newQuestion.fieldTypeID == 5) {
                 vm.newQuestion.multipleChoice = "true";
@@ -82,33 +69,28 @@ sendConrtoller.controller('sendFr', ["$scope", "$http", function ($scope, $http)
         }).error(function () {
             $scope.postError = true;
         });
-    }
+    };
 
-    // $scope.items = [];
-    //
-    // $scope.add = function () {
-    //     $scope.items.push({
-    //         inlineChecked: false,
-    //         question: '',
-    //         questionPlaceholder: 'Option name',
-    //         text: ''
-    //     });
-    // };
-    
-    $scope.items = [];
-    // vm.newQuestion.newOpt = [];
-    
-    $scope.add = function() {
-        var newItemNo = $scope.items.length+1;
-        $scope.items.push({});
+    vm.add = function() {
+        var item = {
+            value: '',
+            id: _getRandomInt()
+        };
+
+        vm.newQuestion.inputOptionsFields.push(item);
+        
         $('.newInputs').attr('required', 'true');
         // $('.newInputs').attr('ng-model', 'newOpt');
     };
 
-    $scope.removeChoice = function() {
-        var lastItem = $scope.items.length-1;
-        $scope.items.splice(lastItem);
-    };
+    // $scope.removeChoice = function() {
+    //     var lastItem = $scope.items.length-1;
+    //     $scope.items.splice(lastItem);
+    // };
+    
+    function _getRandomInt() {
+        return new Date().getTime() + Math.round(1 + Math.random() * (9999998))
+    }
 
 }]);
 

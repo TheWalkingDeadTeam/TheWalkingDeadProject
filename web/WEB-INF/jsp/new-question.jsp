@@ -7,7 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!doctype html>
-<html lang="en" ng-app="sendForm">
+<html lang="en" ng-app="sendFormModule">
 <head>
 
     <meta charset="utf-8">
@@ -69,44 +69,6 @@
         <div>
             <div style="margin-left: 20px;"><h4>Please, enter new question properties</h4></div>
             <div style="margin: 20px;">
-                <%--<form id="newQuestionForm">--%>
-
-                <%--<div class="group">--%>
-                <%--<input type="text" required>--%>
-                <%--<span class="highlight"></span>--%>
-                <%--<span class="bar"></span>--%>
-                <%--<label>Field name</label>--%>
-                <%--</div>--%>
-
-                <%--<div class="group">--%>
-                <%--<select type="select" required>--%>
-                <%--<option disabled>true\false</option>--%>
-                <%--<option value="true">True</option>--%>
-                <%--<option value="false">False</option>--%>
-                <%--</select>--%>
-                <%--<span class="highlight"></span>--%>
-                <%--<span class="bar"></span>--%>
-                <%--<label>Multiple choice</label>--%>
-                <%--</div>--%>
-
-                <%--<div class="group">--%>
-                <%--<input type="text" required>--%>
-                <%--<span class="highlight"></span>--%>
-                <%--<span class="bar"></span>--%>
-                <%--<label>Order number</label>--%>
-                <%--</div>--%>
-
-                <%--<div class="group">--%>
-                <%--<input type="text" required>--%>
-                <%--<span class="highlight"></span>--%>
-                <%--<span class="bar"></span>--%>
-                <%--<label>Field type</label>--%>
-                <%--</div>--%>
-                <%--<div>--%>
-                <%--<button type="submit" for="newQuestionForm">Save</button>--%>
-                <%--<button type="button" onclick="back()" >Back</button>--%>
-                <%--</div>--%>
-                <%--</form>--%>
                 <form role="form" ng-submit="sef.save()">
                     <div class="form-group">
                         <label for="fieldName">Field name</label>
@@ -132,28 +94,16 @@
                         <option value="7">Tel</option>
                         <option value="8">Date</option>
                     </select>
-                    <%--<label for="multiple">Multiple choice</label>--%>
-                    <%--<select id="multiple" class="form-control" ng-model="sef.newQuestion.multipleChoice" ng-change="change()" required>--%>
-                    <%--<option ng-selected="true" value="" disabled>True/False</option>--%>
-                    <%--<option value="true">True</option>--%>
-                    <%--<option value="false">False</option>--%>
-                    <%--</select>--%>
-                    <%--<div class="form-group" ng-show="sef.isShown">--%>
-                    <%--<label for="listType">ListTypeId</label>--%>
-                    <%--<input id="listTypeId" type="number" min="1" max="50" class="form-control" ng-model="sef.newQuestion.listTypeID" id="listType" placeholder="Enter listtypeid">--%>
-                    <%--</div>--%>
 
                     <div id="newOptions">
-                        <div ng-repeat="item in items" ng-show="sef.isShown">
-                            <input class="newInputs" type="text" placeholder="Option text here"
-                                   ng-model="sef.newQuestion.newOpt">
-                            <button class="remove" ng-show="$last" ng-click="removeChoice()">-</button>
+                        <div ng-repeat="item in sef.newQuestion.inputOptionsFields" ng-show="sef.isShown">
+                            <input-field item='item' item-model="sef.newQuestion.inputOptionsFields" ></input-field>
                         </div>
                     </div>
                     <div id="messageDiv"></div>
                     <button type="submit">Save</button>
                 </form>
-                <button ng-click="add()" ng-show="sef.isShown">New Item</button>
+                <button ng-click="sef.add()" ng-show="sef.isShown">New Item</button>
                 <button onclick="back()" style="margin-top: 10px;">Back</button>
             </div>
         </div>
@@ -165,9 +115,11 @@
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
 <script src="/resources/js/new-question.js"></script>
+<script src="/resources/js/InputFieldComponent/InputFieldComponent.js"></script>
 <script>function back() {
     window.location.href = "/admin/edit-form";
 }</script>
+<script src="/resources/js/angular-drag-and-drop-lists.js"></script>
 <script src="/resources/bootstrap/js/bootstrap.js"></script>
 </body>
 

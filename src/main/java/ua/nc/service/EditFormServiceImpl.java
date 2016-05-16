@@ -23,6 +23,8 @@ public class EditFormServiceImpl implements EditFormService {
     //    private final static DAOFactory daoFactory  = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
     private final DAOFactory daoFactory = new PostgreDAOFactory();
 
+    private final Integer CES_ID = getCES_ID();
+
     @Override
     public List<Field> getAllFields(Integer ces_id) {
         Connection connection = daoFactory.getConnection();
@@ -30,7 +32,6 @@ public class EditFormServiceImpl implements EditFormService {
         List<Field> fields = new LinkedList<>();
         try {
             fields.addAll(fieldDAO.getFieldsForCES(ces_id));
-//        fields.addAll(fieldDAO.getAll());
         } catch (DAOException e) {
             LOGGER.error(e);
         } finally {
@@ -62,7 +63,7 @@ public class EditFormServiceImpl implements EditFormService {
         CESDAO cesDAO = daoFactory.getCESDAO(connection1);
         try {
             Field _field = fieldDAO.create(field);
-            cesDAO.addCESField(1, _field.getId());
+            cesDAO.addCESField(CES_ID, _field.getId());
         } catch (DAOException e) {
             LOGGER.error(e);
         } finally {
@@ -82,6 +83,31 @@ public class EditFormServiceImpl implements EditFormService {
         } finally {
             daoFactory.putConnection(connection);
         }
+    }
+
+    @Override
+    public void updatePosition(Field field) {
+        Connection connection = daoFactory.getConnection();
+        FieldDAO fieldDAO = daoFactory.getFieldDAO(connection);
+        try {
+            fieldDAO.update(field);
+        } catch (DAOException e) {
+            LOGGER.error(e);
+        } finally {
+            daoFactory.putConnection(connection);
+        }
+    }
+
+    @Override
+    public Integer getCES_ID() {
+        Connection connection = daoFactory.getConnection();
+        CESDAO cesDAO = daoFactory.getCESDAO(connection);
+        try {
+            return cesDAO.getCurrentCES().getId();
+        } catch (DAOException e) {
+            LOGGER.error(e);
+        }
+        return 1;
     }
 
 }

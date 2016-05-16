@@ -12,6 +12,7 @@
     <meta name="description" content="A front-end template that helps you build fast, modern mobile web apps.">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <title>Material Design Lite</title>
+    <link rel="stylesheet" type="text/css" href="/resources/css/ng-sortable.min.css">
 
     <!-- Add to homescreen for Chrome on Android -->
     <meta name="mobile-web-app-capable" content="yes">
@@ -72,6 +73,11 @@
                 Delete question
             </button>
 
+            <button style="margin-bottom: 15px;" ng-click="savePosition()"
+                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
+                Save position
+            </button>
+
             <table class="table table-bordered table-striped" style="{margin-top: 200px}">
 
                 <thead>
@@ -89,14 +95,14 @@
                 </td>
                 </thead>
 
-                <tbody>
-                <tr ng-repeat="ch in fields">
-                    <td><input type="checkbox" checklist-model="dataFields.fieldId" checklist-value="ch.id"></td>
-                    <td>{{ch.id}}</td>
-                    <td>{{ch.orderNum}}</td>
-                    <td>Up</td>
-                    <td>Down</td>
-                    <td><a href="/admin/edit-form/appformfield?{{ch.listTypeID}}" target="_blanks">{{ch.name}}</a></td>
+                <tbody as-sortable="sortableOptions" ng-model="fields">
+                <tr ng-repeat="ch in fields" as-sortable-item>
+                    <td as-sortable-item-handle><input type="checkbox" checklist-model="dataFields.fieldId" checklist-value="ch.id"></td>
+                    <td as-sortable-item-handle>{{ch.id}}</td>
+                    <td as-sortable-item-handle>{{ch.orderNum}}</td>
+                    <td as-sortable-item-handle>Up</td>
+                    <td as-sortable-item-handle>Down</td>
+                    <td as-sortable-item-handle><a href="/admin/edit-form/appformfield?{{ch.listTypeID}}" target="_blanks">{{ch.name}}</a></td>
                 </tr>
                 </tbody>
             </table>
@@ -108,13 +114,10 @@
 
 <script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
-<%--<script src="/resources/js/admin-create-user.js"></script>--%>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
 <script src="/resources/bootstrap/js/bootstrap.js"></script>
 <script src="/resources/js/edit-form.js"></script>
-<%--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.js"></script>--%>
-<%--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-route.js"></script>--%>
-<%--<script src="/resources/js/studentListAngular.js"></script>--%>
+<script src="/resources/js/ng-sortable.min.js"></script>
 <script src="http://vitalets.github.io/checklist-model/checklist-model.js"></script>
 </body>
 

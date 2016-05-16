@@ -3,6 +3,7 @@ package ua.nc.controller;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import ua.nc.entity.FieldWrapper;
 import ua.nc.entity.ListWrapper;
 import ua.nc.entity.User;
 import ua.nc.entity.profile.Field;
@@ -13,7 +14,10 @@ import ua.nc.service.user.UserService;
 import ua.nc.service.user.UserServiceImpl;
 import ua.nc.validator.*;
 
-import java.util.*;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Pavel on 18.04.2016.
@@ -201,7 +205,7 @@ public class AdminController {
         System.out.println("editFormGet");
         EditFormService efs = new EditFormServiceImpl();
         List<Field> fields = new LinkedList<>();
-        fields.addAll(efs.getAllFields(1));
+        fields.addAll(efs.getAllFields(efs.getCES_ID()));
         return fields;
     }
 
@@ -245,7 +249,8 @@ public class AdminController {
 
     @RequestMapping(value = "/edit-form", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
     public
-    @ResponseBody Set<ValidationError> deleteQuestion(@RequestBody ListWrapper id) {
+    @ResponseBody
+    Set<ValidationError> deleteQuestion(@RequestBody ListWrapper id) {
         System.out.println("attempt to delete");
         Validator validator = new DeleteQuestionValidator();
         Set<ValidationError> errors = validator.validate(id);
@@ -254,12 +259,26 @@ public class AdminController {
         if (errors.isEmpty()) {
             System.out.println("no errors today");
             EditFormService efs = new EditFormServiceImpl();
-            for (Integer idToWrite: id) {
-                efs.deleteQuestionFromCES(1, idToWrite);// TODO remove hardcode
+            for (Integer idToWrite : id) {
+                efs.deleteQuestionFromCES(efs.getCES_ID(), idToWrite);
             }
         }
         return errors;
-//        return new LinkedHashSet<>();
+    }
+
+    @RequestMapping(value = "/edit-form/save-position", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+    public
+    @ResponseBody
+    Set<ValidationError> savePosition(@RequestBody FieldWrapper fields) {
+        EditFormService efs = new EditFormServiceImpl();
+        System.out.println("attempt to save position");// TODO validator
+        for (int i = 0; i <= new LinkedList<Field>(fields.getFields()).size(); i++) {
+            fields.getFields().get(i).setOrderNum(i+1);
+            System.out.println("changed order#");
+            System.out.println(fields.getFields().get(i).getName() + " " + fields.getFields().get(i).getOrderNum());
+            efs.updatePosition(fields.getFields().get(i));
+        }
+        return new LinkedHashSet<>();
     }
 
 }
