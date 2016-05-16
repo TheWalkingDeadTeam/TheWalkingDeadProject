@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 
 </head>
-<body  ng-controller="StudentCtrl as ctrl">
+<body ng-controller="interCtrl as ctrl">
 <div class="container">
     <div class="row">
         <div class="col-md-8">
@@ -30,7 +30,7 @@
                 </div>
                 <div class="card-content">
                     <div class="panel panel-default">
-                        <h5 align="center">Student Mail Template </h5>
+                        <h5 align="center">Interviewer Mail Template </h5>
                         <form ng-submit="templateSend()" name="myForm" class="form-horizontal" autocomplete="on">
                             <table class="table table-hover" class="ng-cloak">
                                 <thead>
@@ -43,12 +43,15 @@
                                 <tbody>
                                 <tr ng-repeat="m in ctrl.mails">
 
-                                   <td class="vert-align"><div class="radio radio-success">
-                                        <input type="radio" id="singleRadio2" data-ng-model="$parent.mailIdUser" ng-value={{m.id}} name="radioSingle1">
-                                        <label></label>
-                                    </div></td>
+                                    <td class="vert-align">
+                                        <div class="radio radio-success">
+                                            <input type="radio" id="singleRadio2" data-ng-model="$parent.mailIdUser"
+                                                   ng-value={{m.id}} name="radioSingle1">
+                                            <label></label>
+                                        </div>
+                                    </td>
 
-                                <%--<td><input type="radio" data-ng-model="$parent.mailIdUser" ng-value="{{m.id}}"></td>--%>
+                                    <%--<td><input type="radio" data-ng-model="$parent.mailIdUser" ng-value="{{m.id}}"></td>--%>
                                     <td class="vert-align"><span ng-bind="m.headTemplate"></span></td>
                                     <td class="vert-align">
                                         <span ng-bind="m.bodyTemplate"></span></td>

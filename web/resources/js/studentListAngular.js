@@ -235,12 +235,14 @@ app.controller('StudentCtrl', ["$http", "$scope", 'MailService','Notification', 
     vm.selectUrl = "students/list/" + vm.itemsPerPage + "/" + vm.pageno;
     vm.order_by = null;
     $scope.sortReverse = false;
+
+
+    
+    /////////////Alexander///////////////////////////////////////////////
     vm.mails = [];
     vm.mail = {id: null, bodyTemplate: ' ', headTemplate: ' '};
     vm.checkNull = true;
 
-    /////////////Alexander///////////////////////////////////////////////
-    
     $scope.list = [];
     $scope.mail = function () {
         var dataObj = {

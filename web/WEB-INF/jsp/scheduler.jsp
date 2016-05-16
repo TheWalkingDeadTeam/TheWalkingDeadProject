@@ -5,7 +5,7 @@
 <head>
     <title>Scheduler</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <link href="/resources/css/ap" rel="stylesheet">
+    <link href="/resources/css/app.css" rel="stylesheet">
     <link href="/resources/css/scheduler-styles.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap.timepicker/0.2.6/css/bootstrap-timepicker.min.css">
 </head>
