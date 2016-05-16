@@ -1,10 +1,14 @@
 package ua.nc.controller;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.log4j.Logger;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.entity.*;
 import ua.nc.entity.profile.StudentData;
@@ -19,6 +23,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import javax.management.relation.Role;
+import java.util.*;
 
 /**
  * Created by Pavel on 18.04.2016.
@@ -481,6 +487,11 @@ public class AdminController {
         return "admin-report-template";
     }
 
+    @RequestMapping(value = {"/mail-personal"}, method = RequestMethod.GET)
+    public String mailSend() {
+        return "mail-send";
+    }
+
 
 }
 
@@ -499,4 +510,5 @@ class IntegerList {
     public void setInterviewersId(List<Integer> interviewersId) {
         this.interviewersId = interviewersId;
     }
+
 }

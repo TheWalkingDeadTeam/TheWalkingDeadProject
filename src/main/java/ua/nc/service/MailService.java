@@ -104,4 +104,12 @@ public interface MailService {
                                 Map<String, String> interviewerParameters, Mail studentMail,
                                 Map<String, String> studentParameters, Set<User> interviewersList,
                                 Set<User> studentsList);
+
+    /**
+     * Customize mail with parameters from. Replace hardcoded values from template
+     * @param mail mail to be replaced
+     * @param parameters map with key value. Iterating through mail will replace harcoded values
+     * @return new updated mail template
+     */
+    public Mail customizeMail(Mail mail, Map<String, String> parameters);
 }
