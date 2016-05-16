@@ -93,7 +93,7 @@
                 </td>
                 <td>
                     <a href="#"ng-click="sortType('system_user_id',sortReverse); sortReverse = !sortReverse">
-                        id {{data.total_count}}
+                        id
                     </a>
                 </td>
                 <td>
