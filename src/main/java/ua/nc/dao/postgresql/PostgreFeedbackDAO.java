@@ -80,21 +80,6 @@ public class PostgreFeedbackDAO extends AbstractPostgreDAO<Feedback, Integer> im
     }
 
     @Override
-    public Feedback getById(int id) throws DAOException{
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-        try{
-            statement = connection.prepareStatement(getSelectQuery());
-            statement.setInt(1,id);
-            resultSet = statement.executeQuery();
-            List<Feedback> feedbacks = parseResultSet(resultSet);
-            return feedbacks.size() < 1 ? null : feedbacks.get(0);
-        } catch (SQLException ex){
-            throw new DAOException(ex);
-        }
-    }
-
-    @Override
     public Feedback create(Feedback object) throws DAOException {
         return persist(object);
     }
