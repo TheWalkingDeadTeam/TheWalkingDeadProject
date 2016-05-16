@@ -13,16 +13,16 @@
 <head>
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
-    <script src="/resources/js/report.js"></script>
+    <script src="/resources/js/reportid.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
     <link href="<c:url value='/resources/css/app.css' />" rel="stylesheet"/>
 
 
 </head>
 
-<body ng-app="reporter">
+<body ng-app="reporterid" >
 <div class="table-responsive">
-    <table ng-controller="ReportController as rc" class="table">
+    <table ng-controller="ReportControllerId as rc" class="table">
         <thead>
         <tr>
             <th ng-repeat="(key, val) in rc.reports[0]">{{key}}</th>

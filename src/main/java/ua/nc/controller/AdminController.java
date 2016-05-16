@@ -304,6 +304,10 @@ public class AdminController {
     public String enrollmentSessionView() {
         return "admin-es-view";
     }
+    @RequestMapping(value = {"/report"}, method = RequestMethod.GET)
+    public String report() {
+        return "admin-report-template";
+    }
 
 
 }
