@@ -18,8 +18,6 @@ import ua.nc.validator.RegistrationValidator;
 import ua.nc.validator.ValidationError;
 import ua.nc.validator.Validator;
 
-import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -214,12 +212,6 @@ public class AdminController {
     }
 
     @RequestMapping(value = {"/interviewers/size"}, method = RequestMethod.GET, produces = "application/json")
-    public
-    @ResponseBody
-    Integer interviewGetJSONSize() {
-        InterviewerService interviewerService = new InterviewerServiceImpl();
-        return interviewerService.getInterviewerSize();
-    }
 
 
     @RequestMapping(value = {"/mail-template"}, method = RequestMethod.GET)
@@ -259,6 +251,14 @@ public class AdminController {
         }
     }
 
+    @RequestMapping(value = {"/cesclose"}, method = RequestMethod.POST)
+    public
+    @ResponseBody
+    String closeCES() {
+        System.out.println("admin");
+        cesService.closeCES();
+        return null;
+    }
 
     @RequestMapping(value = {"/scheduler"}, method = RequestMethod.GET)
     public String schedulerView() {
