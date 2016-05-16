@@ -16,9 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Hlib on 09.05.2016.
@@ -34,12 +32,13 @@ public class InterviewerController {
     private IntervieweeService intervieweeService = new IntervieweeServiceImpl();
     private CESService cesService = new CESServiceImpl();
 
-    @RequestMapping(value = "/enroll",method = RequestMethod.POST, produces = "application/json")
-    public void enroll(@RequestBody ArrayList<Integer> interviewersId) {
+    @RequestMapping(value = "/enroll-ces-interviewer",method = RequestMethod.POST)
+    public void enroll(@RequestBody IntegerList integerList) {
+        System.out.println(integerList.getInterviewersId().size());
         CES currentCES = cesService.getCurrentCES();
         if (currentCES != null) {
             int cesId = cesService.getCurrentCES().getId();
-            Iterator<Integer> iterator = interviewersId.iterator();
+            Iterator<Integer> iterator = integerList.getInterviewersId().iterator();
             while (iterator.hasNext()) {
                 try {
                     cesService.enrollAsInterviewer(iterator.next(), cesId);
@@ -51,6 +50,8 @@ public class InterviewerController {
             LOGGER.info("Can't enroll to current CES. Current CES session is not exist");
         }
     }
+
+
 
     @RequestMapping(value = "/feedback", method = RequestMethod.GET)
     public String feedback(){

@@ -22,7 +22,7 @@
         <intercept-url pattern="/report/**" access="hasAnyRole('ROLE_ADMIN','ROLE_HR')"/>
         <intercept-url pattern="/reports**" access="hasAnyRole('ROLE_ADMIN','ROLE_HR')"/>
         <intercept-url pattern="/reports/**" access="hasAnyRole('ROLE_ADMIN','ROLE_HR')"/>
-        <!--<intercept-url pattern="/interviewer/feedback**" access="@feedbackPermissions.isInterviewingPeriod()"/>
+<!--        <intercept-url pattern="/interviewer/feedback**" access="@feedbackPermissions.isInterviewingPeriod()"/>
         <intercept-url pattern="/interviewer/feedback/**" access="@feedbackPermissions.isInterviewingPeriod()"/>-->
         <intercept-url pattern="/interviewer**" access="hasAnyRole('ROLE_HR','ROLE_DEV','ROLE_BA')"/>
         <intercept-url pattern="/interviewer/**" access="hasAnyRole('ROLE_HR','ROLE_DEV','ROLE_BA')"/>

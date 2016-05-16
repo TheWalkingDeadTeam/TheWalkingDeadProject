@@ -18,7 +18,6 @@ import ua.nc.validator.RegistrationValidator;
 import ua.nc.validator.ValidationError;
 import ua.nc.validator.Validator;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -74,18 +73,17 @@ public class AdminController {
         return "admin-create-user";
     }
 
-    @RequestMapping(value = {"/remove"},method = RequestMethod.POST, produces = "application/json")
-    public void removeInterviewers(@RequestBody ArrayList<Integer> interviewersId){
-        CESService cesService = new  CESServiceImpl();
-        if(cesService!=null) {
+    @RequestMapping(value = {"/remove-ces-interviewer"}, method = RequestMethod.POST)
+    public void removeInterviewers(@RequestBody IntegerList integerList) {
+        CESService cesService = new CESServiceImpl();
+        if (cesService != null) {
             int cesId = cesService.getCurrentCES().getId();
-            Iterator<Integer> iterator = interviewersId.iterator();
+            Iterator<Integer> iterator = integerList.getInterviewersId().iterator();
             while (iterator.hasNext()) {
                 try {
                     cesService.removeInterviewer(iterator.next(), cesId);
                 } catch (DAOException e) {
-                    LOGGER.error("Can't Sign out interviewer");
-                    LOGGER.error(e);
+                    LOGGER.error("Can't Sign out interviewer", e);
                 }
             }
         }
@@ -199,42 +197,7 @@ public class AdminController {
             LOGGER.warn("interviewers == null");
         }
         return interviewers;
-//        return "[{\n" +
-//                "    \"id\": 2,\n" +
-//                "    \"name\": \"Abcac\",\n" +
-//                "    \"surname\": \"Pomidorchik\",\n" +
-//                "    \"email\" : \"ger@gmail.com\",\n" +
-//                "    \"role\" : \"Admin\",\n" +
-//                "    \"participation\": true\n" +
-//                "  },{\n" +
-//                "    \"id\": 2,\n" +
-//                "    \"name\": \"Abcac\",\n" +
-//                "    \"surname\": \"Pomidorchik\",\n" +
-//                "    \"email\" : \"ger@gmail.com\",\n" +
-//                "    \"role\" : \"Admin\",\n" +
-//                "    \"participation\": true\n" +
-//                "  },{\n" +
-//                "    \"id\": 2,\n" +
-//                "    \"name\": \"Abcac\",\n" +
-//                "    \"surname\": \"Pomidorchik\",\n" +
-//                "    \"email\" : \"ger@gmail.com\",\n" +
-//                "    \"role\" : \"Admin\",\n" +
-//                "    \"participation\": true\n" +
-//                "  },{\n" +
-//                "    \"id\": 2,\n" +
-//                "    \"name\": \"Abcac\",\n" +
-//                "    \"surname\": \"Pomidorchik\",\n" +
-//                "    \"email\" : \"ger@gmail.com\",\n" +
-//                "    \"role\" : \"Admin\",\n" +
-//                "    \"participation\": true\n" +
-//                "  },{\n" +
-//                "    \"id\": 2,\n" +
-//                "    \"name\": \"Abcac\",\n" +
-//                "    \"surname\": \"Pomidorchik\",\n" +
-//                "    \"email\" : \"ger@gmail.com\",\n" +
-//                "    \"role\" : \"Admin\",\n" +
-//                "    \"participation\": true\n" +
-//                "  }]";
+
     }
 
     @RequestMapping(value = {"/interviewers/list/{itemsPerPage}/{pageNumber}/{sortType}"}, method = RequestMethod.GET, produces = "application/json")
@@ -266,7 +229,8 @@ public class AdminController {
 
 
     @RequestMapping(value = {"/cesPost"}, method = RequestMethod.POST)
-    public @ResponseBody
+    public
+    @ResponseBody
     CES getCES(@RequestBody CES ces) {
         try {
             cesService.setCES(ces);
@@ -296,7 +260,7 @@ public class AdminController {
     }
 
 
-    @RequestMapping(value = {"/scheduler"} ,method = RequestMethod.GET)
+    @RequestMapping(value = {"/scheduler"}, method = RequestMethod.GET)
     public String schedulerView() {
         return "admin-scheduler";
     }
@@ -305,10 +269,28 @@ public class AdminController {
     public String enrollmentSessionView() {
         return "admin-es-view";
     }
+
     @RequestMapping(value = {"/report"}, method = RequestMethod.GET)
     public String report() {
         return "admin-report-template";
     }
 
 
+}
+
+
+class IntegerList {
+    private List<Integer> interviewersId;
+
+    public IntegerList() {
+    }
+
+
+    public List<Integer> getInterviewersId() {
+        return interviewersId;
+    }
+
+    public void setInterviewersId(List<Integer> interviewersId) {
+        this.interviewersId = interviewersId;
+    }
 }
