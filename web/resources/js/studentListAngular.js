@@ -163,9 +163,70 @@
 //     // }
 // }]);
 
-var app = angular.module('studentView', ['checklist-model', 'angularUtils.directives.dirPagination']);
+var app = angular.module('studentView', ['checklist-model', 'angularUtils.directives.dirPagination','ui-notification']);
 
-app.controller('StudentCtrl', ["$http", "$scope", function ($http, $scope) {
+app.factory('MailService', ['$http', '$q', function ($http, $q) {
+
+    return {
+
+        fetchAllMails: function () {
+            return $http.get('/mails/')
+                .then(
+                    function (response) {
+                        return response.data;
+                    },
+                    function (errResponse) {
+                        console.error('Error while fetching mail');
+                        return $q.reject(errResponse);
+                    }
+                );
+        },
+
+        createMail: function (mail) {
+            return $http.post('/mails/', mail)
+                .then(
+                    function (response) {
+                        return response.data;
+                    },
+                    function (errResponse) {
+                        console.error('Error while creating mail');
+                        return $q.reject(errResponse);
+                    }
+                );
+        },
+
+        updateMail: function (mail, id) {
+            return $http.post('/mails/' + id, mail)
+                .then(
+                    function (response) {
+                        return response.data;
+                    },
+                    function (errResponse) {
+                        console.error('Error while updating mail');
+                        return $q.reject(errResponse);
+                    }
+                );
+        },
+
+        deleteMail: function (id) {
+            return $http.delete('/mails/' + id)
+                .then(
+                    function (response) {
+                        return response.data;
+                    },
+                    function (errResponse) {
+                        console.error('Error while deleting mail');
+                        return $q.reject(errResponse);
+                    }
+                );
+        }
+
+    };
+
+}]);
+
+
+app.controller('StudentCtrl', ["$http", "$scope", 'MailService','Notification', function ($http, $scope, MailService,Notification) {
     var vm = this;
     vm.users = []; //declare an empty array
     vm.pageno = 1; // initialize page no to 1
@@ -174,6 +235,112 @@ app.controller('StudentCtrl', ["$http", "$scope", function ($http, $scope) {
     vm.selectUrl = "students/list/" + vm.itemsPerPage + "/" + vm.pageno;
     vm.order_by = null;
     $scope.sortReverse = false;
+
+
+
+    /////////////Alexander///////////////////////////////////////////////
+    vm.mails = [];
+    vm.mail = {id: null, bodyTemplate: ' ', headTemplate: ' '};
+    vm.checkNull = true;
+
+    $scope.list = [];
+    $scope.mail = function () {
+        var dataObj = {
+            values: $scope.dataStudents.studId
+        };
+        if (dataObj.values.length != 0) {
+            var formData = {
+                "usersId": dataObj.values,
+                "headTemplate": $scope.mailHead,
+                "bodyTemplate": $scope.mailBody
+            };
+            var response = $http.post('/admin/users-mail-id', formData);
+            response.success(function (data, status, headers, config) {
+                $scope.list.push(data);
+            });
+            response.error(function (data, status, headers, config) {
+                alert("Exception details: " + JSON.stringify({data: data}));
+            });
+            Notification.success({message: 'Mail successful sent', delay: 1000});
+            $scope.list = [];
+        } else {
+            Notification.error({message: 'You should choose users', delay: 2000});
+        }
+    };
+
+    $scope.templateSend = function () {
+
+        var dataObj = {
+            values: $scope.dataStudents.studId
+        };
+
+        if(dataObj.values.length != 0){
+            var formData = {
+                "usersId": dataObj.values,
+                "mailIdUser": $scope.mailIdUser,
+            };
+            var response = $http.post('/admin/users-mail-id', formData);
+            response.success(function (data, status, headers, config) {
+                $scope.list.push(data);
+            });
+            response.error(function (data, status, headers, config) {
+                alert("Exception details: " + JSON.stringify({data: data}));
+            });
+            Notification.success({message: 'Mail successful sent', delay: 1000});
+            $scope.list = [];
+        } else {
+            Notification.error({message: 'You should choose users', delay: 2000});
+        }
+    };
+
+
+
+
+    vm.fetchAllMails = function () {
+        MailService.fetchAllMails()
+            .then(
+                function (d) {
+                    vm.mails = d;
+                },
+                function (errResponse) {
+                    console.error('Error while fetching Currencies');
+                }
+            );
+    };
+
+    vm.createMail = function (mail) {
+        MailService.createMail(mail)
+            .then(
+                vm.fetchAllMails,
+                function (errResponse) {
+                    console.error('Error while creating Mail.');
+                }
+            );
+    };
+
+    vm.updateMail = function (mail, id) {
+        MailService.updateMail(mail, id)
+            .then(
+                vm.fetchAllMails,
+                function (errResponse) {
+                    console.error('Error while updating Mail.');
+                }
+            );
+    };
+
+    vm.deleteMail = function (id) {
+        MailService.deleteMail(id)
+            .then(
+                vm.fetchAllMails,
+                function (errResponse) {
+                    console.error('Error while deleting Mail.');
+                }
+            );
+    };
+
+    vm.fetchAllMails();
+
+    ///////////////////////////////ALEXANDER////////////////////////
 
 
     vm.getData = function () { // This would fetch the data on page change.
@@ -186,7 +353,7 @@ app.controller('StudentCtrl', ["$http", "$scope", function ($http, $scope) {
             // vm.order_by = vm.header[0].id;
         });
         $http.get("students/size").success(function (response) {
-            vm.total_count = response.size;
+            vm.total_count = response;
         });
     };
 
@@ -202,10 +369,10 @@ app.controller('StudentCtrl', ["$http", "$scope", function ($http, $scope) {
 
     vm.setPageno = function (pageno) {
         vm.pageno = pageno;
-        if(vm.order_by === null){
-            vm.selectUrl = "students/list/"+vm.itemsPerPage+"/"+vm.pageno;
-        }else{
-            vm.selectUrl = "students/list/"+vm.itemsPerPage+"/"+vm.pageno+"/"+vm.order_by;
+        if (vm.order_by === null) {
+            vm.selectUrl = "students/list/" + vm.itemsPerPage + "/" + vm.pageno;
+        } else {
+            vm.selectUrl = "students/list/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by;
         }
         vm.getData();
     };
@@ -240,25 +407,40 @@ app.controller('StudentCtrl', ["$http", "$scope", function ($http, $scope) {
     };
 
 
-    $scope.activateStud = function () {
+    // $scope.activateStud = function () {
+    //     var dataObj = {
+    //         type: 'activate',
+    //         values: $scope.dataStudents.studId
+    //     };
+    //     if ($scope.dataStudents.studId.length != 0) {
+    //         $http.post('students', dataObj)
+    //             .success(function (data, status, headers, config) {
+    //                 $scope.message = data;
+    //             })
+    //             .error(function (data, status, headers, config) {
+    //                 // alert("failure message: " + JSON.stringify({data: data}));
+    //                 // alert($scope.message = data);
+    //             });
+    //     }
+    // };
+    // $scope.deactivateStud = function () {
+    //     var dataObj = {
+    //         type: 'deactivate',
+    //         values: $scope.dataStudents.studId
+    //     };
+    //     if ($scope.dataStudents.studId.length != 0) {
+    //         var res = $http.post('students', dataObj);
+    //         res.success(function (data, status, headers, config) {
+    //             $scope.message = data;
+    //         });
+    //         res.error(function (data, status, headers, config) {
+    //             alert("failure message: " + JSON.stringify({data: data}));
+    //         });
+    //     }
+    // };
+    $scope.rejectStud = function () {
         var dataObj = {
-            type: 'activate',
-            values: $scope.dataStudents.studId
-        };
-        if ($scope.dataStudents.studId.length != 0) {
-            $http.post('students', dataObj)
-                .success(function (data, status, headers, config) {
-                    $scope.message = data;
-                })
-                .error(function (data, status, headers, config) {
-                    // alert("failure message: " + JSON.stringify({data: data}));
-                    // alert($scope.message = data);
-                });
-        }
-    };
-    $scope.deactivateStud = function () {
-        var dataObj = {
-            type: 'deactivate',
+            type: 'reject',
             values: $scope.dataStudents.studId
         };
         if ($scope.dataStudents.studId.length != 0) {
@@ -271,9 +453,10 @@ app.controller('StudentCtrl', ["$http", "$scope", function ($http, $scope) {
             });
         }
     };
-    $scope.rejectStud = function () {
+
+    $scope.unrejectStud = function () {
         var dataObj = {
-            type: 'reject',
+            type: 'unreject',
             values: $scope.dataStudents.studId
         };
         if ($scope.dataStudents.studId.length != 0) {
@@ -292,10 +475,10 @@ app.controller('StudentCtrl', ["$http", "$scope", function ($http, $scope) {
             type: "search",
             values: [$scope.searchFilt]
         };
-        if(vm.order_by === null){
-            vm.selectUrl = "students/search/"+vm.itemsPerPage+"/"+vm.pageno+"/"+pattern;
-        }else{
-            vm.selectUrl = "students/search/"+vm.itemsPerPage+"/"+vm.pageno+"/"+vm.order_by+"/"+pattern;
+        if (vm.order_by === null) {
+            vm.selectUrl = "students/search/" + vm.itemsPerPage + "/" + vm.pageno + "/" + pattern;
+        } else {
+            vm.selectUrl = "students/search/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by + "/" + pattern;
         }
         vm.getData();
         // var res = $http.get('students/search/', dataObj);

@@ -44,7 +44,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.cyan-light_blue.min.css">
     <link rel="stylesheet" href="/resources/css/styles.css">
-
+    <link rel="stylesheet" href="/resources/css/notification/angular-ui-notification.min.css">
     <style>
         #view-source {
             position: fixed;
@@ -73,6 +73,27 @@
                     class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
                 Deactivate
             </button>
+
+
+            <a href="#FooOne"
+               class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white"
+               data-toggle="collapse">Mail</a>
+
+            <a href="#FooTwo"
+               class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white"
+               data-toggle="collapse">Mail With Template</a>
+
+            <div id="FooOne" class="collapse">
+                <jsp:include page="custom-mail.jsp"/>
+            </div>
+
+
+            <div id="FooTwo" class="collapse">
+                <jsp:include page="custom-mail-template-interviewers.jsp"/>
+            </div>
+
+
+
         </div>
         <table class="table table-bordered table-striped" style="{margin-top: 200px}">
 
@@ -141,7 +162,7 @@
     </main>
 </main>
 
-
+<script src="/resources/js/notification/angular-ui-notification.min.js"></script>
 <script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="/resources/js/admin-create-user.js"></script>
@@ -152,5 +173,4 @@
 <script src="../../resources/js/dirPagination.js"></script>
 <script src="http://vitalets.github.io/checklist-model/checklist-model.js"></script>
 </body>
-
 </html>

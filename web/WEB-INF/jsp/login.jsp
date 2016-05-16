@@ -46,6 +46,7 @@
                     <li><a href="/login">Home</a></li>
                     <li><a href="/information">Information</a></li>
                     <li><a href="/contacts">Contacts</a></li>
+                    <li><a href="/logout">Logout</a></li>
                 </ul>
             </div>
         </div>
@@ -78,7 +79,6 @@
                 <div class="correct-password"></div>
                 <div class="g-recaptcha" data-sitekey="6LdZ1R8TAAAAAMwVjN-N-oTtZR51Li8QmKoSYEiF"></div>
                 <button id="buttonRegistration" class="btn btn-lg btn-primary btn-block">Register</button>
-
             </form>
         </sec:authorize>
     </div>
@@ -148,9 +148,7 @@
                     <p><img id="photo_img" src="/getPhoto" alt="User's photo" width="100" height="100"
                             onError="this.src='/resources/images/user-photo.png'"/></p>
                 </div>
-<%--
                 <p><a id="buttonLogout" class="btn btn-lg btn-danger" href="/logout" role="button">Logout</a></p>
---%>
 
             </sec:authorize>
         </div>

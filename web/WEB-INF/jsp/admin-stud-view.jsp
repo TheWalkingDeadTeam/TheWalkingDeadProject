@@ -45,6 +45,7 @@
     <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.cyan-light_blue.min.css">
     <link rel="stylesheet" href="/resources/css/styles.css">
     <link rel="stylesheet" href="/resources/css/checkbox.css">
+    <link rel="stylesheet" href="/resources/css/notification/angular-ui-notification.min.css">
 
     <style>
         #view-source {
@@ -57,6 +58,7 @@
             z-index: 900;
         }
     </style>
+    <link href="<c:url value='/resources/css/app.css' />" rel="stylesheet">
 </head>
 <body>
 <main ng-controller="StudentCtrl as data"
@@ -67,18 +69,58 @@
 
     <main class="mdl-layout__content mdl-color--grey-100">
         <div>
-            <button ng-click="activateStud()"
-                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
-                Activate
-            </button>
-            <button ng-click="deactivateStud()"
-                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
-                Deactivate
-            </button>
+            <%--<button ng-click="activateStud()"--%>
+            <%--class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">--%>
+            <%--Activate--%>
+            <%--</button>--%>
+            <%--<button ng-click="deactivateStud()"--%>
+            <%--class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">--%>
+            <%--Deactivate--%>
+            <%--</button>--%>
             <button ng-click="rejectStud()"
                     class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
                 Reject
             </button>
+            <button ng-click="unrejectStud()"
+                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
+                Accept
+            </button>
+
+
+            <a href="#FooOne"
+               class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white"
+               data-toggle="collapse">Mail</a>
+
+            <a href="#FooTwo"
+               class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white"
+               data-toggle="collapse">Mail With Template</a>
+
+            <div id="FooOne" class="collapse">
+                <jsp:include page="custom-mail.jsp"/>
+            </div>
+
+
+            <div id="FooTwo" class="collapse">
+                <jsp:include page="custom-mail-template.jsp"/>
+            </div>
+
+
+            <%--<button ng-click="mail()"--%>
+            <%--class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">--%>
+            <%--Mail--%>
+            <%--</button>--%>
+
+
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+                <label class="mdl-button mdl-js-button mdl-button--icon" for="search">
+                    <i class="material-icons">search</i>
+                </label>
+                <div class="mdl-textfield__expandable-holder">
+                    <form ng-submit="searchFiltr(field)"><input class="mdl-textfield__input" type="text" id="search"
+                                                                name="field" ng-model="field"></form>
+                    <label class="mdl-textfield__label" for="search">Enter your query...</label>
+                </div>
+            </div>
             <%--<button ng-click="saveChanges()"--%>
             <%--class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">--%>
             <%--Save--%>
@@ -108,12 +150,12 @@
                     <input type="checkbox" ng-model="selectedAll" ng-click="checkAll()">
                 </td>
                 <td>
-                    <a href="#" ng-click="sortType = 'id'; sortReverse = !sortReverse">
+                    <a href="#" ng-click="sortType = 'id'; sortReverse = !sortReverse; n">
                         #
                     </a>
                 </td>
                 <td>
-                    <a href="#" ng-click="sortType = 'name'; sortReverse = !sortReverse">
+                    <a href="#" ng-click="sortReverse = !sortReverse; sortType(0)">
                         Full Name
                     </a>
                 </td>
@@ -182,7 +224,7 @@
 
     </main>
 </main>
-
+<script src="/resources/js/notification/angular-ui-notification.min.js"></script>
 <script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="/resources/js/admin-create-user.js"></script>
@@ -190,8 +232,8 @@
 <script src="/resources/js/checkboxScript.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-route.js"></script>
-<script src="../../resources/js/studentListAngular.js"></script>
-<script src="../../resources/js/dirPagination.js"></script>
+<script src="/resources/js/studentListAngular.js"></script>
+<script src="/resources/js/dirPagination.js"></script>
 <script src="http://vitalets.github.io/checklist-model/checklist-model.js"></script>
 
 </body>
