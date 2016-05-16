@@ -132,34 +132,6 @@ public class AdminController {
     }
 
 
-    /**
-     * Get only selected users to send them emails
-     *
-     * @param students
-     * @return list of selected students
-     */
-
-
-    @RequestMapping(value = "/users-mail-id", method = RequestMethod.POST, produces = "application/json")
-    public ResponseEntity<List<User>> listUsers(@RequestBody StudentStatus students) {
-        System.out.println("OK I AM IN");
-        List<User> users = new ArrayList<>();
-//            for (Integer i : students.getValues()){
-//                System.out.println(i);
-//                User user = userService.getUser(i);
-//                System.out.println(user.getName());
-//                users.add(user);
-//            }
-//            if (users.isEmpty()) {
-//                return new ResponseEntity<List<User>>(HttpStatus.NO_CONTENT);
-//            }
-        Set<ua.nc.entity.Role> role = new HashSet<>();
-        User user = new User(new Integer(10),"alexander","olex","haliy","kzevytef", role);
-        User user1 = new User(new Integer(11),"alexander2","olex","haliy","kzevytef", role);
-        users.add(user);
-        users.add(user1);
-            return new ResponseEntity<List<User>>(users, HttpStatus.OK);
-    }
 
     /**
      * Takes a json file with students status changes

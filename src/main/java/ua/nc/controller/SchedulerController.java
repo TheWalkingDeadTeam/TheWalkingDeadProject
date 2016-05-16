@@ -45,8 +45,6 @@ public class SchedulerController {
     private final static String HOURS = "$hours";
 
     private final DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
-    private final Connection connection = daoFactory.getConnection();
-    private final UserDAO userDAO = new PostgreUserDAO(connection);
     private final CESService cesService = new CESServiceImpl();
     private final MailService mailService = new MailServiceImpl();
 
@@ -134,6 +132,9 @@ public class SchedulerController {
             List<Date> interviewDates = cesService.planSchedule();
             CES ces = cesService.getCurrentCES();
             int reminderTime = ces.getReminders();
+            //Fixed Alex //Max check
+            Connection connection = daoFactory.getConnection();
+            UserDAO userDAO = new PostgreUserDAO(connection);
             Set<User> interviewersList = userDAO.getInterviewersForCurrentCES();
             Set<User> studentsList = userDAO.getStudentsForCurrentCES();
             mailService.sendInterviewReminders(interviewDates, reminderTime, interviewerMail, interviewerParameters,

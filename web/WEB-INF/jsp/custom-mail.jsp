@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link href="<c:url value='/resources/css/app.css' />" rel="stylesheet">
 </head>
-<body class="ng-cloak">
+<body>
 
 <div class="container">
     <div class="row">
@@ -29,13 +29,14 @@
                     <div class="mask waves-effect"></div>
                 </div>
                 <div class="card-content">
+
                     <form ng-submit="mail()" name="myForm" class="form-horizontal"
                           autocomplete="on">
                         <div class="row">
-                            <div class="form-actions floatRight">
-                                <a href="#FoOpen" class="btn-floating btn-small waves-effect waves-light blue"
-                                   data-toggle="collapse"><i class="material-icons">add_to_photos</i></a>
-                            </div>
+                            <%--<div class="form-actions floatRight">--%>
+                                <%--<a href="#FoOpen" class="btn-floating btn-small waves-effect waves-light blue"--%>
+                                   <%--data-toggle="collapse"><i class="material-icons">add_to_photos</i></a>--%>
+                            <%--</div>--%>
                             <div class="form-group col-md-12">
                                 <label class="col-md-2 control-lable"></label>
                                 <div class="col-md-8">
@@ -77,9 +78,9 @@
 </div>
 
 
-<div id="FoOpen" class="collapse">
-    <jsp:include page="custom-mail-template.jsp" />
-</div>
+<%--<div id="FoOpen" class="collapse">--%>
+    <%--<jsp:include page="custom-mail-template.jsp" />--%>
+<%--</div>--%>
 
 
 <script type="text/javascript" src="js/mdb.js"></script>

@@ -86,137 +86,139 @@
             </button>
 
 
-
-            <a href="#Foo"
+            <a href="#FooOne"
                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white"
                data-toggle="collapse">Mail</a>
-            <div id="Foo" class="collapse">
+
+            <a href="#FooTwo"
+               class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white"
+               data-toggle="collapse">Mail With Template</a>
+
+            <div id="FooOne" class="collapse">
+                <jsp:include page="custom-mail.jsp"/>
+            </div>
 
 
-                <jsp:include page="custom-mail.jsp" />
+            <div id="FooTwo" class="collapse">
+                <jsp:include page="custom-mail-template.jsp"/>
+            </div>
 
-
-                <div ng-controller="StudentCtrl">
-                    <div ng-show="vm.profileCog"> EMPTY</div>
-                </div>
 
             <%--<button ng-click="mail()"--%>
-                    <%--class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">--%>
-                    <%--Mail--%>
-                    <%--</button>--%>
+            <%--class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">--%>
+            <%--Mail--%>
+            <%--</button>--%>
 
+
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+                <label class="mdl-button mdl-js-button mdl-button--icon" for="search">
+                    <i class="material-icons">search</i>
+                </label>
+                <div class="mdl-textfield__expandable-holder">
+                    <form ng-submit="searchFiltr(field)"><input class="mdl-textfield__input" type="text" id="search"
+                                                                name="field" ng-model="field"></form>
+                    <label class="mdl-textfield__label" for="search">Enter your query...</label>
                 </div>
-
-
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
-                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search">
-                        <i class="material-icons">search</i>
-                    </label>
-                    <div class="mdl-textfield__expandable-holder">
-                        <form ng-submit="searchFiltr(field)"><input class="mdl-textfield__input" type="text" id="search"
-                                                                    name="field" ng-model="field"></form>
-                        <label class="mdl-textfield__label" for="search">Enter your query...</label>
-                    </div>
-                </div>
-                <%--<button ng-click="saveChanges()"--%>
-                <%--class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">--%>
-                <%--Save--%>
-                <%--</button>--%>
-                <%--<div class="checkbox-dropdown">--%>
-                <%--Choose column--%>
-                <%--&lt;%&ndash;<ul  class="checkbox-dropdown-list">&ndash;%&gt;--%>
-                <%--<ul class="checkbox-dropdown-list">--%>
-                <%--<li ng-repeat="(key,value) in data.users[0]">--%>
-                <%--<label>--%>
-                <%--<input type="checkbox" />{{key}}</label></li>--%>
-                <%--</ul>--%>
-                <%--&lt;%&ndash;</ul>&ndash;%&gt;--%>
-                <%--</div>--%>
-
-
-                <%--<ul ng-repeat="(key,value) in data.users[0]" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">--%>
-                <%--<li class="dropdown-submenu pull-right">--%>
-                <%--{{key}}--%>
-                <%--</li>--%>
-                <%--</ul>--%>
             </div>
-            <table class="table table-striped table-hover">
-                <thead>
-                <tr>
-                    <td>
-                        <input type="checkbox" ng-model="selectedAll" ng-click="checkAll()">
-                    </td>
-                    <td>
-                        <a href="#" ng-click="sortType = 'id'; sortReverse = !sortReverse; n">
-                            #
-                        </a>
-                    </td>
-                    <td>
-                        <a href="#" ng-click="sortReverse = !sortReverse; sortType(0)">
-                            Full Name
-                        </a>
-                    </td>
-                    <%--<td>--%>
-                    <%--<a href="#" ng-click="sortType = 'university'; sortReverse = !sortReverse">--%>
-                    <%--University--%>
-                    <%--<span ng-show="sortType == 'university' && !sortReverse" class="fa fa-caret-down"></span>--%>
-                    <%--<span ng-show="sortType == 'university' && sortReverse" class="fa fa-caret-up"></span>--%>
-                    <%--</a>--%>
-                    <%--</td>--%>
-                    <%--<td>--%>
-                    <%--<a href="#" ng-click="sortType = 'devMark'; sortReverse = !sortReverse">--%>
-                    <%--Dev Assesment--%>
-                    <%--<span ng-show="sortType == 'devMark' && !sortReverse" class="fa fa-caret-down"></span>--%>
-                    <%--<span ng-show="sortType == 'devMark' && sortReverse" class="fa fa-caret-up"></span>--%>
-                    <%--</a>--%>
-                    <%--</td>--%>
-                    <%--<td>--%>
-                    <%--<a href="#" ng-click="sortType = 'hrMark'; sortReverse = !sortReverse">--%>
-                    <%--HR Assesment--%>
-                    <%--<span ng-show="sortType == 'hrMark' && !sortReverse" class="fa fa-caret-down"></span>--%>
-                    <%--<span ng-show="sortType == 'hrMark' && sortReverse" class="fa fa-caret-up"></span>--%>
-                    <%--</a>--%>
-                    <%--</td>--%>
-                    <td ng-repeat="head in data.header">
-                        <a href="#" ng-click="sortType(head.id)">
-                            {{head.name}}
-                        </a>
-                    </td>
-                    <td>
-                        <a href="#" ng-click="sortType = 'rejected'; sortReverse = !sortReverse">
-                            Rejected
-                        </a>
-                    </td>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-show="data.users.length <= 0">
-                    <td colspan="5" style="text-align:center;">Bratiska POGODI</td>
-                </tr>
-                <tr dir-paginate="user in data.users|itemsPerPage:data.itemsPerPage" total-items="data.total_count">
-                    <td><input type="checkbox" checklist-model="dataStudents.studId" checklist-value="user.userId"></td>
-                    <td ng-init="index=$index + 1">{{index}}</td>
-                    <td><a href="/admin/students/{{user.userId}}" target="_blanks">{{user.name}}</a></td>
-                    <td ng-repeat="head in data.header">
-                        {{user.fields[head.id]}}
-                    </td>
-                    <td>{{user.rejected}}</td>
-                    <%--<td>{{user.fields[6]}}</td>--%>
-                    <%--<td>{{user.devMark}}</td>--%>
-                    <%--<td>{{user.hrMark}}</td>--%>
-                    <%--<td ng-style="{opacity:0.5,'background-color':'{{user.color}}'}" title="--%>
-                    <%--{{ch.color == 'red' ? 'Reject' :--%>
-                    <%--ch.color == 'green' ? 'On course' :--%>
-                    <%--ch.color == 'blue' ? 'On job' : 'Thinking'}}"></td>--%>
-                </tr>
-                </tbody>
-            </table>
-            <dir-pagination-controls
-                    max-size="8"
-                    direction-links="true"
-                    boundary-links="true"
-                    on-page-change="data.setPageno(newPageNumber)">
-            </dir-pagination-controls>
+            <%--<button ng-click="saveChanges()"--%>
+            <%--class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">--%>
+            <%--Save--%>
+            <%--</button>--%>
+            <%--<div class="checkbox-dropdown">--%>
+            <%--Choose column--%>
+            <%--&lt;%&ndash;<ul  class="checkbox-dropdown-list">&ndash;%&gt;--%>
+            <%--<ul class="checkbox-dropdown-list">--%>
+            <%--<li ng-repeat="(key,value) in data.users[0]">--%>
+            <%--<label>--%>
+            <%--<input type="checkbox" />{{key}}</label></li>--%>
+            <%--</ul>--%>
+            <%--&lt;%&ndash;</ul>&ndash;%&gt;--%>
+            <%--</div>--%>
+
+
+            <%--<ul ng-repeat="(key,value) in data.users[0]" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">--%>
+            <%--<li class="dropdown-submenu pull-right">--%>
+            <%--{{key}}--%>
+            <%--</li>--%>
+            <%--</ul>--%>
+        </div>
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <td>
+                    <input type="checkbox" ng-model="selectedAll" ng-click="checkAll()">
+                </td>
+                <td>
+                    <a href="#" ng-click="sortType = 'id'; sortReverse = !sortReverse; n">
+                        #
+                    </a>
+                </td>
+                <td>
+                    <a href="#" ng-click="sortReverse = !sortReverse; sortType(0)">
+                        Full Name
+                    </a>
+                </td>
+                <%--<td>--%>
+                <%--<a href="#" ng-click="sortType = 'university'; sortReverse = !sortReverse">--%>
+                <%--University--%>
+                <%--<span ng-show="sortType == 'university' && !sortReverse" class="fa fa-caret-down"></span>--%>
+                <%--<span ng-show="sortType == 'university' && sortReverse" class="fa fa-caret-up"></span>--%>
+                <%--</a>--%>
+                <%--</td>--%>
+                <%--<td>--%>
+                <%--<a href="#" ng-click="sortType = 'devMark'; sortReverse = !sortReverse">--%>
+                <%--Dev Assesment--%>
+                <%--<span ng-show="sortType == 'devMark' && !sortReverse" class="fa fa-caret-down"></span>--%>
+                <%--<span ng-show="sortType == 'devMark' && sortReverse" class="fa fa-caret-up"></span>--%>
+                <%--</a>--%>
+                <%--</td>--%>
+                <%--<td>--%>
+                <%--<a href="#" ng-click="sortType = 'hrMark'; sortReverse = !sortReverse">--%>
+                <%--HR Assesment--%>
+                <%--<span ng-show="sortType == 'hrMark' && !sortReverse" class="fa fa-caret-down"></span>--%>
+                <%--<span ng-show="sortType == 'hrMark' && sortReverse" class="fa fa-caret-up"></span>--%>
+                <%--</a>--%>
+                <%--</td>--%>
+                <td ng-repeat="head in data.header">
+                    <a href="#" ng-click="sortType(head.id)">
+                        {{head.name}}
+                    </a>
+                </td>
+                <td>
+                    <a href="#" ng-click="sortType = 'rejected'; sortReverse = !sortReverse">
+                        Rejected
+                    </a>
+                </td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-show="data.users.length <= 0">
+                <td colspan="5" style="text-align:center;">Bratiska POGODI</td>
+            </tr>
+            <tr dir-paginate="user in data.users|itemsPerPage:data.itemsPerPage" total-items="data.total_count">
+                <td><input type="checkbox" checklist-model="dataStudents.studId" checklist-value="user.userId"></td>
+                <td ng-init="index=$index + 1">{{index}}</td>
+                <td><a href="/admin/students/{{user.userId}}" target="_blanks">{{user.name}}</a></td>
+                <td ng-repeat="head in data.header">
+                    {{user.fields[head.id]}}
+                </td>
+                <td>{{user.rejected}}</td>
+                <%--<td>{{user.fields[6]}}</td>--%>
+                <%--<td>{{user.devMark}}</td>--%>
+                <%--<td>{{user.hrMark}}</td>--%>
+                <%--<td ng-style="{opacity:0.5,'background-color':'{{user.color}}'}" title="--%>
+                <%--{{ch.color == 'red' ? 'Reject' :--%>
+                <%--ch.color == 'green' ? 'On course' :--%>
+                <%--ch.color == 'blue' ? 'On job' : 'Thinking'}}"></td>--%>
+            </tr>
+            </tbody>
+        </table>
+        <dir-pagination-controls
+                max-size="8"
+                direction-links="true"
+                boundary-links="true"
+                on-page-change="data.setPageno(newPageNumber)">
+        </dir-pagination-controls>
 
 
     </main>

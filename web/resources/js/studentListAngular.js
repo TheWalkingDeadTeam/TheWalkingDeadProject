@@ -239,19 +239,18 @@ app.controller('StudentCtrl', ["$http", "$scope", 'MailService', function ($http
     vm.mail = {id: null, bodyTemplate: ' ', headTemplate: ' '};
     vm.checkNull = true;
 
+    /////////////Alexander///////////////////////////////////////////////
+    
     $scope.list = [];
-
-
     $scope.mail = function () {
-
         var dataObj = {
             values: $scope.dataStudents.studId
         };
         if (dataObj.values.length != 0) {
             var formData = {
-                "usersId": dataObj,
-                "mailHead": $scope.mailHead,
-                "mailBody": $scope.mailBody
+                "usersId": dataObj.values,
+                "headTemplate": $scope.mailHead,
+                "bodyTemplate": $scope.mailBody
             };
             var response = $http.post('/admin/users-mail-id', formData);
             response.success(function (data, status, headers, config) {
@@ -265,6 +264,34 @@ app.controller('StudentCtrl', ["$http", "$scope", 'MailService', function ($http
             alert('Notify');
         }
     };
+    
+    $scope.templateSend = function () {
+        
+        var dataObj = {
+            values: $scope.dataStudents.studId
+        };
+        
+        if(dataObj.values.length != 0){
+            alert('Not empty');
+            var formData = {
+                "usersId": dataObj.values,
+                "mailIdUser": $scope.mailIdUser,
+            };
+            var response = $http.post('/admin/users-mail-id', formData);
+            response.success(function (data, status, headers, config) {
+                $scope.list.push(data);
+            });
+            response.error(function (data, status, headers, config) {
+                alert("Exception details: " + JSON.stringify({data: data}));
+            });
+            $scope.list = [];
+        } else {
+            alert('Notify');
+        }
+    };
+    
+    
+    
 
     vm.fetchAllMails = function () {
         MailService.fetchAllMails()

@@ -8,9 +8,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import ua.nc.entity.Mail;
+import ua.nc.entity.User;
 import ua.nc.service.MailService;
 import ua.nc.service.MailServiceImpl;
+import ua.nc.service.user.UserService;
+import ua.nc.service.user.UserServiceImpl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,6 +25,7 @@ import java.util.List;
 public class MailController {
     private static final Logger LOGGER = Logger.getLogger(MailController.class);
     MailService mailService = new MailServiceImpl();
+    UserService userService = new UserServiceImpl();
 
     /**
      * Retrieve all mail
@@ -119,6 +124,27 @@ public class MailController {
             mailService.deleteMail(i);
         }
         return new ResponseEntity<Mail>(HttpStatus.NO_CONTENT);
+    }
+
+
+    /**
+     *
+     */
+    @RequestMapping(value = "/admin/users-mail-id", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public void sendMail(@RequestBody Mail mail) {
+        System.out.println("I am in");
+        if (mail.getMailIdUser() != null) {
+            List<Integer> userId = mail.getUsersId();
+            Mail studentMail = mailService.getMail(mail.getMailIdUser());
+            for(Integer i: userId){
+                System.out.println("user id"+i);
+                User user  = userService.getUser(i);
+                System.out.println(user.getName());
+            }
+        } else{
+            System.out.println("NULL");
+        }
     }
 
 }
