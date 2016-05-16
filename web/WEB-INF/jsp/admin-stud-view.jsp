@@ -85,10 +85,7 @@
                     class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
                 Accept
             </button>
-            <button ng-click="unrejectStud()"
-                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
-                Accept
-            </button>
+
 
 
             <a href="#FooOne"
@@ -99,6 +96,17 @@
                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white"
                data-toggle="collapse">Mail With Template</a>
 
+
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+                <label class="mdl-button mdl-js-button mdl-button--icon" for="search">
+                    <i class="material-icons">search</i>
+                </label>
+                <div class="mdl-textfield__expandable-holder">
+                    <form ng-submit = "searchFiltr(field)"><input  class="mdl-textfield__input" type="text" id="search" name="field" ng-model="field"></form>
+                    <label class="mdl-textfield__label" for="search">Enter your query...</label>
+                </div>
+            </div>
+
             <div id="FooOne" class="collapse">
                 <jsp:include page="custom-mail.jsp"/>
             </div>
@@ -108,23 +116,14 @@
                 <jsp:include page="custom-mail-template.jsp"/>
             </div>
 
-
+        </div>
             <%--<button ng-click="mail()"--%>
             <%--class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">--%>
             <%--Mail--%>
             <%--</button>--%>
 
 
-            <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
-                <label class="mdl-button mdl-js-button mdl-button--icon" for="search">
-                    <i class="material-icons">search</i>
-                </label>
-                <div class="mdl-textfield__expandable-holder">
-                    <form ng-submit="searchFiltr(field)"><input class="mdl-textfield__input" type="text" id="search"
-                                                                name="field" ng-model="field"></form>
-                    <label class="mdl-textfield__label" for="search">Enter your query...</label>
-                </div>
-            </div>
+
             <%--<button ng-click="saveChanges()"--%>
             <%--class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">--%>
             <%--Save--%>
@@ -140,16 +139,7 @@
             <%--&lt;%&ndash;</ul>&ndash;%&gt;--%>
             <%--</div>--%>
 
-            <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
-                <label class="mdl-button mdl-js-button mdl-button--icon" for="search">
-                    <i class="material-icons">search</i>
-                </label>
-                <div class="mdl-textfield__expandable-holder">
-                    <form ng-submit = "searchFiltr(field)"><input  class="mdl-textfield__input" type="text" id="search" name="field" ng-model="field"></form>
-                    <label class="mdl-textfield__label" for="search">Enter your query...</label>
-                </div>
-            </div>
-        </div>
+
         <table class="table table-striped table-hover">
             <thead>
             <tr>
