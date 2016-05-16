@@ -15,6 +15,7 @@ reporterid.controller('ReportControllerId', ['$scope', 'ReportServiceId', '$http
         ReportServiceId.getReport(id)
             .then(
                 function (d) {
+                    self.loading = true;
                     self.reports = d;
                 }, function (errResponse) {
                     console.error('Error while fetching Currencies');
@@ -23,9 +24,12 @@ reporterid.controller('ReportControllerId', ['$scope', 'ReportServiceId', '$http
             );
     };
 
+    self.loading = false;
     var pId = $location.absUrl().split('?')[1];
     self.getReport(pId);
     console.info(pId);
+
+
 
 
 }]);

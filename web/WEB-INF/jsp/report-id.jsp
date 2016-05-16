@@ -20,9 +20,32 @@
 
 </head>
 
-<body ng-app="reporterid" >
-<div class="table-responsive">
-    <table ng-controller="ReportControllerId as rc" class="table">
+<style>
+    #mydiv {
+        position:absolute;
+        top:0;
+        left:0;
+        width:100%;
+        height:100%;
+        z-index:1000;
+        background-color:white;
+        opacity: .8;
+    }
+
+    .loader {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        margin-left: -32px; /* -1 * image width / 2 */
+        margin-top: -32px;  /* -1 * image height / 2 */
+        display: block;
+    }
+</style>
+<body ng-app="reporterid" ng-controller="ReportControllerId as rc"  >
+<div id="mydiv"  ng-hide="rc.loading">
+    <img src="/resources/images/load.gif" class="loader"/>
+</div>
+    <table class="table table-responsive">
         <thead>
         <tr>
             <th ng-repeat="(key, val) in rc.reports[0]">{{key}}</th>
@@ -34,7 +57,7 @@
         </tr>
         </tbody>
     </table>
-</div>
+
 </body>
 
 </html>
