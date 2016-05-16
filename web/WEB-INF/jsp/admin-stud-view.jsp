@@ -67,14 +67,6 @@
 
     <main class="mdl-layout__content mdl-color--grey-100">
         <div>
-            <%--<button ng-click="activateStud()"--%>
-                    <%--class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">--%>
-                <%--Activate--%>
-            <%--</button>--%>
-            <%--<button ng-click="deactivateStud()"--%>
-                    <%--class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">--%>
-                <%--Deactivate--%>
-            <%--</button>--%>
             <button ng-click="rejectStud()"
                     class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
                 Reject
@@ -93,27 +85,6 @@
                     <label class="mdl-textfield__label" for="search">Enter your query...</label>
                 </div>
             </div>
-            <%--<button ng-click="saveChanges()"--%>
-            <%--class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">--%>
-            <%--Save--%>
-            <%--</button>--%>
-            <%--<div class="checkbox-dropdown">--%>
-            <%--Choose column--%>
-            <%--&lt;%&ndash;<ul  class="checkbox-dropdown-list">&ndash;%&gt;--%>
-            <%--<ul class="checkbox-dropdown-list">--%>
-            <%--<li ng-repeat="(key,value) in data.users[0]">--%>
-            <%--<label>--%>
-            <%--<input type="checkbox" />{{key}}</label></li>--%>
-            <%--</ul>--%>
-            <%--&lt;%&ndash;</ul>&ndash;%&gt;--%>
-            <%--</div>--%>
-
-
-            <%--<ul ng-repeat="(key,value) in data.users[0]" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">--%>
-            <%--<li class="dropdown-submenu pull-right">--%>
-            <%--{{key}}--%>
-            <%--</li>--%>
-            <%--</ul>--%>
         </div>
         <table class="table table-striped table-hover">
             <thead>
@@ -131,27 +102,6 @@
                         Full Name
                     </a>
                 </td>
-                <%--<td>--%>
-                <%--<a href="#" ng-click="sortType = 'university'; sortReverse = !sortReverse">--%>
-                <%--University--%>
-                <%--<span ng-show="sortType == 'university' && !sortReverse" class="fa fa-caret-down"></span>--%>
-                <%--<span ng-show="sortType == 'university' && sortReverse" class="fa fa-caret-up"></span>--%>
-                <%--</a>--%>
-                <%--</td>--%>
-                <%--<td>--%>
-                <%--<a href="#" ng-click="sortType = 'devMark'; sortReverse = !sortReverse">--%>
-                <%--Dev Assesment--%>
-                <%--<span ng-show="sortType == 'devMark' && !sortReverse" class="fa fa-caret-down"></span>--%>
-                <%--<span ng-show="sortType == 'devMark' && sortReverse" class="fa fa-caret-up"></span>--%>
-                <%--</a>--%>
-                <%--</td>--%>
-                <%--<td>--%>
-                <%--<a href="#" ng-click="sortType = 'hrMark'; sortReverse = !sortReverse">--%>
-                <%--HR Assesment--%>
-                <%--<span ng-show="sortType == 'hrMark' && !sortReverse" class="fa fa-caret-down"></span>--%>
-                <%--<span ng-show="sortType == 'hrMark' && sortReverse" class="fa fa-caret-up"></span>--%>
-                <%--</a>--%>
-                <%--</td>--%>
                 <td ng-repeat="head in data.header">
                     <a href="#" ng-click="sortReverse = !sortReverse; sortType(head.id,sortReverse)">
                         {{head.name}}
@@ -176,13 +126,6 @@
                     {{user.fields[head.id]}}
                 </td>
                 <td ng-style="{opacity:0.5,'background-color':'{{user.rejected ? 'red' : 'green'}}'}">{{user.rejected}}</td>
-                <%--<td>{{user.fields[6]}}</td>--%>
-                <%--<td>{{user.devMark}}</td>--%>
-                <%--<td>{{user.hrMark}}</td>--%>
-                <%--<td ng-style="{opacity:0.5,'background-color':'{{user.color}}'}" title="--%>
-                <%--{{ch.color == 'red' ? 'Reject' :--%>
-                <%--ch.color == 'green' ? 'On course' :--%>
-                <%--ch.color == 'blue' ? 'On job' : 'Thinking'}}"></td>--%>
             </tr>
             </tbody>
         </table>

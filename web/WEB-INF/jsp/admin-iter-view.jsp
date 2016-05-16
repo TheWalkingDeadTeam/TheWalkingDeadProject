@@ -129,7 +129,8 @@
             <tr dir-paginate="user in data.users|itemsPerPage:data.itemsPerPage" total-items="data.total_count">
                 <td><input type="checkbox" checklist-model="dataStudents.studId" checklist-value="user.id">
                 </td>
-                <td ng-init="index=$index + 1">{{index}}</td>
+                <%--<td ng-init="index=$index + 1">{{index}}</td>--%>
+                <td><a href="/account/{{user.id}}" target="_blanks">{{user.id}}</a></td>
                 <td>{{user.name}}</td>
                 <td>{{user.surname}}</td>
                 <td>{{user.email}}</td>

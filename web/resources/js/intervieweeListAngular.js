@@ -1,145 +1,37 @@
 /**
  * Created by creed on 15.05.16.
  */
-// /**
-//  * Created by creed on 01.05.16.
-//  */
-//
-// var studentView = angular.module('interView', ['checklist-model', 'ngRoute', 'phonecatControllers']);
-//
-// studentView.config(['$routeProvider',
-//     function ($routeProvider) {
-//         $routeProvider.when('/interview', {
-//             templateUrl: 'admin-iter-view.jsp',
-//             controller: 'interCtrl'
-//         }).otherwise({
-//             redirectTo: 'error.jsp'
-//         });
-//     }]);
-//
-// var phonecatControllers = angular.module('phonecatControllers', []);
-//
-//
-// phonecatControllers.controller("interCtrl", ["$scope", "$http", "$rootElement", function ($scope, $http, $rootElement) {
-//
-//     $http.get('interviewers/list').success(function (data) {
-//         $scope.interviewer = data;
-//     });
-//
-//
-//     $scope.sortType = 'id';
-//     $scope.sortReverse = false;
-//     $scope.searchFiltr = '';
-//     $scope.dataInterviewer = {
-//         interId: []
-//     };
-//     $scope.checkAll = function () {
-//         if ($scope.selectedAll) {
-//             $scope.dataInterviewer.interId = $scope.interviewer.map(function (item) {
-//                 return item.id;
-//             });
-//             $scope.selectdAll = true;
-//         }
-//         else {
-//             $scope.selectdAll = false;
-//             $scope.dataInterviewer.interId = [];
-//         }
-//
-//     };
-//     $scope.activateStud = function () {
-//         var dataObj = {
-//             type: 'activate',
-//             values: $scope.dataInterviewer.interId
-//         };
-//         if ($scope.dataInterviewer.interId.length != 0) {
-//             var res = $http.post('interview', dataObj);
-//             res.success(function (data, status, headers, config) {
-//                 $scope.message = data;
-//             });
-//             res.error(function (data, status, headers, config) {
-//                 alert("failure message: " + JSON.stringify({data: data}));
-//             });
-//         }
-//     };
-//     $scope.deactivateStud = function () {
-//         var dataObj = {
-//             type: 'deactivate',
-//             values: $scope.dataInterviewer.interId
-//         };
-//         if ($scope.dataInterviewer.interId.length != 0) {
-//             var res = $http.post('interview', dataObj);
-//             res.success(function (data, status, headers, config) {
-//                 $scope.message = data;
-//             });
-//             res.error(function (data, status, headers, config) {
-//                 alert("failure message: " + JSON.stringify({data: data}));
-//             });
-//         }
-//     };
-//     $scope.saveChanges = function () {
-//         var dataObj = {
-//             type: "save",
-//             values: []
-//         };
-//         var res = $http.post('interview', dataObj);
-//         res.success(function (data, status, headers, config) {
-//             $scope.message = data;
-//         });
-//         res.error(function (data, status, headers, config) {
-//             alert("failure message: " + JSON.stringify({data: data}));
-//         });
-//     }
-//
-//     $scope.searchFiltr = function () {
-//         var dataObj = {
-//             type: "search",
-//             values: [$scope.searchFilt]
-//         };
-//         var res = $http.post('interview', dataObj);
-//         res.success(function (data, status, headers, config) {
-//             $scope.message = data;
-//         });
-//         res.error(function (data, status, headers, config) {
-//             alert("failure message: " + JSON.stringify({data: data}));
-//         });
-//     }
-// }]);
-//
-//
-// it('should change state', function () {
-//     var value1 = element(by.binding('h.isActive'));
-//
-//     expect(value1.getText()).toContain('1');
-//
-//     element(by.model('h.isActive')).click();
-//     expect(isActive.getText()).toContain('0');
-//
-// });
-//
+var app = angular.module('userView', ['checklist-model', 'angularUtils.directives.dirPagination']);
 
-
-var interView = angular.module('interView', ['checklist-model', 'angularUtils.directives.dirPagination']);
-
-interView.controller('interCtrl', ["$http", "$scope", function ($http, $scope) {
+app.controller('IntervieweeCtrl', ["$http", "$scope", function ($http, $scope) {
     var vm = this;
     vm.users = []; //declare an empty array
     vm.pageno = 1; // initialize page no to 1
     vm.total_count = 0;
     vm.itemsPerPage = 10; //this could be a dynamic value from a drop down
-    vm.selectUrl = "interviewers/list/" + vm.itemsPerPage + "/" + vm.pageno;
+    vm.selectUrl = "interviewee/list/" + vm.itemsPerPage + "/" + vm.pageno;
     vm.order_by = null;
+    vm.sortAsc = null;
+    vm.pattern = null;
+    $scope.sortReverse = false;
 
 
-    vm.getData = function () { // This would fetch the data on page change.
-        //In practice this should be in a factory.
+    vm.getData = function () {
         vm.users = [];
         $http.get(vm.selectUrl).success(function (response) {
             vm.users = response;
-            // vm.order_by = vm.header[0].id;
         });
-        $http.get("interviewers/size").success(function (response) {
-            vm.total_count = response;
-        });
+    };
+    vm.getSize = function () {
+        if (vm.pattern == null) {
+            $http.get("interviewee/size").success(function (response) {
+                vm.total_count = response;
+            });
+        } else {
+            $http.get("interviewee/size/" + vm.pattern).success(function (response) {
+                vm.total_count = response;
+            });
+        }
     };
 
     $scope.dataStudents = {
@@ -151,15 +43,16 @@ interView.controller('interCtrl', ["$http", "$scope", function ($http, $scope) {
     };
 
     vm.getData(); // Call the function to fetch initial data on page load.
-
+    vm.getSize();
     vm.setPageno = function (pageno) {
         vm.pageno = pageno;
-        if(vm.order_by === null){
-            vm.selectUrl = "interviewers/list/"+vm.itemsPerPage+"/"+vm.pageno;
-        }else{
-            vm.selectUrl = "interviewers/list/"+vm.itemsPerPage+"/"+vm.pageno+"/"+vm.order_by;
+        if (vm.order_by === null) {
+            vm.selectUrl = "interviewee/list/" + vm.itemsPerPage + "/" + vm.pageno;
+        } else {
+            vm.selectUrl = "interviewee/list/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by + "/" + vm.sortAsc;
         }
         vm.getData();
+        vm.getSize();
     };
 
     $scope.checkAll = function () {
@@ -176,51 +69,24 @@ interView.controller('interCtrl', ["$http", "$scope", function ($http, $scope) {
 
     };
 
-    $scope.sortType = function (type) {
+    $scope.sortType = function (type, revers) {
         vm.order_by = type;
-        vm.selectUrl = "interviewers/list/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by;
+        vm.sortAsc = revers;
+        vm.selectUrl = "interviewee/list/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by + "/" + vm.sortAsc;
         vm.getData()
+        vm.getSize();
     };
 
-
-    $scope.activateStud = function () {
+    $scope.activateUser = function () {
         var dataObj = {
             type: 'activate',
             values: $scope.dataStudents.studId
         };
         if ($scope.dataStudents.studId.length != 0) {
-            $http.post('interviewers', dataObj)
-                .success(function (data, status, headers, config) {
-                    $scope.message = data;
-                })
-                .error(function (data, status, headers, config) {
-                });
-        }
-    };
-    $scope.deactivateStud = function () {
-        var dataObj = {
-            type: 'deactivate',
-            values: $scope.dataStudents.studId
-        };
-        if ($scope.dataStudents.studId.length != 0) {
-            var res = $http.post('interviewers', dataObj);
+            var res = $http.post('users', dataObj);
             res.success(function (data, status, headers, config) {
                 $scope.message = data;
-            });
-            res.error(function (data, status, headers, config) {
-                alert("failure message: " + JSON.stringify({data: data}));
-            });
-        }
-    };
-    $scope.rejectStud = function () {
-        var dataObj = {
-            type: 'reject',
-            values: $scope.dataStudents.studId
-        };
-        if ($scope.dataStudents.studId.length != 0) {
-            var res = $http.post('interviewers', dataObj);
-            res.success(function (data, status, headers, config) {
-                $scope.message = data;
+                vm.getData();
             });
             res.error(function (data, status, headers, config) {
                 alert("failure message: " + JSON.stringify({data: data}));
@@ -228,18 +94,41 @@ interView.controller('interCtrl', ["$http", "$scope", function ($http, $scope) {
         }
     };
 
-    $scope.searchFiltr = function () {
+    $scope.deactivateUser = function () {
+        var dataObj = {
+            type: 'deactivate',
+            values: $scope.dataStudents.studId
+        };
+        if ($scope.dataStudents.studId.length != 0) {
+            var res = $http.post('users', dataObj);
+            res.success(function (data, status, headers, config) {
+                $scope.message = data;
+                vm.getData();
+            });
+            res.error(function (data) {
+                alert("failure message: ");
+            });
+        }
+    };
+
+    $scope.searchFiltr = function (pattern) {
         var dataObj = {
             type: "search",
             values: [$scope.searchFilt]
         };
-        var res = $http.get('interviewers/search', dataObj);
-        res.success(function (data, status, headers, config) {
-            $scope.message = data;
-        });
-        res.error(function (data, status, headers, config) {
-            alert("failure message: " + JSON.stringify({data: data}));
-        });
+        if (pattern == undefined || pattern == "" || pattern == null) {
+            vm.selectUrl = "interviewee/list/" + vm.itemsPerPage + "/" + vm.pageno;
+
+        } else {
+            vm.pattern = pattern;
+            if (vm.order_by === null) {
+                vm.selectUrl = "interviewee/search/" + vm.itemsPerPage + "/" + vm.pageno + "/system_user_id/" + pattern;
+            } else {
+                vm.selectUrl = "interviewee/search/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by + "/" + pattern;
+            }
+        }
+        vm.getData();
+        vm.getSize();
     }
 }]);
 
