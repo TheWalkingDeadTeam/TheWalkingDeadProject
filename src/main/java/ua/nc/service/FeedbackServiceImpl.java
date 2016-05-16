@@ -4,9 +4,9 @@ import org.apache.log4j.Logger;
 import org.springframework.security.core.context.SecurityContextHolder;
 import ua.nc.dao.*;
 import ua.nc.dao.enums.DataBaseType;
-import ua.nc.dao.enums.UserRoles;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.dao.factory.DAOFactory;
+import ua.nc.dao.postgresql.PostgreIntervieweeTableDAO;
 import ua.nc.entity.*;
 import ua.nc.service.user.UserService;
 import ua.nc.service.user.UserServiceImpl;
@@ -34,6 +34,8 @@ public class FeedbackServiceImpl implements FeedbackService {
         Connection connection = daoFactory.getConnection();
         FeedbackDAO feedbackDAO = daoFactory.getFeedbackDAO(connection);
         IntervieweeDAO intervieweeDAO = daoFactory.getIntervieweeDAO(connection);
+        CESDAO cesDAO = daoFactory.getCESDAO(connection);
+        PostgreIntervieweeTableDAO intervieweeTableDAO = new PostgreIntervieweeTableDAO(connection);
         Connection connection1 = daoFactory.getConnection();
         RoleDAO roleDAO = daoFactory.getRoleDAO(connection1);
         Feedback feedback = feedbackAndSpecialMark.getFeedback();
@@ -65,12 +67,17 @@ public class FeedbackServiceImpl implements FeedbackService {
                 interviewee.setSpecialMark(feedbackAndSpecialMark.getSpecialMark());
                 intervieweeDAO.update(interviewee);
             } else {
-                oldFeedback = feedbackDAO.getById(feedbackId);
+                oldFeedback = feedbackDAO.read(feedbackId);
                 oldFeedback.setScore(feedback.getScore());
                 oldFeedback.setComment(feedback.getComment());
                 feedbackDAO.update(oldFeedback);
                 interviewee.setSpecialMark(feedbackAndSpecialMark.getSpecialMark());
                 intervieweeDAO.update(interviewee);
+            }
+            // vdanchul
+            if (feedbackAndSpecialMark.getSpecialMark() != null){
+                CES ces = cesDAO.getCurrentCES();
+                intervieweeTableDAO.updateIntervieweeTable(ces.getId(), ces.getQuota());
             }
             connection.commit();
             return true;
@@ -99,7 +106,7 @@ public class FeedbackServiceImpl implements FeedbackService {
         RoleDAO roleDAO = daoFactory.getRoleDAO(connection);
         Feedback feedback = null;
         try{
-            feedback = feedbackDAO.getById(id);
+            feedback = feedbackDAO.read(id);
         } catch (DAOException ex){
             LOGGER.warn(ex.getMessage());
         }

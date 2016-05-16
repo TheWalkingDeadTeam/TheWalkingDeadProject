@@ -31,7 +31,7 @@ public class PostgreListTypeDAO extends AbstractPostgreDAO<ListType, Integer> im
 
     @Override
     public String getUpdateQuery() {
-        return "UPDATE list SET list.name = ? WHERE list.list_id = ?;";
+        return "UPDATE list SET name = ? WHERE list_id = ?;";
     }
 
     @Override
