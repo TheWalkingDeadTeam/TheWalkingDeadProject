@@ -101,7 +101,6 @@ app.controller('UserCtrl', ["$http", "$scope", function ($http, $scope) {
             res.success(function (data, status, headers, config) {
                 $scope.message = data;
                 vm.getData();
-                vm.getSize();
             });
             res.error(function (data) {
                 alert("failure message: ");
