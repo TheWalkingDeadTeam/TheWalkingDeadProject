@@ -10,9 +10,11 @@ import java.util.List;
  * Created by Rangar on 01.05.2016.
  */
 public interface ApplicationDAO extends GenericDAO<Application, Integer> {
-    Application getApplicationByUserCES(Integer user_id, Integer ces_id) throws DAOException;
+    Application getApplicationByUserCES(Integer userId, Integer cesId) throws DAOException;
 
-    List<Application> getAllCESApplications(Integer ces_id) throws DAOException;
+    List<Application> getAllCESApplications(Integer cesId) throws DAOException;
 
     List<Application> getApplicationsByCesIdUserId(Integer cesId, List<Integer> userIds) throws DAOException;
+
+    List<Application> getAllAcceptedApplications(Integer cesId) throws DAOException;
 }
