@@ -19,11 +19,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/resources/css/mdb.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-
 </head>
 <body ng-controller="StudentCtrl as ctrl">
-
-
 <div class="container">
     <div class="row">
         <div class="col-md-8">
@@ -34,7 +31,6 @@
                 <div class="card-content">
                     <div class="panel panel-default">
                         <h5 align="center">Student Mail Template </h5>
-
                         <form ng-submit="templateSend()" name="myForm" class="form-horizontal" autocomplete="on">
                             <table class="table table-hover" class="ng-cloak">
                                 <thead>
@@ -53,11 +49,9 @@
                                 </tr>
                                 </tbody>
                             </table>
-                            <div class="row">
-                                <div class="form-actions floatRight">
-                                    <input type="submit" id="templateSend" value="Send"
-                                           class="btn btn-default waves-effect waves-light">
-                                </div>
+                            <div class="form-actions floatRight" style="margin-top: 2%;margin-bottom: 4%">
+                                <input type="submit" id="templateSend" value="Send"
+                                       class="btn btn-default waves-effect waves-light">
                             </div>
                         </form>
                     </div>
@@ -66,8 +60,6 @@
         </div>
     </div>
 </div>
-
-
 <script src="/resources/js/studentListAngular.js"></script>
 <script type="text/javascript" src="js/mdb.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
