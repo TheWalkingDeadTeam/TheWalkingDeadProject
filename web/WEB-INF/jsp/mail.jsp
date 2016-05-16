@@ -26,7 +26,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link href="<c:url value='/resources/css/app.css' />" rel="stylesheet">
 </head>
-<body ng-app="mailer" class="ng-cloak">
+<body ng-app="app" class="ng-cloak">
 <div class="generic-container" ng-controller="MailController as ctrl">
     <div class="panel panel-default">
         <div class="panel-heading"><span class="lead">Mail Template Form </span></div>
@@ -84,8 +84,8 @@
                 <tbody>
                 <tr ng-repeat="m in ctrl.mails">
                     <td><span ng-bind="m.id"></span></td>
-                    <td><span ng-bind="m.bodyTemplate"></span></td>
                     <td><span ng-bind="m.headTemplate"></span></td>
+                    <td><span ng-bind="m.bodyTemplate"></span></td>
                     <td>
                         <button type="button" ng-click="ctrl.edit(m.id)" class="btn btn-success custom-width">Edit</button>  <button type="button" ng-click="ctrl.remove(m.id)" class="btn btn-danger custom-width">Remove</button>
                     </td>

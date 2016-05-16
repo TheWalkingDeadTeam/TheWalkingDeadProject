@@ -3,9 +3,9 @@
  * Created by Alexander Haliy on 05.05.2016.
  */
 
-var mailer = angular.module('mailer',[]);
+var app = angular.module('app',[]);
 
-mailer.controller('MailController', ['$scope', 'MailService','$http', function($scope, MailService,$http) {
+app.controller('MailController', ['$scope', 'MailService','$http', function($scope, MailService,$http) {
 
     $scope.list = [];
 
@@ -121,7 +121,7 @@ mailer.controller('MailController', ['$scope', 'MailService','$http', function($
 
 
 
-mailer.factory('MailService', ['$http', '$q', function($http, $q){
+app.factory('MailService', ['$http', '$q', function($http, $q){
 
     return {
 

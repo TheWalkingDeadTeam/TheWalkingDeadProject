@@ -3,21 +3,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
     <title>Scheduler</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <link href="<c:url value='/resources/css/app.css' />" rel="stylesheet"></link>
-    <link href="<c:url value='/resources/css/scheduler-styles.css' />" rel="stylesheet"></link>
+    <link href="<c:url value='/resources/css/app.css' />" rel="stylesheet">
+    <link href="<c:url value='/resources/css/scheduler-styles.css' />" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap.timepicker/0.2.6/css/bootstrap-timepicker.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script type="text/javascript" src="/resources/js/bootstrap-timepicker.js"></script>
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </head>
-<body ng-app="mailer" class="ng-cloack">
-
-
-
-
+<body ng-app="app" class="ng-cloack">
 <div class="generic-container">
     <div class="panel panel-default">
         <div class="panel-heading"><span class="lead">Scheduler paramaters </span></div>
@@ -32,7 +24,9 @@
                         <div class="col-md-7">
 
                             <div class="input-group bootstrap-timepicker timepicker">
-                                <input id="timepicker1" data-ng-model="interviewTime" placeholder="Provide interview time" name="interviewTime"   type="text" class="form-control input-small">
+                                <input id="timepicker1" data-ng-model="interviewTime"
+                                       placeholder="Provide interview time" name="interviewTime" type="text"
+                                       class="form-control input-small">
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
                             </div>
 
@@ -121,9 +115,9 @@
                             </thead>
                             <tbody>
                             <tr ng-repeat="m in ctrl.mails">
-                                <td><input type="radio" data-ng-model="$parent.mailIdUser" ng-value="{{m.id}}" ></td>
-                                <td><span ng-bind="m.bodyTemplate"></span></td>
+                                <td><input type="radio" data-ng-model="$parent.mailIdUser" ng-value="{{m.id}}"></td>
                                 <td><span ng-bind="m.headTemplate"></span></td>
+                                <td><span ng-bind="m.bodyTemplate"></span></td>
                             </tr>
                             </tbody>
                         </table>
@@ -146,8 +140,8 @@
                             <tr ng-repeat="m in ctrl.mails">
                                 <td><input type="radio" data-ng-model="$parent.mailIdStaff" ng-value="{{m.id}}">
                                 </td>
-                                <td><span ng-bind="m.bodyTemplate"></span></td>
                                 <td><span ng-bind="m.headTemplate"></span></td>
+                                <td><span ng-bind="m.bodyTemplate"></span></td>
                             </tr>
                             </tbody>
                         </table>
@@ -161,18 +155,20 @@
                         <button type="button" ng-click="ctrl.reset()" class="btn btn-warning btn-sm"
                                 ng-disabled="myForm.$pristine">Reset Form
                         </button>
-
                         <a href="/admin/mail-template">
                             <button type="button" class="btn btn-success btn-sm"> Mail Templates
                             </button>
                         </a>
-
                     </div>
                 </div>
             </form>
         </div>
     </div>
 </div>
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script type="text/javascript" src="/resources/js/bootstrap-timepicker.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <script src="/resources/js/google-api.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
 <script src="<c:url value='/resources/js/mail_controller.js' />"></script>
