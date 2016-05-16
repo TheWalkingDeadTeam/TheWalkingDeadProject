@@ -11,12 +11,13 @@ mailer.controller('MailController', ['$scope', 'MailService','$http', function($
 
     $scope.submit = function () {
         var formData = {
-            "minutes": $scope.minutes,
+            "contactStaff": $scope.contactStaff,
             "locations": $scope.location,
             "mailIdUser": $scope.mailIdUser,
             "mailIdStaff": $scope.mailIdStaff,
-            "contact" : $scope.contact,
-            "courseType" : $scope.courseType
+            "contactStudent" : $scope.contactStudent,
+            "courseType" : $scope.courseType,
+            "interviewTime" : $scope.interviewTime
         };
 
         var response = $http.post('/admin/scheduler', formData);

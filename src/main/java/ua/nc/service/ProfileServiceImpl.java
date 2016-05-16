@@ -1,13 +1,18 @@
 package ua.nc.service;
 
 
+import org.apache.log4j.Logger;
 import ua.nc.dao.*;
 import ua.nc.dao.enums.DataBaseType;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.dao.factory.DAOFactory;
 import ua.nc.entity.Application;
 import ua.nc.entity.CES;
+import ua.nc.entity.Role;
+import ua.nc.entity.User;
 import ua.nc.entity.profile.*;
+import ua.nc.service.user.UserService;
+import ua.nc.service.user.UserServiceImpl;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -20,12 +25,24 @@ import java.util.*;
  * Created by Pavel on 28.04.2016.
  */
 public class ProfileServiceImpl implements ProfileService {
+    private final static Logger LOGGER = Logger.getLogger(FeedbackServiceImpl.class);
+
     private DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
     private static final Set<String> typesToDeny = new HashSet<>(Arrays.asList("textarea", "tel", "checkbox"));
+    private static final String ROLE_STUDENT = "ROLE_STUDENT";
 
     @Override
     public Profile getProfile(int userId, int cesId) throws DAOException {
         Connection connection = daoFactory.getConnection();
+        RoleDAO roleDAO = daoFactory.getRoleDAO(connection);
+        UserService userService = new UserServiceImpl();
+        User user = userService.getUser(userId);
+        Set<Role> roles = user.getRoles();
+        Role roleStudent = roleDAO.findByName(ROLE_STUDENT);
+        boolean contains = roles.contains(roleStudent);
+        if (!contains){
+            return null;
+        }
         FieldDAO fieldDAO = daoFactory.getFieldDAO(connection);
         FieldTypeDAO fieldTypeDAO = daoFactory.getFieldTypeDAO(connection);
         FieldValueDAO fieldValueDAO = daoFactory.getFieldValueDAO(connection);
@@ -143,7 +160,7 @@ public class ProfileServiceImpl implements ProfileService {
                 }
             }
         } catch (DAOException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getCause());
         } finally {
             daoFactory.putConnection(connection);
         }
@@ -171,7 +188,7 @@ public class ProfileServiceImpl implements ProfileService {
                         result.add(new FieldValue(profileField.getId(), applicationId, null,
                                 null, format.parse(profileField.getValues().get(0).getValue()), null));
                     } catch (ParseException e) {
-                        e.printStackTrace(); // say smth about wrong date
+                        LOGGER.warn(e.getCause());
                     }
                     break;
                 case "select":

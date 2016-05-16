@@ -51,6 +51,7 @@
     </nav>
 </header>
 
+<sec:authentication var="principal" property="principal"/>
 <sec:authorize access="isAuthenticated()">
 
     <div class="container smprofile">
@@ -75,7 +76,7 @@
             <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4">
                 <span id="userName">Ivan</span>
                 <span id="userSurname">Ivanovich</span>
-                <span id="userEmail">ivanovivanovich@gmail.com</span>
+                <span id="userEmail">${principal.username}</span>
             </div>
         </div>
     </div>

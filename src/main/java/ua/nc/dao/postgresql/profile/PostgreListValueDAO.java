@@ -15,7 +15,7 @@ import java.util.List;
  * Created by Rangar on 26.04.2016.
  */
 public class PostgreListValueDAO extends AbstractPostgreDAO<ListValue, Integer> implements ListValueDAO {
-    private static String getAllListListValueQuery = "SELECT * FROM list_value WHERE list_id = ?";
+    private static final String GET_ALL_LIST_LIST_VALUE_QUERY = "SELECT * FROM list_value WHERE list_id = ?";
 
     public PostgreListValueDAO(Connection connection) {
         super(connection);
@@ -24,7 +24,7 @@ public class PostgreListValueDAO extends AbstractPostgreDAO<ListValue, Integer> 
     @Override
     public List<ListValue> getAllListListValue(Integer list_id) throws DAOException {
         List<ListValue> result;
-        try (PreparedStatement statement = connection.prepareStatement(getAllListListValueQuery)) {
+        try (PreparedStatement statement = connection.prepareStatement(GET_ALL_LIST_LIST_VALUE_QUERY)) {
             statement.setInt(1, list_id);
             result = parseResultSet(statement.executeQuery());
         } catch (Exception e) {

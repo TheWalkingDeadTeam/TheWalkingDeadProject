@@ -17,9 +17,17 @@ public interface UserDAO extends GenericDAO<User, Integer> {
 
     void updateUser(User user) throws DAOException;
 
+    void activateUser(Integer id) throws DAOException;
+
+    void deactivateUser(Integer id) throws DAOException;
+
     Set<User> getByRole(Role role) throws DAOException;
 
     Set<User> getStudentsForCurrentCES() throws DAOException;
 
     Set<User> getInterviewersForCurrentCES() throws DAOException;
+
+    Set<User> getAllAcceptedStudents(Integer cesId) throws DAOException;
+
+    Set<User> getAllRejectedStudents(Integer cesId) throws DAOException;
 }

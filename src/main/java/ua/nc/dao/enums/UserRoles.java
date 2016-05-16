@@ -8,5 +8,13 @@ public enum UserRoles {
     ROLE_HR,
     ROLE_DEV,
     ROLE_BA,
-    ROLE_STUDENT
+    ROLE_STUDENT;
+
+    public static boolean contains(String string) {
+        for (UserRoles userRole : UserRoles.values()) {
+            if (userRole.name().equals(string))
+                return true;
+        }
+        return false;
+    }
 }

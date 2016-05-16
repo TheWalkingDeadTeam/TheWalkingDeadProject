@@ -82,46 +82,33 @@
                     <input type="checkbox" ng-model="selectedAll" ng-click="checkAll()">
                 </td>
                 <td>
-                    <a href="#" ng-click="sortType = 'id'; sortReverse = !sortReverse">
+                    <a href="#" ng-click="order_by = 'id'; sortReverse = !sortReverse; sortType(order_by)">
                         #
-                        <span ng-show="sortType == 'id' && !sortReverse" class="fa fa-caret-down"></span>
-                        <span ng-show="sortType == 'id' && sortReverse" class="fa fa-caret-up"></span>
                     </a>
                 </td>
                 <td>
-                    <a href="#" ng-click="sortType = 'name'; sortReverse = !sortReverse">
+                    <a href="#" ng-click="order_by = 'name'; sortReverse = !sortReverse; sortType(order_by)">
                         Name
-                        <span ng-show="sortType == 'name' && !sortReverse" class="fa fa-caret-down"></span>
-                        <span ng-show="sortType == 'name' && sortReverse" class="fa fa-caret-up"></span>
                     </a>
                 </td>
                 <td>
-                    <a href="#" ng-click="sortType = 'university'; sortReverse = !sortReverse">
+                    <a href="#" ng-click="order_by = 'university'; sortReverse = !sortReverse; sortType(order_by)">
                         Surname
-                                <span ng-show="sortType == 'university' && !sortReverse"
-                                      class="fa fa-caret-down"></span>
-                        <span ng-show="sortType == 'university' && sortReverse" class="fa fa-caret-up"></span>
                     </a>
                 </td>
                 <td>
-                    <a href="#" ng-click="sortType = 'isActive'; sortReverse = !sortReverse">
+                    <a href="#" ng-click="order_by = 'email'; sortReverse = !sortReverse; sortType(order_by)">
                         Email
-                        <span ng-show="sortType == 'isActive' && !sortReverse" class="fa fa-caret-down"></span>
-                        <span ng-show="sortType == 'isActive' && sortReverse" class="fa fa-caret-up"></span>
                     </a>
                 </td>
                 <td>
-                    <a href="#" ng-click="sortType = 'devMark'; sortReverse = !sortReverse">
+                    <a href="#" ng-click="order_by = 'role'; sortReverse = !sortReverse; sortType(order_by)">
                         Role
-                        <span ng-show="sortType == 'devMark' && !sortReverse" class="fa fa-caret-down"></span>
-                        <span ng-show="sortType == 'devMark' && sortReverse" class="fa fa-caret-up"></span>
                     </a>
                 </td>
                 <td>
-                    <a href="#" ng-click="sortType = 'devMark'; sortReverse = !sortReverse">
+                    <a href="#" ng-click="order_by = 'participation'; sortReverse = !sortReverse; sortType(order_by)">
                         Participation
-                        <span ng-show="sortType == 'devMark' && !sortReverse" class="fa fa-caret-down"></span>
-                        <span ng-show="sortType == 'devMark' && sortReverse" class="fa fa-caret-up"></span>
                     </a>
                 </td>
             </tr>

@@ -1,5 +1,6 @@
 package ua.nc.service.user;
 
+
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -8,13 +9,17 @@ import ua.nc.dao.UserDAO;
 import ua.nc.dao.enums.DataBaseType;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.dao.factory.DAOFactory;
+import ua.nc.dao.postgresql.PostgreDAOFactory;
+import ua.nc.dao.postgresql.PostgreUserDAO;
 import ua.nc.entity.Role;
 import ua.nc.entity.User;
 import ua.nc.service.MailService;
 import ua.nc.service.MailServiceImpl;
 
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -36,6 +41,23 @@ public class UserServiceImpl implements UserService {
         try {
             user = userDAO.findByEmail(email);
             user.setRoles(roleDAO.findByEmail(email));
+        } catch (DAOException e) {
+            LOGGER.info("User not found");
+        } finally {
+            daoFactory.putConnection(connection);
+        }
+        return user;
+    }
+
+    @Override
+    public User getUser(int id) {
+        Connection connection = daoFactory.getConnection();
+        UserDAO userDAO = daoFactory.getUserDAO(connection);
+        RoleDAO roleDAO = daoFactory.getRoleDAO(connection);
+        User user = null;
+        try {
+            user = userDAO.read(id);
+            user.setRoles(roleDAO.findByEmail(user.getEmail()));
         } catch (DAOException e) {
             LOGGER.info("User not found");
         } finally {
@@ -67,8 +89,6 @@ public class UserServiceImpl implements UserService {
         } finally {
             daoFactory.putConnection(connection);
         }
-
-
     }
 
     @Override
@@ -95,7 +115,7 @@ public class UserServiceImpl implements UserService {
         try {
             user.setPassword(encoder.encode(testPassword));
             userDAO.updateUser(user);
-            mailService.sendMail(user.getEmail(), "Password recovery", "Welcome " + user.getName() + " ! \n NetCracker[TheWalkingDeadTeam] " + user.getPassword());
+            mailService.sendMail(user.getEmail(), "Password recovery", "Welcome " + user.getName() + " ! \n NetCracker[TheWalkingDeadTeam] \n New password \n" + testPassword);
             return user;
         } catch (DAOException e) {
             LOGGER.info("Password recovery failed for user " + user.getEmail());
@@ -115,5 +135,33 @@ public class UserServiceImpl implements UserService {
             LOGGER.warn(ex);
         }
         return false;
+    }
+
+    @Override
+    public void activateUsers(List<Integer> userIds) {
+        DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
+        Connection connection = daoFactory.getConnection();
+        PostgreUserDAO userDAO = (PostgreUserDAO) daoFactory.getUserDAO(connection);
+        for(Integer id : userIds) {
+            try {
+                userDAO.activateUser(id);
+            } catch (DAOException e) {
+                LOGGER.warn("Cannot activate user with id " + id);
+            }
+        }
+    }
+
+    @Override
+    public void deactivateUsers(List<Integer> userIds) {
+        DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
+        Connection connection = daoFactory.getConnection();
+        PostgreUserDAO userDAO = (PostgreUserDAO) daoFactory.getUserDAO(connection);
+        for(Integer id : userIds) {
+            try {
+                userDAO.deactivateUser(id);
+            } catch (DAOException e) {
+                LOGGER.warn("Cannot deactivate user with id " + id);
+            }
+        }
     }
 }

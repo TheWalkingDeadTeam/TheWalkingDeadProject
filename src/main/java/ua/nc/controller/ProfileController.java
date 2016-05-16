@@ -2,6 +2,7 @@ package ua.nc.controller;
 
 import org.apache.log4j.Logger;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ua.nc.dao.exception.DAOException;
@@ -24,16 +25,6 @@ public class ProfileController {
     private ProfileService profileService = new ProfileServiceImpl();
     private CESService cesService = new CESServiceImpl();
 
-//  @RequestMapping(value = "/profile", method = RequestMethod.GET)
-//    public
-//    @ResponseBody
-//    Profile profile() {
-//        return profileService.getProfile((UserDetailsImpl) SecurityContextHolder
-//                .getContext()
-//                .getAuthentication()
-//                .getPrincipal());
-//    }
-
     @RequestMapping(value = "/profile/{id}", method = RequestMethod.GET, produces = "application/json")
     public
     @ResponseBody
@@ -42,7 +33,7 @@ public class ProfileController {
         try {
             profile = profileService.getProfile(id, 1);
         } catch (DAOException e) {
-            e.printStackTrace();
+            e.printStackTrace();// TODO log4j
         }
         return profile;
     }
@@ -71,7 +62,7 @@ public class ProfileController {
         return errors;
     }
 
-    @RequestMapping(value = "profile/enroll", method = RequestMethod.GET)
+    @RequestMapping(value = "/profile/enroll", method = RequestMethod.GET)
     public
     @ResponseBody
     Set<ValidationError> enroll() {
@@ -85,7 +76,7 @@ public class ProfileController {
                         .getPrincipal()).getId(), currentCES.getId());
             } catch (DAOException e) {
                 errors.add(new ValidationError("enrollAsStudent", "You have already enrolled to current CES"));
-                LOGGER.info("You have already enrolled to current CES");
+                LOGGER.info("You have already enrolled to current CES", e.getCause());
             }
         } else {
             errors.add(new ValidationError("enrollAsStudent", "Can't enrollAsStudent to current CES. Current CES session is not exist"));
@@ -93,6 +84,4 @@ public class ProfileController {
         }
         return errors;
     }
-
-
 }

@@ -2,7 +2,7 @@ $(document).ready(function () {
     // popup-------------------------------------------------------------------------------popup
     $('.recoverybtn').bind('click', function () {
         $('.recovery').fadeIn(500); //openpopup
-        openValidate();
+        //openValidatePasswordRecovery();
     });
 
     $('.closebtn').bind('click', function () {
@@ -17,12 +17,10 @@ $(document).ready(function () {
     $('.form-control').bind('input', ValidateRecoveryForm);
     // binding
 
-
     function ValidateRecoveryForm() {
         var elem = $(this);
         var innerText = elem.val();
         var errorMsg = '';
-
         if (elem.is('#userEmail')) {
             if (!/^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/.test(innerText)) {
                 errorMsg = errorMsg + 'Incorrect email';
@@ -30,11 +28,11 @@ $(document).ready(function () {
             $('.correct-email').text(errorMsg);
         }
         ;
-        buttonEnable();
+        buttonEnablePasswordRecovery();
     };
     // oninputvalidation
 
-    function openValidate() {
+    function openValidatePasswordRecovery() {
         var errorMsg = '';
 
         var elem = $('#userEmail');
@@ -44,10 +42,10 @@ $(document).ready(function () {
             errorMsg = errorMsg + 'Incorrect email';
         }
         $('.correct-email').text(errorMsg);
-        buttonEnable();
+        buttonEnablePasswordRecovery();
     };
     // start validation
-    function buttonEnable() {
+    function buttonEnablePasswordRecovery() {
         if ($('.correct-email').text() == '') {
             $('#stupidUser button').prop('disabled', false);
         } else {
@@ -64,11 +62,30 @@ $(document).ready(function () {
             dataType: 'json',
             contentType: "application/json",
             data: JSON.stringify({
-                email: $('#email').val()
+                email: $('#userEmail').val()
             }),
             success: function (response) {
-                if (response.errors.length) {
-                    response.errors.forEach(item);
+                if (response.length) {
+                    var errors_out = "";
+                    for (var i in response) {
+                        errors_out += response[i].errorMessage + "</br>"
+                    }
+                    $('#passwordRecoveryMessage')
+                        .removeClass()
+                        .empty();
+                    $('#passwordRecoveryMessage')
+                        .addClass('alert alert-danger')
+                        .html(errors_out);
+                    $('#userEmail').val("");
+                } else {
+                    $('#passwordRecoveryMessage')
+                        .removeClass()
+                        .empty();
+                    $('#passwordRecoveryMessage')
+                        .addClass('alert alert-success')
+                        .html('Request was sent successfully');
+                    $('#userEmail').hide();
+                    $('#buttonRecoverPassword').hide();
                 }
             },
             error: function (jqXHR, exception) {

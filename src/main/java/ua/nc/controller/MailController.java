@@ -46,7 +46,7 @@ public class MailController {
     public ResponseEntity<Mail> getMail(@PathVariable("id") Integer id) {
         Mail mail = mailService.getMail(id);
         if (mail == null) {
-            LOGGER.info("User with id" + id + "not found");
+            LOGGER.info("Mail with id" + id + "not found");
             return new ResponseEntity<Mail>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<Mail>(mail, HttpStatus.OK);
@@ -80,7 +80,7 @@ public class MailController {
         LOGGER.debug("Updating mail" + id);
         Mail mailCurrent = mailService.getMail(id);
         if (mailCurrent == null) {
-            LOGGER.info("User with id" + id + "not found");
+            LOGGER.info("Mail with id" + id + "not found");
             return new ResponseEntity<Mail>(HttpStatus.NOT_FOUND);
         }
         mailCurrent.setBodyTemplate(mail.getBodyTemplate());
@@ -96,10 +96,10 @@ public class MailController {
      * @return
      */
     @RequestMapping(value = "/mails/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<Mail> deleteUser(@PathVariable("id") Integer id) {
+    public ResponseEntity<Mail> deleteMail(@PathVariable("id") Integer id) {
         Mail mail = mailService.getMail(id);
         if (mail == null) {
-            LOGGER.info("Unable to delete user" + id + "not found");
+            LOGGER.info("Unable to delete mail" + id + "not found");
             return new ResponseEntity<Mail>(HttpStatus.NOT_FOUND);
         }
         mailService.deleteMail(mail);

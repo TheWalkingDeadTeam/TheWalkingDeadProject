@@ -10,18 +10,23 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Rangar on 02.05.2016.
  */
 public class PostgreApplicationDAO extends AbstractPostgreDAO<Application, Integer> implements ApplicationDAO {
-    public static final String getApplicationByUserCES = "SELECT * FROM Application WHERE system_user_id = ? AND ces_id = ?";
-    public static final String getAllCESApplicationsQuery = "SELECT * FROM Application WHERE ces_id = ?";
-    public static final String getAllUsersForCurrentCES = "Select u.* from system_user u JOIN application a " +
-            "ON u.system_user_id = a.system_user_id WHERE ces_id = " +
-            "(SELECT ces.ces_id from course_enrollment_session ces " +
-            "JOIN ces_status stat ON ces.ces_status_id = stat.ces_status_id AND stat.name = 'Active')";
+    private static final String GET_APPLICATION_BY_USER_CES = "SELECT * FROM Application WHERE system_user_id = ? AND ces_id = ?";
+    private static final String GET_ALL_CES_APPLICATIONS_QUERY = "SELECT * FROM Application WHERE ces_id = ?";
+
+    private static final String GET_APPLICATIONS_BY_CES_ID_USER_ID = "SELECT application.* " +
+            "FROM application  " +
+            "JOIN system_user ON application.system_user_id = system_user.system_user_id  " +
+            "WHERE application.ces_id = ? AND system_user.system_user_id = ANY (?) ";
+
+    private static final String GET_ALL_ACCEPTED_APPLICATIONS_QUERY = "SELECT * FROM application WHERE ces_id = ? AND rejected = FALSE";
 
     public PostgreApplicationDAO(Connection connection) {
         super(connection);
@@ -84,43 +89,60 @@ public class PostgreApplicationDAO extends AbstractPostgreDAO<Application, Integ
     }
 
     @Override
-    public Application getApplicationByUserCES(Integer user_id, Integer ces_id) throws DAOException {
-        Application result;
-        try (PreparedStatement statement = connection.prepareStatement(getApplicationByUserCES)) {
-            statement.setInt(1, user_id);
-            statement.setInt(2, ces_id);
+    public Application getApplicationByUserCES(Integer userId, Integer cesId) throws DAOException {
+        try (PreparedStatement statement = connection.prepareStatement(GET_APPLICATION_BY_USER_CES)) {
+            statement.setInt(1, userId);
+            statement.setInt(2, cesId);
             ResultSet rs = statement.executeQuery();
             if (!rs.isBeforeFirst() ) {
-                result = null;
+                return null;
             } else {
-                result = parseResultSet(rs).iterator().next();
+                return parseResultSet(rs).iterator().next();
+            }
+        } catch (Exception e) {
+            throw new DAOException(e);
+        }
+    }
+
+    public List<Application> getApplicationsByCesIdUserId(Integer cesId, List<Integer> userIds) throws DAOException {
+        try (PreparedStatement statement = connection.prepareStatement(GET_APPLICATIONS_BY_CES_ID_USER_ID)) {
+            statement.setInt(1, cesId);
+            statement.setArray(2, connection.createArrayOf("integer", userIds.toArray()));
+            return parseResultSet(statement.executeQuery());
+        } catch (Exception e) {
+            throw new DAOException(e);
+        }
+    }
+
+    @Override
+    public Map<Integer, Integer> getAllAcceptedApplications(Integer cesId) throws DAOException {
+        return getSomeApplications(GET_ALL_ACCEPTED_APPLICATIONS_QUERY, cesId);
+    }
+
+    private Map<Integer, Integer> getSomeApplications(String query, Integer cesId) throws DAOException {
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, cesId);
+            ResultSet rs = statement.executeQuery();
+            if (!rs.isBeforeFirst() ) {
+                return null;
+            } else {
+                return getResultMap(rs);
+            }
+        } catch (Exception e) {
+            throw new DAOException(e);
+        }
+    }
+
+    private Map<Integer, Integer> getResultMap(ResultSet rs) throws DAOException {
+        Map<Integer, Integer> result = new HashMap<>();
+        try {
+            while (rs.next()) {
+                result.put(rs.getInt("system_user_id"), rs.getInt("application_id"));
             }
         } catch (Exception e) {
             throw new DAOException(e);
         }
         return result;
-    }
-
-    @Override
-    public List<Application> getAllCESApplications(Integer ces_id) throws DAOException {
-        List<Application> result;
-        try (PreparedStatement statement = connection.prepareStatement(getAllCESApplicationsQuery)) {
-            statement.setInt(1, ces_id);
-            ResultSet rs = statement.executeQuery();
-            if (!rs.isBeforeFirst() ) {
-                result = null;
-            } else {
-                result = parseResultSet(rs);
-            }
-        } catch (Exception e) {
-            throw new DAOException(e);
-        }
-        return result;
-    }
-
-    @Override
-    public List<User> getStudentsForCurrentCES() throws DAOException {
-        return null;
     }
 
     @Override

@@ -22,7 +22,7 @@ public class IntervieweeServiceImpl implements IntervieweeService {
         IntervieweeDAO intervieweeDAO = daoFactory.getIntervieweeDAO(connection);
         Interviewee interviewee = null;
         try{
-            interviewee = intervieweeDAO.getById(id);
+            interviewee = intervieweeDAO.read(id);
         } catch (DAOException ex){
             LOGGER.warn(ex);
         } finally {

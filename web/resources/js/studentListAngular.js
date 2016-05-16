@@ -287,18 +287,24 @@ app.controller('StudentCtrl', ["$http", "$scope", function ($http, $scope) {
         }
     };
 
-    $scope.searchFiltr = function () {
+    $scope.searchFiltr = function (pattern) {
         var dataObj = {
             type: "search",
             values: [$scope.searchFilt]
         };
-        var res = $http.get('students/search', dataObj);
-        res.success(function (data, status, headers, config) {
-            $scope.message = data;
-        });
-        res.error(function (data, status, headers, config) {
-            alert("failure message: " + JSON.stringify({data: data}));
-        });
+        if(vm.order_by === null){
+            vm.selectUrl = "students/search/"+vm.itemsPerPage+"/"+vm.pageno+"/"+pattern;
+        }else{
+            vm.selectUrl = "students/search/"+vm.itemsPerPage+"/"+vm.pageno+"/"+vm.order_by+"/"+pattern;
+        }
+        vm.getData();
+        // var res = $http.get('students/search/', dataObj);
+        // res.success(function (data, status, headers, config) {
+        //     $scope.message = data;
+        // });
+        // res.error(function (data, status, headers, config) {
+        //     alert("failure message: " + JSON.stringify({data: data}));
+        // });
     }
 }]);
 

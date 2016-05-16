@@ -5,10 +5,7 @@ import ua.nc.dao.IntervieweeDAO;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.entity.Interviewee;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -28,7 +25,7 @@ public class PostgreIntervieweeDAO extends AbstractPostgreDAO<Interviewee, Integ
 
     @Override
     public String getCreateQuery() {
-        return "INSERT INTO interviewee (application_id) VALUES (?);";
+        return "INSERT INTO interviewee (application_id, interview_time) VALUES (?, ?);";
     }
 
     @Override
@@ -47,8 +44,7 @@ public class PostgreIntervieweeDAO extends AbstractPostgreDAO<Interviewee, Integ
         List<Interviewee> result = new ArrayList<>();
         try {
             while (rs.next()) {
-                Interviewee interviewee = new Interviewee(rs.getInt("application_id"));
-                interviewee.setInterviewTime(rs.getDate("interview_time"));
+                Interviewee interviewee = new Interviewee(rs.getInt("application_id"),rs.getTimestamp("interview_time"));
                 interviewee.setSpecialMark(rs.getString("special_mark"));
                 interviewee.setDevFeedbackID((Integer) rs.getObject("dev_feedback_id"));
                 interviewee.setHrFeedbackID((Integer) rs.getObject("hr_feedback_id"));
@@ -64,6 +60,7 @@ public class PostgreIntervieweeDAO extends AbstractPostgreDAO<Interviewee, Integ
     protected void prepareStatementForInsert(PreparedStatement statement, Interviewee object) throws DAOException {
         try {
             statement.setInt(1, object.getId());
+            statement.setTimestamp(2, new Timestamp(object.getInterviewTime().getTime()));
         } catch (Exception e) {
             throw new DAOException(e);
         }
@@ -85,30 +82,5 @@ public class PostgreIntervieweeDAO extends AbstractPostgreDAO<Interviewee, Integ
     @Override
     public Interviewee create(Interviewee object) throws DAOException {
         return persist(object);
-    }
-
-    @Override
-    public Interviewee getById(int applicationId) throws DAOException{
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-        try{
-            statement = connection.prepareStatement(getSelectQuery());
-            statement.setInt(1, applicationId);
-            resultSet = statement.executeQuery();
-            List<Interviewee> interviewees = parseResultSet(resultSet);
-            if (interviewees.size() < 1) {
-                throw new DAOException("No interviewees for this application");
-            }
-            return interviewees.get(0);
-        } catch (SQLException ex) {
-            throw new DAOException(ex);
-        }
-    }
-
-    private class PersistInterviewee extends Interviewee{
-        @Override
-        public void setId(int id) {
-            super.setId(id);
-        }
     }
 }

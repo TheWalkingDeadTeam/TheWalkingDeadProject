@@ -12,17 +12,17 @@ public interface StudentService {
 
     public StudentData getStudents(Integer itemPerPage, Integer pageNumber, Integer orderBy);
 
+    public StudentData getStudents(Integer itemPerPage, Integer pageNumber, String pattern);
+
 //    public Student findStudentByName(String name, String surname);
 
 //    public List<Student> findStudentsByUniversity(String university);
 
     public void changeStatus(String action, List<Integer> studentsId);
 
-    public void activateStudents(List<Integer> studentsId);
-
-    public void deactivateStudents(List<Integer> studentsId);
-
     public void rejectStudents(List<Integer> studentsId);
+
+    void acceptStudents (List<Integer> studentsId);
 
     public Integer getStudentsSize();
 }
