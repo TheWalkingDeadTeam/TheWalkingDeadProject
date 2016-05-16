@@ -4,7 +4,6 @@ import org.apache.log4j.Logger;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import ua.nc.dao.ApplicationDAO;
 import ua.nc.dao.CESDAO;
-import ua.nc.dao.UserDAO;
 import ua.nc.dao.CESStatusDAO;
 import ua.nc.dao.UserDAO;
 import ua.nc.dao.enums.DataBaseType;
@@ -15,12 +14,9 @@ import ua.nc.dao.postgresql.PostgreCESDAO;
 import ua.nc.dao.postgresql.PostgreUserDAO;
 import ua.nc.entity.Application;
 import ua.nc.entity.CES;
-import ua.nc.entity.Mail;
 import ua.nc.entity.User;
 
 import java.sql.Connection;
-import java.util.*;
-import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -33,7 +29,6 @@ import java.util.Set;
  * Created by Pavel on 06.05.2016.
  */
 public class CESServiceImpl implements CESService {
-
     private final static Logger LOGGER = Logger.getLogger(CESServiceImpl.class);
     private static final String TIME_FOR_DATE_FROM_DB = " 00:00:00";
     private final DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
@@ -44,6 +39,12 @@ public class CESServiceImpl implements CESService {
     private static final int MINUTES_PER_HOUR = 60;
     private static final int INTERVIEWERS_PER_STUDENT = 2;
     private static final int MILLIS_PER_DAY = 1000 * 60 * 60 * 24;
+
+    static {
+        scheduler.setPoolSize(POOL_SIZE);
+        scheduler.initialize();
+    }
+
 
     @Override
     public List<CES> getAllCES() {
@@ -61,11 +62,6 @@ public class CESServiceImpl implements CESService {
         return allCES;
     }
 
-
-    static {
-        scheduler.setPoolSize(POOL_SIZE);//
-        scheduler.initialize();
-    }
 
     @Override
     public CES getCurrentCES() {
@@ -102,7 +98,6 @@ public class CESServiceImpl implements CESService {
     }
 
 
-
     @Override
     public void enrollAsInterviewer(Integer userId, Integer cesId) throws DAOException {
         Connection connection = daoFactory.getConnection();
@@ -123,7 +118,7 @@ public class CESServiceImpl implements CESService {
         Connection connection = daoFactory.getConnection();
         CESDAO cesdao = new PostgreCESDAO(connection);
         try {
-            cesdao.removeInterviewerForCurrentCES(cesId,interviewerId);
+            cesdao.removeInterviewerForCurrentCES(cesId, interviewerId);
 
             LOGGER.info("Successfully remove interviewer from current CES");
         } catch (DAOException e) {
@@ -167,7 +162,6 @@ public class CESServiceImpl implements CESService {
         }
         return interviewDates;
     }
-}
 
 
     @Override
@@ -176,10 +170,6 @@ public class CESServiceImpl implements CESService {
         CESDAO cesDAO = daoFactory.getCESDAO(connection);
         if (cesDAO.getCurrentCES() != null) {
             return cesDAO.getCurrentCES();
-        } else if (cesDAO.getPendingCES() != null) {
-            return cesDAO.getPendingCES();
-        } else if (cesDAO.getCurrentInterviewBegunCES() != null) {
-            return cesDAO.getCurrentInterviewBegunCES();
         }
         return null;
     }
@@ -245,8 +235,6 @@ public class CESServiceImpl implements CESService {
             daoFactory.putConnection(connection);
         }
     }
-
-
 
     private void checkInterviewDate() throws DAOException {
         CES ces = getCES();
@@ -371,5 +359,3 @@ public class CESServiceImpl implements CESService {
 
 
 }
-
-

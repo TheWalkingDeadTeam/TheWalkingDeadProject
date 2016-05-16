@@ -18,6 +18,8 @@ import ua.nc.validator.RegistrationValidator;
 import ua.nc.validator.ValidationError;
 import ua.nc.validator.Validator;
 
+import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -210,8 +212,6 @@ public class AdminController {
 //        return studentData;
 
     }
-
-    @RequestMapping(value = {"/interviewers/size"}, method = RequestMethod.GET, produces = "application/json")
 
 
     @RequestMapping(value = {"/mail-template"}, method = RequestMethod.GET)
