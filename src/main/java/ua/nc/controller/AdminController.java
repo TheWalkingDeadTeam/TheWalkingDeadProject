@@ -119,6 +119,7 @@ public class AdminController {
         if (studentData == null) {
             LOGGER.warn("studData == null");
         }
+        LOGGER.info("studData == "+studentData.toString());
         return studentData;
     }
 
@@ -132,6 +133,7 @@ public class AdminController {
         if (studentData == null) {
             LOGGER.warn("studData == null");
         }
+        LOGGER.info("studData == "+studentData.toString());
         return studentData;
     }
 
@@ -461,4 +463,8 @@ public class AdminController {
     }
 
 
+    @RequestMapping(value = {"/report"}, method = RequestMethod.GET)
+    public String report() {
+        return "admin-report-template";
+    }
 }

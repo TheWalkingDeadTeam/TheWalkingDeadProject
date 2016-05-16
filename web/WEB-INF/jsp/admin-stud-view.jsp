@@ -85,30 +85,36 @@
                     <label class="mdl-textfield__label" for="search">Enter your query...</label>
                 </div>
             </div>
+            <div class="cssload-thecube">
+                <div class="cssload-cube cssload-c1"></div>
+                <div class="cssload-cube cssload-c2"></div>
+                <div class="cssload-cube cssload-c4"></div>
+                <div class="cssload-cube cssload-c3"></div>
+            </div>
         </div>
-        <table class="table table-striped table-hover">
+        <table id="tableUsers" class="table table-striped table-hover">
             <thead>
             <tr>
                 <td>
                     <input type="checkbox" ng-model="selectedAll" ng-click="checkAll()">
                 </td>
                 <td>
-                    <a href="#" ng-click="sortType = 'id'; sortReverse = !sortReverse; n">
+                    <a ng-click="sortType = 'id'; sortReverse = !sortReverse; n">
                         #
                     </a>
                 </td>
                 <td>
-                    <a href="#" ng-click="sortReverse = !sortReverse; sortType(0,sortReverse)">
+                    <a ng-click="sortReverse = !sortReverse; sortType(0,sortReverse)">
                         Full Name
                     </a>
                 </td>
                 <td ng-repeat="head in data.header">
-                    <a href="#" ng-click="sortReverse = !sortReverse; sortType(head.id,sortReverse)">
+                    <a ng-click="sortReverse = !sortReverse; sortType(head.id,sortReverse)">
                         {{head.name}}
                     </a>
                 </td>
                 <td>
-                    <a href="#" ng-click="sortTyprara='rejected'; sortReverse = !sortReverse">
+                    <a ng-click="sortTyprara='rejected'; sortReverse = !sortReverse">
                         Rejected
                     </a>
                 </td>
@@ -129,13 +135,14 @@
             </tr>
             </tbody>
         </table>
+        <div id="pagination">
         <dir-pagination-controls
                 max-size="8"
                 direction-links="true"
                 boundary-links="true"
                 on-page-change="data.setPageno(newPageNumber)">
         </dir-pagination-controls>
-
+        </div>
 
     </main>
 </main>

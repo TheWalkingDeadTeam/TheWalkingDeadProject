@@ -82,8 +82,14 @@
                     <label class="mdl-textfield__label" for="search">Enter your query...</label>
                 </div>
             </div>
+            <div class="cssload-thecube">
+                <div class="cssload-cube cssload-c1"></div>
+                <div class="cssload-cube cssload-c2"></div>
+                <div class="cssload-cube cssload-c4"></div>
+                <div class="cssload-cube cssload-c3"></div>
+            </div>
         </div>
-        <table class="table table-bordered table-striped" style="{margin-top: 200px}">
+        <table id="tableUsers" class="table table-bordered table-striped" style="{margin-top: 200px}">
 
             <thead>
             <tr>
@@ -91,32 +97,32 @@
                     <input type="checkbox" ng-model="selectedAll" ng-click="checkAll()">
                 </td>
                 <td>
-                    <a href="#" ng-click="order_by = 'id'; sortReverse = !sortReverse; sortType(order_by,sortReverse)">
-                        #
+                    <a ng-click="order_by = 'id'; sortReverse = !sortReverse; sortType(order_by,sortReverse)">
+                        id
                     </a>
                 </td>
                 <td>
-                    <a href="#" ng-click="order_by = 'name'; sortReverse = !sortReverse; sortType(order_by,sortReverse)">
+                    <a ng-click="order_by = 'name'; sortReverse = !sortReverse; sortType(order_by,sortReverse)">
                         Name
                     </a>
                 </td>
                 <td>
-                    <a href="#" ng-click="order_by = 'surname'; sortReverse = !sortReverse; sortType(order_by,sortReverse)">
+                    <a ng-click="order_by = 'surname'; sortReverse = !sortReverse; sortType(order_by,sortReverse)">
                         Surname
                     </a>
                 </td>
                 <td>
-                    <a href="#" ng-click="order_by = 'email'; sortReverse = !sortReverse; sortType(order_by,sortReverse)">
+                    <a ng-click="order_by = 'email'; sortReverse = !sortReverse; sortType(order_by,sortReverse)">
                         Email
                     </a>
                 </td>
                 <td>
-                    <a href="#" ng-click="order_by = 'role'; sortReverse = !sortReverse; sortType(order_by,sortReverse)">
+                    <a ng-click="order_by = 'role'; sortReverse = !sortReverse; sortType(order_by,sortReverse)">
                         Role
                     </a>
                 </td>
                 <td>
-                    <a href="#" ng-click="order_by = 'participation'; sortReverse = !sortReverse; sortType(order_by,sortReverse)">
+                    <a ng-click="order_by = 'participation'; sortReverse = !sortReverse; sortType(order_by,sortReverse)">
                         Participation
                     </a>
                 </td>
@@ -139,14 +145,14 @@
             </tr>
             </tbody>
         </table>
-
+        <div id="pagination">
         <dir-pagination-controls
                 max-size="8"
                 direction-links="true"
                 boundary-links="true"
                 on-page-change="data.setPageno(newPageNumber)">
         </dir-pagination-controls>
-
+        </div>
 
     </main>
 </main>

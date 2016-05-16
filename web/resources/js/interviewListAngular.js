@@ -8,18 +8,39 @@ interView.controller('interCtrl', ["$http", "$scope", function ($http, $scope) {
     vm.itemsPerPage = 10; //this could be a dynamic value from a drop down
     vm.selectUrl = "interviewers/list/" + vm.itemsPerPage + "/" + vm.pageno;
     vm.order_by = null;
+    vm.showSpin = function () {
+        angular.element($(".cssload-thecube")).css('display','block');
+        angular.element($("#tableUsers")).css('display','none');
+        angular.element($("#pagination")).css('display','none');
+    };
+    vm.hideSpin = function () {
+        angular.element($(".cssload-thecube")).css('display','none');
+        angular.element($("#tableUsers")).css('display','table');
+        angular.element($("#pagination")).css('display','block');
+    };
 
+    vm.getData = function () {
+        vm.showSpin();
 
-    vm.getData = function () { // This would fetch the data on page change.
-        //In practice this should be in a factory.
         vm.users = [];
         $http.get(vm.selectUrl).success(function (response) {
             vm.users = response;
-            // vm.order_by = vm.header[0].id;
         });
-        $http.get("interviewers/size").success(function (response) {
-            vm.total_count = response;
-        });
+
+        vm.hideSpin();
+    };
+    vm.getSize = function () {
+        if(vm.pattern == null) {
+            $http.get("interviewers/size").success(function (response) {
+                vm.total_count = response;
+            });
+        }else{
+            $http.get("interviewers/size/"+vm.pattern).success(function (response) {
+                vm.total_count = response;
+            });
+        }
+        // elem.find('.modal-content').style.display = "none";
+
     };
 
     $scope.dataStudents = {
@@ -31,7 +52,9 @@ interView.controller('interCtrl', ["$http", "$scope", function ($http, $scope) {
     };
 
     vm.getData(); // Call the function to fetch initial data on page load.
+    vm.getSize();
 
+    
     vm.setPageno = function (pageno) {
         vm.pageno = pageno;
         if (vm.order_by === null) {
@@ -40,6 +63,7 @@ interView.controller('interCtrl', ["$http", "$scope", function ($http, $scope) {
             vm.selectUrl = "interviewers/list/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by;
         }
         vm.getData();
+        vm.getSize();
     };
 
     $scope.checkAll = function () {
@@ -57,13 +81,16 @@ interView.controller('interCtrl', ["$http", "$scope", function ($http, $scope) {
     };
 
     $scope.sortType = function (type, asc) {
+        vm.showSpin();
         vm.order_by = type;
         vm.selectUrl = "interviewers/list/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by + "/" + asc;
-        vm.getData()
+        vm.getData();
+        vm.getSize();
     };
 
 
     $scope.subscribeInterviewer = function () {
+        vm.showSpin();
         var dataObj = {
             type: 'subscribe',
             values: $scope.dataStudents.studId
@@ -72,6 +99,8 @@ interView.controller('interCtrl', ["$http", "$scope", function ($http, $scope) {
             var res = $http.post('interviewers', dataObj);
             res.success(function (data, status, headers, config) {
                 $scope.message = data;
+                vm.getData();
+                vm.getSize();
             });
             res.error(function (data, status, headers, config) {
                 alert("failure message: " + JSON.stringify({data: data}));
@@ -80,6 +109,7 @@ interView.controller('interCtrl', ["$http", "$scope", function ($http, $scope) {
     };
 
     $scope.unsubscribeInterviewer = function () {
+        vm.showSpin();
         var dataObj = {
             type: 'unsubscribe',
             values: $scope.dataStudents.studId
@@ -88,6 +118,8 @@ interView.controller('interCtrl', ["$http", "$scope", function ($http, $scope) {
             var res = $http.post('interviewers', dataObj);
             res.success(function (data, status, headers, config) {
                 $scope.message = data;
+                vm.getData();
+                vm.getSize();
             });
             res.error(function (data, status, headers, config) {
                 alert("failure message: " + JSON.stringify({data: data}));
@@ -97,10 +129,12 @@ interView.controller('interCtrl', ["$http", "$scope", function ($http, $scope) {
 
 
     $scope.searchFiltr = function (pattern) {
+        vm.showSpin();
         var dataObj = {
             type: "search",
             values: [$scope.searchFilt]
         };
+        vm.pattern = pattern;
         if (pattern == undefined || pattern == "" || pattern == null) {
             vm.selectUrl = "interviewers/list/" + vm.itemsPerPage + "/" + vm.pageno;
 
@@ -114,6 +148,7 @@ interView.controller('interCtrl', ["$http", "$scope", function ($http, $scope) {
             }
         }
         vm.getData();
+        vm.getSize();
 
     }
 }]);
