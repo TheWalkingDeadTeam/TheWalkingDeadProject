@@ -49,9 +49,10 @@ public class EnrollOnInterviewingServiceImpl implements CESService {
     }
 
     @Override
-    public void deleteCES() {
+    public void closeCES() {
 
     }
+
 
     @Override
     public void enrollAsStudent(Integer userId, Integer cesId) throws DAOException {

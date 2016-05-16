@@ -15,12 +15,12 @@ import java.util.List;
 /**
  * Created by Rangar on 04.05.2016.
  */
-public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements CESDAO{
-    public  PostgreCESDAO(Connection connection){
+public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements CESDAO {
+    public PostgreCESDAO(Connection connection) {
         super(connection);
     }
 
-    private class PersistCES extends CES{
+    private class PersistCES extends CES {
         public PersistCES(Integer year, Date startRegistrationDate, Integer quota, Integer reminders, Integer statusId,
                           Integer interviewTimeForPerson, Integer interviewTimeForDay) {
             super(year, startRegistrationDate, quota, reminders, statusId,
@@ -62,8 +62,8 @@ public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements C
             "JOIN ces_status stat ON ces.ces_status_id = stat.ces_status_id WHERE name = 'Pending'";
     private static final String GET_REGISTRATION_ONGOING_CES_QUERY = "SELECT ces.* FROM course_enrollment_session ces " +
             "JOIN ces_status stat ON ces.ces_status_id = stat.ces_status_id WHERE name = 'RegistrationOngoing'";
-    private static final String GET_BETWEEN_REGISTRATION_AND_INTERVIEWING_CES_QUERY = "SELECT ces.* FROM course_enrollment_session ces " +
-            "JOIN ces_status stat ON ces.ces_status_id = stat.ces_status_id WHERE name = 'BetweenRegistrationAndInterviewing'";
+    private static final String GET_POST_REGISTRATION_CES_QUERY = "SELECT ces.* FROM course_enrollment_session ces " +
+            "JOIN ces_status stat ON ces.ces_status_id = stat.ces_status_id WHERE name = 'PostRegistration'";
     private static final String GET_INTERVIEWING_ONGOING_CES_QUERY = "SELECT ces.* FROM course_enrollment_session ces " +
             "JOIN ces_status stat ON ces.ces_status_id = stat.ces_status_id WHERE name = 'InterviewingOngoing'";
     private static final String GET_POST_INTERVIEWING_CES_QUERY = "SELECT ces.* FROM course_enrollment_session ces " +
@@ -101,17 +101,17 @@ public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements C
         try {
             statement.setInt(1, object.getYear());
             statement.setDate(2, new Date(object.getStartRegistrationDate().getTime()));
-            if (object.getEndRegistrationDate() == null){
+            if (object.getEndRegistrationDate() == null) {
                 statement.setDate(3, null);
             } else {
                 statement.setDate(3, new Date(object.getEndRegistrationDate().getTime()));
             }
-            if (object.getStartInterviewingDate() == null){
+            if (object.getStartInterviewingDate() == null) {
                 statement.setDate(4, null);
             } else {
                 statement.setDate(4, new Date(object.getStartInterviewingDate().getTime()));
             }
-            if (object.getEndInterviewingDate() == null){
+            if (object.getEndInterviewingDate() == null) {
                 statement.setDate(5, null);
             } else {
                 statement.setDate(5, new Date(object.getEndInterviewingDate().getTime()));
@@ -129,17 +129,17 @@ public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements C
     @Override
     protected void prepareStatementForUpdate(PreparedStatement statement, CES object) throws DAOException {
         try {
-            if (object.getEndRegistrationDate() == null){
+            if (object.getEndRegistrationDate() == null) {
                 statement.setDate(1, null);
             } else {
                 statement.setDate(1, new Date(object.getEndRegistrationDate().getTime()));
             }
-            if (object.getStartInterviewingDate() == null){
+            if (object.getStartInterviewingDate() == null) {
                 statement.setDate(2, null);
             } else {
                 statement.setDate(2, new Date(object.getStartInterviewingDate().getTime()));
             }
-            if (object.getEndInterviewingDate() == null){
+            if (object.getEndInterviewingDate() == null) {
                 statement.setDate(3, null);
             } else {
                 statement.setDate(3, new Date(object.getEndInterviewingDate().getTime()));
@@ -161,7 +161,7 @@ public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements C
     }
 
     @Override
-    public CES getPendingCES() throws DAOException{
+    public CES getPendingCES() throws DAOException {
         return getSomeCES(GET_PENDING_CES_QUERY);
     }
 
@@ -169,9 +169,10 @@ public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements C
     public CES getRegistrationOngoingCES() throws DAOException {
         return getSomeCES(GET_REGISTRATION_ONGOING_CES_QUERY);
     }
+
     @Override
-    public CES getBetweenRegistrationAndInterviewingCES() throws DAOException {
-        return getSomeCES(GET_BETWEEN_REGISTRATION_AND_INTERVIEWING_CES_QUERY);
+    public CES getPostRegistrationCES() throws DAOException {
+        return getSomeCES(GET_POST_REGISTRATION_CES_QUERY);
     }
 
     @Override
@@ -188,10 +189,11 @@ public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements C
         CES result;
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             ResultSet rs = statement.executeQuery();
-            if (!rs.isBeforeFirst() ) {
+            if (!rs.isBeforeFirst()) {
                 result = null;
             } else {
-                result = parseResultSet(rs).iterator().next();}
+                result = parseResultSet(rs).iterator().next();
+            }
         } catch (Exception e) {
             throw new DAOException(e);
         }

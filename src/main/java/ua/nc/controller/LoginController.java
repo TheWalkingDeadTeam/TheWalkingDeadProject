@@ -177,33 +177,7 @@ public class LoginController implements HandlerExceptionResolver {
                 .getPrincipal()).getUsername());
         return photoService.getPhotoById(user.getId());
     }
-    @RequestMapping(value = {"/cesPost"}, method = RequestMethod.POST)
-    public @ResponseBody
-    CES getCES(@RequestBody CES ces) {
-        try {
-            cesService.setCES(ces);
-        } catch (DAOException e) {
-            e.printStackTrace();
-        }
-        return ces;
-    }
 
 
-    @RequestMapping(value = {"/cessettings"}, method = RequestMethod.GET)
-    public String cesPage() {
-        return "cessettings";
-    }
-
-    @RequestMapping(value = "/cessettings", method = RequestMethod.GET, produces = "application/json")
-    public
-    @ResponseBody
-    CES ces() {
-        try {
-            return cesService.getCES();
-        } catch (DAOException e) {
-            LOGGER.error("DAO error");
-            return null;
-        }
-    }
 
 }

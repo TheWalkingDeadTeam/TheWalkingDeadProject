@@ -242,6 +242,7 @@ public class AdminController {
     @ResponseBody
     CES getCES(@RequestBody CES ces) {
         try {
+            System.out.println(ces.getStartRegistrationDate());
             cesService.setCES(ces);
         } catch (DAOException e) {
             e.printStackTrace();
@@ -260,7 +261,6 @@ public class AdminController {
     @ResponseBody
     CES ces() {
         try {
-            System.out.println(cesService.getCES());
             return cesService.getCES();
         } catch (DAOException e) {
             LOGGER.error("DAO error");
@@ -268,6 +268,14 @@ public class AdminController {
         }
     }
 
+    @RequestMapping(value = {"/cesclose"}, method = RequestMethod.POST)
+    public
+    @ResponseBody
+    String closeCES() {
+        System.out.println("admin");
+        cesService.closeCES();
+        return null;
+    }
 
     @RequestMapping(value = {"/scheduler"}, method = RequestMethod.GET)
     public String schedulerView() {

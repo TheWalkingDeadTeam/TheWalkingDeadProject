@@ -13,7 +13,7 @@ public interface CESDAO extends GenericDAO<CES, Integer> {
 
     CES getRegistrationOngoingCES() throws DAOException;
 
-    CES getBetweenRegistrationAndInterviewingCES() throws DAOException;
+    CES getPostRegistrationCES() throws DAOException;
 
     CES getInterviewingOngoingCES() throws DAOException;
 
