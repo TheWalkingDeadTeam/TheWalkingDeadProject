@@ -14,8 +14,8 @@ import java.sql.SQLException;
 public class PostgreConnectionPool extends ConnectionPool {
     private final static Logger LOGGER = Logger.getLogger(PostgreConnectionPool.class);
     private static volatile PostgreConnectionPool instance;
-    private final String SERVER_NAME =  "23.251.143.100";
-    private final String DATABASE_NAME = "postgres";
+    private final String SERVER_NAME = "23.251.143.100";
+    private final String DATABASE_NAME = "WD_Project";
     private final String USER = "postgres";
     private final String PASSWORD = "netcrackerpwd";
     private PGPoolingDataSource dataSource;

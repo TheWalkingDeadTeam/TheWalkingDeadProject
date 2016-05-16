@@ -2,15 +2,17 @@ package ua.nc.controller;
 
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import ua.nc.dao.exception.DAOException;
+import ua.nc.entity.Mail;
 import ua.nc.entity.ReportTemplate;
 import ua.nc.service.ReportService;
 import ua.nc.service.ReportServiceImpl;
-import ua.nc.xls.Export;
-import ua.nc.xls.ExportXLS;
 
 import java.util.List;
 import java.util.Map;
@@ -81,38 +83,43 @@ public class ReportController {
         return new ResponseEntity<ReportTemplate>(HttpStatus.NO_CONTENT);
     }
 
-    @RequestMapping(value = "/reports/download/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/reports/download/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public ModelAndView downloadReport(@PathVariable Integer id) {
         ReportTemplate report = reportService.getReportById(id);
-        List<Map<String, Object>> reportRows = reportService.getReportRows(report);
-        Export export = new ExportXLS();
-        export.export(reportRows, report);
-        return new ModelAndView("excelView", "report", report);
+        ModelAndView modelAndView = new ModelAndView();
+        try {
+            List<Map<String, Object>> reportRows = reportService.getReportRows(report);
+            modelAndView.setViewName("excelView");
+            modelAndView.addObject("report", report);
+            modelAndView.addObject("reportRows", reportRows);
+        } catch (DAOException e) {
+            modelAndView.setViewName("error");
+            modelAndView.addObject("error", "Wrong query");
+        }
+        return modelAndView;
     }
 
     @RequestMapping(value = "/reports/view/{id}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<Map<String, Object>> showReport(@PathVariable Integer id) {
+    public  ResponseEntity<List<Map<String, Object>>> showReport(@PathVariable Integer id) {
         ReportTemplate report = reportService.getReportById(id);
-        List<Map<String, Object>> reportRows = reportService.getReportRows(report);
+        List<Map<String, Object>> reportRows = null;
+        try {
+            reportRows = reportService.getReportRows(report);
+            return new ResponseEntity<List<Map<String, Object>>>(reportRows, HttpStatus.OK);
 
-/*        for (Map.Entry<String, Object> entry : reportRows.get(1).entrySet()) {
-            System.out.print(entry.getKey() + " ");
+        } catch (DAOException e) {
+            return new ResponseEntity<List<Map<String, Object>>>(HttpStatus.NOT_FOUND);
         }
-        System.out.println();
+    }
 
-        for (Map<String, Object> rows : reportRows) {
-            for (Map.Entry<String, Object> entry : rows.entrySet()) {
-                System.out.print(String.valueOf(entry.getValue()) + " ");
-            }
-            System.out.println();
-        }*/
-
-        return reportRows;
+    @RequestMapping(value = "/report/view", method = RequestMethod.GET)
+    public String reportid() {
+        return "report-id" ;
     }
 
     @RequestMapping(value = "/report", method = RequestMethod.GET)
     public String report() {
-        return "report";
+        return "report-statistic";
     }
 }

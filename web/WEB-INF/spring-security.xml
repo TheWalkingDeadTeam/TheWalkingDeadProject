@@ -8,6 +8,9 @@
            http://www.springframework.org/schema/security/spring-security.xsd">
 
     <global-method-security pre-post-annotations="enabled"/>
+    <beans:bean id="feedbackPermissions" name="feedbackPermissions"
+                class="ua.nc.security.FeedbackPermissions">
+    </beans:bean>
 
     <http use-expressions="true">
         <csrf disabled="true"/>
@@ -15,6 +18,12 @@
         <intercept-url pattern="/login" access="permitAll" />
         <intercept-url pattern="/admin**" access="hasRole('ROLE_ADMIN')"/>
         <intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
+        <intercept-url pattern="/report**" access="hasAnyRole('ROLE_ADMIN','ROLE_HR')"/>
+        <intercept-url pattern="/report/**" access="hasAnyRole('ROLE_ADMIN','ROLE_HR')"/>
+        <intercept-url pattern="/reports**" access="hasAnyRole('ROLE_ADMIN','ROLE_HR')"/>
+        <intercept-url pattern="/reports/**" access="hasAnyRole('ROLE_ADMIN','ROLE_HR')"/>
+        <!--<intercept-url pattern="/interviewer/feedback**" access="@feedbackPermissions.isInterviewingPeriod()"/>
+        <intercept-url pattern="/interviewer/feedback/**" access="@feedbackPermissions.isInterviewingPeriod()"/>-->
         <intercept-url pattern="/interviewer**" access="hasAnyRole('ROLE_HR','ROLE_DEV','ROLE_BA')"/>
         <intercept-url pattern="/interviewer/**" access="hasAnyRole('ROLE_HR','ROLE_DEV','ROLE_BA')"/>
         <intercept-url pattern="/profile**"

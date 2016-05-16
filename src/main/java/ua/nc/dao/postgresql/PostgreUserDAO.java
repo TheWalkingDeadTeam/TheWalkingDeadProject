@@ -2,8 +2,11 @@ package ua.nc.dao.postgresql;
 
 import org.apache.log4j.Logger;
 import ua.nc.dao.AbstractPostgreDAO;
+import ua.nc.dao.RoleDAO;
 import ua.nc.dao.UserDAO;
+import ua.nc.dao.enums.DataBaseType;
 import ua.nc.dao.exception.DAOException;
+import ua.nc.dao.factory.DAOFactory;
 import ua.nc.entity.Role;
 import ua.nc.entity.User;
 
@@ -38,6 +41,7 @@ public class PostgreUserDAO extends AbstractPostgreDAO<User, Integer> implements
             " JOIN public.role r ON ur.role_id = r.role_id" +
             " WHERE r.name = ?";
     private final String GET_STATUS_ID = "SELECT system_user_status_id FROM system_user_status WHERE name = ?";
+    private final String SELECT = "SELECT * FROM system_user u WHERE u.system_user_id = ?";
     public PostgreUserDAO(Connection connection) {
         super(connection);
     }
@@ -199,7 +203,7 @@ public class PostgreUserDAO extends AbstractPostgreDAO<User, Integer> implements
 
     @Override
     public String getSelectQuery() {
-        return null;
+        return SELECT;
     }
 
     @Override
@@ -219,7 +223,24 @@ public class PostgreUserDAO extends AbstractPostgreDAO<User, Integer> implements
 
     @Override
     protected List<User> parseResultSet(ResultSet rs) throws DAOException {
-        return null;
+        List<User> users = new LinkedList<>();
+        RoleDAO roleDAO = new PostgreRoleDAO(connection);
+        try {
+            while (rs.next()) {
+                PersistUser user = new PersistUser();
+                user.setId(rs.getInt("system_user_id"));
+                user.setEmail(rs.getString("email"));
+                user.setName(rs.getString("name"));
+                user.setSurname(rs.getString("surname"));
+                user.setPassword(rs.getString("password"));
+                Set<Role> roles = roleDAO.findByEmail(user.getEmail());
+                user.setRoles(roles);
+                users.add(user);
+            }
+        } catch (SQLException ex){
+            throw new DAOException(ex);
+        }
+        return users;
     }
 
     @Override
@@ -236,11 +257,6 @@ public class PostgreUserDAO extends AbstractPostgreDAO<User, Integer> implements
 
     @Override
     public User persist(User object) throws DAOException {
-        return null;
-    }
-
-    @Override
-    public User read(Integer key) throws DAOException {
         return null;
     }
 

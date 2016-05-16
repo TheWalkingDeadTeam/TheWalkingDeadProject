@@ -52,6 +52,21 @@ public class StudentServiceImpl implements StudentService {
         return null;
     }
 
+    @Override
+    public StudentData getStudents(Integer itemPerPage, Integer pageNumber, String pattern) {
+        Connection connection = daoFactory.getConnection();
+        PostgreApplicationTableDAO applicationTableDAO = new PostgreApplicationTableDAO(connection);
+        CESServiceImpl cesService = new CESServiceImpl();
+        CES ces = cesService.getCurrentCES();
+        try {
+            //ORDER BY
+            return applicationTableDAO.getApplicationsTable(ces.getId(), itemPerPage, pageNumber, pattern);
+        } catch (DAOException e) {
+            log.warn("Can't get students", e.getCause());
+        }
+        return null;
+    }
+
     /**
      * @param action
      * @param studentsId list of Integer
@@ -60,13 +75,13 @@ public class StudentServiceImpl implements StudentService {
     public void changeStatus(String action, List<Integer> studentsId) {
         if (Objects.equals(action, "activate")) {
             activateStudents(studentsId);
-            log.info("Sudent list activate"+ studentsId.toString());
+            log.info("Sudent list activate" + studentsId.toString());
         } else if (Objects.equals(action, "deactivate")) {
             deactivateStudents(studentsId);
-            log.info("Sudent list deactivate"+ studentsId.toString());
+            log.info("Sudent list deactivate" + studentsId.toString());
         } else if (Objects.equals(action, "reject")) {
             rejectStudents(studentsId);
-            log.info("Sudent list reject"+ studentsId.toString());
+            log.info("Sudent list reject" + studentsId.toString());
         } else {
             log.error(action + " action not supported");
         }
@@ -78,7 +93,6 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public void activateStudents(List<Integer> studentsId) {
         // StudentListDAO
-        //метод, который активирует список студентов
     }
 
     /**
@@ -87,7 +101,6 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public void deactivateStudents(List<Integer> studentsId) {
         // StudentListDAO
-        //метод, которые деактивирует список студентов
     }
 
     /**

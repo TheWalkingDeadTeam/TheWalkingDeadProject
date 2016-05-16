@@ -110,11 +110,17 @@ public class AdminController {
     }
 
 
-    @RequestMapping(value = {"/students/search"}, method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = {"/students/search/{itemsPerPage}/{pageNumber}/{pattern}"}, method = RequestMethod.GET, produces = "application/json")
     public
     @ResponseBody
-    String studentsSearch() {
-        return "{\"result\":\"inProgres\"";
+    StudentData studentsSearch(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("pattern") String pattern) {
+        StudentData studentData;
+        StudentService studentService = new StudentServiceImpl();
+        studentData = studentService.getStudents(itemsPerPage, (pageNumber * itemsPerPage - 10), pattern);
+        if (studentData == null) {
+            LOGGER.warn("studData == null");
+        }
+        return studentData;
     }
 
 
@@ -123,7 +129,7 @@ public class AdminController {
     public StudentData getStudents(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber) {
         StudentData studentData;
         StudentService studentService = new StudentServiceImpl();
-        studentData = studentService.getStudents(itemsPerPage, pageNumber);
+        studentData = studentService.getStudents(itemsPerPage, (pageNumber * itemsPerPage - 10));
         if (studentData == null) {
             LOGGER.warn("studData == null");
         }
@@ -135,7 +141,7 @@ public class AdminController {
     public StudentData getStudentsBySort(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("sortType") Integer sortType) {
         StudentData studentData;
         StudentService studentService = new StudentServiceImpl();
-        studentData = studentService.getStudents(itemsPerPage, pageNumber, sortType);
+        studentData = studentService.getStudents(itemsPerPage, (pageNumber * itemsPerPage - 10), sortType);
         if (studentData == null) {
             LOGGER.warn("studData == null");
         }
@@ -233,14 +239,15 @@ public class AdminController {
 
     @RequestMapping(value = {"/interviewers/list/{itemsPerPage}/{pageNumber}/{sortType}"}, method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public StudentData interviewGetJSONSort(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("sortType") Integer sortType) {
-        StudentData studentData;
-        StudentService studentService = new StudentServiceImpl();
-        studentData = studentService.getStudents(itemsPerPage, pageNumber, sortType);
-        if (studentData == null) {
-            LOGGER.warn("studData == null");
-        }
-        return studentData;
+    public void interviewGetJSONSort(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("sortType") String sortType) {
+//        StudentData studentData;
+//        StudentService studentService = new StudentServiceImpl();
+//        studentData = studentService.getStudents(itemsPerPage, pageNumber, sortType);
+//        if (studentData == null) {
+//            LOGGER.warn("studData == null");
+//        }
+//        return studentData;
+
     }
 
     @RequestMapping(value = {"/interviewers/size"}, method = RequestMethod.GET, produces = "application/json")
@@ -248,7 +255,7 @@ public class AdminController {
     @ResponseBody
     Integer interviewGetJSONSize() {
         InterviewerService interviewerService = new InterviewerServiceImpl();
-        return  interviewerService.getInterviewerSize();
+        return interviewerService.getInterviewerSize();
     }
 
 
@@ -297,6 +304,10 @@ public class AdminController {
     @RequestMapping(value = {"/enroll-session"}, method = RequestMethod.GET)
     public String enrollmentSessionView() {
         return "admin-es-view";
+    }
+    @RequestMapping(value = {"/report"}, method = RequestMethod.GET)
+    public String report() {
+        return "admin-report-template";
     }
 
 

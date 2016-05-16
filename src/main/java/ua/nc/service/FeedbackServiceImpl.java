@@ -24,14 +24,19 @@ public class FeedbackServiceImpl implements FeedbackService {
     private final static Logger LOGGER = Logger.getLogger(FeedbackServiceImpl.class);
     private final static DAOFactory daoFactory  = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
     private final static UserService userService = new UserServiceImpl();
+    private final static String ROLE_DEV = "ROLE_DEV";
+    private final static String ROLE_BA = "ROLE_BA";
+    private final static String ROLE_HR = "ROLE_HR";
+
 
     @Override
-    public boolean saveFeedback(Feedback feedback, Application application) {
+    public boolean saveFeedback(FeedbackAndSpecialMark feedbackAndSpecialMark, Application application) {
         Connection connection = daoFactory.getConnection();
         FeedbackDAO feedbackDAO = daoFactory.getFeedbackDAO(connection);
         IntervieweeDAO intervieweeDAO = daoFactory.getIntervieweeDAO(connection);
         Connection connection1 = daoFactory.getConnection();
         RoleDAO roleDAO = daoFactory.getRoleDAO(connection1);
+        Feedback feedback = feedbackAndSpecialMark.getFeedback();
         try {
             connection.setAutoCommit(false);
             Interviewee interviewee = intervieweeDAO.getById(application.getId());
@@ -43,26 +48,29 @@ public class FeedbackServiceImpl implements FeedbackService {
             User user = userService.getUser(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                     .getPrincipal()).getUsername());
             Set<Role> roles = user.getRoles();
-            if (roles.contains(roleDAO.findByName("ROLE_DEV"))){
+            if (roles.contains(roleDAO.findByName(ROLE_DEV))){
                 feedbackId = interviewee.getDevFeedbackID();
-            } else if (roles.contains(roleDAO.findByName("ROLE_BA"))||roles.contains(roleDAO.findByName("ROLE_HR"))) {
+            } else if (roles.contains(roleDAO.findByName(ROLE_BA))||roles.contains(roleDAO.findByName(ROLE_HR))) {
                 feedbackId = interviewee.getHrFeedbackID();
             }
 
             if (feedbackId == null) {
                 feedback = feedbackDAO.create(feedback);
 
-                if (roles.contains(roleDAO.findByName("ROLE_DEV"))) {
+                if (roles.contains(roleDAO.findByName(ROLE_DEV))) {
                     interviewee.setDevFeedbackID(feedback.getId());
-                } else if (roles.contains(roleDAO.findByName("ROLE_BA")) || roles.contains(roleDAO.findByName("ROLE_HR"))) {
+                } else if (roles.contains(roleDAO.findByName(ROLE_BA)) || roles.contains(roleDAO.findByName(ROLE_HR))) {
                     interviewee.setHrFeedbackID(feedback.getId());
                 }
+                interviewee.setSpecialMark(feedbackAndSpecialMark.getSpecialMark());
                 intervieweeDAO.update(interviewee);
             } else {
                 oldFeedback = feedbackDAO.getById(feedbackId);
                 oldFeedback.setScore(feedback.getScore());
                 oldFeedback.setComment(feedback.getComment());
                 feedbackDAO.update(oldFeedback);
+                interviewee.setSpecialMark(feedbackAndSpecialMark.getSpecialMark());
+                intervieweeDAO.update(interviewee);
             }
             connection.commit();
             return true;

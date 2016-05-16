@@ -1,6 +1,8 @@
 package ua.nc.controller;
 
 import org.apache.log4j.Logger;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
+import ua.nc.dao.enums.UserRoles;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.entity.CES;
 import ua.nc.entity.User;
@@ -24,10 +27,7 @@ import ua.nc.service.*;
 import ua.nc.service.user.UserDetailsServiceImpl;
 import ua.nc.service.user.UserService;
 import ua.nc.service.user.UserServiceImpl;
-import ua.nc.validator.PhotoValidator;
-import ua.nc.validator.RegistrationValidator;
-import ua.nc.validator.ValidationError;
-import ua.nc.validator.Validator;
+import ua.nc.validator.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -64,10 +64,13 @@ public class LoginController implements HandlerExceptionResolver {
 
     @RequestMapping(value = {"/", "/login"}, method = RequestMethod.GET)
     public String login(HttpServletRequest request) {
-        if (request.isUserInRole("ROLE_ADMIN")) {
+        if (request.isUserInRole(UserRoles.ROLE_ADMIN.name())) {
             return "admin";
         } else {
-            if (request.isUserInRole("ROLE_HR") || request.isUserInRole("ROLE_DEV") || request.isUserInRole("ROLE_BA") || request.isUserInRole("ROLE_STUDENT")) {
+            if (request.isUserInRole(UserRoles.ROLE_HR.name())
+                    || request.isUserInRole(UserRoles.ROLE_BA.name())
+                    || request.isUserInRole(UserRoles.ROLE_DEV.name())
+                    || request.isUserInRole(UserRoles.ROLE_STUDENT.name())) {
                 return "account";
             } else {
                 return "login";
@@ -137,21 +140,33 @@ public class LoginController implements HandlerExceptionResolver {
     }
 
     @RequestMapping(value = {"/passwordRecovery"}, method = RequestMethod.POST, produces = "application/json")
-    @ResponseBody
-    public Set<ValidationError> recoverPassword(@RequestBody User user) {
-        Validator validator = new RegistrationValidator();
-        Set<ValidationError> errors = validator.validate(user);
-        UserService userService = new UserServiceImpl();
-        User updatedUser = userService.recoverPass(user);
-        if (errors.isEmpty()) {
-            if (updatedUser == null || updatedUser.getEmail() == null
-                    && user.getPassword() == null) {
-                LOGGER.warn("Password recovery failed " + user.getEmail());
-                errors.add(new ValidationError("password", "Recovery failed"));
+    public
+    @ResponseBody Set<ValidationError> recoverPassword(@RequestBody String email) {
+        Validator validator = new EmailValidator();
+        Set<ValidationError> errors = null;
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            JsonNode node = objectMapper.readValue(email, JsonNode.class);
+            JsonNode emailNode = node.get("email");
+            email = emailNode.asText();
+            errors = validator.validate(email);
+            if (errors.isEmpty()) {
+
+                User user = userService.getUser(email);
+                if (user != null) {
+                    userService.recoverPass(user);
+                } else {
+                    LOGGER.warn("Recovery failed " + email);
+                    errors.add(new ValidationError("passwordRecovery", "Recovery failed"));
+                }
             }
+        } catch (IOException e) {
+            LOGGER.error("Failed to parse", e);
         }
         return errors;
     }
+
+
 
 
 //    @RequestMapping(value = "/stuff/{stuffId}", method = RequestMethod.GET)
