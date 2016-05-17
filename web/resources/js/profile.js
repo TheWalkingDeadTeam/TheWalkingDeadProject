@@ -2,14 +2,11 @@
     var requestData;
     var id = location.search.substr(1);
     var isAgree = false;
-/*
-    $('#photo_img').attr({'src':('/getPhoto/'+id)});
-*/
+
     $(document).ready(function () {
         $.ajax({
             type: 'get',
             url: "/profile/" + id,
-            // url: "/resources/json/myJSON.json",
             dataType: 'json',
             contentType: "application/json",
             success: function (response) {
@@ -23,9 +20,9 @@
                             isAgree = true;
                         }
                     });
-                    $('<div id="agreement">').appendTo('#fields');
-                    $('#agreement').append('<label for="agree">' + "I agree to have my personal information been proceeded " + '</label>');
-                    $('<input>').attr({id: "agree", type: "checkbox"}).appendTo('#agreement');
+                    // $('<div id="agreement">').appendTo('#fields');
+                    // $('#agreement').append('<label for="agree">' + "I agree to have my personal information been proceeded " + '</label>');
+                    // $('<input>').attr({id: "agree", type: "checkbox"}).appendTo('#agreement');
                     $('#agree').on('click', enableSave);
                     checkAgreement();
                     enableSave();

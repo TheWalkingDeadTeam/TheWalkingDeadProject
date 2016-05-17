@@ -49,7 +49,7 @@ public class ProfileController {
     public Set<ValidationError> profileFields(@RequestBody Profile profile) {
         Set<ValidationError> errors;
         Validator validator = new ProfileValidator();
-        errors = new LinkedHashSet<>();/*validator.validate(profile);*/
+        errors = validator.validate(profile);
         if (errors.isEmpty()) {
             try {
                 profileService.setProfile(((UserDetailsImpl) SecurityContextHolder
