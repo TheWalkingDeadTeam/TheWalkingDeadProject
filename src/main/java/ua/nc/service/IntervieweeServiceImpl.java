@@ -106,19 +106,6 @@ public class IntervieweeServiceImpl implements IntervieweeService {
 
     }
 
-    @Override
-    public Integer getIntervieweeSize() {
-        Connection connection = daoFactory.getConnection();
-        PostgreIntervieweeTableDAO userIntervieweeTableDAO = new PostgreIntervieweeTableDAO(connection);
-        CESServiceImpl cesService = new CESServiceImpl();
-        CES ces = cesService.getCurrentCES();
-        try {
-            return userIntervieweeTableDAO.getIntervieweeCount(ces.getId(), "");
-        } catch (DAOException e) {
-            LOGGER.error("Can`t get Interviewee size " + e.getCause());
-        }
-        return null;
-    }
 
     @Override
     public Integer getIntervieweeSize(String pattern) {

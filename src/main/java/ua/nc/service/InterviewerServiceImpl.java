@@ -158,11 +158,11 @@ public class InterviewerServiceImpl implements InterviewerService {
     }
 
     @Override
-    public Integer getInterviewerSize() {
+    public Integer getInterviewerSize(String pattern) {
         Connection connection = daoFactory.getConnection();
         PostgreInterviewerTableDAO userInterviewerTableDAO = new PostgreInterviewerTableDAO(connection);
         try {
-            return userInterviewerTableDAO.getInterviewersCount("");
+            return userInterviewerTableDAO.getInterviewersCount(pattern);
         } catch (DAOException e) {
             log.error("Can`t get Interviewers size " + e.getCause());
         }

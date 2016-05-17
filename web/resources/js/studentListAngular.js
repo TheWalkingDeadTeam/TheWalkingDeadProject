@@ -1,4 +1,4 @@
-var app = angular.module('studentView', ['checklist-model', 'angularUtils.directives.dirPagination','ui-notification']);
+var app = angular.module('studentView', ['checklist-model', 'angularUtils.directives.dirPagination']);
 
 app.controller('StudentCtrl', ["$http", "$scope", function ($http, $scope) {
     var vm = this;
@@ -66,7 +66,7 @@ app.controller('StudentCtrl', ["$http", "$scope", function ($http, $scope) {
 
     $scope.checkAll = function () {
         if ($scope.selectedAll) {
-            $scope.dataStudents.studId = vm.users.map(function (item) {
+            $scope.dataStudents.studId = vm.users.rows.map(function (item) {
                 return item.userId;
             });
             $scope.selectdAll = true;

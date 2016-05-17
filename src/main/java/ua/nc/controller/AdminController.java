@@ -101,7 +101,14 @@ public class AdminController {
     @ResponseBody
     Integer studentsGetJSONSize() {
         StudentService studentService = new StudentServiceImpl();
-        return studentService.getSize();
+        return studentService.getSize("");
+    }
+    @RequestMapping(value = {"/students/size/{pattern}"}, method = RequestMethod.GET, produces = "application/json")
+    public
+    @ResponseBody
+    Integer studentsGetJSONSize(@PathVariable("pattern") String pattern) {
+        StudentService studentService = new StudentServiceImpl();
+        return studentService.getSize(pattern);
     }
 
 
@@ -212,7 +219,14 @@ public class AdminController {
     @ResponseBody
     Integer interviewGetJSONSize() {
         InterviewerService interviewerService = new InterviewerServiceImpl();
-        return interviewerService.getInterviewerSize();
+        return interviewerService.getInterviewerSize("");
+    }
+    @RequestMapping(value = {"/interviewers/size/{pattern}"}, method = RequestMethod.GET, produces = "application/json")
+    public
+    @ResponseBody
+    Integer interviewGetJSONSize(@PathVariable("pattern") String pattern) {
+        InterviewerService interviewerService = new InterviewerServiceImpl();
+        return interviewerService.getInterviewerSize(pattern);
     }
 
     @RequestMapping(value = {"/interviewer/search/{itemsPerPage}/{pageNumber}/{sortType}/{pattern}"}, method = RequestMethod.GET, produces = "application/json")
@@ -352,7 +366,7 @@ public class AdminController {
     @ResponseBody
     Integer intervieweeGetJSONSize() {
         IntervieweeService intervieweeService = new IntervieweeServiceImpl();
-        return intervieweeService.getIntervieweeSize();
+        return intervieweeService.getIntervieweeSize("");
     }
 
     @RequestMapping(value = {"/interviewee/size/{pattern}"}, method = RequestMethod.GET, produces = "application/json")

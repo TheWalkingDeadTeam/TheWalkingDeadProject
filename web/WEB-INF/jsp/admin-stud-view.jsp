@@ -97,17 +97,17 @@
                 <td>
                     <input type="checkbox" ng-model="selectedAll" ng-click="checkAll()">
                 </td>
-                <td>
-                    <a ng-click="sortType = 'id'; sortReverse = !sortReverse; n">
-                        #
-                    </a>
-                </td>
+                <%--<td>--%>
+                    <%--<a ng-click="sortType = 'id'; sortReverse = !sortReverse; n">--%>
+                        <%--#--%>
+                    <%--</a>--%>
+                <%--</td>--%>
                 <td>
                     <a ng-click="sortReverse = !sortReverse; sortType(0,sortReverse)">
                         Full Name
                     </a>
                 </td>
-                <td ng-repeat="head in data.header">
+                <td ng-repeat="head in data.users.header">
                     <a ng-click="sortReverse = !sortReverse; sortType(head.id,sortReverse)">
                         {{head.name}}
                     </a>
@@ -120,14 +120,14 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-show="data.users.length <= 0">
-                <td colspan="5" style="text-align:center;">Please Wait</td>
+            <tr ng-show="data.users.rows.length <= 0">
+                <td colspan="5" style="text-align:center;">No data</td>
             </tr>
-            <tr dir-paginate="user in data.users|itemsPerPage:data.itemsPerPage" total-items="data.total_count">
+            <tr dir-paginate="user in data.users.rows|itemsPerPage:data.itemsPerPage" total-items="data.total_count">
                 <td><input type="checkbox" checklist-model="dataStudents.studId" checklist-value="user.userId"></td>
-                <td ng-init="index=$index + 1">{{index}}</td>
+                <%--<td ng-init="index=$index + 1">{{index}}</td>--%>
                 <td><a href="/admin/students/{{user.userId}}" target="_blanks">{{user.name}}</a></td>
-                <td ng-repeat="head in data.header">
+                <td ng-repeat="head in data.users.header">
                     {{user.fields[head.id]}}
                 </td>
                 <td ng-style="{opacity:0.5,'background-color':'{{user.rejected ? 'red' : 'green'}}'}">{{user.rejected}}</td>
