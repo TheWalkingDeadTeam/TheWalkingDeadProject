@@ -76,19 +76,21 @@ public class AdminController {
     }
 
     @RequestMapping(value = {"/remove-ces-interviewer"}, method = RequestMethod.POST)
-    public void removeInterviewers(@RequestBody IntegerList integerList) {
-        CESService cesService = new CESServiceImpl();
-        if (cesService != null) {
-            int cesId = cesService.getCurrentCES().getId();
+    public @ResponseBody HttpStatus removeInterviewers(@RequestBody IntegerList integerList) {
+        CES currentCES = cesService.getCurrentCES();;
+        if (currentCES != null) {
+            int cesId = currentCES.getId();
             Iterator<Integer> iterator = integerList.getInterviewersId().iterator();
             while (iterator.hasNext()) {
                 try {
                     cesService.removeInterviewer(iterator.next(), cesId);
                 } catch (DAOException e) {
                     LOGGER.error("Can't Sign out interviewer", e);
+                    return HttpStatus.FOUND;
                 }
             }
         }
+        return HttpStatus.OK;
     }
 
     /**

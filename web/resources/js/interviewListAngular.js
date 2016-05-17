@@ -229,11 +229,11 @@ interView.controller('interCtrl', ["$http", "$scope",'MailService','Notification
 
     $scope.subscribeInterviewer = function () {
         var dataObj = {
-            type: 'subscribe',
+            // type: 'subscribe',
             values: $scope.dataStudents.studId
         };
         if ($scope.dataStudents.studId.length != 0) {
-            var res = $http.post('interviewers', dataObj);
+            var res = $http.post('/interviewer/enroll-ces-interviewer', dataObj);
             res.success(function (data, status, headers, config) {
                 $scope.message = data;
             });
@@ -245,11 +245,11 @@ interView.controller('interCtrl', ["$http", "$scope",'MailService','Notification
 
     $scope.unsubscribeInterviewer = function () {
         var dataObj = {
-            type: 'unsubscribe',
+            // type: 'unsubscribe',
             values: $scope.dataStudents.studId
         };
         if ($scope.dataStudents.studId.length != 0) {
-            var res = $http.post('interviewers', dataObj);
+            var res = $http.post('remove-ces-interviewer', dataObj);
             res.success(function (data, status, headers, config) {
                 $scope.message = data;
             });
