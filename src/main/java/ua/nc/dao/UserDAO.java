@@ -40,4 +40,6 @@ public interface UserDAO extends GenericDAO<User, Integer> {
     Integer getDEVCount(Integer cesId) throws DAOException;
 
     Integer getHRBACount(Integer cesId) throws DAOException;
+
+    Boolean isAppliedAsInterviewer(Integer userId, Integer cesId) throws DAOException;
 }
