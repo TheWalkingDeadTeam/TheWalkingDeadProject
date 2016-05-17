@@ -78,19 +78,19 @@
                                                              role="presentation">help_outline</i>Menu</a>
         </div>
         <a class="mdl-navigation__link" href="/admin/scheduler"><i class="mdl-color-text--blue-grey-400 material-icons"
-                                                   role="presentation">schedule</i>Schedule Planning</a>
-        <a class="mdl-navigation__link" href="/admin/edit-form"><i class="mdl-color-text--blue-grey-400 material-icons"
                                                                    role="presentation">schedule</i>Schedule Planning</a>
         <a class="mdl-navigation__link" href="/admin/edit-form"><i class="mdl-color-text--blue-grey-400 material-icons"
-                                                   role="presentation">inbox</i>Form Template</a>
-        <a class="mdl-navigation__link" href="/admin/cessettings"><i class="mdl-color-text--blue-grey-400 material-icons"
-                                                   role="presentation">local_offer</i>Registration Period</a>
+                                                                   role="presentation">inbox</i>Form Template</a>
+        <a class="mdl-navigation__link" href="/admin/cessettings"><i
+                class="mdl-color-text--blue-grey-400 material-icons"
+                role="presentation">local_offer</i>Registration Period</a>
         <a class="mdl-navigation__link" href="/admin/students"><i class="mdl-color-text--blue-grey-400 material-icons"
                                                                   role="presentation">people</i>Student List</a>
         <a class="mdl-navigation__link" href="/admin/users"><i class="mdl-color-text--blue-grey-400 material-icons"
                                                                role="presentation">people</i>Users List</a>
-        <a class="mdl-navigation__link" href="/admin/interviewee"><i class="mdl-color-text--blue-grey-400 material-icons"
-                                                               role="presentation">people</i>Interviewee List</a>
+        <a class="mdl-navigation__link" href="/admin/interviewee"><i
+                class="mdl-color-text--blue-grey-400 material-icons"
+                role="presentation">people</i>Interviewee List</a>
         <a class="mdl-navigation__link" href="/admin/interviewers"><i
                 class="mdl-color-text--blue-grey-400 material-icons"
                 role="presentation">people</i>Interviewer List</a>

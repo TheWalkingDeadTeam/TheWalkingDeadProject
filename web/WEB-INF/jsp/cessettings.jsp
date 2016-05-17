@@ -64,41 +64,54 @@
                         <div name="myForm" id="CESfields" ng-submit="ctrl.save()"
                              class="col-lg-11 col-md-8 col-sm-9 col-xs-9">
                             <div><span class="myTextInfo">Year</span><input type="number" name="year" min="2016"
-                                                         max="2100" id="1" class="form-control"
-                                                         ng-model="ctrl.ces.year"
-                                                         ng-readonly="current" required/></div>
+                                                                            max="2100" id="1" class="form-control"
+                                                                            ng-model="ctrl.ces.year"
+                                                                            ng-readonly="current" required/></div>
                             <div class="correct-year"></div>
-                            <div><span class="myTextInfo">Quota</span><input type="number" name="quota" id="quota" class="form-control" min="1"
-                                              ng-model="ctrl.ces.quota"
-                                              required/></div>
+                            <div><span class="myTextInfo">Quota</span><input type="number" name="quota" id="quota"
+                                                                             class="form-control" min="1"
+                                                                             ng-model="ctrl.ces.quota"
+                                                                             required/></div>
                             <div class="correct-quota"></div>
-                            <div><span class="myTextInfo">Start registration date</span><input type="date" name="startRegistrationDate"
-                                                                class="form-control"
-                                                                ng-model="ctrl.ces.startRegistrationDate"
-                                                                ng-readonly="current" id="3" required></div>
+                            <div><span class="myTextInfo">Start registration date</span><input type="date"
+                                                                                               name="startRegistrationDate"
+                                                                                               class="form-control"
+                                                                                               ng-model="ctrl.ces.startRegistrationDate"
+                                                                                               ng-readonly="current"
+                                                                                               id="3" required></div>
                             <div class="correct-date"></div>
-                            <div><span class="myTextInfo">End registration date</span><input type="date" name="endRegistrationDate"
-                                                              class="form-control"
-                                                              ng-model="ctrl.ces.endRegistrationDate"
-                                                              ng-readonly="current" id="4" required/></div>
+                            <div><span class="myTextInfo">End registration date</span><input type="date"
+                                                                                             name="endRegistrationDate"
+                                                                                             class="form-control"
+                                                                                             ng-model="ctrl.ces.endRegistrationDate"
+                                                                                             ng-readonly="current"
+                                                                                             id="4" required/></div>
                             <div class="correct-date"></div>
-                            <div><span class="myTextInfo">Start interviewing date</span><input type="date" name="startInterviewingDate"
-                                                                class="form-control"
-                                                                ng-model="ctrl.ces.startInterviewingDate"
-                                                                ng-readonly="interviewBegan" id="5"/></div>
+                            <div><span class="myTextInfo">Start interviewing date</span><input type="date"
+                                                                                               name="startInterviewingDate"
+                                                                                               class="form-control"
+                                                                                               ng-model="ctrl.ces.startInterviewingDate"
+                                                                                               ng-readonly="interviewBegan"
+                                                                                               id="5"/></div>
                             <div class="correct-date"></div>
-                            <div><span class="myTextInfo">End interviewing date</span><input type="date" name="endInterviewingDate"
-                                                              class="form-control"
-                                                              ng-model="ctrl.ces.endInterviewingDate"
-                                                              ng-readonly=true id="6"/></div>
+                            <div><span class="myTextInfo">End interviewing date</span><input type="date"
+                                                                                             name="endInterviewingDate"
+                                                                                             class="form-control"
+                                                                                             ng-model="ctrl.ces.endInterviewingDate"
+                                                                                             ng-readonly=true id="6"/>
+                            </div>
                             <div class="correct-date"></div>
-                            <div><span class="myTextInfo">Reminders </span><input type="number" name="reminders" id="7" ng-model="ctrl.ces.reminders"
-                                                  class="form-control"
-                                                  ng-readonly="current" required/></div>
-                            <div><span class="myTextInfo">Interview time for person </span><input type="number" name="interviewTimeForPerson" id="8"
-                                                                  class="form-control"
-                                                                  ng-model="ctrl.ces.interviewTimeForPerson"
-                                                                  ng-readonly="interviewBegan" required/></div>
+                            <div><span class="myTextInfo">Reminders </span><input type="number" name="reminders" id="7"
+                                                                                  ng-model="ctrl.ces.reminders"
+                                                                                  class="form-control"
+                                                                                  ng-readonly="current" required/></div>
+                            <div><span class="myTextInfo">Interview time for person </span><input type="number"
+                                                                                                  name="interviewTimeForPerson"
+                                                                                                  id="8"
+                                                                                                  class="form-control"
+                                                                                                  ng-model="ctrl.ces.interviewTimeForPerson"
+                                                                                                  ng-readonly="interviewBegan"
+                                                                                                  required/></div>
                             <div class="correct-int"></div>
                             <div>Interview time for day <input type="number" name="interviewTimeForDay" id="9"
                                                                class="form-control"
