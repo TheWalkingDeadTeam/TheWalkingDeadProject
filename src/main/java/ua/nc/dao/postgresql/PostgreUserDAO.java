@@ -377,6 +377,51 @@ public class PostgreUserDAO extends AbstractPostgreDAO<User, Integer> implements
             throw new DAOException(e);
         }
     }
+
+    private static String GET_SOME_INTERVIEWEE = "SELECT system_user.* FROM system_user  " +
+            "JOIN application ON system_user.system_user_id = application.system_user_id " +
+            "JOIN interviewee ON application.application_id = interviewee.application_id " +
+            "WHERE application.ces_id = ? AND interviewee.special_mark = ? OR interviewee.special_mark = ?;";
+
+    private static String GET_REJECTED_INTERVIEWEE = "SELECT * FROM system_user " +
+            "JOIN application ON system_user.system_user_id = application.system_user_id " +
+            "JOIN interviewee ON application.application_id = interviewee.application_id " +
+            "WHERE application.ces_id = ? AND interviewee.special_mark = ? OR (interviewee.special_mark = ?) IS NOT FALSE";
+
+    // The next methods are used for interviewee mailing.
+
+    private static final String JOB_OFFER = "job offer";
+    private static final String TAKE_ON_COURSES = "take on courses";
+    private static final String REJECTED = "rejected";
+    private static final String GET_ON_COURSES = "get on courses";
+
+    public Set<User> getJobOfferedUsers(Integer cesId) throws DAOException {
+        return getSomeInterviewee(GET_SOME_INTERVIEWEE, cesId, JOB_OFFER, JOB_OFFER);
+    }
+
+    public Set<User> getCourseAcceptedUsers(Integer cesId) throws DAOException {
+        return getSomeInterviewee(GET_SOME_INTERVIEWEE, cesId, TAKE_ON_COURSES, GET_ON_COURSES);
+    }
+
+    public Set<User> getCourseRejectedStudents(Integer cesId) throws DAOException {
+        return getSomeInterviewee(GET_REJECTED_INTERVIEWEE, cesId, REJECTED, "");
+    }
+
+    private Set<User> getSomeInterviewee(String query, Integer cesId, String specialMark1, String specialMark2) throws DAOException {
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, cesId);
+            statement.setString(2, specialMark1);
+            statement.setString(3, specialMark2);
+            ResultSet rs = statement.executeQuery();
+            if (!rs.isBeforeFirst()) {
+                return null;
+            } else {
+                return getStudentsParse(rs);
+            }
+        } catch (Exception e) {
+            throw new DAOException(e);
+        }
+    }
     /////////////////////////////
 
     private class PersistUser extends User {
