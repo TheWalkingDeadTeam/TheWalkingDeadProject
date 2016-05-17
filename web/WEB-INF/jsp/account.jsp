@@ -10,7 +10,6 @@
 <html>
 <head>
     <title>Account Information</title>
-
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" sizes="32x32" href="/resources/images/ico.png"/>
@@ -18,17 +17,21 @@
     <%--<link rel="stylesheet" type="text/css" href="/resources/css/styles.css"/>--%>
     <%--<link rel="stylesheet" type="text/css" href="/resources/bootstrap/css/bootstrap.css"/>--%>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
     <link rel="icon" type="image/png" sizes="32x32" href="/images/ico.png">
-    <link rel="stylesheet" type="text/css" href="resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="resources/css/style-profile.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="resources/css/media-profile.css" rel="stylesheet">
-    <script src="resources/bootstrap/js/jquery-2.2.2.min.js" defer></script>
-    <script src="resources/bootstrap/js/bootstrap.min.js" defer></script>
-    <%--<style type="text/css">--%>
-    <%--/*<img src='images/logo.png' alt="Brand" class="header-img">*/--%>
-    <%--/*<img src='images/error.gif' class="img-responsive profile-photo">*/--%>
-    <%--/*<img class='img-responsive' src="images/logo-gray.png">*/--%>
+    <link rel="stylesheet" type="text/css" href="/resources/css/style-profile.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/resources/css/media-profile.css" rel="stylesheet">
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='/resources/bootstrap/css/bootstrap.css' rel='stylesheet'/>
+    <link href='/resources/css/rotating-card.css' rel='stylesheet'/>
+    <script src="/resources/bootstrap/js/jquery-2.2.2.min.js" defer></script>
+    <script src="/resources/bootstrap/js/bootstrap.min.js" defer></script>
+    <link rel="stylesheet" type="text/css" href="/resources/bootstrap/css/jasny-bootstrap.css">
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport'/>
+    <style>
+        .card .stats:last-child {
+            border-left: 0px solid #EEEEEE;
+        }
+    </style>
 </head>
 <body>
 <header>
@@ -43,7 +46,7 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand brand-img" href="">
-                    <img src='resources/images/logo.png' alt="Brand" class="header-img">
+                    <img src='/resources/images/logo.png' alt="Brand" class="header-img">
                 </a>
             </div>
             <div id='collapsed-menu' class='navbar-collapse collapse'>
@@ -61,47 +64,69 @@
     </nav>
 </header>
 <sec:authorize access="isAuthenticated()">
-<form id="accountForm">
-    <div class="container-fluid  smprofile">
-        <div class="row">
-            <div class=" col-lg-3 col-md-4 col-sm-4 col-xs-12 ">
-                <img id="photo_img" src="/getPhoto" alt="User's photo" width="100" height="100"
-                     onError="this.src='/resources/images/user-photo.png'" class="profile-photo">
-                <form id="photo_form" type=post enctype="multipart/form-data">
-                    <div id="photoMessages"></div>
-                    Photo to upload: <input type="file" id="photo_input" name=" photo_input" accept="image/*"><br/>
-                    <button id="photo_button" type="submit">Upload</button>
-                </form>
-            </div>
-            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4">
-                <h4>Name:</h4>
-                <h4>Surname:</h4>
-                <h4>E-mail:</h4>
-                <sec:authorize access="!hasRole('ROLE_STUDENT')">
-                    <div id="enrollMessages"></div>
-                    <button id="enroll_button" type="submit">Enroll</button>
-                </sec:authorize>
-            </div>
-            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-3">
-                <sec:authentication var="principal" property="principal"/>
-                <span>${principal.username}</span>
-                <span>${principal.username}</span>
-                <span>${principal.username}</span>
-            </div>
-            <div class="col-lg-6 col-md-4 col-xs-3">
-                <jsp:include page="change-password.jsp"/>
-            </div>
-            <div class="col-lg-6 col-md-4 col-sm-3 col-xs-2">
-                <jsp:include page="change-roles.jsp"/>
-            </div>
-        </div>
+    <div class="card-container manual-flip">
+        <div class="card">
+            <div class="front">
+                <div class="cover">
+                    <img src="/resources/images/background-2.jpg"/>
+                </div>
+                <div class="user">
+                    <img id="photo_img" src="/getPhoto" alt="User's photo" width="100" height="120"
+                         onError="this.src='/resources/images/user-photo.png'" class="img-circle">
+                </div>
+                <div class="content">
+                    <div class="main">
+                    <h3 id="userName" class="name"></h3>
+                    <p id="userSurname" class="profession"></p>
+                    <p id="userEmail" class="profession"></p>
+                </div>
+                 <div class="footer" style="margin-bottom: 20px">
+                        <button class="btn btn-simple" onclick="rotateCard(this)">
+                            <i class="fa fa-mail-forward"></i> Options
+                        </button>
+                    </div>
+                </div>
+            </div> <!-- end front panel -->
+            <div class="back">
+
+                <div class="content">
+                    <div class="main">
+
+                            <div align="center">
+                                <jsp:include page="changePhoto.jsp"/>
+                            </div>
+
+                            <div class="stats">
+                                <h5>Change Password</h5>
+                                <jsp:include page="change-password.jsp"/>
+                            </div>
+                            <div class="stats">
+                                <h5>Enrollment</h5>
+                                <sec:authorize access="!hasRole('ROLE_STUDENT')">
+                                    <div id="enrollMessages"></div>
+                                    <button id="enroll_button" type="submit">Enroll</button>
+                                </sec:authorize>
+                            </div>
+                            <div class="stats">
+                                <jsp:include page="change-roles.jsp"/>
+                            </div>
+                    </div>
+                </div>
+                    <button class="btn btn-simple" rel="tooltip" title="Flip Card" onclick="rotateCard(this)">
+                        <i class="fa fa-reply"></i> Back
+                    </button>
+            </div> <!-- end back panel -->
+        </div> <!-- end card -->
     </div>
-</form>
+    <!-- end card-container -->
+    </div>
+    </div>
+
 </sec:authorize>
 
 <footer class="footer container-fluid">
     <div class="footerLg container visible-md visible-lg">
-        <div class="col-lg-3 col-lg-3 col-sm-3"><img class='img-responsive' src="resources/images/logo-gray.png"></div>
+        <div class="col-lg-3 col-lg-3 col-sm-3"><img class='img-responsive' src="/resources/images/logo-gray.png"></div>
 
         <div class="col-lg-8 col-md-8 col-lg-offset-1 col-lg-offset-1 col-md-offset-1">
             <div class="footerLgText col-lg-3 col-md-3 col-lg-offset-1 col-md-offset-1">
@@ -123,7 +148,7 @@
         </div>
     </div>
     <div class="footerSm row visible-sm visible-xs">
-        <img class="col-sm-5 visible-sm" src="resources/images/logo-gray.png">
+        <img class="col-sm-5 visible-sm" src="/resources/images/logo-gray.png">
         <div class="footerSmText col-sm-7 col-xs-12">
             <div class="col-sm-8 col-xs-6">
                 <a class="col-sm-6 col-xs-7" href="http://localhost:8080/profile#"><p>Courses Info</p></a>
@@ -137,15 +162,34 @@
         </div>
     </div>
 </footer>
-
-<script src="http://code.jquery.com/jquery-latest.js"></script>
-<script src="/resources/js/hideShowPassword.min.js"></script>
 <script src="/resources/js/changePassword.js"></script>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="/resources/js/photo.js"></script>
-<script src="/resources/js/changeRoles.js"></script>
+<script src="/resources/js/account.js"></script>
+<script src="/resources/js/hideShowPassword.min.js"></script>
+<script src="http://code.jquery.com/jquery-latest.js" type="text/javascript"></script>
+<script src="/resources/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="/resources/bootstrap/js/jasny-bootstrap.js"></script>
 <script>
     $('#changePassword').hideShowPassword(false, true);
 
+</script>
+
+<script type="text/javascript">
+    $().ready(function () {
+        $('[rel="tooltip"]').tooltip();
+
+    });
+
+    function rotateCard(btn) {
+        var $card = $(btn).closest('.card-container');
+        console.log($card);
+        if ($card.hasClass('hover')) {
+            $card.removeClass('hover');
+        } else {
+            $card.addClass('hover');
+        }
+    }
 </script>
 </body>
 </html>
