@@ -137,6 +137,35 @@ public class InterviewerController {
         return null;
     }
 
+    @ResponseBody
+    @RequestMapping(value = "getallfeedbacks/{id}", method = RequestMethod.GET, produces = "application/json")
+    public List<FeedbackAndSpecialMark> getAllFeedbacks(@PathVariable("id") Integer id, HttpServletResponse response)
+    {
+        Application application = applicationService.getApplicationByUserForCurrentCES(id);
+        if (application == null){
+            fillNullResponse(response);
+            return null;
+        }
+        Interviewee interviewee = intervieweeService.getInterviewee(application.getId());
+        if (interviewee == null){
+            fillNullResponse(response);
+            return null;
+        }
+        List<FeedbackAndSpecialMark> feedbackAndSpecialMarks = new LinkedList<>();
+        FeedbackAndSpecialMark feedbackAndSpecialMark = new FeedbackAndSpecialMark();
+        feedbackAndSpecialMark.setSpecialMark(interviewee.getSpecialMark());
+        if (interviewee.getDevFeedbackID() != null) {
+            feedbackAndSpecialMark.setFeedback(feedbackService.getFeedback(interviewee.getDevFeedbackID()));
+        }
+        feedbackAndSpecialMarks.add(feedbackAndSpecialMark);
+        feedbackAndSpecialMark = new FeedbackAndSpecialMark();
+        if (interviewee.getHrFeedbackID() != null) {
+            feedbackAndSpecialMark.setFeedback(feedbackService.getFeedback(interviewee.getHrFeedbackID()));
+        }
+        feedbackAndSpecialMarks.add(feedbackAndSpecialMark);
+        return feedbackAndSpecialMarks;
+    }
+
     private void fillNullResponse(HttpServletResponse response){
         try {
             Writer writer = response.getWriter();
