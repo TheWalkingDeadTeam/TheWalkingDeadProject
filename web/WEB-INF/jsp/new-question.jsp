@@ -75,14 +75,8 @@
                         <input type="text" ng-model="sef.newQuestion.name" class="form-control" id="fieldName"
                                placeholder="Enter field name" required>
                     </div>
-                    <div class="form-group">
-                        <label for="orderNum">Order number</label>
-                        <input type="number" min="1" max="50" class="form-control" ng-model="sef.newQuestion.orderNum"
-                               id="orderNum" placeholder="Enter order number" required>
-                    </div>
                     <label for="fieldType">Field type</label>
-                    <select id="fieldType" class="form-control" style="
-    margin-bottom: 10px;" ng-change="change()"
+                    <select id="fieldType" class="form-control" style="margin-bottom: 10px;" ng-change="change()"
                             ng-model="sef.newQuestion.fieldTypeID" required>
                         <option ng-selected="true" value="" disabled>Type</option>
                         <option value="1">Number</option>
@@ -95,16 +89,32 @@
                         <option value="8">Date</option>
                     </select>
 
+                    <div class="form-group" ng-show="sef.isShown">
+                        <label for="fieldName">Options group name</label>
+                        <input type="text" ng-model="sef.newQuestion.listTypeName" class="form-control newInputs"
+                               id="optionGroupName"
+                               placeholder="Enter options group name">
+                    </div>
+
                     <div id="newOptions">
                         <div ng-repeat="item in sef.newQuestion.inputOptionsFields" ng-show="sef.isShown">
-                            <input-field item='item' item-model="sef.newQuestion.inputOptionsFields" ></input-field>
+                            <input-field item='item' item-model="sef.newQuestion.inputOptionsFields"></input-field>
                         </div>
                     </div>
                     <div id="messageDiv"></div>
-                    <button type="submit">Save</button>
+                    <button type="submit"
+                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
+                        Save
+                    </button>
+                    <button ng-click="sef.add()" ng-show="sef.isShown" type="button"
+                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
+                        New Item
+                    </button>
                 </form>
-                <button ng-click="sef.add()" ng-show="sef.isShown">New Item</button>
-                <button onclick="back()" style="margin-top: 10px;">Back</button>
+                <button ng-click="back()"
+                        class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white"
+                        style="margin-top: 10px;">Back
+                </button>
             </div>
         </div>
     </main>
@@ -116,9 +126,6 @@
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
 <script src="/resources/js/new-question.js"></script>
 <script src="/resources/js/InputFieldComponent/InputFieldComponent.js"></script>
-<script>function back() {
-    window.location.href = "/admin/edit-form";
-}</script>
 <script src="/resources/js/angular-drag-and-drop-lists.js"></script>
 <script src="/resources/bootstrap/js/bootstrap.js"></script>
 </body>

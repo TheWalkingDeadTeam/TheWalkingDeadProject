@@ -5,30 +5,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import ua.nc.entity.FieldWrapper;
-import ua.nc.entity.ListWrapper;
 import ua.nc.dao.exception.DAOException;
-import ua.nc.entity.CES;
-import ua.nc.entity.Interviewer;
-import ua.nc.entity.StudentStatus;
-import ua.nc.entity.User;
+import ua.nc.entity.*;
 import ua.nc.entity.profile.Field;
 import ua.nc.entity.profile.ListValue;
-import ua.nc.service.EditFormService;
-import ua.nc.service.EditFormServiceImpl;
 import ua.nc.entity.profile.StudentData;
 import ua.nc.service.*;
 import ua.nc.service.user.UserService;
 import ua.nc.service.user.UserServiceImpl;
 import ua.nc.validator.*;
 
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Pavel on 18.04.2016.
@@ -81,19 +68,19 @@ public class AdminController {
         return "admin-create-user";
     }
 
-    @RequestMapping(value = {"/remove"},method = RequestMethod.POST, produces = "application/json")
-    public void removeInterviewers(@RequestBody ArrayList<Integer> interviewersId){
-            CESService cesService = new  CESServiceImpl();
-            int cesId = cesService.getCurrentCES().getId();
-            Iterator<Integer> iterator = interviewersId.iterator();
-            while (iterator.hasNext()){
-                try {
-                    cesService.removeInterviewer( iterator.next(),cesId);
-                } catch (DAOException e) {
-                    LOGGER.error("Can't Sign out interviewer");
-                    LOGGER.error(e);
-                }
+    @RequestMapping(value = {"/remove"}, method = RequestMethod.POST, produces = "application/json")
+    public void removeInterviewers(@RequestBody ArrayList<Integer> interviewersId) {
+        CESService cesService = new CESServiceImpl();
+        int cesId = cesService.getCurrentCES().getId();
+        Iterator<Integer> iterator = interviewersId.iterator();
+        while (iterator.hasNext()) {
+            try {
+                cesService.removeInterviewer(iterator.next(), cesId);
+            } catch (DAOException e) {
+                LOGGER.error("Can't Sign out interviewer");
+                LOGGER.error(e);
             }
+        }
 
     }
 
@@ -271,17 +258,17 @@ public class AdminController {
     }
 
 
-    @RequestMapping(value = {"/scheduler"}, method = RequestMethod.GET)
-    @RequestMapping(value = {"/cesPost"}, method = RequestMethod.POST)
-    public @ResponseBody
-    CES getCES(@RequestBody CES ces) {
-        try {
-            cesService.setCES(ces);
-        } catch (DAOException e) {
-            e.printStackTrace();
-        }
-        return ces;
-    }
+//    @RequestMapping(value = {"/scheduler"}, method = RequestMethod.GET)
+//    @RequestMapping(value = {"/cesPost"}, method = RequestMethod.POST)
+//    public @ResponseBody
+//    CES getCES(@RequestBody CES ces) {
+//        try {
+//            cesService.setCES(ces);
+//        } catch (DAOException e) {
+//            e.printStackTrace();
+//        }
+//        return ces;
+//    }
 
 
     @RequestMapping(value = {"/cessettings"}, method = RequestMethod.GET)
@@ -303,7 +290,7 @@ public class AdminController {
     }
 
 
-    @RequestMapping(value = {"/scheduler"} ,method = RequestMethod.GET)
+    @RequestMapping(value = {"/scheduler"}, method = RequestMethod.GET)
     public String schedulerView() {
         return "admin-scheduler";
     }
@@ -312,54 +299,47 @@ public class AdminController {
     //update from 12.05.2016
     @RequestMapping(value = {"/edit-form"}, method = RequestMethod.GET)
     public String editFormView() {
-        System.out.println("editFormView");
         return "edit-form";
     }
 
     @RequestMapping(value = {"/edit-form"}, method = RequestMethod.GET, produces = "application/json")
     public
-    @ResponseBody
-    List<Field> editFormGet(Integer ces_id) {
-        System.out.println("editFormGet");
+    @ResponseBody List<Field> editFormGet(Integer ces_id) {
         EditFormService efs = new EditFormServiceImpl();
         List<Field> fields = new LinkedList<>();
         fields.addAll(efs.getAllFields(efs.getCES_ID()));
         return fields;
     }
 
-    @RequestMapping(value = "/edit-form/appformfield/{listTypeID}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/edit-form/appformfield/{listTypeID}/{id}", method = RequestMethod.GET, produces = "application/json")
     public
     @ResponseBody
-    List<ListValue> getFieldInfoById(@PathVariable("listTypeID") Integer id) {
-        System.out.println("getFieldInfoById");
+    List<ListValue> getFieldInfoById(@PathVariable("listTypeID") Integer listType_id, @PathVariable("id") Integer id) {
         EditFormService efs = new EditFormServiceImpl();
         List<ListValue> listValues = new LinkedList<>();
-        listValues.addAll(efs.getListValues(id));
+        listValues.addAll(efs.getListValues(listType_id));
         return listValues;
     }
 
     @RequestMapping(value = "/edit-form/appformfield", method = RequestMethod.GET)
     public String getFieldInfo() {
-        System.out.println("getFieldInfo");
         return "appformfield";
     }
 
     @RequestMapping(value = "/edit-form/new-question", method = RequestMethod.GET)
     public String addNewQuestion() {
-        System.out.println("addNewQuestion");
         return "new-question";
     }
 
     @RequestMapping(value = "/edit-form/new-question", method = RequestMethod.POST, produces = "application/json")
     public
     @ResponseBody
-    Set<ValidationError> sendNewQuestion(@RequestBody Field field) {
+    Set<ValidationError> sendNewQuestion(@RequestBody FullFieldWrapper field) {
         Validator validator = new NewQuestionValidator();
         Set<ValidationError> errors = validator.validate(field);
-        System.out.println("post in controller");
         if (errors.isEmpty()) {
-            System.out.println("post in controller with no errors");
             EditFormService efs = new EditFormServiceImpl();
+            field.setOrderNum(efs.newPositionNumber());
             efs.addNewQuestion(field);
         }
         return errors;
@@ -369,13 +349,9 @@ public class AdminController {
     public
     @ResponseBody
     Set<ValidationError> deleteQuestion(@RequestBody ListWrapper id) {
-        System.out.println("attempt to delete");
         Validator validator = new DeleteQuestionValidator();
         Set<ValidationError> errors = validator.validate(id);
-        System.out.println("deleting question");
-        System.out.println(id.getId());
         if (errors.isEmpty()) {
-            System.out.println("no errors today");
             EditFormService efs = new EditFormServiceImpl();
             for (Integer idToWrite : id) {
                 efs.deleteQuestionFromCES(efs.getCES_ID(), idToWrite);
@@ -384,20 +360,42 @@ public class AdminController {
         return errors;
     }
 
-    @RequestMapping(value = "/edit-form/save-position", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+    @RequestMapping(value = "/edit-form/save-position", method = RequestMethod.POST, produces = "application/json")
     public
     @ResponseBody
     Set<ValidationError> savePosition(@RequestBody FieldWrapper fields) {
-        EditFormService efs = new EditFormServiceImpl();
-        System.out.println("attempt to save position");// TODO validator
-        for (int i = 0; i <= new LinkedList<Field>(fields.getFields()).size(); i++) {
-            fields.getFields().get(i).setOrderNum(i+1);
-            System.out.println("changed order#");
-            System.out.println(fields.getFields().get(i).getName() + " " + fields.getFields().get(i).getOrderNum());
-            efs.updatePosition(fields.getFields().get(i));
+        Validator validator = new SavePositionValidator();
+        Set<ValidationError> errors = validator.validate(fields);
+        if (errors.isEmpty()) {
+            EditFormService efs = new EditFormServiceImpl();
+            for (int i = 0; i < new LinkedList<Field>(fields.getFields()).size(); i++) {
+                fields.getFields().get(i).setOrderNum(i + 1);
+                efs.updatePosition(fields.getFields().get(i));
+            }
         }
-        return new LinkedHashSet<>();
+        return errors;
     }
+
+    @RequestMapping(value = "/edit-form/appformfield/get-field/{id}", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    Field getField(@PathVariable("id") Integer id) {
+        EditFormService efs = new EditFormServiceImpl();
+        Field field = efs.getField(id);
+        return field;
+    }
+
+//    @RequestMapping(value = "/edit-form/delete-option", method = RequestMethod.POST, produces = "application/json")
+//    public
+//    @ResponseBody
+//    Set<ValidationError> deleteOption(@RequestBody ListWrapper id) {
+//        Validator validator = new DeleteQuestionValidator();
+//        Set<ValidationError> errors = validator.validate(id);
+//        if (errors.isEmpty()) {
+//            System.out.println("Deal with it");
+//        }
+//        return errors;
+//    }
 
     @RequestMapping(value = {"/enroll-session"}, method = RequestMethod.GET)
     public String enrollmentSessionView() {

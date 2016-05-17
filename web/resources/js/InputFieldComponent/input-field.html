@@ -1,3 +1,3 @@
-<input class="newInputs" type="text" placeholder="Option text here"
-       ng-model="inputFieldCtrl.itemValue" ng-blur="inputFieldCtrl.onBlurHandler()">
-<button type='button' class="remove" ng-click="inputFieldCtrl.removeItem()">-</button>
+<input class="newInputs form-control" type="text" placeholder="Option text here"
+       ng-model="inputFieldCtrl.itemValue" ng-blur="inputFieldCtrl.onBlurHandler()" style="width: 30%; display: inline; margin-bottom: 10px;">
+<button type='button' class="remove mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white" style="margin-bottom: 10px;" ng-click="inputFieldCtrl.removeItem()">-</button>

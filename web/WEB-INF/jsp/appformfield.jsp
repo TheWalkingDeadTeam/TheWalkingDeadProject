@@ -58,7 +58,7 @@
     </style>
 </head>
 <body>
-<div ng-controller="viewCtrl"
+<div ng-controller="viewCtrl as vc"
      class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
     <jsp:include page="admin-header.jsp"/>
 
@@ -71,43 +71,26 @@
                 <h4>Question info</h4>
                 <div>Field name: {{field.name}}</div>
                 <div>Multiple choice: {{field.multipleChoice}}</div>
-                <div>Field type: {{field.fieldTypeID}}</div>
+                <div>Field type: {{chooseType(field.fieldTypeID)}}</div>
                 <div>Order number: {{field.orderNum}}</div>
             </div>
 
-            <button ng-click=""
-                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white" style="margin-left: 20px;">
-                Add option
-            </button>
-            <button ng-click=""
-                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
-                Delete option
-            </button>
-
-            <table class="table table-bordered table-striped" style="width:50%; margin: 20px;">
+            <table ng-show="vc.isShown" class="table table-bordered table-striped" style="width:30%; margin: 20px;">
 
                 <thead>
-                <td>
-                    <input type="checkbox" ng-model="selectedAll" ng-click="checkAll()">
-                </td>
-                <td>
-                    Id
-                </td>
-                <td>
-                    Option name
-                </td>
+                <td>Question options</td>
                 </thead>
 
                 <tbody>
                 <tr ng-repeat="ch in fieldOptions">
-                    <td><input type="checkbox" checklist-model="dataOptions.optionId" checklist-value="ch.id"></td>
-                    <td>{{ch.id}}</td>
                     <td>{{ch.valueText}}</td>
                 </tr>
                 </tbody>
             </table>
-
-
+            <button ng-click="back()"
+                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white"
+                    style="margin-left: 20px;">Back
+            </button>
         </div>
     </main>
 </div>

@@ -16,8 +16,13 @@ sendFormModule.controller('sendFr', ["$scope", "$http", function ($scope, $http)
         multipleChoice: '',
         orderNum: '',
         listTypeID: '',
+        listTypeName: '',
         inputOptionsFields: []
     };
+
+    $scope.back = function () {
+        window.location.href = "/admin/edit-form";
+    }
 
     $scope.change = function () {
         var flag = (vm.newQuestion.fieldTypeID == 4 || vm.newQuestion.fieldTypeID == 5 || vm.newQuestion.fieldTypeID == 6);
@@ -37,8 +42,8 @@ sendFormModule.controller('sendFr', ["$scope", "$http", function ($scope, $http)
             vm.isShown = true;
         } else {
             $('.newInputs').removeAttr('required');
-            vm.newQuestion.newOpt = '';
             vm.newQuestion.listTypeID = '';
+            vm.newQuestion.listTypeName='';
             vm.newQuestion.multipleChoice = "false";
             vm.isShown = false;
         }
@@ -71,37 +76,23 @@ sendFormModule.controller('sendFr', ["$scope", "$http", function ($scope, $http)
         });
     };
 
-    vm.add = function() {
+    vm.add = function(event) {
         var item = {
             value: '',
-            id: _getRandomInt()
+            opt_id: _getRandomInt()
         };
 
         vm.newQuestion.inputOptionsFields.push(item);
         
         $('.newInputs').attr('required', 'true');
-        // $('.newInputs').attr('ng-model', 'newOpt');
     };
-
-    // $scope.removeChoice = function() {
-    //     var lastItem = $scope.items.length-1;
-    //     $scope.items.splice(lastItem);
-    // };
     
     function _getRandomInt() {
-        return new Date().getTime() + Math.round(1 + Math.random() * (9999998))
+        return Math.round(1 + Math.random() * (9998)) + Math.round(1 + Math.random() * (9998));
     }
 
 }]);
 
-
-
-/*
- * Material Deesign Checkboxes non Polymer updated for use in bootstrap.
- * Tested and working in: IE9+, Chrome (Mobile + Desktop), Safari, Opera, Firefox.
- * @author Jason Mayes 2014, www.jasonmayes.com
- * @update Sergey Kupletsky 2014, www.design4net.ru
- */
 
 var wskCheckbox = function () {
     var wskCheckboxes = [];

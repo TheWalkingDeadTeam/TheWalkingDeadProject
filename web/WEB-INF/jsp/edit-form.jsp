@@ -56,7 +56,7 @@
     </style>
 </head>
 <body>
-<div ng-controller="tableCtrl"
+<div ng-controller="tableCtrl as tc"
      class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
     <jsp:include page="admin-header.jsp"/>
 
@@ -84,12 +84,8 @@
                 <td>
                     <input type="checkbox" ng-model="selectedAll" ng-click="checkAll()">
                 </td>
-                <td>Id</td>
-                <td>
-                    Position
-                </td>
-                <td>Up</td>
-                <td>Down</td>
+                <%--<td>Id</td>--%>
+                <td>Type</td>
                 <td>
                     Field name
                 </td>
@@ -97,12 +93,12 @@
 
                 <tbody as-sortable="sortableOptions" ng-model="fields">
                 <tr ng-repeat="ch in fields" as-sortable-item>
-                    <td as-sortable-item-handle><input type="checkbox" checklist-model="dataFields.fieldId" checklist-value="ch.id"></td>
-                    <td as-sortable-item-handle>{{ch.id}}</td>
-                    <td as-sortable-item-handle>{{ch.orderNum}}</td>
-                    <td as-sortable-item-handle>Up</td>
-                    <td as-sortable-item-handle>Down</td>
-                    <td as-sortable-item-handle><a href="/admin/edit-form/appformfield?{{ch.listTypeID}}" target="_blanks">{{ch.name}}</a></td>
+                    <td as-sortable-item-handle><input type="checkbox" checklist-model="dataFields.fieldId"
+                                                       checklist-value="ch.id"></td>
+                    <%--<td as-sortable-item-handle>{{ch.id}}</td>--%>
+                    <td as-sortable-item-handle>{{chooseType(ch.fieldTypeID)}}</td>
+                    <td as-sortable-item-handle><a href="/admin/edit-form/appformfield?{{ch.listTypeID}}/{{ch.id}}"
+                                                   target="_blanks">{{ch.name}}</a></td>
                 </tr>
                 </tbody>
             </table>
@@ -110,8 +106,6 @@
         </div>
     </main>
 </div>
-
-
 <script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>

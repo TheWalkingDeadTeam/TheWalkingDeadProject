@@ -23,7 +23,7 @@ sendFormModule.controller('InputFieldController', function ($scope) {
 
     function removeItem() {
         vm.itemModel.forEach( function (item) {
-            if(item.id == vm.item.id) {
+            if(item.opt_id == vm.item.opt_id) {
                 vm.itemModel.splice(vm.itemModel.indexOf(item), 1);
                 return;
             }
@@ -32,10 +32,10 @@ sendFormModule.controller('InputFieldController', function ($scope) {
 
     function onBlurHandler() {
         vm.itemModel.forEach( function (item) {
-            if(item.id == vm.item.id) {
+            if(item.opt_id == vm.item.opt_id) {
                 item.value = vm.item.value;
                 vm.itemModel.splice(vm.itemModel.indexOf(item), 1, {
-                    id: item.id,
+                    opt_id: item.opt_id,
                     value: vm.itemValue
                 });
                 return;
