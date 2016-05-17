@@ -2,7 +2,6 @@ package ua.nc.dao.postgresql;
 
 import org.apache.log4j.Logger;
 import ua.nc.dao.AbstractPostgreDAO;
-import ua.nc.dao.AppSetting;
 import ua.nc.dao.RoleDAO;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.entity.Role;

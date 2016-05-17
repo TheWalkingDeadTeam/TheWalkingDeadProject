@@ -2,7 +2,7 @@
  * Created by Alexander on 30.04.2016.
  */
 $(document).ready(function () {
-    $('#changePassword').hideShowPassword(false, true);
+    $('#changePassword').hideShowPassword;
 
 
     function ValidateChangeForm() {

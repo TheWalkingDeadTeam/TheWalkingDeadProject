@@ -1,90 +1,162 @@
 <%--
   Created by IntelliJ IDEA.
   User: IGOR
-  Date: 03.05.2016
-  Time: 15:36
+  Date: 16.05.2016
+  Time: 13:39
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-    <title>Course enrollment session settings</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <link rel="icon" type="image/png" sizes="32x32" href="/resources/images/ico.png"/>
-    <link rel="stylesheet" type="text/css" href="/resources/css/reset.css"/>
-    <link rel="stylesheet" type="text/css" href="/resources/css/styles.css"/>
-    <link rel="stylesheet" type="text/css" href="/resources/bootstrap/css/bootstrap.css" />
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="A front-end template that helps you build fast, modern mobile web apps.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>Settings</title>
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" sizes="192x192" href="images/android-desktop.png">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Material Design Lite">
+    <link rel="apple-touch-icon-precomposed" href="images/ios-desktop.png">
+    <link rel="stylesheet" type="text/css" href="/resources/bootstrap/css/bootstrap.css"/>
+
+
+    <!-- Tile icon for Win8 (144x144 + tile color) -->
+    <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
+    <meta name="msapplication-TileColor" content="#3372DF">
+
+    <link rel="shortcut icon" href="images/favicon.png">
+
+    <!-- SEO: If your mobile URL is different from the desktop URL, add a canonical link to the desktop page https://developers.google.com/webmasters/smartphone-sites/feature-phones -->
+    <!--
+    <link rel="canonical" href="http://www.example.com/">
+    -->
+
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.cyan-light_blue.min.css">
+    <link rel="stylesheet" href="/resources/css/styles.css">
+
 </head>
 <body>
-<header class="header">
-    <div class="container-fluid navbar headerTop">
-        <a href="#"><img class="col-lg-4 col-md-4 col-sm-9 col-xs-12" src="/resources/images/logo.png" alt="logo"/></a>
-    </div>
-    <div class="col-lg-12 col-md-12 hidden-sm hidden-xs">
-        <div class="container-fluid navbar-inner navigation">
-            <a class="col-lg-4 col-md-4" href="#"><p>Home</p></a>
-            <a class="col-lg-4 col-md-4" href="#"><p>Information</p></a>
-            <a class="col-lg-4 col-md-4" href="#"><p>Contacts</p></a>
-        </div>
-    </div>
-</header>
-<body ng-app="myApp" ng-controller="FormController as ctrl">
-    <form id="CESfields" ng-submit="ctrl.save()">
-        <div>Year <input type="number" name="year" min="2016" max="2100" id="1" ng-model="ctrl.ces.year" ng-readonly="current" required/></div>
-        <div>Quota <input type="number" name="quota" id="2" min="1" ng-model="ctrl.ces.quota" required/></div>
-        <div>Start registration date <input type="date" name="startRegistrationDate" ng-model="ctrl.ces.startRegistrationDate" ng-readonly="current" id="3"required/></div>
-        <div>End registration date <input type="date" name="endRegistrationDate" ng-model="ctrl.ces.endRegistrationDate" ng-readonly="current" id="4"required/></div>
-        <div>Start interviewing date <input type="date" name="startInterviewingDate" ng-model="ctrl.ces.startInterviewingDate" ng-readonly="interviewBegan" id="5"/></div>
-        <div>End interviewing date <input type="date" name="endInterviewingDate" ng-model="ctrl.ces.endInterviewingDate" ng-readonly="interviewBegan"  id="6"/></div>
-        <div>Reminders <input type="number" name="reminders" id="7" ng-model="ctrl.ces.reminders" ng-readonly="current" required/></div>
-        <div>Interview time for person <input type="number" name="interviewTimeForPerson" id="8" ng-model="ctrl.ces.interviewTimeForPerson" ng-readonly="interviewBegan"  required/></div>
-        <div>Interview time for day <input type="number" name="interviewTimeForDay" id="9" ng-model="ctrl.ces.interviewTimeForDay" ng-readonly="interviewBegan"  required/></div>
-        <input type="submit" value="Save" id="11">
-    </form>
-    <script src = "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+<div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
+    <jsp:include page="admin-header.jsp"/>
 
+    <main ng-app="myApp" ng-controller="FormController as ctrl" class="mdl-layout__content mdl-color--grey-100">
+
+        <div class="container">
+            <div class="reg registration">
+                <div class="col-lg-6 col-md-8 col-sm-9 col-xs-9">
+                    <div id="messageRegistration"></div>
+                    <div>
+                        <div class="row container-fluid reg-head">
+                            <div id="sessionSettings">
+                                <h4 class="form-signin-heading">Session settings</h4>
+                            </div>
+                        </div>
+                        <div name="myForm" id="CESfields" ng-submit="ctrl.save()"
+                             class="col-lg-11 col-md-8 col-sm-9 col-xs-9">
+                            <div><span class="myTextInfo">Year</span><input type="number" name="year" min="2016"
+                                                                            max="2100" id="1" class="form-control"
+                                                                            ng-model="ctrl.ces.year"
+                                                                            ng-readonly="current" required/></div>
+                            <div class="correct-year"></div>
+                            <div><span class="myTextInfo">Quota</span><input type="number" name="quota" id="quota"
+                                                                             class="form-control" min="1"
+                                                                             ng-model="ctrl.ces.quota"
+                                                                             required/></div>
+                            <div class="correct-quota"></div>
+                            <div><span class="myTextInfo">Start registration date</span><input type="date"
+                                                                                               name="startRegistrationDate"
+                                                                                               class="form-control"
+                                                                                               ng-model="ctrl.ces.startRegistrationDate"
+                                                                                               ng-readonly="current"
+                                                                                               id="3" required></div>
+                            <div class="correct-date"></div>
+                            <div><span class="myTextInfo">End registration date</span><input type="date"
+                                                                                             name="endRegistrationDate"
+                                                                                             class="form-control"
+                                                                                             ng-model="ctrl.ces.endRegistrationDate"
+                                                                                             ng-readonly="current"
+                                                                                             id="4" required/></div>
+                            <div class="correct-date"></div>
+                            <div><span class="myTextInfo">Start interviewing date</span><input type="date"
+                                                                                               name="startInterviewingDate"
+                                                                                               class="form-control"
+                                                                                               ng-model="ctrl.ces.startInterviewingDate"
+                                                                                               ng-readonly="interviewBegan"
+                                                                                               id="5"/></div>
+                            <div class="correct-date"></div>
+                            <div><span class="myTextInfo">End interviewing date</span><input type="date"
+                                                                                             name="endInterviewingDate"
+                                                                                             class="form-control"
+                                                                                             ng-model="ctrl.ces.endInterviewingDate"
+                                                                                             ng-readonly=true id="6"/>
+                            </div>
+                            <div class="correct-date"></div>
+                            <div><span class="myTextInfo">Reminders </span><input type="number" name="reminders" id="7"
+                                                                                  ng-model="ctrl.ces.reminders"
+                                                                                  class="form-control"
+                                                                                  ng-readonly="current" required/></div>
+                            <div><span class="myTextInfo">Interview time for person </span><input type="number"
+                                                                                                  name="interviewTimeForPerson"
+                                                                                                  id="8"
+                                                                                                  class="form-control"
+                                                                                                  ng-model="ctrl.ces.interviewTimeForPerson"
+                                                                                                  ng-readonly="interviewBegan"
+                                                                                                  required/></div>
+                            <div class="correct-int"></div>
+                            <div>Interview time for day <input type="number" name="interviewTimeForDay" id="9"
+                                                               class="form-control"
+                                                               ng-model="ctrl.ces.interviewTimeForDay"
+                                                               ng-readonly="interviewBegan" required/></div>
+                            <div class="correct-int"></div>
+                            <input type="submit" value="Save" style="margin-top: 5px;"
+                                   class="btn btn-lg btn-primary btn-block mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white formControllingButt">
+                            <%--<button ng-click="backButton()" class="btn btn-lg btn-primary btn-block"> Back </button>--%>
+                            <button ng-click="ctrl.closeButton()"
+                                    class="btn btn-lg btn-primary btn-block mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white formControllingButt">
+                                Close session
+                            </button>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <%--<a href="/logout" target="_blank" id="view-source"--%>
+            <%--class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">Exit</a>--%>
+        </div>
+    </main>
+
+</div>
 </body>
-
-<footer class="footer container-fluid">
-    <div class="footerLg container visible-md visible-lg">
-        <img class="col-lg-3 col-lg-3 col-sm-3" src="/resources/images/logo-gray.png"/>
-        <div class="col-lg-8 col-md-8 col-lg-offset-1 col-lg-offset-1 col-md-offset-1">
-            <div class="footerLgText col-lg-3 col-md-3 col-lg-offset-1 col-md-offset-1">
-                <p>Univercity Office Park III</p>
-                <p>95 Sawyer Road</p>
-                <p>Waltham, MA 02453 USA</p>
-                <p>1-781-419-3300</p>
-            </div>
-            <div class="footerLgText col-lg-3 col-md-3 col-lg-offset-1 col-md-offset-1">
-                <p>Facebook /NetcrackerTech</p>
-                <p>Twitter @NetcrackerTech</p>
-                <p>LikedIn /netcracker</p>
-            </div>
-            <div class="footerLgText col-lg-3 col-md-3 col-lg-offset-1 col-md-offset-1">
-                <p>Privacy Policy</p>
-                <p>Terms of Use</p>
-                <p>Sitemap</p>
-            </div>
-        </div>
-    </div>
-    <div class="footerSm row visible-sm visible-xs">
-        <img class="col-sm-5 visible-sm" src="/resources/images/logo-gray.png"/>
-        <div class="footerSmText col-sm-7 col-xs-12">
-            <div class="col-sm-8 col-xs-6">
-                <a class="col-sm-6 col-xs-7" href="#"><p>Courses Info</p></a>
-                <a class="col-sm-6 col-xs-7" href="#"><p>Contacts</p></a>
-            </div>
-            <div class="col-sm-4 col-xs-3 pull-right">
-                <p>Privacy Policy</p>
-                <p>Terms of Use</p>
-                <p>Sitemap</p>
-            </div>
-        </div>
-    </div>
-</footer>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
-<script src="/resources/js/ces.js" ></script>
-</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+
+<script>
+    $(function () {
+        if (!Modernizr.inputtypes.date) {
+            // If not native HTML5 support, fallback to jQuery datePicker
+            $('input[type=date]').datepicker({
+                        // Consistent format with the HTML5 picker
+                        dateFormat: 'yy-mm-dd'
+                    },
+                    // Localization
+                    $.datepicker.regional['it']
+            );
+        }
+    });
+</script>
+<script src="/resources/js/ces.js"></script>
+<script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
+<script src="/resources/bootstrap/js/bootstrap.js"></script>
 </html>
 

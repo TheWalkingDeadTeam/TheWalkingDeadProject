@@ -14,7 +14,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="A front-end template that helps you build fast, modern mobile web apps.">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <title>Material Design Lite</title>
+    <title>Students</title>
 
     <!-- Add to homescreen for Chrome on Android -->
     <meta name="mobile-web-app-capable" content="yes">
@@ -45,6 +45,7 @@
     <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.cyan-light_blue.min.css">
     <link rel="stylesheet" href="/resources/css/styles.css">
     <link rel="stylesheet" href="/resources/css/checkbox.css">
+    <link rel="stylesheet" href="/resources/css/notification/angular-ui-notification.min.css">
 
     <style>
         #view-source {
@@ -57,12 +58,14 @@
             z-index: 900;
         }
     </style>
+    <link href="<c:url value='/resources/css/app.css' />" rel="stylesheet">
 </head>
 <body>
 <main ng-controller="StudentCtrl as data"
       class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
 
     <jsp:include page="admin-header.jsp"/>
+
 
     <main class="mdl-layout__content mdl-color--grey-100">
         <div>
@@ -75,6 +78,17 @@
                 Accept
             </button>
 
+
+
+            <a href="#FooOne"
+               class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white"
+               data-toggle="collapse">Mail</a>
+
+            <a href="#FooTwo"
+               class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white"
+               data-toggle="collapse">Mail With Template</a>
+
+
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
                 <label class="mdl-button mdl-js-button mdl-button--icon" for="search">
                     <i class="material-icons">search</i>
@@ -84,12 +98,21 @@
                     <label class="mdl-textfield__label" for="search">Enter your query...</label>
                 </div>
             </div>
+            <div id="FooOne" class="collapse">
+                <jsp:include page="custom-mail.jsp"/>
+            </div>
             <div class="cssload-thecube">
                 <div class="cssload-cube cssload-c1"></div>
                 <div class="cssload-cube cssload-c2"></div>
                 <div class="cssload-cube cssload-c4"></div>
                 <div class="cssload-cube cssload-c3"></div>
             </div>
+
+
+            <div id="FooTwo" class="collapse">
+                <jsp:include page="custom-mail-template.jsp"/>
+            </div>
+
         </div>
         <table id="tableUsers" class="table table-striped table-hover">
             <thead>
@@ -97,11 +120,6 @@
                 <td>
                     <input type="checkbox" ng-model="selectedAll" ng-click="checkAll()">
                 </td>
-                <%--<td>--%>
-                    <%--<a ng-click="sortType = 'id'; sortReverse = !sortReverse; n">--%>
-                        <%--#--%>
-                    <%--</a>--%>
-                <%--</td>--%>
                 <td>
                     <a ng-click="sortReverse = !sortReverse; sortType(0,sortReverse)">
                         Full Name
@@ -145,7 +163,7 @@
 
     </main>
 </main>
-
+<script src="/resources/js/notification/angular-ui-notification.min.js"></script>
 <script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="/resources/js/admin-create-user.js"></script>
@@ -153,8 +171,8 @@
 <script src="/resources/js/checkboxScript.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-route.js"></script>
-<script src="../../resources/js/studentListAngular.js"></script>
-<script src="../../resources/js/dirPagination.js"></script>
+<script src="/resources/js/studentListAngular.js"></script>
+<script src="/resources/js/dirPagination.js"></script>
 <script src="http://vitalets.github.io/checklist-model/checklist-model.js"></script>
 
 </body>

@@ -1,0 +1,128 @@
+body, html
+{
+    background-color: #ffffff !important;
+}
+
+.intro
+{
+    text-align: center;
+    padding-top: 1%;
+    padding-bottom: 2%;
+    margin-bottom: 10px;
+}
+
+.intro h1
+{
+    font-weight: 900;
+    text-transform: capitalize;
+}
+
+.intro h5
+{
+    text-transform: uppercase;
+    background-color: #f5f5f5;
+    padding: 10px;
+    color: #333333;
+    display: inline-block;
+    font-size: 1.2rem;
+}
+
+/*about section*/
+
+.about .col
+{
+    margin-bottom: 5%;
+}
+
+.about h5
+{
+    text-align: center;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+}
+
+
+/*portfolio*/
+
+.portfolio .col
+{
+    margin-bottom: 24px;
+}
+
+.portfolio h5
+{
+    text-align: center;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+}
+
+.portfolio h6
+{
+    text-align: center;
+    text-transform: uppercase;
+    margin-bottom: 45px;
+}
+
+.portfolio hr
+{
+    width: 40px;
+    margin-bottom: 45px;
+}
+
+.portfolio .portfolio-holder
+{
+    clear: both;
+    text-align: center;
+}
+
+.portfolio img
+{
+    width: 33%;
+    display: inline-block;
+    float: left;
+}
+
+/**conatcts*/
+
+.contact .col
+{
+    margin-bottom: 24px;
+}
+
+.contact h5
+{
+    text-align: center;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+}
+
+.contact h6
+{
+    text-align: center;
+    text-transform: uppercase;
+    margin-bottom: 45px;
+}
+
+.contact hr
+{
+    width: 40px;
+    margin-bottom: 45px;
+}
+
+.contact .contact-holder
+{
+    padding-left: 40px;
+    text-align: left;
+}
+
+.contact .contact-holder h6
+{
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.contact .contact-holder p
+{
+    margin-bottom: 30px;
+}
+
