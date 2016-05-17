@@ -143,6 +143,7 @@ public class LoginController implements HandlerExceptionResolver {
     @RequestMapping(value = {"/passwordRecovery"}, method = RequestMethod.POST, produces = "application/json")
     public
     @ResponseBody Set<ValidationError> recoverPassword(@RequestBody String email) {
+
         Validator validator = new EmailValidator();
         Set<ValidationError> errors = null;
         ObjectMapper objectMapper = new ObjectMapper();
@@ -152,7 +153,6 @@ public class LoginController implements HandlerExceptionResolver {
             email = emailNode.asText();
             errors = validator.validate(email);
             if (errors.isEmpty()) {
-
                 User user = userService.getUser(email);
                 if (user != null) {
                     userService.recoverPass(user);
