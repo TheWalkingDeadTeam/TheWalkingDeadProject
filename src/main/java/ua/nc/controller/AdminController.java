@@ -13,22 +13,24 @@ import ua.nc.dao.exception.DAOException;
 import ua.nc.entity.*;
 import ua.nc.entity.profile.Field;
 import ua.nc.entity.profile.ListValue;
+import ua.nc.entity.*;
 import ua.nc.entity.profile.StudentData;
 import ua.nc.service.*;
 import ua.nc.service.user.UserService;
 import ua.nc.service.user.UserServiceImpl;
 import ua.nc.validator.*;
 
+import java.util.*;
+
+/**
+ * Created by Pavel on 18.04.2016.
+ */
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import javax.management.relation.Role;
 import java.util.*;
-
-/**
- * Created by Pavel on 18.04.2016.
- */
 
 /**
  * Created by Pavel on 18.04.2016.
@@ -594,10 +596,7 @@ public class AdminController {
         return "mail-send";
     }
 
-    @RequestMapping(value = {"/ac"}, method = RequestMethod.GET)
-    public String acNew() {
-        return "ac";
-    }
+
 }
 
 

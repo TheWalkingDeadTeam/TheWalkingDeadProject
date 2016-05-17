@@ -11,7 +11,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="A front-end template that helps you build fast, modern mobile web apps.">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <title>Material Design Lite</title>
+    <title>Edit application form</title>
     <link rel="stylesheet" type="text/css" href="/resources/css/ng-sortable.min.css">
 
     <!-- Add to homescreen for Chrome on Android -->
@@ -84,7 +84,6 @@
                 <td>
                     <input type="checkbox" ng-model="selectedAll" ng-click="checkAll()">
                 </td>
-                <%--<td>Id</td>--%>
                 <td>Type</td>
                 <td>
                     Field name
@@ -95,7 +94,6 @@
                 <tr ng-repeat="ch in fields" as-sortable-item>
                     <td as-sortable-item-handle><input type="checkbox" checklist-model="dataFields.fieldId"
                                                        checklist-value="ch.id"></td>
-                    <%--<td as-sortable-item-handle>{{ch.id}}</td>--%>
                     <td as-sortable-item-handle>{{chooseType(ch.fieldTypeID)}}</td>
                     <td as-sortable-item-handle><a href="/admin/edit-form/appformfield?{{ch.listTypeID}}/{{ch.id}}"
                                                    target="_blanks">{{ch.name}}</a></td>

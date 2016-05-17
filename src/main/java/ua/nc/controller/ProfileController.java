@@ -5,7 +5,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import ua.nc.dao.enums.UserRoles;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.entity.CES;
 import ua.nc.entity.profile.Profile;
@@ -30,19 +29,13 @@ public class ProfileController {
     @RequestMapping(value = "/profile/{id}", method = RequestMethod.GET, produces = "application/json")
     public
     @ResponseBody
-    Profile profile(@PathVariable("id") Integer id, SecurityContextHolderAwareRequestWrapper request) {
+    Profile profile(@PathVariable("id") Integer id) {
         Profile profile = null;
-        if (request.isUserInRole(UserRoles.ROLE_ADMIN.name())
-                || request.isUserInRole(UserRoles.ROLE_HR.name())
-                || request.isUserInRole(UserRoles.ROLE_BA.name())
-                || request.isUserInRole(UserRoles.ROLE_DEV.name())
-                || ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
-                .getPrincipal()).getId().equals(id)){
-            try {
-                profile = profileService.getProfile(id, 1);
-            } catch (DAOException e) {
-                LOGGER.warn("Cant get profile " + id, e.getCause());
-            }
+        EditFormService efs = new EditFormServiceImpl();
+        try {
+            profile = profileService.getProfile(id, efs.getCES_ID());
+        } catch (DAOException e) {
+            LOGGER.error(e);
         }
         return profile;
     }
@@ -57,7 +50,7 @@ public class ProfileController {
     public Set<ValidationError> profileFields(@RequestBody Profile profile) {
         Set<ValidationError> errors;
         Validator validator = new ProfileValidator();
-        errors = new LinkedHashSet<>();/*validator.validate(profile);*/
+        errors = validator.validate(profile);
         if (errors.isEmpty()) {
             try {
                 profileService.setProfile(((UserDetailsImpl) SecurityContextHolder
@@ -65,7 +58,7 @@ public class ProfileController {
                         .getAuthentication()
                         .getPrincipal()).getId(), profile);
             } catch (DAOException e) {
-                e.printStackTrace(); //toDO add log
+                LOGGER.equals(e);
             }
         }
         return errors;

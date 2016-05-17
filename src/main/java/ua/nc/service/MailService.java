@@ -1,5 +1,6 @@
 package ua.nc.service;
 
+import ua.nc.entity.Application;
 import ua.nc.entity.Mail;
 import ua.nc.entity.User;
 
@@ -97,19 +98,11 @@ public interface MailService {
          * @param interviewerParameters parameters to set in interviewer template to personalize the emails.
          * @param studentMail email template to send to all the students.
          * @param studentParameters parameters to set in student template to personalize the emails.
-         * @param interviewersList list of all the interviewers who take part in the current interview.
-         * @param studentsList list of all the students who take part in the current interview.
+         * @param interviewersSet list of all the interviewers who take part in the current interview.
+         * @param studentsSet list of all the students who take part in the current interview.
          */
     void sendInterviewReminders(List<Date> interviewDates, int reminderTime, Mail interviewerMail,
                                 Map<String, String> interviewerParameters, Mail studentMail,
-                                Map<String, String> studentParameters, Set<User> interviewersList,
-                                Set<User> studentsList);
-
-    /**
-     * Customize mail with parameters from. Replace hardcoded values from template
-     * @param mail mail to be replaced
-     * @param parameters map with key value. Iterating through mail will replace harcoded values
-     * @return new updated mail template
-     */
-    public Mail customizeMail(Mail mail, Map<String, String> parameters);
+                                Map<String, String> studentParameters, Set<User> interviewersSet,
+                                Set<User> studentsSet, Map<Integer, Integer> applicationList);
 }

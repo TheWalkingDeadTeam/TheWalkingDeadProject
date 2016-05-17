@@ -74,11 +74,11 @@ public class NewQuestionValidator implements Validator {
             }
 
             if (!((Integer) fullFieldWrapper.getOrderNum() instanceof Integer)) {
-                errors.add(new ValidationError("order num", "Order num is set automatically, don't fuck with me"));// TODO remove perhaps
+                errors.add(new ValidationError("order num", "Order num is set automatically, good try :)"));
             }
 
             if (!((Boolean) fullFieldWrapper.isMultipleChoice() instanceof Boolean)) {
-                errors.add(new ValidationError("multiple field choice", "Multiple type is set automatically, don't fuck with me"));// TODO remove perhaps
+                errors.add(new ValidationError("multiple field choice", "Multiple type is set automatically, good try :)"));
             }
         } else {
             errors.add(new ValidationError("full field", "Field shouldn't be null"));
