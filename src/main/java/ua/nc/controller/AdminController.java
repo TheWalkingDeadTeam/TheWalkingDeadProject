@@ -594,7 +594,10 @@ public class AdminController {
         return "mail-send";
     }
 
-
+    @RequestMapping(value = {"/ac"}, method = RequestMethod.GET)
+    public String acNew() {
+        return "ac";
+    }
 }
 
 
