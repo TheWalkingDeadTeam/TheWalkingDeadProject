@@ -23,10 +23,10 @@
             background-color: yellow;
         }
     </style>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
-    <link href="<c:url value='/resources/css/app.css' />" rel="stylesheet" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link href="<c:url value='/resources/css/app.css' />" rel="stylesheet">
 </head>
-<body ng-app="mailer" class="ng-cloak">
+<body ng-app="app" class="ng-cloak">
 <div class="generic-container" ng-controller="MailController as ctrl">
     <div class="panel panel-default">
         <div class="panel-heading"><span class="lead">Mail Template Form </span></div>
@@ -37,7 +37,7 @@
                     <div class="form-group col-md-12">
                         <label class="col-md-2 control-lable" for="file">Mail Topic</label>
                         <div class="col-md-7">
-                            <textarea rows="5" cols="5" type="text" ng-model="ctrl.mail.headTemplate" name="mhead" class="mailhead form-control input-sm" placeholder="Enter mail topic" required ng-minlength="3"></textarea>
+                            <input type="text" ng-model="ctrl.mail.headTemplate" name="mhead" class="mailhead form-control input-sm" placeholder="Enter mail topic" required ng-minlength="3"> </textarea>
                             <div class="has-error" ng-show="myForm.$dirty">
                                 <span ng-show="myForm.mhead.$error.required">This is a required field</span>
                                 <span ng-show="myForm.mhead.$error.minlength">Minimum length required is 3</span>
@@ -52,7 +52,7 @@
                     <div class="form-group col-md-12">
                         <label class="col-md-2 control-lable" for="file">Mail Body</label>
                         <div class="col-md-7">
-                            <input type="text" ng-model="ctrl.mail.bodyTemplate" class="form-control input-sm" placeholder="Enter mail body"/>
+                            <textarea  rows="5" cols="20" type="text" ng-model="ctrl.mail.bodyTemplate" class="form-control input-sm" placeholder="Enter mail body"> </textarea>
                         </div>
                     </div>
                 </div>
@@ -84,8 +84,8 @@
                 <tbody>
                 <tr ng-repeat="m in ctrl.mails">
                     <td><span ng-bind="m.id"></span></td>
-                    <td><span ng-bind="m.bodyTemplate"></span></td>
                     <td><span ng-bind="m.headTemplate"></span></td>
+                    <td><span ng-bind="m.bodyTemplate"></span></td>
                     <td>
                         <button type="button" ng-click="ctrl.edit(m.id)" class="btn btn-success custom-width">Edit</button>  <button type="button" ng-click="ctrl.remove(m.id)" class="btn btn-danger custom-width">Remove</button>
                     </td>

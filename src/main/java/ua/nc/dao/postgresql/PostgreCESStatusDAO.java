@@ -21,7 +21,7 @@ public class PostgreCESStatusDAO extends AbstractPostgreDAO<CESStatus, Integer> 
 
     @Override
     public String getSelectQuery() {
-        return "SELECT * FORM ces_status WHERE ces_status_id = ?";
+        return "SELECT * FROM ces_status WHERE ces_status_id = ?";
     }
 
     @Override
@@ -36,7 +36,7 @@ public class PostgreCESStatusDAO extends AbstractPostgreDAO<CESStatus, Integer> 
 
     @Override
     public String getAllQuery() {
-        return "SELECT * FORM ces_status";
+        return "SELECT * FROM ces_status";
     }
 
     @Override

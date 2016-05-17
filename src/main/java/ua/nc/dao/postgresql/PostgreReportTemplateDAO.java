@@ -131,7 +131,7 @@ public class PostgreReportTemplateDAO extends AbstractPostgreDAO<ReportTemplate,
             ResultSetMetaData metaData = resultSet.getMetaData();
             while (resultSet.next()) {
                 Map<String, Object> columns = new LinkedHashMap<>();
-                for (int i = 1; i < metaData.getColumnCount(); i++) {
+                for (int i = 1; i <= metaData.getColumnCount(); i++) {
                     columns.put(metaData.getColumnLabel(i), resultSet.getObject(i));
                 }
                 rows.add(columns);

@@ -2,6 +2,11 @@ var app = angular.module('myApp', []);
 app.controller('FormController', ['$scope', '$http', function ($scope, $http) {
 
 
+
+    $scope.backButton = function() {
+        window.location = '/admin';
+    };
+
     this.ces = {
         "id": '',
         "year": '',
@@ -17,28 +22,33 @@ app.controller('FormController', ['$scope', '$http', function ($scope, $http) {
     };
     $scope.current = false;
     $scope.interviewBegan = false;
-    $http.get('/cessettings').success(function(response) {
-        if (response.statusId == 1){
-            $scope.current = true;
-        } else if (response.statusId == 4 ){
-            $scope.current = true;
-            $scope.interviewBegan = true;
-        }
-        console.log(response);
-        $scope.ctrl.ces.year =  response.year;
-        $scope.ctrl.ces.id = response.id;
-        $scope.ctrl.ces.statusId = response.statusId;
-        $scope.ctrl.ces.startRegistrationDate = new Date(response.startRegistrationDate);
-        $scope.ctrl.ces.endRegistrationDate = new Date(response.endRegistrationDate);
-        $scope.ctrl.ces.startInterviewingDate = new Date(response.startInterviewingDate);
-        $scope.ctrl.ces.endInterviewingDate = new Date(response.endInterviewingDate);
-        $scope.ctrl.ces.quota = response.quota;
-        $scope.ctrl.ces.reminders = response.reminders;
-        $scope.ctrl.ces.interviewTimeForDay = response.interviewTimeForDay;
-        $scope.ctrl.ces.interviewTimeForPerson = response.interviewTimeForPerson;
-    }).error(function(){
-        $scope.postError = true;
-    });
+
+    var getReq = function() {
+        $http.get('/admin/cessettings').success(function (response) {
+            if (response.statusId < 4) {
+                $scope.current = true;
+            } else if (response.statusId >= 4) {
+                $scope.current = true;
+                $scope.interviewBegan = true;
+            }
+            console.log(response)
+            $scope.ctrl.ces.year = response.year;
+            $scope.ctrl.ces.id = response.id;
+            $scope.ctrl.ces.statusId = response.statusId;
+            $scope.ctrl.ces.startRegistrationDate = new Date(response.startRegistrationDate);
+            $scope.ctrl.ces.endRegistrationDate = new Date(response.endRegistrationDate);
+            $scope.ctrl.ces.startInterviewingDate = new Date(response.startInterviewingDate);
+            $scope.ctrl.ces.endInterviewingDate = new Date(response.endInterviewingDate);
+            $scope.ctrl.ces.quota = response.quota;
+            $scope.ctrl.ces.reminders = response.reminders;
+            $scope.ctrl.ces.interviewTimeForDay = response.interviewTimeForDay;
+            $scope.ctrl.ces.interviewTimeForPerson = response.interviewTimeForPerson;
+        }).error(function () {
+            $scope.postError = true;
+        });
+    }
+    getReq();
+
     this.save = function () {
         if (!$scope.current) {
             if (new Date() > new Date(this.ces.startRegistrationDate)) {
@@ -52,7 +62,7 @@ app.controller('FormController', ['$scope', '$http', function ($scope, $http) {
         }
 
         if ((this.ces.startInterviewingDate != ' ') && (!$scope.interviewBegan)) {
-            if (new Date(this.ces.startInterviewingDate) <= new Date()){
+            if (new Date(this.ces.startInterviewingDate) <= new Date()) {
                 alert("choose another start interviewing day!");
                 return
             }
@@ -69,17 +79,27 @@ app.controller('FormController', ['$scope', '$http', function ($scope, $http) {
                 return
             }
         }
-        if (new Date() < new Date(this.ces.startRegistrationDate)){
+        if (new Date() < new Date(this.ces.startRegistrationDate)) {
             this.ces.statusId = '1';
-        } else if (new Date() > new Date(this.ces.endInterviewingDate)){
-            this.ces.statusId = '3';
-        } else {
-            this.ces.statusId = '2';
         }
-        $http.post('/cesPost', this.ces).success(function() {
+        $http.post('/admin/cesPost', this.ces).success(function () {
             $scope.postSuccess = true
-        }).error(function(){
+        }).error(function () {
             $scope.postError = true;
         });
     };
+    this.closeButton = function(){
+        $http({
+            method : "POST",
+            url : '/admin/cesclose'
+        }).then(function mySucces(response) {
+            if (confirm("Session will be removed") == true) {
+                getReq();
+            }
+
+        }, function myError(response) {
+            $scope.postError = true;
+        });
+    }
 }]);
+

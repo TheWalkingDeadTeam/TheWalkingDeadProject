@@ -98,46 +98,53 @@ public class PostgreRoleDAO extends AbstractPostgreDAO<Role, Integer> implements
         return roles;
     }
 
+    //////////////////////// vdanchul
+    private static String ADD_ROLES = "INSERT INTO system_user_role(role_id, system_user_id) VALUES (?, ?);";
+    private static String REMOVE_ROLES = "DELETE FROM system_user_role WHERE system_user_id = ?;";
+    private static String GET_ROLES_COUNT = "SELECT COUNT(1) FROM system_user_role WHERE system_user_id = ?";
+
     @Override
-    public void setRoleToUser(Set<Role> roles, User user) throws DAOException {
-        String sql = "INSERT INTO public.user_role(role_id, user_id) SELECT ?, user_id FROM public.user u WHERE u.email=?";
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-        try {
-            System.out.println("###");
-            connection.setAutoCommit(false);
-            statement = connection.prepareStatement(sql);
-            System.out.println("$$$");
-            System.out.println(roles.size());
+    public void setRolesToUser(Set<Role> roles, User user) throws DAOException {
+        try (PreparedStatement statement = connection.prepareStatement(ADD_ROLES)){
             for (Role role : roles) {
-                System.out.println(role.getId());
                 statement.setInt(1, role.getId());
-                System.out.println(user.getEmail());
-                statement.setString(2, user.getEmail());
-                System.out.println("batch");
+                statement.setInt(2, user.getId());
                 statement.addBatch();
-                System.out.println("%%%");
             }
-            statement.executeBatch();
-            connection.commit();
-            System.out.println("^^^");
+            int[] count = statement.executeBatch();
+            for (int i : count){
+                if (i != 1) throw new DAOException("Affected more than one row: " + count);
+            }
         } catch (SQLException e) {
-            System.out.println("&&&");
-            LOGGER.info("Cant set roles to user" + user.getName());
             throw new DAOException(e);
-        } finally {
-            try {
-                if (resultSet != null)
-                    resultSet.close();
-                if (statement != null)
-                    statement.close();
-                System.out.println(")))");
-            } catch (Exception e) {
-                System.out.println("(((");
-                throw new DAOException(e);
-            }
         }
     }
+
+    private Integer getRolesCount(Integer userId) throws DAOException {
+        try (PreparedStatement statement = connection.prepareStatement(GET_ROLES_COUNT)){
+            statement.setInt(1, userId);
+            ResultSet rs = statement.executeQuery();
+            rs.next();
+            return rs.getInt("count");
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        }
+    }
+
+    public void removeRolesFromUser(User user) throws DAOException {
+        try (PreparedStatement statement = connection.prepareStatement(REMOVE_ROLES)){
+            statement.setInt(1, user.getId());
+            int count = statement.executeUpdate();
+            int needed = getRolesCount(user.getId());
+            if (count != needed){
+                throw new DAOException("Only " + count + " rows where affected. Needed: " + needed);
+            }
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        }
+    }
+
+    //////////////////////////////////////
 
     @Override
     public String getSelectQuery() {

@@ -44,7 +44,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.cyan-light_blue.min.css">
     <link rel="stylesheet" href="/resources/css/styles.css">
-
+    <link rel="stylesheet" href="/resources/css/notification/angular-ui-notification.min.css">
     <style>
         #view-source {
             position: fixed;
@@ -65,14 +65,48 @@
 
     <main class="mdl-layout__content mdl-color--grey-100">
         <div>
-            <button ng-click="activateStud()"
+            <button ng-click="subscribeInterviewer()"
                     class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
-                Activate
+                Subscribe from CES
             </button>
-            <button ng-click="deactivateStud()"
+            <button ng-click="unsubscribeInterviewer()"
                     class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
-                Deactivate
+                Unsubscribe from CES
             </button>
+
+
+
+            <a href="#FooOne"
+               class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white"
+               data-toggle="collapse">Mail</a>
+
+            <a href="#FooTwo"
+               class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white"
+               data-toggle="collapse">Mail With Template</a>
+
+
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+            <label class="mdl-button mdl-js-button mdl-button--icon" for="search">
+                <i class="material-icons">search</i>
+            </label>
+            <div class="mdl-textfield__expandable-holder">
+                <form ng-submit = "searchFiltr(field)"><input  class="mdl-textfield__input" type="text" id="search" name="field" ng-model="field"></form>
+                <label class="mdl-textfield__label" for="search">Enter your query...</label>
+            </div>
+        </div>
+
+
+            <div id="FooOne" class="collapse">
+                <jsp:include page="custom-mail.jsp"/>
+            </div>
+
+
+            <div id="FooTwo" class="collapse">
+                <jsp:include page="custom-mail-template-interviewers.jsp"/>
+            </div>
+
+
+
         </div>
         <table class="table table-bordered table-striped" style="{margin-top: 200px}">
 
@@ -82,50 +116,64 @@
                     <input type="checkbox" ng-model="selectedAll" ng-click="checkAll()">
                 </td>
                 <td>
-                    <a href="#" ng-click="order_by = 'id'; sortReverse = !sortReverse; sortType(order_by)">
+                    <a href="#" ng-click="order_by = 'id'; sortReverse = !sortReverse; sortType(order_by,sortReverse)">
                         #
+                        <span ng-show="sortType == 'id' && !sortReverse" class="fa fa-caret-down"></span>
+                        <span ng-show="sortType == 'id' && sortReverse" class="fa fa-caret-up"></span>
                     </a>
                 </td>
                 <td>
-                    <a href="#" ng-click="order_by = 'name'; sortReverse = !sortReverse; sortType(order_by)">
+                    <a href="#" ng-click="order_by = 'name'; sortReverse = !sortReverse; sortType(order_by,sortReverse)">
                         Name
+                        <span ng-show="sortType == 'name' && !sortReverse" class="fa fa-caret-down"></span>
+                        <span ng-show="sortType == 'name' && sortReverse" class="fa fa-caret-up"></span>
                     </a>
                 </td>
                 <td>
-                    <a href="#" ng-click="order_by = 'university'; sortReverse = !sortReverse; sortType(order_by)">
+                    <a href="#" ng-click="order_by = 'surname'; sortReverse = !sortReverse; sortType(order_by,sortReverse)">
                         Surname
+                                <span ng-show="sortType == 'university' && !sortReverse"
+                                      class="fa fa-caret-down"></span>
+                        <span ng-show="sortType == 'university' && sortReverse" class="fa fa-caret-up"></span>
                     </a>
                 </td>
                 <td>
-                    <a href="#" ng-click="order_by = 'email'; sortReverse = !sortReverse; sortType(order_by)">
+                    <a href="#" ng-click="order_by = 'email'; sortReverse = !sortReverse; sortType(order_by,sortReverse)">
                         Email
+                        <span ng-show="sortType == 'isActive' && !sortReverse" class="fa fa-caret-down"></span>
+                        <span ng-show="sortType == 'isActive' && sortReverse" class="fa fa-caret-up"></span>
                     </a>
                 </td>
                 <td>
-                    <a href="#" ng-click="order_by = 'role'; sortReverse = !sortReverse; sortType(order_by)">
+                    <a href="#" ng-click="order_by = 'role'; sortReverse = !sortReverse; sortType(order_by,sortReverse)">
                         Role
+                        <span ng-show="sortType == 'devMark' && !sortReverse" class="fa fa-caret-down"></span>
+                        <span ng-show="sortType == 'devMark' && sortReverse" class="fa fa-caret-up"></span>
                     </a>
                 </td>
                 <td>
-                    <a href="#" ng-click="order_by = 'participation'; sortReverse = !sortReverse; sortType(order_by)">
+                    <a href="#" ng-click="order_by = 'participation'; sortReverse = !sortReverse; sortType(order_by,sortReverse)">
                         Participation
+                        <span ng-show="sortType == 'devMark' && !sortReverse" class="fa fa-caret-down"></span>
+                        <span ng-show="sortType == 'devMark' && sortReverse" class="fa fa-caret-up"></span>
                     </a>
                 </td>
             </tr>
             </thead>
             <tbody>
             <tr ng-show="data.users.length <= 0">
-                <td colspan="5" style="text-align:center;">Bratiska POGODI</td>
+                <td colspan="5" style="text-align:center;">Please Wait</td>
             </tr>
             <tr dir-paginate="user in data.users|itemsPerPage:data.itemsPerPage" total-items="data.total_count">
                 <td><input type="checkbox" checklist-model="dataStudents.studId" checklist-value="user.id">
                 </td>
-                <td ng-init="index=$index + 1">{{index}}</td>
-                <td><a href="/admin/interviewerss/{{user.userId}}" target="_blanks">{{user.name}}</a></td>
-                <td><a href="/admin/interviewers/{{user.userId}}" target="_blanks">{{user.surname}}</a></td>
+                <%--<td ng-init="index=$index + 1">{{index}}</td>--%>
+                <td><a href="/account/{{user.id}}" target="_blanks">{{user.id}}</a></td>
+                <td>{{user.name}}</td>
+                <td>{{user.surname}}</td>
                 <td>{{user.email}}</td>
                 <td>{{user.role}}</td>
-                <td>{{user.participation}}</td>
+                <td ng-style="{opacity:0.5,'background-color':'{{user.participation ? 'green' : 'red'}}'}">{{user.participation}}</td>
             </tr>
             </tbody>
         </table>
@@ -141,7 +189,7 @@
     </main>
 </main>
 
-
+<script src="/resources/js/notification/angular-ui-notification.min.js"></script>
 <script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="/resources/js/admin-create-user.js"></script>

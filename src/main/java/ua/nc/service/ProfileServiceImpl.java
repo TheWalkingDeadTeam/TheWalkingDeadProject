@@ -1,6 +1,7 @@
 package ua.nc.service;
 
 
+import org.apache.log4j.Logger;
 import ua.nc.dao.*;
 import ua.nc.dao.enums.DataBaseType;
 import ua.nc.dao.exception.DAOException;
@@ -24,6 +25,8 @@ import java.util.*;
  * Created by Pavel on 28.04.2016.
  */
 public class ProfileServiceImpl implements ProfileService {
+    private final static Logger LOGGER = Logger.getLogger(FeedbackServiceImpl.class);
+
     private DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
     private static final Set<String> typesToDeny = new HashSet<>(Arrays.asList("textarea", "tel", "checkbox"));
     private static final String ROLE_STUDENT = "ROLE_STUDENT";
@@ -157,7 +160,7 @@ public class ProfileServiceImpl implements ProfileService {
                 }
             }
         } catch (DAOException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getCause());
         } finally {
             daoFactory.putConnection(connection);
         }
@@ -185,7 +188,7 @@ public class ProfileServiceImpl implements ProfileService {
                         result.add(new FieldValue(profileField.getId(), applicationId, null,
                                 null, format.parse(profileField.getValues().get(0).getValue()), null));
                     } catch (ParseException e) {
-                        e.printStackTrace(); // say smth about wrong date
+                        LOGGER.warn(e.getCause());
                     }
                     break;
                 case "select":

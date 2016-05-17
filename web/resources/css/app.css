@@ -21,6 +21,10 @@ body, .form-control {
     padding: 20px;
 }
 
+.formcontainer-special {
+    padding: 20px;
+}
+
 .tablecontainer {
     padding-left: 20px;
 }

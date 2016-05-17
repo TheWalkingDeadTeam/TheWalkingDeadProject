@@ -81,10 +81,14 @@
                                                                    role="presentation">schedule</i>Schedule Planning</a>
         <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons"
                                                    role="presentation">inbox</i>Form Template</a>
-        <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons"
+        <a class="mdl-navigation__link" href="/admin/cessettings"><i class="mdl-color-text--blue-grey-400 material-icons"
                                                    role="presentation">local_offer</i>Registration Period</a>
         <a class="mdl-navigation__link" href="/admin/students"><i class="mdl-color-text--blue-grey-400 material-icons"
                                                                   role="presentation">people</i>Student List</a>
+        <a class="mdl-navigation__link" href="/admin/users"><i class="mdl-color-text--blue-grey-400 material-icons"
+                                                               role="presentation">people</i>Users List</a>
+        <a class="mdl-navigation__link" href="/admin/interviewee"><i class="mdl-color-text--blue-grey-400 material-icons"
+                                                               role="presentation">people</i>Interviewee List</a>
         <a class="mdl-navigation__link" href="/admin/interviewers"><i
                 class="mdl-color-text--blue-grey-400 material-icons"
                 role="presentation">people</i>Interviewer List</a>
@@ -96,7 +100,7 @@
         <a class="mdl-navigation__link" href="/admin/enroll-session"><i
                 class="mdl-color-text--blue-grey-400 material-icons"
                 role="presentation">schedule</i>Enrollment History</a>
-        <a class="mdl-navigation__link" href="/report"><i
+        <a class="mdl-navigation__link" href="/admin/report"><i
                 class="mdl-color-text--blue-grey-400 material-icons"
                 role="presentation">show_chart</i>Statistic & Reports</a>
     </nav>
