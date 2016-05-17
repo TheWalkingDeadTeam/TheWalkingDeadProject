@@ -135,11 +135,12 @@ public class SchedulerController {
             Connection connection = daoFactory.getConnection();
             UserDAO userDAO = new PostgreUserDAO(connection);
             Set<User> interviewersList = userDAO.getInterviewersForCurrentCES();
-            List<Application> applicationList = appDAO.getAllAcceptedApplications(ces.getId());
+            ApplicationDAO appDAO = new PostgreApplicationDAO(connection);
+            Map<Integer, Integer> applicationList = appDAO.getAllAcceptedApplications(ces.getId());
             Set<User> studentsList = userDAO.getAllAcceptedStudents(ces.getId());
             System.out.println("!!!");
             mailService.sendInterviewReminders(interviewDates, reminderTime, interviewerMail, interviewerParameters,
-                    studentMail, studentParameters, interviewersList, studentsList);
+                    studentMail, studentParameters, interviewersList, studentsList, applicationList);
         } catch (DAOException e) {
             log.warn("Check Scheduler parameters", e);
         }

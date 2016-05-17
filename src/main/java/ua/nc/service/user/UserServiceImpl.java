@@ -271,7 +271,7 @@ public class UserServiceImpl implements UserService {
             for (Role role : roles) {
                 newRoles.add(roleDAO.findByName(role.getName()));
             }
-            roleDAO.setRoleToUser(newRoles, user);
+            roleDAO.setRolesToUser(newRoles, user);
             System.out.println("***");
         } catch (DAOException e) {
             System.out.println("@@@");

@@ -255,7 +255,7 @@ public class MailServiceImpl implements MailService {
     public void sendInterviewReminders(List<Date> interviewDates, int reminderTime, Mail interviewerMail,
                                        Map<String, String> interviewerParameters, Mail studentMail,
                                        Map<String, String> studentParameters, Set<User> interviewersSet,
-                                       Set<User> studentsSet, List<Application> applicationList) {
+                                       Set<User> studentsSet, Map<Integer, Integer> applicationList) {
         int reminderMillis = reminderTime * MILLIS_PER_HOUR;
         Mail customizedInterviewerMail = customizeMail(interviewerMail, studentParameters);
         Mail customizedStudentMail = customizeMail(studentMail, studentParameters);
@@ -284,7 +284,7 @@ public class MailServiceImpl implements MailService {
     private void everydaySend(List<Date> interviewDates, Set<User> interviewersSet, Set<User> studentsSet,
                               int reminderMillis, Mail interviewerMail, Mail studentMail,
                               Map<String, String> dateTimeParameters, SimpleDateFormat dateFormat,
-                              List<Application> applicationList) {
+                              Map<Integer, Integer> applicationList) {
         Connection connection = daoFactory.getConnection();
         IntervieweeDAO intDAO = daoFactory.getIntervieweeDAO(connection);
         String startHours = dateTimeParameters.get(START_HOURS_PATTERN);
@@ -309,14 +309,18 @@ public class MailServiceImpl implements MailService {
                 firstStudent = lastStudent;
                 lastStudent += studentsPerGroup;
                 dateTimeParameters = increaseGroupTime(dateTimeParameters);
+                for (User user : studentGroup) {
+                    int appId = applicationList.remove(user.getId());
+                    try {
+                        intDAO.create(new Interviewee(appId, new Date(interviewDate.getTime() + startMillis)));
+                    } catch (DAOException e) {
+                        LOGGER.error("Unable to create new interviewee for user " + user.getId());
+                    }
+                }
             }
             dateTimeParameters.put(START_HOURS_PATTERN, startHours);
             dateTimeParameters.put(START_MINS_PATTERN, startMins);
             todaysLastStudent += studentsPerDay;
-        }
-        for (Application app : applicationList) {
-            intDAO.create(new Interviewee())
-
         }
     }
 

@@ -131,6 +131,7 @@ public class CESServiceImpl implements CESService {
 
     @Override
     public List<Date> planSchedule() throws DAOException {
+        System.out.println("Interview list making.");
         Connection connection = daoFactory.getConnection();
         UserDAO userDAO = new PostgreUserDAO(connection);
         CESDAO cesDAO = new PostgreCESDAO(connection);
@@ -141,7 +142,7 @@ public class CESServiceImpl implements CESService {
         int timePerStudent = ces.getInterviewTimeForPerson();
 
         Set<User> interviewersList = userDAO.getInterviewersForCurrentCES();
-        Set<User> studentsList = userDAO.getStudentsForCurrentCES();
+        Set<User> studentsList = userDAO.getAllAcceptedStudents(ces.getId());
         Date endDate = calculateEndDate(ces, startDate, hoursPerDay, timePerStudent, interviewersList, studentsList);
 
         //make interview dates list
@@ -152,6 +153,7 @@ public class CESServiceImpl implements CESService {
             currentTime += MILLIS_PER_DAY;
             interviewDates.add(new Date(currentTime));
         }
+        System.out.println("Interview list was made.");
         return interviewDates;
     }
 
@@ -168,12 +170,13 @@ public class CESServiceImpl implements CESService {
      */
     private Date calculateEndDate(CES ces, Date startDate, int hoursPerDay, int timePerStudent,
                                   Set<User> interviewersList, Set<User> studentsList) {
+        System.out.println("Date calculating.");
         int studentsAmount = studentsList.size();
-
         int studsPerDayPerOneIntrwr = MINUTES_PER_HOUR * hoursPerDay / timePerStudent;
         int studentsPerDay = studsPerDayPerOneIntrwr * getMinimalInterviewersAmount(interviewersList);
         Date endDate = new Date(startDate.getTime() + (studentsAmount / studentsPerDay) * MILLIS_PER_DAY);
         ces.setEndInterviewingDate(endDate);
+        System.out.println("Date calculated");
         return endDate;
     }
 
@@ -183,20 +186,26 @@ public class CESServiceImpl implements CESService {
         RoleDAO roleDAO = new PostgreRoleDAO(connection);
         int devAmount = 0;
         int hrbaAmount = 0;
+        System.out.println(0);
         for (User intrwr : interviewersList) {
             try {
+                System.out.println(1);
                 intrwr.setRoles(roleDAO.findByEmail(intrwr.getEmail()));
+                System.out.println(2);
             } catch (DAOException e) {
                 LOGGER.warn("Unable to get interviewers roles.", e);
             }
             for (Role role : intrwr.getRoles()) {
+                System.out.println(3);
                 if ("ROLE_DEV".equals(role.getName())) {
                     devAmount++;
                 }
                 if (("ROLE_HR".equals(role.getName())) || ("ROLE_BA".equals(role.getName()))) {
                     hrbaAmount++;
                 }
+                System.out.println(4);
             }
+            System.out.println(devAmount + " " + hrbaAmount);
         }
         return Math.min(devAmount, hrbaAmount);
     }

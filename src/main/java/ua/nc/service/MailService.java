@@ -104,5 +104,5 @@ public interface MailService {
     void sendInterviewReminders(List<Date> interviewDates, int reminderTime, Mail interviewerMail,
                                 Map<String, String> interviewerParameters, Mail studentMail,
                                 Map<String, String> studentParameters, Set<User> interviewersSet,
-                                Set<User> studentsSet, List<Application> applicationList);
+                                Set<User> studentsSet, Map<Integer, Integer> applicationList);
 }
