@@ -262,10 +262,7 @@ public class PostgreUserDAO extends AbstractPostgreDAO<User, Integer> implements
         return null;
     }
 
-    @Override
-    public User read(Integer key) throws DAOException {
-        return null;
-    }
+
 
     @Override
     public void update(User object) throws DAOException {

@@ -46,7 +46,6 @@
                     <li><a href="/login">Home</a></li>
                     <li><a href="/information">Information</a></li>
                     <li><a href="/contacts">Contacts</a></li>
-                    <li><a href="/logout">Logout</a></li>
                 </ul>
             </div>
         </div>

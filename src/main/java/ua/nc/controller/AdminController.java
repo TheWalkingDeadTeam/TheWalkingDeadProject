@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.entity.*;
+import ua.nc.entity.profile.Field;
+import ua.nc.entity.profile.ListValue;
 import ua.nc.entity.profile.StudentData;
 import ua.nc.service.*;
 import ua.nc.service.user.UserService;

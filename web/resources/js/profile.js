@@ -2,9 +2,7 @@
     var requestData;
     var id = location.search.substr(1);
     var isAgree = false;
-/*
-    $('#photo_img').attr({'src':('/getPhoto/'+id)});
-*/
+
     $(document).ready(function () {
         $.ajax({
             type: 'get',

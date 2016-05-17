@@ -2,11 +2,13 @@ package ua.nc.controller;
 
 import org.apache.log4j.Logger;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import ua.nc.dao.enums.UserRoles;
 import ua.nc.entity.User;
 import ua.nc.service.UserDetailsImpl;
 import ua.nc.service.user.UserService;
@@ -28,17 +30,20 @@ public class AccountController {
     }
 
     @RequestMapping(value = "/account/{id}", method = RequestMethod.GET)
-    public User account(@PathVariable("id") Integer id) {
-        User user = userService.getUser(id);
+    public User account(@PathVariable("id") Integer id, SecurityContextHolderAwareRequestWrapper request) {
+        User user = null;
+        if (((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal()).getId().equals(id) || request.isUserInRole(UserRoles.ROLE_ADMIN.name())) {
+            user = userService.getUser(id);
+        }
         return user;
     }
 
     @RequestMapping(value = "/account/profile", method = RequestMethod.GET)
-    public String profileTest(HttpServletRequest request) {
+    public String profileTest(SecurityContextHolderAwareRequestWrapper request) {
         if (request.isUserInRole("ROLE_STUDENT")) {
-            Integer id = ((UserDetailsImpl) SecurityContextHolder
-                    .getContext()
-                    .getAuthentication()
+
+            Integer id = ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                     .getPrincipal()).getId();
             return "redirect:/profile?" + id;
         }
@@ -47,7 +52,7 @@ public class AccountController {
 
 
     @ResponseBody
-    @RequestMapping(value = "/getUser", method = RequestMethod.GET)
+    @RequestMapping(value = "/getUser", method = RequestMethod.GET, produces = "application/json")
     public User getUser() {
         User user = userService.getUser(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal()).getUsername());
@@ -55,8 +60,8 @@ public class AccountController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getUser/{id}", method = RequestMethod.GET)
-    public User getUser(@PathVariable("id") Integer id) {
+    @RequestMapping(value = "/getUser/{id}", method = RequestMethod.GET, produces = "application/json")
+    public User getUserId(@PathVariable("id") Integer id) {
         User user = userService.getUser(id);
         return user;
     }

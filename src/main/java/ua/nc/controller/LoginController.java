@@ -64,11 +64,12 @@ public class LoginController implements HandlerExceptionResolver {
 
     @RequestMapping(value = {"/", "/login"}, method = RequestMethod.GET)
     public String login(HttpServletRequest request) {
-        if (request.isUserInRole(UserRoles.ROLE_ADMIN.name())) {
+
+
+        if (request.isUserInRole(UserRoles.ROLE_ADMIN.name()) || request.isUserInRole(UserRoles.ROLE_HR.name())) {
             return "admin";
         } else {
-            if (request.isUserInRole(UserRoles.ROLE_HR.name())
-                    || request.isUserInRole(UserRoles.ROLE_BA.name())
+            if (request.isUserInRole(UserRoles.ROLE_BA.name())
                     || request.isUserInRole(UserRoles.ROLE_DEV.name())
                     || request.isUserInRole(UserRoles.ROLE_STUDENT.name())) {
                 return "account";
