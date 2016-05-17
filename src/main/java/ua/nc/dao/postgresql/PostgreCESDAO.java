@@ -10,12 +10,33 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
  * Created by Rangar on 04.05.2016.
  */
 public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements CESDAO {
+    private static final String GET_CURRENT_CES_QUERY = "SELECT ces.* from course_enrollment_session ces " +
+            "JOIN ces_status stat ON ces.ces_status_id = stat.ces_status_id AND stat.name != 'Closed'";
+    private static final String GET_PENDING_CES_QUERY = "SELECT ces.* FROM course_enrollment_session ces " +
+            "JOIN ces_status stat ON ces.ces_status_id = stat.ces_status_id WHERE name = 'Pending'";
+    private static final String GET_REGISTRATION_ONGOING_CES_QUERY = "SELECT ces.* FROM course_enrollment_session ces " +
+            "JOIN ces_status stat ON ces.ces_status_id = stat.ces_status_id WHERE name = 'RegistrationOngoing'";
+    private static final String GET_POST_REGISTRATION_CES_QUERY = "SELECT ces.* FROM course_enrollment_session ces " +
+            "JOIN ces_status stat ON ces.ces_status_id = stat.ces_status_id WHERE name = 'PostRegistration'";
+    private static final String GET_INTERVIEWING_ONGOING_CES_QUERY = "SELECT ces.* FROM course_enrollment_session ces " +
+            "JOIN ces_status stat ON ces.ces_status_id = stat.ces_status_id WHERE name = 'InterviewingOngoing'";
+    private static final String GET_POST_INTERVIEWING_CES_QUERY = "SELECT ces.* FROM course_enrollment_session ces " +
+            "JOIN ces_status stat ON ces.ces_status_id = stat.ces_status_id WHERE name = 'PostInterviewing'";
+
+    private static final String ADD_INTERVIEWER_FOR_CURRENT_CES = "INSERT INTO interviewer_participation (ces_id, system_user_id) VALUES (?, ?);";
+    private static final String addCESFieldQuery = "INSERT INTO ces_field (ces_id, field_id) VALUES (?, ?);";
+
+    private static final String removeCESFieldQuery = "DELETE FROM ces_field WHERE ces_id = ? AND field_id = ?";
+    private static final String removeInterviewerForCurrentCESQuery = "DELETE FROM interviewer_participation" +
+            " WHERE ces_id = ? AND system_user_id = ?";
+
     public PostgreCESDAO(Connection connection) {
         super(connection);
     }
@@ -56,25 +77,7 @@ public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements C
         return "SELECT * FROM course_enrollment_session";
     }
 
-    private static final String GET_CURRENT_CES_QUERY = "SELECT ces.* from course_enrollment_session ces " +
-            "JOIN ces_status stat ON ces.ces_status_id = stat.ces_status_id AND stat.name != 'Closed'";
-    private static final String GET_PENDING_CES_QUERY = "SELECT ces.* FROM course_enrollment_session ces " +
-            "JOIN ces_status stat ON ces.ces_status_id = stat.ces_status_id WHERE name = 'Pending'";
-    private static final String GET_REGISTRATION_ONGOING_CES_QUERY = "SELECT ces.* FROM course_enrollment_session ces " +
-            "JOIN ces_status stat ON ces.ces_status_id = stat.ces_status_id WHERE name = 'RegistrationOngoing'";
-    private static final String GET_POST_REGISTRATION_CES_QUERY = "SELECT ces.* FROM course_enrollment_session ces " +
-            "JOIN ces_status stat ON ces.ces_status_id = stat.ces_status_id WHERE name = 'PostRegistration'";
-    private static final String GET_INTERVIEWING_ONGOING_CES_QUERY = "SELECT ces.* FROM course_enrollment_session ces " +
-            "JOIN ces_status stat ON ces.ces_status_id = stat.ces_status_id WHERE name = 'InterviewingOngoing'";
-    private static final String GET_POST_INTERVIEWING_CES_QUERY = "SELECT ces.* FROM course_enrollment_session ces " +
-            "JOIN ces_status stat ON ces.ces_status_id = stat.ces_status_id WHERE name = 'PostInterviewing'";
 
-    private static final String ADD_INTERVIEWER_FOR_CURRENT_CES = "INSERT INTO interviewer_participation (ces_id, system_user_id) VALUES (?, ?);";
-    private static final String addCESFieldQuery = "INSERT INTO ces_field (ces_id, field_id) VALUES (?, ?);";
-
-    private static final String removeCESFieldQuery = "DELETE FROM ces_field WHERE ces_id = ? AND field_id = ?";
-    private static final String removeInterviewerForCurrentCESQuery = "DELETE FROM interviewer_participation" +
-            " WHERE ces_id = ? AND system_user_id = ?";
 
     @Override
     protected List<CES> parseResultSet(ResultSet rs) throws DAOException {

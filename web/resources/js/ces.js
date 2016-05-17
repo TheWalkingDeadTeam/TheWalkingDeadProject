@@ -25,13 +25,13 @@ app.controller('FormController', ['$scope', '$http', function ($scope, $http) {
 
     var getReq = function() {
         $http.get('/admin/cessettings').success(function (response) {
-            if (response.statusId < 4) {
+            if (response == '') return;
+            if (1 <= response.statusId < 4) {
                 $scope.current = true;
             } else if (response.statusId >= 4) {
                 $scope.current = true;
                 $scope.interviewBegan = true;
             }
-            console.log(response)
             $scope.ctrl.ces.year = response.year;
             $scope.ctrl.ces.id = response.id;
             $scope.ctrl.ces.statusId = response.statusId;
@@ -83,7 +83,7 @@ app.controller('FormController', ['$scope', '$http', function ($scope, $http) {
             this.ces.statusId = '1';
         }
         $http.post('/admin/cesPost', this.ces).success(function () {
-            $scope.postSuccess = true
+            $scope.postSuccess = true;
         }).error(function () {
             $scope.postError = true;
         });

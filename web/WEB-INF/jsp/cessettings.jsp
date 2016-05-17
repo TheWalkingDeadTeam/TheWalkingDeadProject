@@ -94,7 +94,7 @@
                                                                ng-model="ctrl.ces.interviewTimeForDay"
                                                                ng-readonly="interviewBegan"  required/></div>
                             <div class="correct-int"></div>
-                            <input type="submit" value="Save" class="btn btn-lg btn-primary btn-block">
+                            <input type="submit" ng-click="ctrl.save()"  value="Save" class="btn btn-lg btn-primary btn-block">
                             <button ng-click="backButton()" class="btn btn-lg btn-primary btn-block"> Back </button>
                             <button ng-click="ctrl.closeButton()" class="btn btn-lg btn-primary btn-block"> Close session</button>
                         </div>

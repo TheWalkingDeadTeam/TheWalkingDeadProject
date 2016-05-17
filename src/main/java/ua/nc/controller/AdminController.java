@@ -18,6 +18,7 @@ import ua.nc.validator.RegistrationValidator;
 import ua.nc.validator.ValidationError;
 import ua.nc.validator.Validator;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -34,7 +35,8 @@ public class AdminController {
     private static final Logger LOGGER = Logger.getLogger(AdminController.class);
     private final UserService userService = new UserServiceImpl();
     private final CESService cesService = new CESServiceImpl();
-    StudentService studentService = new StudentServiceImpl();
+    private final StudentService studentService = new StudentServiceImpl();
+
     @RequestMapping(method = RequestMethod.GET)
     public String login() {
         return "admin";
@@ -55,7 +57,7 @@ public class AdminController {
                     LOGGER.warn("Register failed " + user.getEmail());
                     errors.add(new ValidationError("register", "Register failed"));
                 } else {
-                    LOGGER.info("Admin" + ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+                    LOGGER.info(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                             .getPrincipal()).getUsername() + " create user " + user.getEmail());
                 }
             } else {
@@ -69,6 +71,22 @@ public class AdminController {
     @RequestMapping(value = {"/create"})
     public String createUser() {
         return "admin-create-user";
+    }
+
+    @RequestMapping(value = {"/remove-ces-interviewer"}, method = RequestMethod.POST)
+    public void removeInterviewers(@RequestBody IntegerList integerList) {
+        CESService cesService = new CESServiceImpl();
+        if (cesService != null) {
+            int cesId = cesService.getCurrentCES().getId();
+            Iterator<Integer> iterator = integerList.getInterviewersId().iterator();
+            while (iterator.hasNext()) {
+                try {
+                    cesService.removeInterviewer(iterator.next(), cesId);
+                } catch (DAOException e) {
+                    LOGGER.error("Can't Sign out interviewer", e);
+                }
+            }
+        }
     }
 
     /**
@@ -90,11 +108,17 @@ public class AdminController {
     }
 
 
-    @RequestMapping(value = {"/students/search"}, method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = {"/students/search/{itemsPerPage}/{pageNumber}/{pattern}"}, method = RequestMethod.GET, produces = "application/json")
     public
     @ResponseBody
-    String studentsSearch() {
-        return "{\"result\":\"inProgres\"";
+    StudentData studentsSearch(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("pattern") String pattern) {
+        StudentData studentData;
+        StudentService studentService = new StudentServiceImpl();
+        studentData = studentService.getStudents(itemsPerPage, (pageNumber * itemsPerPage - 10), pattern);
+        if (studentData == null) {
+            LOGGER.warn("studData == null");
+        }
+        return studentData;
     }
 
 
@@ -103,7 +127,7 @@ public class AdminController {
     public StudentData getStudents(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber) {
         StudentData studentData;
         StudentService studentService = new StudentServiceImpl();
-        studentData = studentService.getStudents(itemsPerPage, pageNumber);
+        studentData = studentService.getStudents(itemsPerPage, (pageNumber * itemsPerPage - 10));
         if (studentData == null) {
             LOGGER.warn("studData == null");
         }
@@ -115,7 +139,7 @@ public class AdminController {
     public StudentData getStudentsBySort(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("sortType") Integer sortType) {
         StudentData studentData;
         StudentService studentService = new StudentServiceImpl();
-        studentData = studentService.getStudents(itemsPerPage, pageNumber, sortType);
+        studentData = studentService.getStudents(itemsPerPage, (pageNumber * itemsPerPage - 10), sortType);
         if (studentData == null) {
             LOGGER.warn("studData == null");
         }
@@ -147,7 +171,7 @@ public class AdminController {
     }
 
     /**
-     * Method for view interview list from admin controlle panel
+     * Method for view interview list from admin controller panel
      *
      * @return page with interviewer data
      */
@@ -173,47 +197,12 @@ public class AdminController {
             LOGGER.warn("interviewers == null");
         }
         return interviewers;
-//        return "[{\n" +
-//                "    \"id\": 2,\n" +
-//                "    \"name\": \"Abcac\",\n" +
-//                "    \"surname\": \"Pomidorchik\",\n" +
-//                "    \"email\" : \"ger@gmail.com\",\n" +
-//                "    \"role\" : \"Admin\",\n" +
-//                "    \"participation\": true\n" +
-//                "  },{\n" +
-//                "    \"id\": 2,\n" +
-//                "    \"name\": \"Abcac\",\n" +
-//                "    \"surname\": \"Pomidorchik\",\n" +
-//                "    \"email\" : \"ger@gmail.com\",\n" +
-//                "    \"role\" : \"Admin\",\n" +
-//                "    \"participation\": true\n" +
-//                "  },{\n" +
-//                "    \"id\": 2,\n" +
-//                "    \"name\": \"Abcac\",\n" +
-//                "    \"surname\": \"Pomidorchik\",\n" +
-//                "    \"email\" : \"ger@gmail.com\",\n" +
-//                "    \"role\" : \"Admin\",\n" +
-//                "    \"participation\": true\n" +
-//                "  },{\n" +
-//                "    \"id\": 2,\n" +
-//                "    \"name\": \"Abcac\",\n" +
-//                "    \"surname\": \"Pomidorchik\",\n" +
-//                "    \"email\" : \"ger@gmail.com\",\n" +
-//                "    \"role\" : \"Admin\",\n" +
-//                "    \"participation\": true\n" +
-//                "  },{\n" +
-//                "    \"id\": 2,\n" +
-//                "    \"name\": \"Abcac\",\n" +
-//                "    \"surname\": \"Pomidorchik\",\n" +
-//                "    \"email\" : \"ger@gmail.com\",\n" +
-//                "    \"role\" : \"Admin\",\n" +
-//                "    \"participation\": true\n" +
-//                "  }]";
+
     }
 
-    @RequestMapping(value = {"/interviewers/list/{itemsPerPage}/{pageNumber}/{sortType}"}, method = RequestMethod.GET, produces = "application/json")
+/*    @RequestMapping(value = {"/interviewers/list/{itemsPerPage}/{pageNumber}/{sortType}"}, method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public StudentData interviewGetJSONSort(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("sortType") Integer sortType) {
+    public void interviewGetJSONSort(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("sortType") String sortType) {
         StudentData studentData;
         StudentService studentService = new StudentServiceImpl();
         studentData = studentService.getStudents(itemsPerPage, pageNumber, sortType);
@@ -221,7 +210,7 @@ public class AdminController {
             LOGGER.warn("studData == null");
         }
         return studentData;
-    }
+    }*/
 
     @RequestMapping(value = {"/interviewers/size"}, method = RequestMethod.GET, produces = "application/json")
     public
@@ -230,6 +219,7 @@ public class AdminController {
         InterviewerService interviewerService = new InterviewerServiceImpl();
         return interviewerService.getInterviewerSize();
     }
+
 
     @RequestMapping(value = {"/mail-template"}, method = RequestMethod.GET)
     public String mail() {
@@ -242,7 +232,6 @@ public class AdminController {
     @ResponseBody
     CES getCES(@RequestBody CES ces) {
         try {
-            System.out.println(ces.getStartRegistrationDate());
             cesService.setCES(ces);
         } catch (DAOException e) {
             e.printStackTrace();
@@ -272,7 +261,6 @@ public class AdminController {
     public
     @ResponseBody
     String closeCES() {
-        System.out.println("admin");
         cesService.closeCES();
         return null;
     }
@@ -282,4 +270,37 @@ public class AdminController {
         return "admin-scheduler";
     }
 
+    @RequestMapping(value = {"/enroll-session"}, method = RequestMethod.GET)
+    public String enrollmentSessionView() {
+        return "admin-es-view";
+    }
+
+    @RequestMapping(value = {"/report"}, method = RequestMethod.GET)
+    public String report() {
+        return "admin-report-template";
+    }
+
+    @RequestMapping(value = {"/mail-personal"}, method = RequestMethod.GET)
+    public String mailSend() {
+        return "mail-send";
+    }
+
+
+}
+
+
+class IntegerList {
+    private List<Integer> interviewersId;
+
+    public IntegerList() {
+    }
+
+
+    public List<Integer> getInterviewersId() {
+        return interviewersId;
+    }
+
+    public void setInterviewersId(List<Integer> interviewersId) {
+        this.interviewersId = interviewersId;
+    }
 }
