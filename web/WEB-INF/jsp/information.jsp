@@ -23,40 +23,14 @@
     <script src="resources/bootstrap/js/bootstrap.min.js" defer></script>
 </head>
 <body>
-<header>
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed button-header" data-toggle='collapse'
-                        data-target='#collapsed-menu' aria-expanded="false">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand brand-img" href="">
-                    <img src='resources/images/logo.png' alt="Brand" class="header-img">
-                </a>
-            </div>
-            <div id='collapsed-menu' class='navbar-collapse collapse'>
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="/login">Home</a></li>
-                    <li><a href="/information">Information</a></li>
-                    <li><a href="/contacts">Contacts</a></li>
-                    <sec:authorize access="hasRole('ROLE_STUDENT')">
-                        <li><a href="/profile/{id}">Profile</a></li>
-                    </sec:authorize>
-                    <li><a href="/logout">Logout</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-</header>
+<jsp:include page="header.jsp"/>
 
-<div id="workspace" class="rounded-corners">
+
+<div id="workspace" style="margin: 20px;">
 
 
 
-    <h3 class="flow-text">
+    <h3>
         Компания NetCracker Technology является мировым лидером в области создания и внедрения комплексных решений для провайдеров услуг связи
     </h3>
 
@@ -67,7 +41,7 @@
     <h3>
         <br/>Твои возможности:
     </h3>
-    <ul class="flow-text">
+    <ul>
         <li>Ты уже сейчас сможешь учиться в университете и параллельно осваивать современные востребованные технологии</li>
         <li>Получишь первый опыт командной работы на учебных проектах, очень близких к реальным, с помощью наших опытных разработчиков</li>
         <li>Есть возможность получить первую работу задолго до окончания университета, не волнуясь при этом за учебу</li>
@@ -76,10 +50,10 @@
         <li>Получишь неоценимый опыт бизнес-коммуникаций, работая непосредственно с заказчиком, летая в командировки по всему миру</li>
     </ul>
 
-    <h3 class="flow-text">
+    <h3>
         <br/>7 главных аргументов в пользу учебы и работы в NetCracker:
     </h3>
-    <ol class="flow-text">
+    <ol>
         <li>
             <b>NetCracker – компания с мировым именем</b>
         </li>
@@ -143,45 +117,7 @@
 
 
 
-<footer class="footer container-fluid">
-    <div class="footerLg container visible-md visible-lg">
-        <div class="col-lg-3 col-lg-3 col-sm-3"><img class='img-responsive' src="resources/images/logo-gray.png"></div>
+<jsp:include page="footer.jsp"/>
 
-        <div class="col-lg-8 col-md-8 col-lg-offset-1 col-lg-offset-1 col-md-offset-1">
-            <div class="footerLgText col-lg-3 col-md-3 col-lg-offset-1 col-md-offset-1">
-                <p>Univercity Office Park III</p>
-                <p>95 Sawyer Road</p>
-                <p>Waltham, MA 02453 USA</p>
-                <p>1-781-419-3300</p>
-            </div>
-            <div class="footerLgText col-lg-3 col-md-3 col-lg-offset-1 col-md-offset-1">
-                <p>Facebook /NetcrackerTech</p>
-                <p>Twitter @NetcrackerTech</p>
-                <p>LikedIn /netcracker</p>
-            </div>
-            <div class="footerLgText col-lg-3 col-md-3 col-lg-offset-1 col-md-offset-1">
-                <p>Privacy Policy</p>
-                <p>Terms of Use</p>
-                <p>Sitemap</p>
-            </div>
-        </div>
-    </div>
-    <div class="footerSm row visible-sm visible-xs">
-        <div class="col-sm-5 visible-sm" >
-            <img src="resources/images/logo-gray.png">
-        </div>
-        <div class="footerSmText col-sm-7 col-xs-12">
-            <div class="col-sm-8 col-xs-6">
-                <a class="col-sm-6 col-xs-7" href="http://localhost:8080/profile#"><p>Courses Info</p></a>
-                <a class="col-sm-6 col-xs-7" href="http://localhost:8080/profile#"><p>Contacts</p></a>
-            </div>
-            <div class="col-sm-4 col-xs-3 pull-right">
-                <p>Privacy Policy</p>
-                <p>Terms of Use</p>
-                <p>Sitemap</p>
-            </div>
-        </div>
-    </div>
-</footer>
 </body>
 </html>

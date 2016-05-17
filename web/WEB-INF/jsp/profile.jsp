@@ -33,7 +33,6 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand brand-img" href="">
                     <img src='resources/images/logo.png' alt="Brand" class="header-img">
@@ -74,9 +73,9 @@
                 <h4>E-mail:</h4>
             </div>
             <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4">
-                <span id="userName">Ivan</span>
-                <span id="userSurname">Ivanovich</span>
-                <span id="userEmail">${principal.username}</span>
+                <span id="userName"></span>
+                <span id="userSurname"></span>
+                <span id="userEmail"></span>
             </div>
         </div>
     </div>
@@ -87,9 +86,13 @@
     </form>
     <sec:authorize access="hasRole('ROLE_STUDENT')">
         <div id="fieldsCheck"></div>
+        <div id="agreement">
+            <label for="agree">I agree to have my personal information been proceeded</label>
+            <input id="agree" type="checkbox"/>
+        </div>
         <div id="profileButtons">
-        <button id="save" type="submit" form="fields" value="Submit" disabled="disabled">Save</button>
-        <button id="buttonEnroll" type="submit" value="Enroll" href="/enroll">Enroll</button>
+            <button id="save" type="submit" form="fields" value="Submit" disabled="disabled">Save</button>
+                <%--<button id="buttonEnroll" type="submit" value="Enroll" href="/enroll">Enroll</button>--%>
         </div>
     </sec:authorize>
 
@@ -121,7 +124,7 @@
         </div>
     </div>
     <div class="footerSm row visible-sm visible-xs">
-        <div class="col-sm-5 visible-sm" >
+        <div class="col-sm-5 visible-sm">
             <img src="resources/images/logo-gray.png">
         </div>
         <div class="footerSmText col-sm-7 col-xs-12">
@@ -140,6 +143,7 @@
 
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="/resources/js/profile.js"></script>
+<script src="/resources/js/account.js"></script>
 <script src="/resources/js/photo.js"></script>
 
 </body>

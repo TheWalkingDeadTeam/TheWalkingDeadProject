@@ -21,7 +21,6 @@ public interface CESService {
     void setCES(CES ces) throws DAOException;
 
     void closeCES();
-
     void enrollAsStudent(Integer userId, Integer cesId) throws DAOException;
 
     void enrollAsInterviewer(Integer userId, Integer cesId) throws DAOException;

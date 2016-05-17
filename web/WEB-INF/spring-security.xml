@@ -16,14 +16,32 @@
         <csrf disabled="true"/>
         <intercept-url pattern="/error" access="permitAll"/>
         <intercept-url pattern="/login" access="permitAll" />
-        <intercept-url pattern="/admin**" access="hasRole('ROLE_ADMIN')"/>
-        <intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
+        <intercept-url pattern="/" access="permitAll" />
+
+
+        <intercept-url pattern="/admin/create**" access="hasRole('ROLE_ADMIN')"/>
+        <intercept-url pattern="/admin/users**" access="hasRole('ROLE_ADMIN')"/>
+        <intercept-url pattern="/admin/edit-form**" access="hasRole('ROLE_ADMIN')"/>
+
+
+        <intercept-url pattern="/admin**" access="hasAnyRole('ROLE_ADMIN','ROLE_HR')"/>
+        <intercept-url pattern="/admin/**" access="hasAnyRole('ROLE_ADMIN','ROLE_HR')"/>
+        <intercept-url pattern="/admin/scheduler**" access="hasAnyRole('ROLE_ADMIN','ROLE_HR')"/>
+        <intercept-url pattern="/admin/cessettings**" access="hasAnyRole('ROLE_ADMIN','ROLE_HR')"/>
+        <intercept-url pattern="/admin/students**" access="hasAnyRole('ROLE_ADMIN','ROLE_HR')"/>
+        <intercept-url pattern="/admin/interviewee**" access="hasAnyRole('ROLE_ADMIN','ROLE_HR')"/>
+        <intercept-url pattern="/admin/interviewers**" access="hasAnyRole('ROLE_ADMIN','ROLE_HR')"/>
+        <intercept-url pattern="/admin/mail-template**" access="hasAnyRole('ROLE_ADMIN','ROLE_HR')"/>
+        <intercept-url pattern="/admin/enroll-session**" access="hasAnyRole('ROLE_ADMIN','ROLE_HR')"/>
+        <intercept-url pattern="/admin/report**" access="hasAnyRole('ROLE_ADMIN','ROLE_HR')"/>
         <intercept-url pattern="/report**" access="hasAnyRole('ROLE_ADMIN','ROLE_HR')"/>
         <intercept-url pattern="/report/**" access="hasAnyRole('ROLE_ADMIN','ROLE_HR')"/>
         <intercept-url pattern="/reports**" access="hasAnyRole('ROLE_ADMIN','ROLE_HR')"/>
         <intercept-url pattern="/reports/**" access="hasAnyRole('ROLE_ADMIN','ROLE_HR')"/>
 <!--        <intercept-url pattern="/interviewer/feedback**" access="@feedbackPermissions.isInterviewingPeriod()"/>
         <intercept-url pattern="/interviewer/feedback/**" access="@feedbackPermissions.isInterviewingPeriod()"/>-->
+
+
         <intercept-url pattern="/interviewer**" access="hasAnyRole('ROLE_HR','ROLE_DEV','ROLE_BA')"/>
         <intercept-url pattern="/interviewer/**" access="hasAnyRole('ROLE_HR','ROLE_DEV','ROLE_BA')"/>
         <intercept-url pattern="/profile**"

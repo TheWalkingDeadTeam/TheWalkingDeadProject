@@ -46,7 +46,6 @@
                     <li><a href="/login">Home</a></li>
                     <li><a href="/information">Information</a></li>
                     <li><a href="/contacts">Contacts</a></li>
-                    <li><a href="/logout">Logout</a></li>
                 </ul>
             </div>
         </div>
@@ -110,6 +109,7 @@
 
         <div class="inputBox col-lg-4 col-md-4 col-sm-12 col-xs-12">
 
+
             <sec:authorize access="isAuthenticated()">
                 <div class="alert alert-info" role="alert">
                     <div id="messageCheckPassword"></div>
@@ -125,7 +125,7 @@
             </sec:authorize>
 
 
-            <sec:authorize access="!isAuthenticated()">
+           <sec:authorize access="!isAuthenticated()">
                 <form>
                     <div id="messageSignIn"></div>
                     <h2 class="form-signin-heading">Please sign in</h2>
@@ -149,11 +149,11 @@
                     <p><img id="photo_img" src="/getPhoto" alt="User's photo" width="100" height="100"
                             onError="this.src='/resources/images/user-photo.png'"/></p>
                 </div>
-<%--
+&lt;%&ndash;
                 <p><a id="buttonLogout" class="btn btn-lg btn-danger" href="/logout" role="button">Logout</a></p>
---%>
 
             </sec:authorize>
+
         </div>
         <div id="logoDiv" class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
             <div id="thisDiv">

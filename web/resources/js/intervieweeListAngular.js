@@ -14,24 +14,38 @@ app.controller('IntervieweeCtrl', ["$http", "$scope", function ($http, $scope) {
     vm.sortAsc = null;
     vm.pattern = null;
     $scope.sortReverse = false;
-
+    vm.showSpin = function () {
+        angular.element($(".cssload-thecube")).css('display','block');
+        angular.element($("#tableUsers")).css('display','none');
+        angular.element($("#pagination")).css('display','none');
+    };
+    vm.hideSpin = function () {
+        angular.element($(".cssload-thecube")).css('display','none');
+        angular.element($("#tableUsers")).css('display','table');
+        angular.element($("#pagination")).css('display','block');
+    };
 
     vm.getData = function () {
+        vm.showSpin();
+
         vm.users = [];
         $http.get(vm.selectUrl).success(function (response) {
             vm.users = response;
         });
+
+        vm.hideSpin();
     };
     vm.getSize = function () {
-        if (vm.pattern == null) {
+        if(vm.pattern == null) {
             $http.get("interviewee/size").success(function (response) {
                 vm.total_count = response;
             });
-        } else {
-            $http.get("interviewee/size/" + vm.pattern).success(function (response) {
+        }else{
+            $http.get("interviewee/size/"+vm.pattern).success(function (response) {
                 vm.total_count = response;
             });
         }
+
     };
 
     $scope.dataStudents = {
@@ -70,6 +84,7 @@ app.controller('IntervieweeCtrl', ["$http", "$scope", function ($http, $scope) {
     };
 
     $scope.sortType = function (type, revers) {
+        vm.showSpin();
         vm.order_by = type;
         vm.sortAsc = revers;
         vm.selectUrl = "interviewee/list/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by + "/" + vm.sortAsc;
@@ -78,6 +93,7 @@ app.controller('IntervieweeCtrl', ["$http", "$scope", function ($http, $scope) {
     };
 
     $scope.activateUser = function () {
+        vm.showSpin();
         var dataObj = {
             type: 'activate',
             values: $scope.dataStudents.studId
@@ -95,6 +111,7 @@ app.controller('IntervieweeCtrl', ["$http", "$scope", function ($http, $scope) {
     };
 
     $scope.deactivateUser = function () {
+        vm.showSpin();
         var dataObj = {
             type: 'deactivate',
             values: $scope.dataStudents.studId
@@ -112,6 +129,7 @@ app.controller('IntervieweeCtrl', ["$http", "$scope", function ($http, $scope) {
     };
 
     $scope.searchFiltr = function (pattern) {
+        vm.showSpin();
         var dataObj = {
             type: "search",
             values: [$scope.searchFilt]

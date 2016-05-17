@@ -13,7 +13,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="A front-end template that helps you build fast, modern mobile web apps.">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <title>Material Design Lite</title>
+    <title>Mail templates</title>
 
     <!-- Add to homescreen for Chrome on Android -->
     <meta name="mobile-web-app-capable" content="yes">
@@ -68,26 +68,22 @@
             <script>
 
                 PNotify.prototype.options.styling = "bootstrap3";
-                $(function () {
-                    new PNotify({
-                        title: 'Before filling templates!!!',
-                        text: 'Place \'$\' before: \n\ ' +
-                        '$name $surname \n\ ' +
-                        '$data  $hours \n\ ' +
-                        '$minutes  $location \n\  ' +
-                        '$contact  $coursetype \n\ ' +
-                        '$coursetype  $place. \n\ ' +
-                        'The system will automatically replace $location with corresponding location parameter, ' +
-                        '$contact with contact , $coursetype with coursetype and $place with place. All this ' +
-                        'parameters will be taken from db or from scheduling form.',
-                        hide: false,
-                        addclass: 'custom',
-                        buttons: {
-                            sticker: false
-                        }
-                    });
-                });
+                        $(function(){
+                            new PNotify({
+                                title: 'Before filling templates!!!',
+                                text: 'Place \'$\' before $location, $contact, $coursetype and $place. The ' +
+                                'system will automatically replace $location with corresponding location parameter, ' +
+                                '$contact with contact , $coursetype with coursetype and $place with place. All this ' +
+                                'parameters will be taken from db or from scheduling form.',
+                                hide: false,
+                                addclass: 'custom',
+                                buttons: {
+                                    sticker: false
+                                }
+                            });
+                        });
             </script>
+
 
 
             <jsp:include page="mail.jsp"/>
