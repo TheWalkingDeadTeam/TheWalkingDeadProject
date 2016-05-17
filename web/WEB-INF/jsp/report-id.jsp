@@ -41,34 +41,52 @@
         display: block;
     }
 
-    .table-fixed thead {
-        width: 97%;
-    }
-    .table-fixed tbody {
-        height: 230px;
-        overflow-y: auto;
+    table {
         width: 100%;
     }
-    .table-fixed thead, .table-fixed tbody, .table-fixed tr, .table-fixed td, .table-fixed th {
+
+    thead, tbody, tr, td, th {
         display: block;
     }
-    .table-fixed tbody td, .table-fixed thead > tr> th {
-        float: left;
-        border-bottom-width: 0;
+
+    tr:after {
+        content: ' ';
+        display: block;
+        visibility: hidden;
+        clear: both;
     }
+
+    thead th {
+        height: 30px;
+
+        /*text-align: left;*/
+    }
+
+    tbody {
+        height: 700px;
+        overflow-y: auto;
+    }
+
+    thead {
+        /* fallback */
+    }
+
+    tbody td, thead th {
+        width: 15%;
+        float: left;
+    }
+
 </style>
 <body ng-app="reporterid" ng-controller="ReportControllerId as rc">
 <div id="mydiv" ng-hide="rc.loading">
     <img src="/resources/images/load.gif" class="loader"/>
 </div>
-<div class="container">
-    <div class="row">
-        <div class="panel panel-default">
-            <div class="panel-heading">
+
+
                 <h4>
                     Fixed Header Scrolling Table
                 </h4>
-            </div>
+
             <table class="table table-responsive header-fixed ">
                 <thead>
                 <tr>
@@ -81,9 +99,8 @@
                 </tr>
                 </tbody>
             </table>
-        </div>
-    </div>
-</div>
+
+
 </body>
 
 
