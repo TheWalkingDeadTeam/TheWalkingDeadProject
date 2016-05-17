@@ -22,7 +22,6 @@ import ua.nc.service.MailServiceImpl;
 
 import java.sql.Connection;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -40,10 +39,10 @@ public class SchedulerController {
     private final static String GOOGLE_MAPS = "$googleMaps";
     private final static String CONTACT_INTERVIEWERS = "$contactInterviewers";
     private final static String CONTACT_STUDENTS = "$contactStudent";
-    private final static String MINUTES = "$minutes";
-    private final static String HOURS = "$hours";
 
     private final DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
+    private final Connection connection = daoFactory.getConnection();
+    private final UserDAO userDAO = new PostgreUserDAO(connection);
     private final CESService cesService = new CESServiceImpl();
     private final MailService mailService = new MailServiceImpl();
 
@@ -72,30 +71,6 @@ public class SchedulerController {
         return link;
     }
 
-    /**
-     * Parse AM,PM format to HH:mm
-     * @param time
-     * @return
-     */
-    private Date parseTime(String time) {
-        System.out.println(time);
-        SimpleDateFormat displayFormat = new SimpleDateFormat("HH:mm");
-        Date date = null;
-        try {
-            date = displayFormat.parse(time);
-        } catch (ParseException e) {
-            log.warn("Time parse error", e);
-        }
-        return date;
-    }
-
-
-    /**
-     * Parsing incoming scheduler request
-     *
-     * @param scheduler
-     * @return
-     */
     private Map<String, String> param(Scheduler scheduler) {
         Map<String, String> interviewerParameters = new HashMap<>();
         interviewerParameters.put(LOCATION, scheduler.getLocations());
@@ -124,16 +99,11 @@ public class SchedulerController {
         Map<String, String> studentParameters = param(scheduler);
         interviewerParameters.put(CONTACT_INTERVIEWERS, scheduler.getContactStaff());
         studentParameters.put(CONTACT_STUDENTS, scheduler.getContactStudent());
-        Date interviewTime = parseTime(scheduler.getInterviewTime());
-        studentParameters.put(MINUTES,Integer.toString(interviewTime.getMinutes()));
-        studentParameters.put(HOURS,Integer.toString(interviewTime.getHours()));
+
         try {
             List<Date> interviewDates = cesService.planSchedule();
             CES ces = cesService.getCurrentCES();
             int reminderTime = ces.getReminders();
-            //Fixed Alex //Max check
-            Connection connection = daoFactory.getConnection();
-            UserDAO userDAO = new PostgreUserDAO(connection);
             Set<User> interviewersList = userDAO.getInterviewersForCurrentCES();
             ApplicationDAO appDAO = new PostgreApplicationDAO(connection);
             Map<Integer, Integer> applicationList = appDAO.getAllAcceptedApplications(ces.getId());
@@ -142,7 +112,7 @@ public class SchedulerController {
             mailService.sendInterviewReminders(interviewDates, reminderTime, interviewerMail, interviewerParameters,
                     studentMail, studentParameters, interviewersList, studentsList, applicationList);
         } catch (DAOException e) {
-            log.warn("Check Scheduler parameters", e);
+            log.warn("Check Scheduler paramters", e);
         }
 
     }

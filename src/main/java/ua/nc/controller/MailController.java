@@ -8,15 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import ua.nc.entity.Mail;
-import ua.nc.entity.User;
 import ua.nc.service.MailService;
 import ua.nc.service.MailServiceImpl;
-import ua.nc.service.user.UserService;
-import ua.nc.service.user.UserServiceImpl;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Alexander on 30.04.2016.
@@ -26,10 +21,9 @@ import java.util.Map;
 public class MailController {
     private static final Logger LOGGER = Logger.getLogger(MailController.class);
     MailService mailService = new MailServiceImpl();
-    UserService userService = new UserServiceImpl();
 
     /**
-     * Retrieve all mail list from database
+     * Retrieve all mail
      *
      * @return mail list
      */
@@ -45,8 +39,8 @@ public class MailController {
     /**
      * Retrieve mail by id
      *
-     * @param id of the mail to be retrieved
-     * @return mail
+     * @param id
+     * @return
      */
     @RequestMapping(value = "/mails/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Mail> getMail(@PathVariable("id") Integer id) {
@@ -59,11 +53,11 @@ public class MailController {
     }
 
     /**
-     * Create mail from template
+     * Create mail
      *
-     * @param mail      template to be created
-     * @param ucBuilder new Uri for currently created mail
-     * @return headers and HTTP Created Status
+     * @param mail
+     * @param ucBuilder
+     * @return
      */
     @RequestMapping(value = "/mails/", method = RequestMethod.POST)
     public ResponseEntity<Void> createMail(@RequestBody Mail mail, UriComponentsBuilder ucBuilder) {
@@ -77,9 +71,9 @@ public class MailController {
     /**
      * Update mail
      *
-     * @param id   of the mail to be updated
-     * @param mail will replace origin mail
-     * @return current updated mail
+     * @param id
+     * @param mail
+     * @return
      */
     @RequestMapping(value = "/mails/{id}", method = RequestMethod.POST)
     public ResponseEntity<Mail> updateMail(@PathVariable("id") Integer id, @RequestBody Mail mail) {
@@ -98,8 +92,8 @@ public class MailController {
     /**
      * Delete mail by id
      *
-     * @param id of the mail to be deleted
-     * @return success response
+     * @param id
+     * @return
      */
     @RequestMapping(value = "/mails/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Mail> deleteMail(@PathVariable("id") Integer id) {
@@ -113,9 +107,9 @@ public class MailController {
     }
 
     /**
-     * Delete all mail from database
+     * Delete all mail
      *
-     * @return HTTP STATUS.NO_CONTENT
+     * @return
      */
     @RequestMapping(value = "/mails/", method = RequestMethod.DELETE)
     public ResponseEntity<Mail> deleteAllMail() {
@@ -127,49 +121,4 @@ public class MailController {
         return new ResponseEntity<Mail>(HttpStatus.NO_CONTENT);
     }
 
-
-    /**
-     * Customization email body template. The email template will be modified according
-     * to parameters from Map
-     *
-     * @param mail       template to be modified
-     * @param parameters to be changed in template
-     * @return modified email template
-     */
-    private Mail customization(Mail mail, Map<String, String> parameters) {
-        Mail mailRes = new Mail();
-        String body = mail.getBodyTemplate();
-        for (Map.Entry<String, String> param : parameters.entrySet()) {
-            body = body.replace(param.getKey(), param.getValue());
-        }
-        mailRes.setBodyTemplate(body);
-        mailRes.setHeadTemplate(mail.getHeadTemplate());
-        return mailRes;
-    }
-
-    /**
-     * Controller to handle custom/template mail from admin
-     *
-     * @param mail
-     */
-    @RequestMapping(value = "/admin/users-mail-id", method = RequestMethod.POST, produces = "application/json")
-    public void sendMail(@RequestBody Mail mail) {
-        List<Integer> userId = mail.getUsersId();
-        if (mail.getMailIdUser() != null) {
-            Mail studentMail = mailService.getMail(mail.getMailIdUser());
-            for (Integer i : userId) {
-                User user = userService.getUser(i);
-                Map<String, String> customizeMail = new HashMap<>();
-                customizeMail.put("$name", user.getName());
-                customizeMail.put("$surname", user.getSurname());
-                Mail mailUpdate = customization(studentMail, customizeMail);
-                mailService.sendMail(user.getEmail(), mailUpdate);
-            }
-        } else {
-            for (Integer i : userId) {
-                User user = userService.getUser(i);
-                mailService.sendMail(user.getEmail(), mail.getHeadTemplate(), mail.getBodyTemplate());
-            }
-        }
-    }
 }

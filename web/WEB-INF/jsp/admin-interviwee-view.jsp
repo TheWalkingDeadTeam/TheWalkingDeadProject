@@ -84,20 +84,23 @@
                     <label class="mdl-textfield__label" for="search">Enter your query...</label>
                 </div>
             </div>
+                <div class="cssload-thecube">
+                    <div class="cssload-cube cssload-c1"></div>
+                    <div class="cssload-cube cssload-c2"></div>
+                    <div class="cssload-cube cssload-c4"></div>
+                    <div class="cssload-cube cssload-c3"></div>
+                </div>
         </div>
-        <table class="table table-striped table-hover">
+        <table  id="tableUsers" class="table table-striped table-hover">
             <thead>
             <tr>
                 <td>
-                    <input type="checkbox" ng-model="selectedAll" ng-click="checkAll()">
-                </td>
-                <td>
-                    <a href="#" ng-click="sortType('system_user_id',sortReverse); sortReverse = !sortReverse">
+                    <a ng-click="sortType('system_user_id',sortReverse); sortReverse = !sortReverse">
                         Id
                     </a>
                 </td>
                 <td>
-                    <a href="#" ng-click="sortType('name',sortReverse); sortReverse = !sortReverse">
+                    <a ng-click="sortType('name',sortReverse); sortReverse = !sortReverse">
                         Name
                     </a>
                 </td>
@@ -122,7 +125,7 @@
                     </a>
                 </td>
                 <td>
-                    <a href="#" ng-click="sortType('color',sortReverse); sortReverse = !sortReverse">
+                    <a ng-click="sortType('color',sortReverse); sortReverse = !sortReverse">
                         Color
                     </a>
                 </td>
@@ -133,7 +136,7 @@
                 <td colspan="5" style="text-align:center;">Please Wait</td>
             </tr>
             <tr dir-paginate="interviewee in data.users|itemsPerPage:data.itemsPerPage" total-items="data.total_count">
-                <td><input type="checkbox" checklist-model="dataStudents.studId" checklist-value="interviewee.id"></td>
+                <%--<td><input type="checkbox" checklist-model="dataStudents.studId" checklist-value="interviewee.id"></td>--%>
                 <td><a href="/interviewee/feedback?{{interviewee.id}}" target="_blanks">{{interviewee.id}}</a></td>
                 <td>{{interviewee.name}}</td>
                 <td>{{interviewee.surname}}</td>
@@ -149,13 +152,13 @@
             </tr>
             </tbody>
         </table>
+        <div id="pagination">
         <dir-pagination-controls
                 max-size="8"
                 direction-links="true"
                 boundary-links="true"
                 on-page-change="data.setPageno(newPageNumber)">
-        </dir-pagination-controls>
-
+        </dir-pagination-controls></div>
 
     </main>
 </main>

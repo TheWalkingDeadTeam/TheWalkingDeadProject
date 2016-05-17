@@ -1,10 +1,14 @@
 package ua.nc.controller;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.log4j.Logger;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.entity.*;
 import ua.nc.entity.profile.Field;
@@ -15,6 +19,7 @@ import ua.nc.service.user.UserService;
 import ua.nc.service.user.UserServiceImpl;
 import ua.nc.validator.*;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -107,7 +112,14 @@ public class AdminController {
     @ResponseBody
     Integer studentsGetJSONSize() {
         StudentService studentService = new StudentServiceImpl();
-        return studentService.getSize();
+        return studentService.getSize("");
+    }
+    @RequestMapping(value = {"/students/size/{pattern}"}, method = RequestMethod.GET, produces = "application/json")
+    public
+    @ResponseBody
+    Integer studentsGetJSONSize(@PathVariable("pattern") String pattern) {
+        StudentService studentService = new StudentServiceImpl();
+        return studentService.getSize(pattern);
     }
 
 
@@ -121,6 +133,7 @@ public class AdminController {
         if (studentData == null) {
             LOGGER.warn("studData == null");
         }
+        LOGGER.info("studData == "+studentData.toString());
         return studentData;
     }
 
@@ -134,6 +147,7 @@ public class AdminController {
         if (studentData == null) {
             LOGGER.warn("studData == null");
         }
+        LOGGER.info("studData == "+studentData.toString());
         return studentData;
     }
 
@@ -224,7 +238,14 @@ public class AdminController {
     @ResponseBody
     Integer interviewGetJSONSize() {
         InterviewerService interviewerService = new InterviewerServiceImpl();
-        return interviewerService.getInterviewerSize();
+        return interviewerService.getInterviewerSize("");
+    }
+    @RequestMapping(value = {"/interviewers/size/{pattern}"}, method = RequestMethod.GET, produces = "application/json")
+    public
+    @ResponseBody
+    Integer interviewGetJSONSize(@PathVariable("pattern") String pattern) {
+        InterviewerService interviewerService = new InterviewerServiceImpl();
+        return interviewerService.getInterviewerSize(pattern);
     }
 
     @RequestMapping(value = {"/interviewer/search/{itemsPerPage}/{pageNumber}/{sortType}/{pattern}"}, method = RequestMethod.GET, produces = "application/json")
@@ -365,7 +386,7 @@ public class AdminController {
     @ResponseBody
     Integer intervieweeGetJSONSize() {
         IntervieweeService intervieweeService = new IntervieweeServiceImpl();
-        return intervieweeService.getIntervieweeSize();
+        return intervieweeService.getIntervieweeSize("");
     }
 
     @RequestMapping(value = {"/interviewee/size/{pattern}"}, method = RequestMethod.GET, produces = "application/json")

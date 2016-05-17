@@ -44,7 +44,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.cyan-light_blue.min.css">
     <link rel="stylesheet" href="/resources/css/styles.css">
-    <link rel="stylesheet" href="/resources/css/notification/angular-ui-notification.min.css">
+
     <style>
         #view-source {
             position: fixed;
@@ -73,42 +73,23 @@
                     class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
                 Unsubscribe from CES
             </button>
-
-
-
-            <a href="#FooOne"
-               class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white"
-               data-toggle="collapse">Mail</a>
-
-            <a href="#FooTwo"
-               class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white"
-               data-toggle="collapse">Mail With Template</a>
-
-
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
-            <label class="mdl-button mdl-js-button mdl-button--icon" for="search">
-                <i class="material-icons">search</i>
-            </label>
-            <div class="mdl-textfield__expandable-holder">
-                <form ng-submit = "searchFiltr(field)"><input  class="mdl-textfield__input" type="text" id="search" name="field" ng-model="field"></form>
-                <label class="mdl-textfield__label" for="search">Enter your query...</label>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+                <label class="mdl-button mdl-js-button mdl-button--icon" for="search">
+                    <i class="material-icons">search</i>
+                </label>
+                <div class="mdl-textfield__expandable-holder">
+                    <form ng-submit = "searchFiltr(field)"><input  class="mdl-textfield__input" type="text" id="search" name="field" ng-model="field"></form>
+                    <label class="mdl-textfield__label" for="search">Enter your query...</label>
+                </div>
+            </div>
+            <div class="cssload-thecube">
+                <div class="cssload-cube cssload-c1"></div>
+                <div class="cssload-cube cssload-c2"></div>
+                <div class="cssload-cube cssload-c4"></div>
+                <div class="cssload-cube cssload-c3"></div>
             </div>
         </div>
-
-
-            <div id="FooOne" class="collapse">
-                <jsp:include page="custom-mail.jsp"/>
-            </div>
-
-
-            <div id="FooTwo" class="collapse">
-                <jsp:include page="custom-mail-template-interviewers.jsp"/>
-            </div>
-
-
-
-        </div>
-        <table class="table table-bordered table-striped" style="{margin-top: 200px}">
+        <table id="tableUsers" class="table table-bordered table-striped" style="{margin-top: 200px}">
 
             <thead>
             <tr>
@@ -116,46 +97,33 @@
                     <input type="checkbox" ng-model="selectedAll" ng-click="checkAll()">
                 </td>
                 <td>
-                    <a href="#" ng-click="order_by = 'id'; sortReverse = !sortReverse; sortType(order_by,sortReverse)">
-                        #
-                        <span ng-show="sortType == 'id' && !sortReverse" class="fa fa-caret-down"></span>
-                        <span ng-show="sortType == 'id' && sortReverse" class="fa fa-caret-up"></span>
+                    <a ng-click="order_by = 'id'; sortReverse = !sortReverse; sortType(order_by,sortReverse)">
+                        id
                     </a>
                 </td>
                 <td>
-                    <a href="#" ng-click="order_by = 'name'; sortReverse = !sortReverse; sortType(order_by,sortReverse)">
+                    <a ng-click="order_by = 'name'; sortReverse = !sortReverse; sortType(order_by,sortReverse)">
                         Name
-                        <span ng-show="sortType == 'name' && !sortReverse" class="fa fa-caret-down"></span>
-                        <span ng-show="sortType == 'name' && sortReverse" class="fa fa-caret-up"></span>
                     </a>
                 </td>
                 <td>
-                    <a href="#" ng-click="order_by = 'surname'; sortReverse = !sortReverse; sortType(order_by,sortReverse)">
+                    <a ng-click="order_by = 'surname'; sortReverse = !sortReverse; sortType(order_by,sortReverse)">
                         Surname
-                                <span ng-show="sortType == 'university' && !sortReverse"
-                                      class="fa fa-caret-down"></span>
-                        <span ng-show="sortType == 'university' && sortReverse" class="fa fa-caret-up"></span>
                     </a>
                 </td>
                 <td>
-                    <a href="#" ng-click="order_by = 'email'; sortReverse = !sortReverse; sortType(order_by,sortReverse)">
+                    <a ng-click="order_by = 'email'; sortReverse = !sortReverse; sortType(order_by,sortReverse)">
                         Email
-                        <span ng-show="sortType == 'isActive' && !sortReverse" class="fa fa-caret-down"></span>
-                        <span ng-show="sortType == 'isActive' && sortReverse" class="fa fa-caret-up"></span>
                     </a>
                 </td>
                 <td>
-                    <a href="#" ng-click="order_by = 'role'; sortReverse = !sortReverse; sortType(order_by,sortReverse)">
+                    <a ng-click="order_by = 'role'; sortReverse = !sortReverse; sortType(order_by,sortReverse)">
                         Role
-                        <span ng-show="sortType == 'devMark' && !sortReverse" class="fa fa-caret-down"></span>
-                        <span ng-show="sortType == 'devMark' && sortReverse" class="fa fa-caret-up"></span>
                     </a>
                 </td>
                 <td>
-                    <a href="#" ng-click="order_by = 'participation'; sortReverse = !sortReverse; sortType(order_by,sortReverse)">
+                    <a ng-click="order_by = 'participation'; sortReverse = !sortReverse; sortType(order_by,sortReverse)">
                         Participation
-                        <span ng-show="sortType == 'devMark' && !sortReverse" class="fa fa-caret-down"></span>
-                        <span ng-show="sortType == 'devMark' && sortReverse" class="fa fa-caret-up"></span>
                     </a>
                 </td>
             </tr>
@@ -177,19 +145,19 @@
             </tr>
             </tbody>
         </table>
-
+        <div id="pagination">
         <dir-pagination-controls
                 max-size="8"
                 direction-links="true"
                 boundary-links="true"
                 on-page-change="data.setPageno(newPageNumber)">
         </dir-pagination-controls>
-
+        </div>
 
     </main>
 </main>
 
-<script src="/resources/js/notification/angular-ui-notification.min.js"></script>
+
 <script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="/resources/js/admin-create-user.js"></script>
