@@ -2,13 +2,8 @@
  * Created by Alexander on 30.04.2016.
  */
 $(document).ready(function () {
-
-    $('#changePassword').hideShowPassword(false, true);
-
-
     function ValidateChangeForm() {
-        alert('i am her');
-        var elem = $('#changePassword');
+        var elem = $('#password');
         var innerText = elem.val();
         var errorMsg = '';
         if (!/^.{6,32}$/.test(innerText)) {

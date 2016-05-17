@@ -38,6 +38,7 @@ public class UserController {
     @RequestMapping(value = {"/changePassword"}, method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public Set<ValidationError> changePassword(@RequestBody String password) {
+        System.out.println("OK");
         Validator validator = new PasswordValidator();
         Set<ValidationError> errors = null;
         User user = userService.getUser(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
