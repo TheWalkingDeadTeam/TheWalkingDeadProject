@@ -57,26 +57,26 @@
                     <div id="messageRegistration"></div>
                     <div>
                         <div class="row container-fluid reg-head">
-                            <div>
-                                <h2 class="form-signin-heading">Interviewer Registration</h2>
+                            <div style="margin-left: 30px;">
+                                <h4 class="form-signin-heading">Interviewer Registration</h4>
                             </div>
                         </div>
                         <div id="regform" class="col-lg-10 col-md-8 col-sm-9 col-xs-9">
-                            <input id="name" name="name" class="form-control" placeholder="Name" type="text" value="">
+                            <input id="name" style="margin-bottom: 3px;" name="name" class="form-control" placeholder="Name" type="text" value="">
                             <div class="correct-name"></div>
-                            <input id="surname" name="surname" class="form-control" placeholder="Surname" type="text"
+                            <input id="surname" style="margin-bottom: 3px;" name="surname" class="form-control" placeholder="Surname" type="text"
                                    value="">
                             <div class="correct-surname"></div>
-                            <input id="email" name="email" class="form-control" placeholder="Email address" type="text"
+                            <input id="email" style="margin-bottom: 3px;" name="email" class="form-control" placeholder="Email address" type="text"
                                    value="">
                             <div class="correct-email"></div>
-                            <input id="password" name="password" class="form-control login-field  login-field-password" placeholder="Password"
+                            <input id="password" style="margin-bottom: 3px;" name="password" class="form-control login-field  login-field-password" placeholder="Password"
                                    type="password"
                                    value="">
                             <div class="correct-password"></div>
-                            <button id="buttonRegistration" class="btn btn-lg btn-primary btn-block">Register</button>
+                            <button id="buttonRegistration" style="border-radius: 4px;" class="btn btn-lg btn-primary btn-block mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">Register</button>
                         </div>
-                        <div id="roleAdmin" class="col-lg-2 col-md-4 col-sm-6 col-xs-6">
+                        <div id="roleAdmin" class="col-lg-2 col-md-4 col-sm-3 col-xs-3">
                             <label class="checkbox">
                                 <input type="checkbox" id="checkbox_admin" value="ROLE_ADMIN" class="roles"> Admin
                             </label>
@@ -90,7 +90,7 @@
                                 <input type="checkbox" id="checkbox_ba" value="ROLE_BA" class="roles"> BA
                             </label>--%>
                         </div>
-                        <select id="role" class="col-lg-2 col-md-4 col-sm-6 col-xs-6">
+                        <select id="role" class="col-lg-2 col-md-4 col-sm-3 col-xs-3">
                             <option value="ROLE_HR">HR</option>
                             <option value="ROLE_DEV">DEV</option>
                             <option value="ROLE_BA">BA</option>
