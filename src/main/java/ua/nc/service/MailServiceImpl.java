@@ -129,7 +129,6 @@ public class MailServiceImpl implements MailService {
 
     @Override
     public void massDelivery(Date date, final List<User> users, final Mail mail) {
-        System.out.println("Delivery date:" + date);
         schedulerMassDeliveryService.schedule(new Runnable() {
             @Override
             public void run() {
@@ -146,7 +145,7 @@ public class MailServiceImpl implements MailService {
                     LOGGER.error("Failed to send email", e);
                 }
             }
-        }, date);
+        },date);
     }
 
     /**
@@ -156,7 +155,7 @@ public class MailServiceImpl implements MailService {
      * @param parameters set of parameters in form : "{pattern1:meaning1, ..., patternN:meaningN}".
      * @return customized mail.
      */
-    public Mail customizeMail(Mail mail, Map<String, String> parameters) {
+    private Mail customizeMail(Mail mail, Map<String, String> parameters) {
         //customize mail topic
         String head = mail.getHeadTemplate();
         for (Map.Entry<String, String> param : parameters.entrySet()) {

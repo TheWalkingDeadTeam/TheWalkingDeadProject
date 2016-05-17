@@ -25,7 +25,5 @@ public interface IntervieweeService {
 
     public void unsubscribeInterviewee(List<Integer> studentsId);
 
-    public Integer getIntervieweeSize();
-
     public Integer getIntervieweeSize(String pattern);
 }

@@ -16,7 +16,7 @@ public interface StudentService {
 
     public StudentData getStudents(Integer itemPerPage, Integer pageNumber,Integer orderBy, Boolean asc);
 
-    public Integer getSize();
+    public Integer getSize(String pattern);
 
 //    public Student findStudentByName(String name, String surname);
 

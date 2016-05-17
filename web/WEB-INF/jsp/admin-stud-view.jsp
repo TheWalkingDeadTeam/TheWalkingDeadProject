@@ -45,7 +45,6 @@
     <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.cyan-light_blue.min.css">
     <link rel="stylesheet" href="/resources/css/styles.css">
     <link rel="stylesheet" href="/resources/css/checkbox.css">
-    <link rel="stylesheet" href="/resources/css/notification/angular-ui-notification.min.css">
 
     <style>
         #view-source {
@@ -58,7 +57,6 @@
             z-index: 900;
         }
     </style>
-    <link href="<c:url value='/resources/css/app.css' />" rel="stylesheet">
 </head>
 <body>
 <main ng-controller="StudentCtrl as data"
@@ -66,17 +64,8 @@
 
     <jsp:include page="admin-header.jsp"/>
 
-
     <main class="mdl-layout__content mdl-color--grey-100">
         <div>
-            <button ng-click="activateStud()"
-                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
-                Activate
-            </button>
-            <button ng-click="deactivateStud()"
-                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
-                Deactivate
-            </button>
             <button ng-click="rejectStud()"
                     class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
                 Reject
@@ -85,17 +74,6 @@
                     class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
                 Accept
             </button>
-
-
-
-            <a href="#FooOne"
-               class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white"
-               data-toggle="collapse">Mail</a>
-
-            <a href="#FooTwo"
-               class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white"
-               data-toggle="collapse">Mail With Template</a>
-
 
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
                 <label class="mdl-button mdl-js-button mdl-button--icon" for="search">
@@ -106,116 +84,68 @@
                     <label class="mdl-textfield__label" for="search">Enter your query...</label>
                 </div>
             </div>
-
-            <div id="FooOne" class="collapse">
-                <jsp:include page="custom-mail.jsp"/>
+            <div class="cssload-thecube">
+                <div class="cssload-cube cssload-c1"></div>
+                <div class="cssload-cube cssload-c2"></div>
+                <div class="cssload-cube cssload-c4"></div>
+                <div class="cssload-cube cssload-c3"></div>
             </div>
-
-
-            <div id="FooTwo" class="collapse">
-                <jsp:include page="custom-mail-template.jsp"/>
-            </div>
-
         </div>
-            <%--<button ng-click="mail()"--%>
-            <%--class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">--%>
-            <%--Mail--%>
-            <%--</button>--%>
-
-
-
-            <%--<button ng-click="saveChanges()"--%>
-            <%--class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">--%>
-            <%--Save--%>
-            <%--</button>--%>
-            <%--<div class="checkbox-dropdown">--%>
-            <%--Choose column--%>
-            <%--&lt;%&ndash;<ul  class="checkbox-dropdown-list">&ndash;%&gt;--%>
-            <%--<ul class="checkbox-dropdown-list">--%>
-            <%--<li ng-repeat="(key,value) in data.users[0]">--%>
-            <%--<label>--%>
-            <%--<input type="checkbox" />{{key}}</label></li>--%>
-            <%--</ul>--%>
-            <%--&lt;%&ndash;</ul>&ndash;%&gt;--%>
-            <%--</div>--%>
-
-
-        <table class="table table-striped table-hover">
+        <table id="tableUsers" class="table table-striped table-hover">
             <thead>
             <tr>
                 <td>
                     <input type="checkbox" ng-model="selectedAll" ng-click="checkAll()">
                 </td>
+                <%--<td>--%>
+                <%--<a ng-click="sortType = 'id'; sortReverse = !sortReverse; n">--%>
+                <%--#--%>
+                <%--</a>--%>
+                <%--</td>--%>
                 <td>
-                    <a href="#" ng-click="sortType = 'id'; sortReverse = !sortReverse; n">
-                        #
-                    </a>
-                </td>
-                <td>
-                    <a href="#" ng-click="sortReverse = !sortReverse; sortType(0,sortReverse)">
+                    <a ng-click="sortReverse = !sortReverse; sortType(0,sortReverse)">
                         Full Name
                     </a>
                 </td>
-                <%--<td>--%>
-                <%--<a href="#" ng-click="sortType = 'university'; sortReverse = !sortReverse">--%>
-                <%--University--%>
-                <%--<span ng-show="sortType == 'university' && !sortReverse" class="fa fa-caret-down"></span>--%>
-                <%--<span ng-show="sortType == 'university' && sortReverse" class="fa fa-caret-up"></span>--%>
-                <%--</a>--%>
-                <%--</td>--%>
-                <%--<td>--%>
-                <%--<a href="#" ng-click="sortType = 'devMark'; sortReverse = !sortReverse">--%>
-                <%--Dev Assesment--%>
-                <%--<span ng-show="sortType == 'devMark' && !sortReverse" class="fa fa-caret-down"></span>--%>
-                <%--<span ng-show="sortType == 'devMark' && sortReverse" class="fa fa-caret-up"></span>--%>
-                <%--</a>--%>
-                <%--</td>--%>
-                <%--<td>--%>
-                <%--<a href="#" ng-click="sortType = 'hrMark'; sortReverse = !sortReverse">--%>
-                <%--HR Assesment--%>
-                <%--<span ng-show="sortType == 'hrMark' && !sortReverse" class="fa fa-caret-down"></span>--%>
-                <%--<span ng-show="sortType == 'hrMark' && sortReverse" class="fa fa-caret-up"></span>--%>
-                <%--</a>--%>
-                <%--</td>--%>
-                <td ng-repeat="head in data.header">
-                    <a href="#" ng-click="sortReverse = !sortReverse; sortType(head.id,sortReverse)">
+                <td ng-repeat="head in data.users.header">
+                    <a ng-click="sortReverse = !sortReverse; sortType(head.id,sortReverse)">
                         {{head.name}}
                     </a>
                 </td>
                 <td>
-                    <a href="#" ng-click="sortTyprara='rejected'; sortReverse = !sortReverse">
+                    <a ng-click="sortTyprara='rejected'; sortReverse = !sortReverse">
                         Rejected
                     </a>
                 </td>
             </tr>
             </thead>
             <tbody>
-            <tr ng-show="data.users.length <= 0">
-                <td colspan="5" style="text-align:center;">Please Wait</td>
+            <tr ng-show="data.users.rows.length <= 0">
+                <td colspan="5" style="text-align:center;">No data</td>
             </tr>
-            <tr dir-paginate="user in data.users|itemsPerPage:data.itemsPerPage" total-items="data.total_count">
+            <tr dir-paginate="user in data.users.rows|itemsPerPage:data.itemsPerPage" total-items="data.total_count">
                 <td><input type="checkbox" checklist-model="dataStudents.studId" checklist-value="user.userId"></td>
-                <td ng-init="index=$index + 1">{{index}}</td>
+                <%--<td ng-init="index=$index + 1">{{index}}</td>--%>
                 <td><a href="/admin/students/{{user.userId}}" target="_blanks">{{user.name}}</a></td>
-
-                <td ng-repeat="head in data.header">
+                <td ng-repeat="head in data.users.header">
                     {{user.fields[head.id]}}
                 </td>
                 <td ng-style="{opacity:0.5,'background-color':'{{user.rejected ? 'red' : 'green'}}'}">{{user.rejected}}</td>
             </tr>
             </tbody>
         </table>
-        <dir-pagination-controls
-                max-size="8"
-                direction-links="true"
-                boundary-links="true"
-                on-page-change="data.setPageno(newPageNumber)">
-        </dir-pagination-controls>
-
+        <div id="pagination">
+            <dir-pagination-controls
+                    max-size="8"
+                    direction-links="true"
+                    boundary-links="true"
+                    on-page-change="data.setPageno(newPageNumber)">
+            </dir-pagination-controls>
+        </div>
 
     </main>
 </main>
-<script src="/resources/js/notification/angular-ui-notification.min.js"></script>
+
 <script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="/resources/js/admin-create-user.js"></script>
@@ -223,8 +153,8 @@
 <script src="/resources/js/checkboxScript.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-route.js"></script>
-<script src="/resources/js/studentListAngular.js"></script>
-<script src="/resources/js/dirPagination.js"></script>
+<script src="../../resources/js/studentListAngular.js"></script>
+<script src="../../resources/js/dirPagination.js"></script>
 <script src="http://vitalets.github.io/checklist-model/checklist-model.js"></script>
 
 </body>

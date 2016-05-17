@@ -37,7 +37,7 @@ public interface InterviewerService {
 
     public void unsubscribeInterviewer(List<Integer> studentsId);
 
-    public Integer getInterviewerSize();
+    public Integer getInterviewerSize(String pattern);
 
 
 }

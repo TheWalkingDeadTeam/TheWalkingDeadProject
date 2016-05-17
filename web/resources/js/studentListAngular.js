@@ -1,67 +1,6 @@
-var app = angular.module('studentView', ['checklist-model', 'angularUtils.directives.dirPagination','ui-notification']);
+var app = angular.module('studentView', ['checklist-model', 'angularUtils.directives.dirPagination']);
 
-app.factory('MailService', ['$http', '$q', function ($http, $q) {
-
-    return {
-
-        fetchAllMails: function () {
-            return $http.get('/mails/')
-                .then(
-                    function (response) {
-                        return response.data;
-                    },
-                    function (errResponse) {
-                        console.error('Error while fetching mail');
-                        return $q.reject(errResponse);
-                    }
-                );
-        },
-
-        createMail: function (mail) {
-            return $http.post('/mails/', mail)
-                .then(
-                    function (response) {
-                        return response.data;
-                    },
-                    function (errResponse) {
-                        console.error('Error while creating mail');
-                        return $q.reject(errResponse);
-                    }
-                );
-        },
-
-        updateMail: function (mail, id) {
-            return $http.post('/mails/' + id, mail)
-                .then(
-                    function (response) {
-                        return response.data;
-                    },
-                    function (errResponse) {
-                        console.error('Error while updating mail');
-                        return $q.reject(errResponse);
-                    }
-                );
-        },
-
-        deleteMail: function (id) {
-            return $http.delete('/mails/' + id)
-                .then(
-                    function (response) {
-                        return response.data;
-                    },
-                    function (errResponse) {
-                        console.error('Error while deleting mail');
-                        return $q.reject(errResponse);
-                    }
-                );
-        }
-
-    };
-
-}]);
-
-
-app.controller('StudentCtrl', ["$http", "$scope", 'MailService','Notification', function ($http, $scope, MailService,Notification) {
+app.controller('StudentCtrl', ["$http", "$scope", function ($http, $scope) {
     var vm = this;
     vm.users = []; //declare an empty array
     vm.pageno = 1; // initialize page no to 1
@@ -71,125 +10,38 @@ app.controller('StudentCtrl', ["$http", "$scope", 'MailService','Notification', 
     vm.order_by = null;
     $scope.sortReverse = false;
 
-
-
-    /////////////Alexander///////////////////////////////////////////////
-    vm.mails = [];
-    vm.mail = {id: null, bodyTemplate: ' ', headTemplate: ' '};
-    vm.checkNull = true;
-
-    $scope.list = [];
-    $scope.mail = function () {
-        var dataObj = {
-            values: $scope.dataStudents.studId
-        };
-        if (dataObj.values.length != 0) {
-            var formData = {
-                "usersId": dataObj.values,
-                "headTemplate": $scope.mailHead,
-                "bodyTemplate": $scope.mailBody
-            };
-            var response = $http.post('/admin/users-mail-id', formData);
-            response.success(function (data, status, headers, config) {
-                $scope.list.push(data);
-            });
-            response.error(function (data, status, headers, config) {
-                alert("Exception details: " + JSON.stringify({data: data}));
-            });
-            Notification.success({message: 'Mail successful sent', delay: 1000});
-            $scope.list = [];
-        } else {
-            Notification.error({message: 'You should choose users', delay: 2000});
-        }
+    vm.showSpin = function () {
+        angular.element($(".cssload-thecube")).css('display', 'block');
+        angular.element($("#tableUsers")).css('display', 'none');
+        angular.element($("#pagination")).css('display', 'none');
     };
-
-    $scope.templateSend = function () {
-
-        var dataObj = {
-            values: $scope.dataStudents.studId
-        };
-
-        if(dataObj.values.length != 0){
-            var formData = {
-                "usersId": dataObj.values,
-                "mailIdUser": $scope.mailIdUser,
-            };
-            var response = $http.post('/admin/users-mail-id', formData);
-            response.success(function (data, status, headers, config) {
-                $scope.list.push(data);
-            });
-            response.error(function (data, status, headers, config) {
-                alert("Exception details: " + JSON.stringify({data: data}));
-            });
-            Notification.success({message: 'Mail successful sent', delay: 1000});
-            $scope.list = [];
-        } else {
-            Notification.error({message: 'You should choose users', delay: 2000});
-        }
+    vm.hideSpin = function () {
+        angular.element($(".cssload-thecube")).css('display', 'none');
+        angular.element($("#tableUsers")).css('display', 'table');
+        angular.element($("#pagination")).css('display', 'block');
     };
+    vm.getData = function () {
+        vm.showSpin();
 
-
-
-
-    vm.fetchAllMails = function () {
-        MailService.fetchAllMails()
-            .then(
-                function (d) {
-                    vm.mails = d;
-                },
-                function (errResponse) {
-                    console.error('Error while fetching Currencies');
-                }
-            );
-    };
-
-    vm.createMail = function (mail) {
-        MailService.createMail(mail)
-            .then(
-                vm.fetchAllMails,
-                function (errResponse) {
-                    console.error('Error while creating Mail.');
-                }
-            );
-    };
-
-    vm.updateMail = function (mail, id) {
-        MailService.updateMail(mail, id)
-            .then(
-                vm.fetchAllMails,
-                function (errResponse) {
-                    console.error('Error while updating Mail.');
-                }
-            );
-    };
-
-    vm.deleteMail = function (id) {
-        MailService.deleteMail(id)
-            .then(
-                vm.fetchAllMails,
-                function (errResponse) {
-                    console.error('Error while deleting Mail.');
-                }
-            );
-    };
-
-    vm.fetchAllMails();
-
-    ///////////////////////////////ALEXANDER////////////////////////
-
-
-    vm.getData = function () { // This would fetch the data on page change.
-        //In practice this should be in a factory.
         vm.users = [];
-        // "students/list/"+vm.itemsPerPage+"/"+pageno
         $http.get(vm.selectUrl).success(function (response) {
-            vm.header = response.header;
-            vm.users = response.rows;
-            // vm.order_by = vm.header[0].id;
+            vm.users = response;
         });
-        $http.get("students/size").success(function (response) {
-            vm.total_count = response;
-        });
+
+        vm.hideSpin();
+    };
+    vm.getSize = function () {
+        if (vm.pattern == null) {
+            $http.get("students/size").success(function (response) {
+                vm.total_count = response;
+            });
+        } else {
+            $http.get("students/size/" + vm.pattern).success(function (response) {
+                vm.total_count = response;
+            });
+        }
+        // elem.find('.modal-content').style.display = "none";
+
     };
 
     $scope.dataStudents = {
@@ -201,7 +53,7 @@ app.controller('StudentCtrl', ["$http", "$scope", 'MailService','Notification', 
     };
 
     vm.getData(); // Call the function to fetch initial data on page load.
-
+    vm.getSize();
     vm.setPageno = function (pageno) {
         vm.pageno = pageno;
         if (vm.order_by === null) {
@@ -214,7 +66,7 @@ app.controller('StudentCtrl', ["$http", "$scope", 'MailService','Notification', 
 
     $scope.checkAll = function () {
         if ($scope.selectedAll) {
-            $scope.dataStudents.studId = vm.users.map(function (item) {
+            $scope.dataStudents.studId = vm.users.rows.map(function (item) {
                 return item.userId;
             });
             $scope.selectdAll = true;
@@ -227,14 +79,16 @@ app.controller('StudentCtrl', ["$http", "$scope", 'MailService','Notification', 
     };
 
     $scope.sortType = function (type, revers) {
-
+        vm.showSpin();
         vm.order_by = type;
         vm.selectUrl = "students/list/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by + "/" + revers;
 
-        vm.getData()
+        vm.getData();
+        vm.getSize();
     };
 
     $scope.rejectStud = function () {
+        vm.showSpin();
         var dataObj = {
             type: 'reject',
             values: $scope.dataStudents.studId
@@ -244,6 +98,7 @@ app.controller('StudentCtrl', ["$http", "$scope", 'MailService','Notification', 
             res.success(function (data, status, headers, config) {
                 $scope.message = data;
                 vm.getData();
+
             });
             res.error(function (data, status, headers, config) {
                 alert("failure message: " + JSON.stringify({data: data}));
@@ -252,6 +107,7 @@ app.controller('StudentCtrl', ["$http", "$scope", 'MailService','Notification', 
     };
 
     $scope.unrejectStud = function () {
+        vm.showSpin();
         var dataObj = {
             type: 'unreject',
             values: $scope.dataStudents.studId
@@ -269,10 +125,12 @@ app.controller('StudentCtrl', ["$http", "$scope", 'MailService','Notification', 
     };
 
     $scope.searchFiltr = function (pattern) {
+        vm.showSpin();
         var dataObj = {
             type: "search",
             values: [$scope.searchFilt]
         };
+        vm.pattern = pattern;
         if (pattern == undefined || pattern == "" || pattern == null) {
             vm.selectUrl = "students/list/" + vm.itemsPerPage + "/" + vm.pageno;
 
@@ -284,7 +142,7 @@ app.controller('StudentCtrl', ["$http", "$scope", 'MailService','Notification', 
             }
         }
         vm.getData();
-
+        vm.getSize();
     }
 }]);
 

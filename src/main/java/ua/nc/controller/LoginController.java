@@ -12,6 +12,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
+import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
@@ -63,17 +65,30 @@ public class LoginController implements HandlerExceptionResolver {
     }
 
     @RequestMapping(value = {"/", "/login"}, method = RequestMethod.GET)
-    public String login(HttpServletRequest request) {
-        if (request.isUserInRole(UserRoles.ROLE_ADMIN.name())) {
-            return "admin";
+    public String login(HttpServletRequest request, HttpServletResponse response) {
+        SavedRequest savedRequest =
+                new HttpSessionRequestCache().getRequest(request, response);
+        if (savedRequest != null && (request.isUserInRole(UserRoles.ROLE_ADMIN.name())
+                || request.isUserInRole(UserRoles.ROLE_HR.name())
+                || request.isUserInRole(UserRoles.ROLE_BA.name())
+                || request.isUserInRole(UserRoles.ROLE_DEV.name())
+                || request.isUserInRole(UserRoles.ROLE_STUDENT.name()))) {
+            LOGGER.info("Login and redirect to" + savedRequest.getRedirectUrl());
+            return "redirect:" + savedRequest.getRedirectUrl();
         } else {
-            if (request.isUserInRole(UserRoles.ROLE_HR.name())
-                    || request.isUserInRole(UserRoles.ROLE_BA.name())
-                    || request.isUserInRole(UserRoles.ROLE_DEV.name())
-                    || request.isUserInRole(UserRoles.ROLE_STUDENT.name())) {
-                return "account";
+            if (request.isUserInRole(UserRoles.ROLE_ADMIN.name()) || request.isUserInRole(UserRoles.ROLE_HR.name())) {
+                LOGGER.info("Login and redirect to Admin page");
+                return "admin";
             } else {
-                return "login";
+                if (request.isUserInRole(UserRoles.ROLE_BA.name())
+                        || request.isUserInRole(UserRoles.ROLE_DEV.name())
+                        || request.isUserInRole(UserRoles.ROLE_STUDENT.name())) {
+                    LOGGER.info("Login and redirect to Account page");
+                    return "account";
+                } else {
+                    LOGGER.info("Login and redirect to Login page");
+                    return "login";
+                }
             }
         }
     }
@@ -141,7 +156,8 @@ public class LoginController implements HandlerExceptionResolver {
 
     @RequestMapping(value = {"/passwordRecovery"}, method = RequestMethod.POST, produces = "application/json")
     public
-    @ResponseBody Set<ValidationError> recoverPassword(@RequestBody String email) {
+    @ResponseBody
+    Set<ValidationError> recoverPassword(@RequestBody String email) {
         Validator validator = new EmailValidator();
         Set<ValidationError> errors = null;
         ObjectMapper objectMapper = new ObjectMapper();
@@ -192,8 +208,34 @@ public class LoginController implements HandlerExceptionResolver {
                 .getPrincipal()).getUsername());
         return photoService.getPhotoById(user.getId());
     }
+    @RequestMapping(value = {"/cesPost"}, method = RequestMethod.POST)
+    public @ResponseBody
+    CES getCES(@RequestBody CES ces) {
+        try {
+            cesService.setCES(ces);
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+        return ces;
+    }
 
 
+    @RequestMapping(value = {"/cessettings"}, method = RequestMethod.GET)
+    public String cesPage() {
+        return "cessettings";
+    }
+
+    @RequestMapping(value = "/cessettings", method = RequestMethod.GET, produces = "application/json")
+    public
+    @ResponseBody
+    CES ces() {
+        try {
+            return cesService.getCES();
+        } catch (DAOException e) {
+            LOGGER.error("DAO error");
+            return null;
+        }
+    }
 
     @ResponseBody
     @RequestMapping(value = "/getPhoto/{id}")
