@@ -1,4 +1,4 @@
-var app = angular.module('studentView', ['checklist-model', 'angularUtils.directives.dirPagination']);
+var app = angular.module('studentView', ['checklist-model', 'angularUtils.directives.dirPagination','ui-notification']);
 
 app.controller('StudentCtrl', ["$http", "$scope", function ($http, $scope) {
     var vm = this;

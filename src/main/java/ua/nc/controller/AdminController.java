@@ -23,10 +23,6 @@ import java.util.Set;
 /**
  * Created by Pavel on 18.04.2016.
  */
-
-/**
- * Created by Pavel on 18.04.2016.
- */
 @Controller
 @RequestMapping(value = "/admin")
 public class AdminController {
