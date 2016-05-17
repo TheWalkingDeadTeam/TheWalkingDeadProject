@@ -143,9 +143,8 @@
 <script src="/resources/js/changePassword.js"></script>
 <script src="/resources/js/photo.js"></script>
 <script src="/resources/js/changeRoles.js"></script>
-<script>
-    $('#changePassword').hideShowPassword(false, true);
-
-</script>
+<%--<script>--%>
+    <%--$('#changePassword').hideShowPassword(false, true);--%>
+<%--</script>--%>
 </body>
 </html>
