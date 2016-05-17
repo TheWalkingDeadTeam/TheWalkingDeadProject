@@ -1,14 +1,10 @@
 package ua.nc.controller;
 
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.log4j.Logger;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.entity.*;
 import ua.nc.entity.profile.Field;
@@ -19,13 +15,10 @@ import ua.nc.service.user.UserService;
 import ua.nc.service.user.UserServiceImpl;
 import ua.nc.validator.*;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import javax.management.relation.Role;
-import java.util.*;
 
 /**
  * Created by Pavel on 18.04.2016.
@@ -81,7 +74,6 @@ public class AdminController {
     @ResponseBody
     HttpStatus removeInterviewers(@RequestBody IntegerList integerList) {
         CES currentCES = cesService.getCurrentCES();
-        ;
         if (currentCES != null) {
             int cesId = currentCES.getId();
             Iterator<Integer> iterator = integerList.getInterviewersId().iterator();
@@ -115,6 +107,7 @@ public class AdminController {
         StudentService studentService = new StudentServiceImpl();
         return studentService.getSize("");
     }
+
     @RequestMapping(value = {"/students/size/{pattern}"}, method = RequestMethod.GET, produces = "application/json")
     public
     @ResponseBody
@@ -134,7 +127,7 @@ public class AdminController {
         if (studentData == null) {
             LOGGER.warn("studData == null");
         }
-        LOGGER.info("studData == "+studentData.toString());
+        LOGGER.info("studData == " + studentData.toString());
         return studentData;
     }
 
@@ -148,7 +141,7 @@ public class AdminController {
         if (studentData == null) {
             LOGGER.warn("studData == null");
         }
-        LOGGER.info("studData == "+studentData.toString());
+        LOGGER.info("studData == " + studentData.toString());
         return studentData;
     }
 
@@ -234,6 +227,7 @@ public class AdminController {
         InterviewerService interviewerService = new InterviewerServiceImpl();
         return interviewerService.getInterviewerSize("");
     }
+
     @RequestMapping(value = {"/interviewers/size/{pattern}"}, method = RequestMethod.GET, produces = "application/json")
     public
     @ResponseBody
@@ -344,6 +338,27 @@ public class AdminController {
         return userRows;
     }
 
+
+    /**
+     * Takes a json file with students status changes
+     *
+     * @param status
+     */
+    @RequestMapping(value = {"/users"}, method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public HttpStatus userStatus(@RequestBody Status status) {
+        Status userStatus = status;
+        if (!status.getType().isEmpty() && (status.getValues().size() > 0)) {
+            userService.changeStatus(userStatus.getType(), userStatus.getValues());
+            return HttpStatus.OK;
+        } else {
+            LOGGER.warn("Request type is not supported");
+            return HttpStatus.BAD_REQUEST;
+        }
+
+
+    }
+
     @RequestMapping(value = {"/interviewee"}, method = RequestMethod.GET)
     public String intervieweeView() {
         return "admin-interviwee-view";
@@ -418,25 +433,6 @@ public class AdminController {
         }
     }
 
-    /**
-     * Takes a json file with students status changes
-     *
-     * @param status
-     */
-    @RequestMapping(value = {"/users"}, method = RequestMethod.POST, produces = "application/json")
-    @ResponseBody
-    public HttpStatus userStatus(@RequestBody Status status) {
-        Status userStatus = status;
-        if (!status.getType().isEmpty() && (status.getValues().size() > 0)) {
-            userService.changeStatus(userStatus.getType(), userStatus.getValues());
-            return HttpStatus.OK;
-        } else {
-            LOGGER.warn("Request type is not supported");
-            return HttpStatus.BAD_REQUEST;
-        }
-
-
-    }
 
     @RequestMapping(value = {"/mail-template"}, method = RequestMethod.GET)
     public String mail() {
@@ -467,7 +463,7 @@ public class AdminController {
     @ResponseBody
     CES ces() {
         try {
-            System.out.println(cesService.getCES());
+            LOGGER.info(cesService.getCES());
             return cesService.getCES();
         } catch (DAOException e) {
             LOGGER.error("DAO error");
@@ -479,7 +475,7 @@ public class AdminController {
     public
     @ResponseBody
     String closeCES() {
-        System.out.println("admin");
+        LOGGER.info("admin");
         cesService.closeCES();
         return null;
     }
