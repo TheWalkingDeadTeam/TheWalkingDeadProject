@@ -3,24 +3,26 @@ package ua.nc.service.user;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.security.access.method.P;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import ua.nc.dao.CESDAO;
 import ua.nc.dao.RoleDAO;
 import ua.nc.dao.UserDAO;
 import ua.nc.dao.enums.DataBaseType;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.dao.factory.DAOFactory;
+import ua.nc.dao.postgresql.PostgreApplicationTableDAO;
 import ua.nc.dao.postgresql.PostgreDAOFactory;
 import ua.nc.dao.postgresql.PostgreUserDAO;
-import ua.nc.entity.Role;
-import ua.nc.entity.User;
+import ua.nc.dao.postgresql.PostgreUserTableDAO;
+import ua.nc.entity.*;
+import ua.nc.entity.profile.StudentData;
+import ua.nc.service.CESServiceImpl;
 import ua.nc.service.MailService;
 import ua.nc.service.MailServiceImpl;
 
 import java.sql.Connection;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Pavel on 18.04.2016.
@@ -31,6 +33,89 @@ public class UserServiceImpl implements UserService {
     //private UserDAO userDAO = daoFactory.getUserDAO(daoFactory.getConnection());
     // private RoleDAO roleDAO = daoFactory.getRoleDAO(daoFactory.getConnection());
     private MailService mailService = new MailServiceImpl();
+
+    @Override
+    public List<UserRow> getUser(Integer itemPerPage, Integer pageNumber) {
+        Connection connection = daoFactory.getConnection();
+        PostgreUserTableDAO postgreUserTableDAO = new PostgreUserTableDAO(connection);
+        try {
+            return postgreUserTableDAO.getUsersTable(itemPerPage, pageNumber);
+        } catch (DAOException e) {
+            LOGGER.warn("Can't get students", e.getCause());
+        }
+        return null;
+    }
+
+    @Override
+    public List<UserRow> getUser(Integer itemPerPage, Integer pageNumber, String orderBy, Boolean asc) {
+        Connection connection = daoFactory.getConnection();
+        PostgreUserTableDAO postgreUserTableDAO = new PostgreUserTableDAO(connection);
+        try {
+            return postgreUserTableDAO.getUsersTable(itemPerPage, pageNumber, orderBy, asc);
+        } catch (DAOException e) {
+            LOGGER.warn("Can't get students", e.getCause());
+        }
+        return null;
+    }
+
+    @Override
+    public List<UserRow> getUser(Integer itemPerPage, Integer pageNumber, String orderBy, String pattern) {
+        Connection connection = daoFactory.getConnection();
+        PostgreUserTableDAO postgreUserTableDAO = new PostgreUserTableDAO(connection);
+        try {
+            return postgreUserTableDAO.getUsersTable(itemPerPage, pageNumber, orderBy, pattern);
+        } catch (DAOException e) {
+            LOGGER.warn("Can't get students", e.getCause());
+        }
+        return null;
+    }
+
+    @Override
+    public List<UserRow> getUser(Integer itemPerPage, Integer pageNumber, String pattern) {
+        Connection connection = daoFactory.getConnection();
+        PostgreUserTableDAO postgreUserTableDAO = new PostgreUserTableDAO(connection);
+        try {
+            return postgreUserTableDAO.getUsersTable(itemPerPage, pageNumber,pattern);
+        } catch (DAOException e) {
+            LOGGER.warn("Can't get students", e.getCause());
+        }
+        return null;
+    }
+
+
+    @Override
+    public void changeStatus(String action, List<Integer> userIds) {
+        if (Objects.equals(action, "activate")) {
+            activateUsers(userIds);
+        } else if (Objects.equals(action, "deactivate")) {
+            deactivateUsers(userIds);
+        } else {
+            LOGGER.error(action + " action not supported");
+        }
+    }
+
+    @Override
+    public Integer getSize() {
+        Connection connection = daoFactory.getConnection();
+        PostgreUserTableDAO postgreUserTableDAO = new PostgreUserTableDAO(connection);
+        try {
+            return postgreUserTableDAO.getUsersCount("");
+        } catch (DAOException e) {
+            LOGGER.warn("Can't get students", e.getCause());
+        }
+        return null;
+    }
+    @Override
+    public Integer getSize(String pattern) {
+        Connection connection = daoFactory.getConnection();
+        PostgreUserTableDAO postgreUserTableDAO = new PostgreUserTableDAO(connection);
+        try {
+            return postgreUserTableDAO.getUsersCount(pattern);
+        } catch (DAOException e) {
+            LOGGER.warn("Can't get students", e.getCause());
+        }
+        return null;
+    }
 
     @Override
     public User getUser(String email) {
@@ -50,7 +135,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUser(int id) {
+    public User getUser(Integer id) {
         Connection connection = daoFactory.getConnection();
         UserDAO userDAO = daoFactory.getUserDAO(connection);
         RoleDAO roleDAO = daoFactory.getRoleDAO(connection);
@@ -131,7 +216,7 @@ public class UserServiceImpl implements UserService {
         RoleDAO roleDAO = daoFactory.getRoleDAO(connection);
         try {
             return user.getRoles().contains(roleDAO.findByName(roleName));
-        } catch (DAOException ex){
+        } catch (DAOException ex) {
             LOGGER.warn(ex);
         }
         return false;
@@ -142,26 +227,56 @@ public class UserServiceImpl implements UserService {
         DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
         Connection connection = daoFactory.getConnection();
         PostgreUserDAO userDAO = (PostgreUserDAO) daoFactory.getUserDAO(connection);
-        for(Integer id : userIds) {
+        for (Integer id : userIds) {
             try {
                 userDAO.activateUser(id);
+                userDAO.updateUser(getUser(id));
             } catch (DAOException e) {
                 LOGGER.warn("Cannot activate user with id " + id);
             }
         }
+        LOGGER.info("activation users - OK");
     }
+
 
     @Override
     public void deactivateUsers(List<Integer> userIds) {
         DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
         Connection connection = daoFactory.getConnection();
         PostgreUserDAO userDAO = (PostgreUserDAO) daoFactory.getUserDAO(connection);
-        for(Integer id : userIds) {
+        for (Integer id : userIds) {
             try {
                 userDAO.deactivateUser(id);
+                userDAO.updateUser(getUser(id));
             } catch (DAOException e) {
                 LOGGER.warn("Cannot deactivate user with id " + id);
             }
+        }
+
+        LOGGER.info("deactivation users - OK");
+    }
+
+    @Override
+    public void changeRoles(String email, Set<Role> roles) {
+        DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
+        Connection connection = daoFactory.getConnection();
+        PostgreUserDAO userDAO = (PostgreUserDAO) daoFactory.getUserDAO(connection);
+        System.out.println("???");
+        try {
+            User user = userDAO.findByEmail(email);
+            System.out.println(user.getName());
+            RoleDAO roleDAO = daoFactory.getRoleDAO(connection);
+            System.out.println(roleDAO);
+            Set<Role> newRoles = new HashSet<>();
+            for (Role role : roles) {
+                newRoles.add(roleDAO.findByName(role.getName()));
+            }
+            roleDAO.removeRolesFromUser(user);
+            roleDAO.setRolesToUser(newRoles, user);
+            System.out.println("***");
+        } catch (DAOException e) {
+            System.out.println("@@@");
+            LOGGER.warn("Cannot find user with email " + email + " in DB.");
         }
     }
 }

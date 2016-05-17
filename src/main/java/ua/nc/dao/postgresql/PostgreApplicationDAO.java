@@ -10,7 +10,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Rangar on 02.05.2016.
@@ -102,11 +104,6 @@ public class PostgreApplicationDAO extends AbstractPostgreDAO<Application, Integ
         }
     }
 
-    @Override
-    public List<Application> getAllCESApplications(Integer cesId) throws DAOException {
-        return getSomeApplications(GET_ALL_CES_APPLICATIONS_QUERY, cesId);
-    }
-
     public List<Application> getApplicationsByCesIdUserId(Integer cesId, List<Integer> userIds) throws DAOException {
         try (PreparedStatement statement = connection.prepareStatement(GET_APPLICATIONS_BY_CES_ID_USER_ID)) {
             statement.setInt(1, cesId);
@@ -118,22 +115,34 @@ public class PostgreApplicationDAO extends AbstractPostgreDAO<Application, Integ
     }
 
     @Override
-    public List<Application> getAllAcceptedApplications(Integer cesId) throws DAOException {
+    public Map<Integer, Integer> getAllAcceptedApplications(Integer cesId) throws DAOException {
         return getSomeApplications(GET_ALL_ACCEPTED_APPLICATIONS_QUERY, cesId);
     }
 
-    private List<Application> getSomeApplications(String query, Integer cesId) throws DAOException {
+    private Map<Integer, Integer> getSomeApplications(String query, Integer cesId) throws DAOException {
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, cesId);
             ResultSet rs = statement.executeQuery();
             if (!rs.isBeforeFirst() ) {
                 return null;
             } else {
-                return parseResultSet(rs);
+                return getResultMap(rs);
             }
         } catch (Exception e) {
             throw new DAOException(e);
         }
+    }
+
+    private Map<Integer, Integer> getResultMap(ResultSet rs) throws DAOException {
+        Map<Integer, Integer> result = new HashMap<>();
+        try {
+            while (rs.next()) {
+                result.put(rs.getInt("system_user_id"), rs.getInt("application_id"));
+            }
+        } catch (Exception e) {
+            throw new DAOException(e);
+        }
+        return result;
     }
 
     @Override

@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Created by creed on 06.05.16.
  */
-public class StudentStatus {
+public class Status {
     private String type;
     private List<Integer> values;
 

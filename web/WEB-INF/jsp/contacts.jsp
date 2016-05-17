@@ -16,11 +16,13 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/resources/images/ico.png"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="icon" type="image/png" sizes="32x32" href="/images/ico.png">
-    <link rel="stylesheet" type="text/css" href="resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="resources/css/style-profile.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="resources/css/media-profile.css" rel="stylesheet">
-    <script src="resources/bootstrap/js/jquery-2.2.2.min.js" defer></script>
-    <script src="resources/bootstrap/js/bootstrap.min.js" defer></script>
+    <link rel="stylesheet" type="text/css" href="/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/resources/css/style-profile.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/resources/css/media-profile.css" rel="stylesheet">
+    <script src="/resources/bootstrap/js/jquery-2.2.2.min.js" defer></script>
+    <script src="/resources/bootstrap/js/bootstrap.min.js" defer></script>
+    <script src="http://maps.google.com/maps/api/js?sensor=false"></script>
+    <script src="/resources/js/google-api.js"></script>
 </head>
 <body>
 <header>
@@ -43,7 +45,7 @@
                     <li><a href="/information">Information</a></li>
                     <li><a href="/contacts">Contacts</a></li>
                     <sec:authorize access="hasRole('ROLE_STUDENT')">
-                        <li><a href="/account/profile">Profile</a></li>
+                        <li><a href="/profile/{id}">Profile</a></li>
                     </sec:authorize>
                     <li><a href="/logout">Logout</a></li>
                 </ul>
@@ -102,7 +104,8 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xs-6 col-sm-6 col-md-6"><img class="map-location" style="margin-bottom: 20px;" src="http://www.netcracker.com/assets/img/map-office-location.png" alt=""></div>
+            <div class="col-xs-6 col-sm-6 col-md-6"> <div id="map-container" class="card-panel hoverable wow fadeInUp" style="height: 300px"></div>
+            </div>
         </div>
     </div>
 </div>

@@ -1,5 +1,6 @@
 package ua.nc.service;
 
+import ua.nc.dao.exception.DAOException;
 import ua.nc.entity.ReportTemplate;
 
 import java.util.List;
@@ -19,5 +20,5 @@ public interface ReportService {
 
     void deleteReport(ReportTemplate report);
 
-    List<Map<String,Object>> getReportRows(ReportTemplate report);
+    List<Map<String,Object>> getReportRows(ReportTemplate report) throws DAOException;
 }

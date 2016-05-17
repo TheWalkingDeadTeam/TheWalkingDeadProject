@@ -1,14 +1,19 @@
 package ua.nc.controller;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.log4j.Logger;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.entity.*;
 import ua.nc.entity.profile.Field;
 import ua.nc.entity.profile.ListValue;
+import ua.nc.entity.*;
 import ua.nc.entity.profile.StudentData;
 import ua.nc.service.*;
 import ua.nc.service.user.UserService;
@@ -20,6 +25,12 @@ import java.util.*;
 /**
  * Created by Pavel on 18.04.2016.
  */
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import javax.management.relation.Role;
+import java.util.*;
 
 /**
  * Created by Pavel on 18.04.2016.
@@ -31,6 +42,8 @@ public class AdminController {
     private final UserService userService = new UserServiceImpl();
     private final CESService cesService = new CESServiceImpl();
     private final StudentService studentService = new StudentServiceImpl();
+    private final InterviewerService interviewerService = new InterviewerServiceImpl();
+    private final IntervieweeService intervieweeService = new IntervieweeServiceImpl();
 
     @RequestMapping(method = RequestMethod.GET)
     public String login() {
@@ -68,20 +81,20 @@ public class AdminController {
         return "admin-create-user";
     }
 
-    @RequestMapping(value = {"/remove"}, method = RequestMethod.POST, produces = "application/json")
-    public void removeInterviewers(@RequestBody ArrayList<Integer> interviewersId) {
+    @RequestMapping(value = {"/remove-ces-interviewer"}, method = RequestMethod.POST)
+    public void removeInterviewers(@RequestBody IntegerList integerList) {
         CESService cesService = new CESServiceImpl();
-        int cesId = cesService.getCurrentCES().getId();
-        Iterator<Integer> iterator = interviewersId.iterator();
-        while (iterator.hasNext()) {
-            try {
-                cesService.removeInterviewer(iterator.next(), cesId);
-            } catch (DAOException e) {
-                LOGGER.error("Can't Sign out interviewer");
-                LOGGER.error(e);
+        if (cesService != null) {
+            int cesId = cesService.getCurrentCES().getId();
+            Iterator<Integer> iterator = integerList.getInterviewersId().iterator();
+            while (iterator.hasNext()) {
+                try {
+                    cesService.removeInterviewer(iterator.next(), cesId);
+                } catch (DAOException e) {
+                    LOGGER.error("Can't Sign out interviewer", e);
+                }
             }
         }
-
     }
 
     /**
@@ -98,8 +111,9 @@ public class AdminController {
     @RequestMapping(value = {"/students/size"}, method = RequestMethod.GET, produces = "application/json")
     public
     @ResponseBody
-    String studentsGetJSONSize() {
-        return "{\"size\":2000}";
+    Integer studentsGetJSONSize() {
+        StudentService studentService = new StudentServiceImpl();
+        return studentService.getSize();
     }
 
 
@@ -129,12 +143,12 @@ public class AdminController {
         return studentData;
     }
 
-    @RequestMapping(value = {"/students/list/{itemsPerPage}/{pageNumber}/{sortType}"}, method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = {"/students/list/{itemsPerPage}/{pageNumber}/{sortType}/{type}"}, method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public StudentData getStudentsBySort(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("sortType") Integer sortType) {
+    public StudentData getStudentsBySort(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("sortType") Integer sortType, @PathVariable("type") Boolean asc) {
         StudentData studentData;
         StudentService studentService = new StudentServiceImpl();
-        studentData = studentService.getStudents(itemsPerPage, (pageNumber * itemsPerPage - 10), sortType);
+        studentData = studentService.getStudents(itemsPerPage, (pageNumber * itemsPerPage - 10), sortType, asc);
         if (studentData == null) {
             LOGGER.warn("studData == null");
         }
@@ -145,16 +159,18 @@ public class AdminController {
     /**
      * Takes a json file with students status changes
      *
-     * @param studentStatus
+     * @param status
      */
     @RequestMapping(value = {"/students"}, method = RequestMethod.POST, produces = "application/json")
-    @ResponseStatus(value = HttpStatus.OK)
-    public void studentStatus(@RequestBody StudentStatus studentStatus) {
-        StudentStatus status = studentStatus;
+    @ResponseBody
+    public HttpStatus studentStatus(@RequestBody Status status) {
+        Status studentStatus = status;
         if (!status.getType().isEmpty() && (status.getValues().size() > 0)) {
-            studentService.changeStatus(status.getType(), status.getValues());
+            studentService.changeStatus(studentStatus.getType(), studentStatus.getValues());
+            return HttpStatus.OK;
         } else {
             LOGGER.warn("Request type is not supported");
+            return HttpStatus.BAD_REQUEST;
         }
 
 
@@ -186,60 +202,26 @@ public class AdminController {
 //        }
 //        return studentData;
         List<Interviewer> interviewers;
-        InterviewerService studentService = new InterviewerServiceImpl();
-        interviewers = studentService.getInterviewer(itemsPerPage, pageNumber);
+        InterviewerService interviewerService = new InterviewerServiceImpl();
+        interviewers = interviewerService.getInterviewer(itemsPerPage, (pageNumber * itemsPerPage - 10));
         if (interviewers == null) {
             LOGGER.warn("interviewers == null");
         }
         return interviewers;
-//        return "[{\n" +
-//                "    \"id\": 2,\n" +
-//                "    \"name\": \"Abcac\",\n" +
-//                "    \"surname\": \"Pomidorchik\",\n" +
-//                "    \"email\" : \"ger@gmail.com\",\n" +
-//                "    \"role\" : \"Admin\",\n" +
-//                "    \"participation\": true\n" +
-//                "  },{\n" +
-//                "    \"id\": 2,\n" +
-//                "    \"name\": \"Abcac\",\n" +
-//                "    \"surname\": \"Pomidorchik\",\n" +
-//                "    \"email\" : \"ger@gmail.com\",\n" +
-//                "    \"role\" : \"Admin\",\n" +
-//                "    \"participation\": true\n" +
-//                "  },{\n" +
-//                "    \"id\": 2,\n" +
-//                "    \"name\": \"Abcac\",\n" +
-//                "    \"surname\": \"Pomidorchik\",\n" +
-//                "    \"email\" : \"ger@gmail.com\",\n" +
-//                "    \"role\" : \"Admin\",\n" +
-//                "    \"participation\": true\n" +
-//                "  },{\n" +
-//                "    \"id\": 2,\n" +
-//                "    \"name\": \"Abcac\",\n" +
-//                "    \"surname\": \"Pomidorchik\",\n" +
-//                "    \"email\" : \"ger@gmail.com\",\n" +
-//                "    \"role\" : \"Admin\",\n" +
-//                "    \"participation\": true\n" +
-//                "  },{\n" +
-//                "    \"id\": 2,\n" +
-//                "    \"name\": \"Abcac\",\n" +
-//                "    \"surname\": \"Pomidorchik\",\n" +
-//                "    \"email\" : \"ger@gmail.com\",\n" +
-//                "    \"role\" : \"Admin\",\n" +
-//                "    \"participation\": true\n" +
-//                "  }]";
+
     }
 
-    @RequestMapping(value = {"/interviewers/list/{itemsPerPage}/{pageNumber}/{sortType}"}, method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = {"/interviewers/list/{itemsPerPage}/{pageNumber}/{sortType}/{type}"}, method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public void interviewGetJSONSort(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("sortType") String sortType) {
-//        StudentData studentData;
-//        StudentService studentService = new StudentServiceImpl();
-//        studentData = studentService.getStudents(itemsPerPage, pageNumber, sortType);
-//        if (studentData == null) {
-//            LOGGER.warn("studData == null");
-//        }
-//        return studentData;
+    public List<Interviewer> interviewGetJSONSort(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("sortType") String sortType, @PathVariable("type") Boolean asc) {
+        List<Interviewer> interviewers;
+        InterviewerService interviewerService = new InterviewerServiceImpl();
+        interviewers = interviewerService.getInterviewer(itemsPerPage, (pageNumber * itemsPerPage - 10), sortType,asc);
+        if (interviewers == null) {
+            LOGGER.warn("interviewers == null");
+        }
+        LOGGER.info("interviewers.get - successful");
+        return interviewers;
 
     }
 
@@ -251,6 +233,200 @@ public class AdminController {
         return interviewerService.getInterviewerSize();
     }
 
+    @RequestMapping(value = {"/interviewer/search/{itemsPerPage}/{pageNumber}/{sortType}/{pattern}"}, method = RequestMethod.GET, produces = "application/json")
+    public
+    @ResponseBody
+    List<Interviewer> interviewerSearch(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("sortType") String sortType, @PathVariable("pattern") String pattern) {
+        List<Interviewer> interviewers;
+        System.out.println(pattern);
+        InterviewerService interviewerService = new InterviewerServiceImpl();
+        interviewers = interviewerService.getInterviewer(itemsPerPage, (pageNumber * itemsPerPage - 10), sortType, pattern);
+        if (interviewers == null) {
+            LOGGER.warn("interviewers == null");
+        }
+        System.out.println(interviewers);
+        return interviewers;
+    }
+
+    @RequestMapping(value = {"/interviewers"}, method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public HttpStatus interviewerStatus(@RequestBody Status status) {
+        Status interviewerStatus = status;
+        if (!status.getType().isEmpty() && (status.getValues().size() > 0)) {
+            interviewerService.changeStatus(interviewerStatus.getType(), interviewerStatus.getValues());
+            return HttpStatus.OK;
+        } else {
+            LOGGER.warn("Request type is not supported");
+            return HttpStatus.BAD_REQUEST;
+        }
+    }
+
+    @RequestMapping(value = {"/users"}, method = RequestMethod.GET)
+    public String usersView() {
+
+        return "admin-user-view";
+    }
+
+    @RequestMapping(value = {"/users/size"}, method = RequestMethod.GET, produces = "application/json")
+    public
+    @ResponseBody
+    Integer usersGetJSONSize() {
+        UserServiceImpl userService = new UserServiceImpl();
+        return userService.getSize();
+    }
+    @RequestMapping(value = {"/users/size/{pattern}"}, method = RequestMethod.GET, produces = "application/json")
+    public
+    @ResponseBody
+    Integer usersGetJSONSize(@PathVariable("pattern") String pattern) {
+        UserServiceImpl userService = new UserServiceImpl();
+        return userService.getSize(pattern);
+    }
+
+    @RequestMapping(value = {"/users/search/{itemsPerPage}/{pageNumber}/{pattern}"}, method = RequestMethod.GET, produces = "application/json")
+    public
+    @ResponseBody
+    List<UserRow> usersSearch(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("pattern") String pattern) {
+        List<UserRow> userRows;
+        UserService userService = new UserServiceImpl();
+        userRows = userService.getUser(itemsPerPage, (pageNumber * itemsPerPage - 10), pattern);
+        if (userRows == null) {
+            LOGGER.warn("users == null");
+        }
+        return userRows;
+    }
+
+    @RequestMapping(value = {"/users/search/{itemsPerPage}/{pageNumber}/{sortType}/{pattern}"}, method = RequestMethod.GET, produces = "application/json")
+    public
+    @ResponseBody
+    List<UserRow> usersSearch(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("sortType") String sortType, @PathVariable("pattern") String pattern) {
+        List<UserRow> userRows;
+        UserService userService = new UserServiceImpl();
+        userRows = userService.getUser(itemsPerPage, (pageNumber * itemsPerPage - 10),sortType, pattern);
+        if (userRows == null) {
+            LOGGER.warn("users == null");
+        }
+        return userRows;
+    }
+
+
+    @RequestMapping(value = {"/users/list/{itemsPerPage}/{pageNumber}"}, method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public List<UserRow> getUsers(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber) {
+        List<UserRow> userRows;
+        UserService userService = new UserServiceImpl();
+        userRows = userService.getUser(itemsPerPage, (pageNumber * itemsPerPage - 10));
+        if (userRows == null) {
+            LOGGER.warn("users == null");
+        }
+        LOGGER.warn("users != null");
+        return userRows;
+    }
+
+    @RequestMapping(value = {"/users/list/{itemsPerPage}/{pageNumber}/{sortType}/{type}"}, method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public List<UserRow> getUsersBySort(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("sortType") String sortType, @PathVariable("type") Boolean asc) {
+        List<UserRow> userRows;
+        UserService userService = new UserServiceImpl();
+        userRows = userService.getUser(itemsPerPage, (pageNumber * itemsPerPage - 10), sortType, asc);
+        if (userRows == null) {
+            LOGGER.warn("users == null");
+        }
+        return userRows;
+    }
+
+    @RequestMapping(value = {"/interviewee"}, method = RequestMethod.GET)
+    public String intervieweeView() {
+        return "admin-interviwee-view";
+    }
+
+    @RequestMapping(value = {"/interviewee/list/{itemsPerPage}/{pageNumber}"}, method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public List<IntervieweeRow> intervieweeGetJSON(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber) {
+        List<IntervieweeRow> interviewees;
+        IntervieweeService intervieweeService = new IntervieweeServiceImpl();
+        interviewees = intervieweeService.getInterviewee(itemsPerPage, (pageNumber * itemsPerPage - 10));
+        if (interviewees == null) {
+            LOGGER.warn("interviewee == null");
+        }
+        return interviewees;
+    }
+
+    @RequestMapping(value = {"/interviewee/list/{itemsPerPage}/{pageNumber}/{sortType}/{type}"}, method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public List<IntervieweeRow> intervieweeGetJSONSort(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("sortType") String sortType, @PathVariable("type") Boolean asc) {
+        List<IntervieweeRow> interviewee;
+        IntervieweeService intervieweeService = new IntervieweeServiceImpl();
+        interviewee = intervieweeService.getInterviewee(itemsPerPage, (pageNumber * itemsPerPage - 10), sortType,asc);
+        if (interviewee == null) {
+            LOGGER.warn("interviewee == null");
+        }
+        LOGGER.info("interviewee.get - successful");
+        return interviewee;
+
+    }
+
+    @RequestMapping(value = {"/interviewee/size"}, method = RequestMethod.GET, produces = "application/json")
+    public
+    @ResponseBody
+    Integer intervieweeGetJSONSize() {
+        IntervieweeService intervieweeService = new IntervieweeServiceImpl();
+        return intervieweeService.getIntervieweeSize();
+    }
+
+    @RequestMapping(value = {"/interviewee/size/{pattern}"}, method = RequestMethod.GET, produces = "application/json")
+    public
+    @ResponseBody
+    Integer intervieweeGetJSONSize(@PathVariable("pattern") String pattern) {
+        IntervieweeService intervieweeService = new IntervieweeServiceImpl();
+        return intervieweeService.getIntervieweeSize(pattern);
+    }
+
+    @RequestMapping(value = {"/interviewee/search/{itemsPerPage}/{pageNumber}/{sortType}/{pattern}"}, method = RequestMethod.GET, produces = "application/json")
+    public
+    @ResponseBody
+    List<IntervieweeRow> intervieweeSearch(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("sortType") String sortType, @PathVariable("pattern") String pattern) {
+        List<IntervieweeRow> interviewee;
+        IntervieweeService intervieweeService = new IntervieweeServiceImpl();
+        interviewee = intervieweeService.getInterviewee(itemsPerPage, (pageNumber * itemsPerPage - 10), sortType, pattern);
+        if (interviewee == null) {
+            LOGGER.warn("interviewers == null");
+        }
+        System.out.println(interviewee);
+        return interviewee;
+    }
+
+    @RequestMapping(value = {"/interviewee"}, method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public HttpStatus intervieweeStatus(@RequestBody Status status) {
+        Status intervieweeStatus = status;
+        if (!status.getType().isEmpty() && (status.getValues().size() > 0)) {
+            intervieweeService.changeStatus(intervieweeStatus.getType(), intervieweeStatus.getValues());
+            return HttpStatus.OK;
+        } else {
+            LOGGER.warn("Request type is not supported");
+            return HttpStatus.BAD_REQUEST;
+        }
+    }
+
+    /**
+     * Takes a json file with students status changes
+     *
+     * @param status
+     */
+    @RequestMapping(value = {"/users"}, method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public HttpStatus userStatus(@RequestBody Status status) {
+        Status userStatus = status;
+        if (!status.getType().isEmpty() && (status.getValues().size() > 0)) {
+            userService.changeStatus(userStatus.getType(), userStatus.getValues());
+            return HttpStatus.OK;
+        } else {
+            LOGGER.warn("Request type is not supported");
+            return HttpStatus.BAD_REQUEST;
+        }
+
+
+    }
 
     @RequestMapping(value = {"/mail-template"}, method = RequestMethod.GET)
     public String mail() {
@@ -258,17 +434,17 @@ public class AdminController {
     }
 
 
-//    @RequestMapping(value = {"/scheduler"}, method = RequestMethod.GET)
-//    @RequestMapping(value = {"/cesPost"}, method = RequestMethod.POST)
-//    public @ResponseBody
-//    CES getCES(@RequestBody CES ces) {
-//        try {
-//            cesService.setCES(ces);
-//        } catch (DAOException e) {
-//            e.printStackTrace();
-//        }
-//        return ces;
-//    }
+    @RequestMapping(value = {"/cesPost"}, method = RequestMethod.POST)
+    public
+    @ResponseBody
+    CES getCES(@RequestBody CES ces) {
+        try {
+            cesService.setCES(ces);
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+        return ces;
+    }
 
 
     @RequestMapping(value = {"/cessettings"}, method = RequestMethod.GET)
@@ -289,6 +465,14 @@ public class AdminController {
         }
     }
 
+    @RequestMapping(value = {"/cesclose"}, method = RequestMethod.POST)
+    public
+    @ResponseBody
+    String closeCES() {
+        System.out.println("admin");
+        cesService.closeCES();
+        return null;
+    }
 
     @RequestMapping(value = {"/scheduler"}, method = RequestMethod.GET)
     public String schedulerView() {
@@ -402,5 +586,33 @@ public class AdminController {
         return "admin-es-view";
     }
 
+    @RequestMapping(value = {"/report"}, method = RequestMethod.GET)
+    public String report() {
+        return "admin-report-template";
+    }
+
+    @RequestMapping(value = {"/mail-personal"}, method = RequestMethod.GET)
+    public String mailSend() {
+        return "mail-send";
+    }
+
+
+}
+
+
+class IntegerList {
+    private List<Integer> interviewersId;
+
+    public IntegerList() {
+    }
+
+
+    public List<Integer> getInterviewersId() {
+        return interviewersId;
+    }
+
+    public void setInterviewersId(List<Integer> interviewersId) {
+        this.interviewersId = interviewersId;
+    }
 
 }

@@ -88,7 +88,7 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public List<Map<String, Object>> getReportRows(ReportTemplate report) {
+    public List<Map<String, Object>> getReportRows(ReportTemplate report) throws DAOException {
         Connection connection = daoFactory.getConnection();
         ReportTemplateDAO reportTemplateDAO = new PostgreReportTemplateDAO(connection);
         List<Map<String, Object>> reportRows = null;
@@ -96,6 +96,7 @@ public class ReportServiceImpl implements ReportService {
             reportRows = reportTemplateDAO.execute(report);
         } catch (DAOException e) {
             LOGGER.warn("Can't execute report query " + report.getId());
+            throw new DAOException(e);
         } finally {
             daoFactory.putConnection(connection);
         }

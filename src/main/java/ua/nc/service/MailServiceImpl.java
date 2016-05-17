@@ -8,12 +8,13 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Service;
+import ua.nc.dao.CESDAO;
+import ua.nc.dao.IntervieweeDAO;
 import ua.nc.dao.MailDAO;
 import ua.nc.dao.enums.DataBaseType;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.dao.factory.DAOFactory;
-import ua.nc.entity.Mail;
-import ua.nc.entity.User;
+import ua.nc.entity.*;
 
 import java.sql.Connection;
 import java.text.DateFormat;
@@ -40,6 +41,7 @@ public class MailServiceImpl implements MailService {
     private static final String SURNAME_PATTERN = "$surname";
     private static final String START_HOURS_PATTERN = "$hours";
     private static final String START_MINS_PATTERN = "$minutes";
+    private static final int MIN_DELIMITER = 30;
     private DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
     private static final int POOL_SIZE = 2;
     private static final int POOL_SIZE_SCHEDULER = 10;
@@ -119,23 +121,24 @@ public class MailServiceImpl implements MailService {
 
     @Override
     public void massDelivery(Date date, final List<User> users, final Mail mail) {
+        System.out.println("Delivery date:" + date);
         schedulerMassDeliveryService.schedule(new Runnable() {
             @Override
             public void run() {
                 try {
-                    Map<String, String> nameParameter = new HashMap<>();
+                    Map<String, String> nameParameters = new HashMap<>();
                     for (User i : users) {
                         //Sleep for a while, google may think you're spamming :(
                         Thread.sleep(SLEEP);
-                        nameParameter.put(NAME_PATTERN, i.getName());
-                        nameParameter.put(SURNAME_PATTERN, i.getSurname());
-                        sendMail(i.getEmail(), customizeMail(mail, nameParameter));
+                        nameParameters.put(NAME_PATTERN, i.getName());
+                        nameParameters.put(SURNAME_PATTERN, i.getSurname());
+                        sendMail(i.getEmail(), customizeMail(mail, nameParameters));
                     }
                 } catch (Exception e) {
-                    LOGGER.warn("Failed to send email", e);
+                    LOGGER.error("Failed to send email", e);
                 }
             }
-        },date);
+        }, date);
     }
 
     /**
@@ -145,7 +148,7 @@ public class MailServiceImpl implements MailService {
      * @param parameters set of parameters in form : "{pattern1:meaning1, ..., patternN:meaningN}".
      * @return customized mail.
      */
-    private Mail customizeMail(Mail mail, Map<String, String> parameters) {
+    public Mail customizeMail(Mail mail, Map<String, String> parameters) {
         //customize mail topic
         String head = mail.getHeadTemplate();
         for (Map.Entry<String, String> param : parameters.entrySet()) {
@@ -252,36 +255,93 @@ public class MailServiceImpl implements MailService {
     public void sendInterviewReminders(List<Date> interviewDates, int reminderTime, Mail interviewerMail,
                                        Map<String, String> interviewerParameters, Mail studentMail,
                                        Map<String, String> studentParameters, Set<User> interviewersSet,
-                                       Set<User> studentsSet) {
-//        String startHours = studentParameters.get(START_HOURS_PATTERN);
-//        String startMins = studentParameters.get(START_MINS_PATTERN);
-        String startHours = "18";
-        String startMins = "00";
-        int startMillis = Integer.parseInt(startHours) * MILLIS_PER_HOUR +
-                Integer.parseInt(startMins) * MILLIS_PER_MINUTE;
-        List<User> interviewersList = new ArrayList<>(interviewersSet);
-        List<User> studentsList = new ArrayList<>(studentsSet);
+                                       Set<User> studentsSet, Map<Integer, Integer> applicationList) {
         int reminderMillis = reminderTime * MILLIS_PER_HOUR;
-        int studentsPerDay = (int) Math.ceil(studentsList.size() / interviewDates.size());
-        int todaysFirstStudent = 0;
-        int todaysLastStudent = studentsPerDay;
         Mail customizedInterviewerMail = customizeMail(interviewerMail, studentParameters);
         Mail customizedStudentMail = customizeMail(studentMail, studentParameters);
-        //make everyday mail delivery
+        String startHours = studentParameters.get(START_HOURS_PATTERN);
+        String startMins = studentParameters.get(START_MINS_PATTERN);
         Map<String, String> dateTimeParameters = new HashMap<>();
         dateTimeParameters.put(START_HOURS_PATTERN, startHours);
         dateTimeParameters.put(START_MINS_PATTERN, startMins);
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyy");
+        everydaySend(interviewDates, interviewersSet, studentsSet, reminderMillis, customizedInterviewerMail,
+                customizedStudentMail, dateTimeParameters, dateFormat, applicationList);
+    }
+
+    /**
+     * Divide list of students to parts and send emails to each part in special day.
+     *
+     * @param interviewDates all the dates when the interviews are performed.
+     * @param interviewersSet all the interviewers that take part in the CES.
+     * @param studentsSet all the students invited to interview.
+     * @param reminderMillis amount of milliseconds during that the reminder on a special date will be sent.
+     * @param interviewerMail email template to send to all the interviewers.
+     * @param studentMail email template to send to all the students.
+     * @param dateTimeParameters interview start hours and minutes.
+     * @param dateFormat date formatter that transforms interview date to regional standard.
+     */
+    private void everydaySend(List<Date> interviewDates, Set<User> interviewersSet, Set<User> studentsSet,
+                              int reminderMillis, Mail interviewerMail, Mail studentMail,
+                              Map<String, String> dateTimeParameters, SimpleDateFormat dateFormat,
+                              Map<Integer, Integer> applicationList) {
+        Connection connection = daoFactory.getConnection();
+        IntervieweeDAO intDAO = daoFactory.getIntervieweeDAO(connection);
+        String startHours = dateTimeParameters.get(START_HOURS_PATTERN);
+        String startMins = dateTimeParameters.get(START_MINS_PATTERN);
+        List<User> interviewersList = new ArrayList<>(interviewersSet);
+        List<User> studentsList = new ArrayList<>(studentsSet);
+        int studentsPerDay = (int) Math.ceil(studentsList.size() / interviewDates.size());
+        int todaysLastStudent = studentsPerDay;
+        CESService cesService = new CESServiceImpl();
+        int studentsPerGroup = cesService.getMinimalInterviewersAmount(interviewersSet);
+        int firstStudent = 0;
+        int lastStudent = studentsPerGroup;
         for (Date interviewDate : interviewDates) {
-            List<User> todayStudents = studentsList.subList(todaysFirstStudent,
-                    Math.min(todaysLastStudent, studentsList.size()));
-            todaysFirstStudent = todaysLastStudent;
-            todaysLastStudent += studentsPerDay;
             dateTimeParameters.put(DATE_PATTERN, dateFormat.format(interviewDate));
-            Date reminderDate = new Date(interviewDate.getTime() + startMillis - reminderMillis);
-            massDelivery(reminderDate, interviewersList, customizeMail(customizedInterviewerMail, dateTimeParameters));
-            massDelivery(reminderDate, todayStudents, customizeMail(customizedStudentMail, dateTimeParameters));
+            while (lastStudent < todaysLastStudent) {
+                List<User> studentGroup = studentsList.subList(firstStudent, Math.min(lastStudent, studentsList.size()));
+                int startMillis = Integer.parseInt(dateTimeParameters.get(START_HOURS_PATTERN)) * MILLIS_PER_HOUR +
+                        Integer.parseInt(dateTimeParameters.get(START_MINS_PATTERN)) / MIN_DELIMITER * MILLIS_PER_MINUTE;
+                Date reminderDate = new Date(interviewDate.getTime() + startMillis - reminderMillis);
+                massDelivery(reminderDate, interviewersList, customizeMail(interviewerMail, dateTimeParameters));
+                massDelivery(reminderDate, studentGroup, customizeMail(studentMail, dateTimeParameters));
+                firstStudent = lastStudent;
+                lastStudent += studentsPerGroup;
+                dateTimeParameters = increaseGroupTime(dateTimeParameters);
+                for (User user : studentGroup) {
+                    int appId = applicationList.remove(user.getId());
+                    try {
+                        intDAO.create(new Interviewee(appId, new Date(interviewDate.getTime() + startMillis)));
+                    } catch (DAOException e) {
+                        LOGGER.error("Unable to create new interviewee for user " + user.getId());
+                    }
+                }
+            }
+            dateTimeParameters.put(START_HOURS_PATTERN, startHours);
+            dateTimeParameters.put(START_MINS_PATTERN, startMins);
+            todaysLastStudent += studentsPerDay;
         }
+    }
+
+    private Map<String, String> increaseGroupTime(Map<String, String> dateTimeParameters) {
+        Connection connection = daoFactory.getConnection();
+        CESDAO cesDAO = daoFactory.getCESDAO(connection);
+        try {
+            CES ces = cesDAO.getCurrentCES();
+            int minutesPerStudent = ces.getInterviewTimeForPerson();
+            int hours = Integer.parseInt(dateTimeParameters.get(START_HOURS_PATTERN));
+            int minutes = Integer.parseInt(dateTimeParameters.get(START_MINS_PATTERN));
+            minutes += minutesPerStudent;
+            hours += minutes / 60;
+            hours %= 24;
+            minutes %= 60;
+            dateTimeParameters.put(START_HOURS_PATTERN, Integer.toString(hours));
+            dateTimeParameters.put(START_MINS_PATTERN, Integer.toString(minutes));
+        } catch (DAOException e) {
+            LOGGER.error("Current CES is absent.");
+        }
+        return dateTimeParameters;
     }
 
 }
