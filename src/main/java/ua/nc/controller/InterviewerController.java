@@ -1,6 +1,8 @@
 package ua.nc.controller;
 
+import com.sun.deploy.net.HttpResponse;
 import org.apache.log4j.Logger;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +35,7 @@ public class InterviewerController {
     private CESService cesService = new CESServiceImpl();
 
     @RequestMapping(value = "/enroll-ces-interviewer",method = RequestMethod.POST)
-    public void enroll(@RequestBody IntegerList integerList) {
+    public @ResponseBody HttpStatus enroll(@RequestBody IntegerList integerList) {
         LOGGER.info(integerList.getInterviewersId().size());
         CES currentCES = cesService.getCurrentCES();
         if (currentCES != null) {
@@ -48,7 +50,9 @@ public class InterviewerController {
             }
         }else{
             LOGGER.info("Can't enroll to current CES. Current CES session is not exist");
+            return HttpStatus.BAD_REQUEST;
         }
+        return HttpStatus.OK;
     }
 
 
