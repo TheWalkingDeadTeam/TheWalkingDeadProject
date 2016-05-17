@@ -255,4 +255,28 @@ public class UserServiceImpl implements UserService {
 
         LOGGER.info("deactivation users - OK");
     }
+
+    @Override
+    public void changeRoles(String email, Set<Role> roles) {
+        DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
+        Connection connection = daoFactory.getConnection();
+        PostgreUserDAO userDAO = (PostgreUserDAO) daoFactory.getUserDAO(connection);
+        System.out.println("???");
+        try {
+            User user = userDAO.findByEmail(email);
+            System.out.println(user.getName());
+            RoleDAO roleDAO = daoFactory.getRoleDAO(connection);
+            System.out.println(roleDAO);
+            Set<Role> newRoles = new HashSet<>();
+            for (Role role : roles) {
+                newRoles.add(roleDAO.findByName(role.getName()));
+            }
+            roleDAO.removeRolesFromUser(user);
+            roleDAO.setRolesToUser(newRoles, user);
+            System.out.println("***");
+        } catch (DAOException e) {
+            System.out.println("@@@");
+            LOGGER.warn("Cannot find user with email " + email + " in DB.");
+        }
+    }
 }
