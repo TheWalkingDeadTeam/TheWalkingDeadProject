@@ -78,8 +78,10 @@
                                                              role="presentation">help_outline</i>Menu</a>
         </div>
         <a class="mdl-navigation__link" href="/admin/scheduler"><i class="mdl-color-text--blue-grey-400 material-icons"
+                                                   role="presentation">schedule</i>Schedule Planning</a>
+        <a class="mdl-navigation__link" href="/admin/edit-form"><i class="mdl-color-text--blue-grey-400 material-icons"
                                                                    role="presentation">schedule</i>Schedule Planning</a>
-        <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons"
+        <a class="mdl-navigation__link" href="/admin/edit-form"><i class="mdl-color-text--blue-grey-400 material-icons"
                                                    role="presentation">inbox</i>Form Template</a>
         <a class="mdl-navigation__link" href="/admin/cessettings"><i class="mdl-color-text--blue-grey-400 material-icons"
                                                    role="presentation">local_offer</i>Registration Period</a>

@@ -15,9 +15,7 @@ import ua.nc.entity.profile.StudentData;
 import ua.nc.service.*;
 import ua.nc.service.user.UserService;
 import ua.nc.service.user.UserServiceImpl;
-import ua.nc.validator.RegistrationValidator;
-import ua.nc.validator.ValidationError;
-import ua.nc.validator.Validator;
+import ua.nc.validator.*;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -476,6 +474,108 @@ public class AdminController {
     public String schedulerView() {
         return "admin-scheduler";
     }
+
+
+    //update from 12.05.2016
+    @RequestMapping(value = {"/edit-form"}, method = RequestMethod.GET)
+    public String editFormView() {
+        return "edit-form";
+    }
+
+    @RequestMapping(value = {"/edit-form"}, method = RequestMethod.GET, produces = "application/json")
+    public
+    @ResponseBody List<Field> editFormGet(Integer ces_id) {
+        EditFormService efs = new EditFormServiceImpl();
+        List<Field> fields = new LinkedList<>();
+        fields.addAll(efs.getAllFields(efs.getCES_ID()));
+        return fields;
+    }
+
+    @RequestMapping(value = "/edit-form/appformfield/{listTypeID}/{id}", method = RequestMethod.GET, produces = "application/json")
+    public
+    @ResponseBody
+    List<ListValue> getFieldInfoById(@PathVariable("listTypeID") Integer listType_id, @PathVariable("id") Integer id) {
+        EditFormService efs = new EditFormServiceImpl();
+        List<ListValue> listValues = new LinkedList<>();
+        listValues.addAll(efs.getListValues(listType_id));
+        return listValues;
+    }
+
+    @RequestMapping(value = "/edit-form/appformfield", method = RequestMethod.GET)
+    public String getFieldInfo() {
+        return "appformfield";
+    }
+
+    @RequestMapping(value = "/edit-form/new-question", method = RequestMethod.GET)
+    public String addNewQuestion() {
+        return "new-question";
+    }
+
+    @RequestMapping(value = "/edit-form/new-question", method = RequestMethod.POST, produces = "application/json")
+    public
+    @ResponseBody
+    Set<ValidationError> sendNewQuestion(@RequestBody FullFieldWrapper field) {
+        Validator validator = new NewQuestionValidator();
+        Set<ValidationError> errors = validator.validate(field);
+        if (errors.isEmpty()) {
+            EditFormService efs = new EditFormServiceImpl();
+            field.setOrderNum(efs.newPositionNumber());
+            efs.addNewQuestion(field);
+        }
+        return errors;
+    }
+
+    @RequestMapping(value = "/edit-form", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+    public
+    @ResponseBody
+    Set<ValidationError> deleteQuestion(@RequestBody ListWrapper id) {
+        Validator validator = new DeleteQuestionValidator();
+        Set<ValidationError> errors = validator.validate(id);
+        if (errors.isEmpty()) {
+            EditFormService efs = new EditFormServiceImpl();
+            for (Integer idToWrite : id) {
+                efs.deleteQuestionFromCES(efs.getCES_ID(), idToWrite);
+            }
+        }
+        return errors;
+    }
+
+    @RequestMapping(value = "/edit-form/save-position", method = RequestMethod.POST, produces = "application/json")
+    public
+    @ResponseBody
+    Set<ValidationError> savePosition(@RequestBody FieldWrapper fields) {
+        Validator validator = new SavePositionValidator();
+        Set<ValidationError> errors = validator.validate(fields);
+        if (errors.isEmpty()) {
+            EditFormService efs = new EditFormServiceImpl();
+            for (int i = 0; i < new LinkedList<Field>(fields.getFields()).size(); i++) {
+                fields.getFields().get(i).setOrderNum(i + 1);
+                efs.updatePosition(fields.getFields().get(i));
+            }
+        }
+        return errors;
+    }
+
+    @RequestMapping(value = "/edit-form/appformfield/get-field/{id}", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    Field getField(@PathVariable("id") Integer id) {
+        EditFormService efs = new EditFormServiceImpl();
+        Field field = efs.getField(id);
+        return field;
+    }
+
+//    @RequestMapping(value = "/edit-form/delete-option", method = RequestMethod.POST, produces = "application/json")
+//    public
+//    @ResponseBody
+//    Set<ValidationError> deleteOption(@RequestBody ListWrapper id) {
+//        Validator validator = new DeleteQuestionValidator();
+//        Set<ValidationError> errors = validator.validate(id);
+//        if (errors.isEmpty()) {
+//            System.out.println("Deal with it");
+//        }
+//        return errors;
+//    }
 
     @RequestMapping(value = {"/enroll-session"}, method = RequestMethod.GET)
     public String enrollmentSessionView() {

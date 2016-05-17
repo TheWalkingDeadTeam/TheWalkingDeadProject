@@ -165,3 +165,8 @@
 .footerSm {
     width: 100%;
 }
+
+.as-sortable-item,
+.as-sortable-placeholder {
+    display: table-row !important;
+}
