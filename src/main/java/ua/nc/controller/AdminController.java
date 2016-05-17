@@ -81,9 +81,9 @@ public class AdminController {
 
     @RequestMapping(value = {"/remove-ces-interviewer"}, method = RequestMethod.POST)
     public void removeInterviewers(@RequestBody IntegerList integerList) {
-        CESService cesService = new CESServiceImpl();
-        if (cesService != null) {
-            int cesId = cesService.getCurrentCES().getId();
+        CES currentCES = cesService.getCurrentCES();
+        if (currentCES != null) {
+            int cesId = currentCES.getId();
             Iterator<Integer> iterator = integerList.getInterviewersId().iterator();
             while (iterator.hasNext()) {
                 try {
@@ -597,20 +597,3 @@ public class AdminController {
 
 }
 
-
-class IntegerList {
-    private List<Integer> interviewersId;
-
-    public IntegerList() {
-    }
-
-
-    public List<Integer> getInterviewersId() {
-        return interviewersId;
-    }
-
-    public void setInterviewersId(List<Integer> interviewersId) {
-        this.interviewersId = interviewersId;
-    }
-
-}

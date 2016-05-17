@@ -5,10 +5,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import ua.nc.dao.enums.UserRoles;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.entity.CES;
 import ua.nc.entity.profile.Profile;
-import ua.nc.entity.profile.ProfileField;
 import ua.nc.service.*;
 import ua.nc.validator.ProfileValidator;
 import ua.nc.validator.ValidationError;
@@ -37,11 +37,12 @@ public class ProfileController {
                 || request.isUserInRole(UserRoles.ROLE_BA.name())
                 || request.isUserInRole(UserRoles.ROLE_DEV.name())
                 || ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
-                .getPrincipal()).getId().equals(id)){
-        try {
-            profile = profileService.getProfile(id, efs.getCES_ID());
-        } catch (DAOException e) {
-            LOGGER.error(e);
+                .getPrincipal()).getId().equals(id)) {
+            try {
+                profile = profileService.getProfile(id, efs.getCES_ID());
+            } catch (DAOException e) {
+                LOGGER.error(e);
+            }
         }
         return profile;
     }

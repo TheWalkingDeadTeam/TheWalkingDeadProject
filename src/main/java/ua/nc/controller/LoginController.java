@@ -12,6 +12,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
+import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
@@ -20,8 +22,6 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import ua.nc.dao.enums.UserRoles;
-import ua.nc.dao.exception.DAOException;
-import ua.nc.entity.CES;
 import ua.nc.entity.User;
 import ua.nc.service.*;
 import ua.nc.service.user.UserDetailsServiceImpl;
@@ -63,18 +63,30 @@ public class LoginController implements HandlerExceptionResolver {
     }
 
     @RequestMapping(value = {"/", "/login"}, method = RequestMethod.GET)
-    public String login(HttpServletRequest request) {
-
-
-        if (request.isUserInRole(UserRoles.ROLE_ADMIN.name()) || request.isUserInRole(UserRoles.ROLE_HR.name())) {
-            return "admin";
+    public String login(HttpServletRequest request, HttpServletResponse response) {
+        SavedRequest savedRequest =
+                new HttpSessionRequestCache().getRequest(request, response);
+        if (savedRequest != null && (request.isUserInRole(UserRoles.ROLE_ADMIN.name())
+                || request.isUserInRole(UserRoles.ROLE_HR.name())
+                || request.isUserInRole(UserRoles.ROLE_BA.name())
+                || request.isUserInRole(UserRoles.ROLE_DEV.name())
+                || request.isUserInRole(UserRoles.ROLE_STUDENT.name()))) {
+            LOGGER.info("Login and redirect to" + savedRequest.getRedirectUrl());
+            return "redirect:" + savedRequest.getRedirectUrl();
         } else {
-            if (request.isUserInRole(UserRoles.ROLE_BA.name())
-                    || request.isUserInRole(UserRoles.ROLE_DEV.name())
-                    || request.isUserInRole(UserRoles.ROLE_STUDENT.name())) {
-                return "account";
+            if (request.isUserInRole(UserRoles.ROLE_ADMIN.name()) || request.isUserInRole(UserRoles.ROLE_HR.name())) {
+                LOGGER.info("Login and redirect to Admin page");
+                return "admin";
             } else {
-                return "login";
+                if (request.isUserInRole(UserRoles.ROLE_BA.name())
+                        || request.isUserInRole(UserRoles.ROLE_DEV.name())
+                        || request.isUserInRole(UserRoles.ROLE_STUDENT.name())) {
+                    LOGGER.info("Login and redirect to Account page");
+                    return "account";
+                } else {
+                    LOGGER.info("Login and redirect to Login page");
+                    return "login";
+                }
             }
         }
     }
@@ -142,8 +154,8 @@ public class LoginController implements HandlerExceptionResolver {
 
     @RequestMapping(value = {"/passwordRecovery"}, method = RequestMethod.POST, produces = "application/json")
     public
-    @ResponseBody Set<ValidationError> recoverPassword(@RequestBody String email) {
-
+    @ResponseBody
+    Set<ValidationError> recoverPassword(@RequestBody String email) {
         Validator validator = new EmailValidator();
         Set<ValidationError> errors = null;
         ObjectMapper objectMapper = new ObjectMapper();
@@ -153,6 +165,7 @@ public class LoginController implements HandlerExceptionResolver {
             email = emailNode.asText();
             errors = validator.validate(email);
             if (errors.isEmpty()) {
+
                 User user = userService.getUser(email);
                 if (user != null) {
                     userService.recoverPass(user);
@@ -168,24 +181,6 @@ public class LoginController implements HandlerExceptionResolver {
     }
 
 
-
-
-//    @RequestMapping(value = "/stuff/{stuffId}", method = RequestMethod.GET)
-//    public ResponseEntity<InputStreamResource> downloadStuff(@PathVariable int stuffId)
-//            throws IOException {
-//        String fullPath = stuffService.figureOutFileNameFor(stuffId);
-//        File file = new File(fullPath);
-//
-//        HttpHeaders respHeaders = new HttpHeaders();
-//        respHeaders.setContentType("application/pdf");
-//        respHeaders.setContentLength(12345678);
-//        respHeaders.setContentDispositionFormData("attachment", "fileNameIwant.pdf");
-//
-//        InputStreamResource isr = new InputStreamResource(new FileInputStream(file));
-//        return new ResponseEntity<InputStreamResource>(isr, respHeaders, HttpStatus.OK);
-//    }
-
-
     @ResponseBody
     @RequestMapping(value = "/getPhoto")
     public byte[] getPhoto() {
@@ -193,7 +188,6 @@ public class LoginController implements HandlerExceptionResolver {
                 .getPrincipal()).getUsername());
         return photoService.getPhotoById(user.getId());
     }
-
 
 
     @ResponseBody

@@ -16,6 +16,7 @@
         <csrf disabled="true"/>
         <intercept-url pattern="/error" access="permitAll"/>
         <intercept-url pattern="/login" access="permitAll" />
+        <intercept-url pattern="/" access="permitAll" />
 
 
         <intercept-url pattern="/admin/create**" access="hasRole('ROLE_ADMIN')"/>
