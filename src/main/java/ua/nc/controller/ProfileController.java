@@ -31,10 +31,11 @@ public class ProfileController {
     @ResponseBody
     Profile profile(@PathVariable("id") Integer id) {
         Profile profile = null;
+        EditFormService efs = new EditFormServiceImpl();
         try {
-            profile = profileService.getProfile(id, 1);
+            profile = profileService.getProfile(id, efs.getCES_ID());
         } catch (DAOException e) {
-            e.printStackTrace();// TODO log4j
+            LOGGER.error(e);
         }
         return profile;
     }
@@ -57,7 +58,7 @@ public class ProfileController {
                         .getAuthentication()
                         .getPrincipal()).getId(), profile);
             } catch (DAOException e) {
-                e.printStackTrace(); //toDO add log
+                LOGGER.equals(e);
             }
         }
         return errors;
