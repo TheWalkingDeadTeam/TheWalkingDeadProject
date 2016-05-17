@@ -57,68 +57,84 @@
                     <div id="messageRegistration"></div>
                     <div>
                         <div class="row container-fluid reg-head">
-                            <div>
-                                <h2 class="form-signin-heading">Session settings</h2>
+                            <div id="sessionSettings">
+                                <h4 class="form-signin-heading">Session settings</h4>
                             </div>
                         </div>
-                        <div name="myForm" id="CESfields" ng-submit="ctrl.save()" class="col-lg-11 col-md-8 col-sm-9 col-xs-9">
-                            <div>Year <input type="number" name="year" min="2016" max="2100" id="1"
-                                             ng-model="ctrl.ces.year" ng-readonly="current" required/></div>
+                        <div name="myForm" id="CESfields" ng-submit="ctrl.save()"
+                             class="col-lg-11 col-md-8 col-sm-9 col-xs-9">
+                            <div><span class="myTextInfo">Year</span><input type="number" name="year" min="2016"
+                                                         max="2100" id="1" class="form-control"
+                                                         ng-model="ctrl.ces.year"
+                                                         ng-readonly="current" required/></div>
                             <div class="correct-year"></div>
-                            <div>Quota <input type="number" name="quota" id="quota" min="1" ng-model="ctrl.ces.quota"
+                            <div><span class="myTextInfo">Quota</span><input type="number" name="quota" id="quota" class="form-control" min="1"
+                                              ng-model="ctrl.ces.quota"
                                               required/></div>
                             <div class="correct-quota"></div>
-                            <div>Start registration date <input type="date" name="startRegistrationDate"
+                            <div><span class="myTextInfo">Start registration date</span><input type="date" name="startRegistrationDate"
+                                                                class="form-control"
                                                                 ng-model="ctrl.ces.startRegistrationDate"
-                                                                ng-readonly="current" id="3"required></div>
+                                                                ng-readonly="current" id="3" required></div>
                             <div class="correct-date"></div>
-                            <div>End registration date <input type="date" name="endRegistrationDate"
+                            <div><span class="myTextInfo">End registration date</span><input type="date" name="endRegistrationDate"
+                                                              class="form-control"
                                                               ng-model="ctrl.ces.endRegistrationDate"
-                                                              ng-readonly="current" id="4"required/></div>
+                                                              ng-readonly="current" id="4" required/></div>
                             <div class="correct-date"></div>
-                            <div>Start interviewing date <input type="date" name="startInterviewingDate"
+                            <div><span class="myTextInfo">Start interviewing date</span><input type="date" name="startInterviewingDate"
+                                                                class="form-control"
                                                                 ng-model="ctrl.ces.startInterviewingDate"
                                                                 ng-readonly="interviewBegan" id="5"/></div>
                             <div class="correct-date"></div>
-                            <div>End interviewing date <input type="date" name="endInterviewingDate"
+                            <div><span class="myTextInfo">End interviewing date</span><input type="date" name="endInterviewingDate"
+                                                              class="form-control"
                                                               ng-model="ctrl.ces.endInterviewingDate"
-                                                              ng-readonly=true  id="6"/></div>
+                                                              ng-readonly=true id="6"/></div>
                             <div class="correct-date"></div>
-                            <div>Reminders <input type="number" name="reminders" id="7" ng-model="ctrl.ces.reminders"
+                            <div><span class="myTextInfo">Reminders </span><input type="number" name="reminders" id="7" ng-model="ctrl.ces.reminders"
+                                                  class="form-control"
                                                   ng-readonly="current" required/></div>
-                            <div>Interview time for person <input type="number" name="interviewTimeForPerson" id="8"
+                            <div><span class="myTextInfo">Interview time for person </span><input type="number" name="interviewTimeForPerson" id="8"
+                                                                  class="form-control"
                                                                   ng-model="ctrl.ces.interviewTimeForPerson"
-                                                                  ng-readonly="interviewBegan"  required/></div>
+                                                                  ng-readonly="interviewBegan" required/></div>
                             <div class="correct-int"></div>
                             <div>Interview time for day <input type="number" name="interviewTimeForDay" id="9"
+                                                               class="form-control"
                                                                ng-model="ctrl.ces.interviewTimeForDay"
-                                                               ng-readonly="interviewBegan"  required/></div>
+                                                               ng-readonly="interviewBegan" required/></div>
                             <div class="correct-int"></div>
-                            <input type="submit" value="Save" class="btn btn-lg btn-primary btn-block">
-                            <button ng-click="backButton()" class="btn btn-lg btn-primary btn-block"> Back </button>
-                            <button ng-click="ctrl.closeButton()" class="btn btn-lg btn-primary btn-block"> Close session</button>
+                            <input type="submit" value="Save" style="margin-top: 5px;"
+                                   class="btn btn-lg btn-primary btn-block mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white formControllingButt">
+                            <%--<button ng-click="backButton()" class="btn btn-lg btn-primary btn-block"> Back </button>--%>
+                            <button ng-click="ctrl.closeButton()"
+                                    class="btn btn-lg btn-primary btn-block mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white formControllingButt">
+                                Close session
+                            </button>
                         </div>
                         </form>
                     </div>
                 </div>
             </div>
-            <a href="/logout" target="_blank" id="view-source"
-               class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">Exit</a>
-        </div></main>
+            <%--<a href="/logout" target="_blank" id="view-source"--%>
+            <%--class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">Exit</a>--%>
+        </div>
+    </main>
 
 </div>
 </body>
-<script src = "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
 
 <script>
-    $(function(){
+    $(function () {
         if (!Modernizr.inputtypes.date) {
             // If not native HTML5 support, fallback to jQuery datePicker
             $('input[type=date]').datepicker({
                         // Consistent format with the HTML5 picker
-                        dateFormat : 'yy-mm-dd'
+                        dateFormat: 'yy-mm-dd'
                     },
                     // Localization
                     $.datepicker.regional['it']
