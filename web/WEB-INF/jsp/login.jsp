@@ -31,34 +31,7 @@
 
 <body id="document">
 
-<header>
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed button-header" data-toggle='collapse'
-                        data-target='#collapsed-menu' aria-expanded="false">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand brand-img" href="">
-                    <img src='resources/images/logo.png' alt="Brand" class="header-img">
-                </a>
-            </div>
-            <div id='collapsed-menu' class='navbar-collapse collapse'>
-                <a href="?lang=en">English</a>                |
-                <a href="?lang=uk">Українська</a>
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="/login"><spring:message code="locale.home"/></a></li>
-                    <li><a href="/information"><spring:message code="locale.info"/></a></li>
-                    <li><a href="/contacts"><spring:message code="locale.contacts"/></a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-</header>
-
-
+<jsp:include page="header.jsp"/>
 <div class="content container">
     <div class="reg registration">
         <div class="layout"></div>
