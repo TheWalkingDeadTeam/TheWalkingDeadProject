@@ -335,16 +335,16 @@ public class MailServiceImpl implements MailService {
             daoFactory.putConnection(connection);
         }
 
-        Mail mailRejectedTemplate = getByHeaderMailTemplate(REJECTED).get(0);
-        Mail mailWorkOffer = getByHeaderMailTemplate(ACCEPTED_WORK).get(0);
-        Mail mailCourseOffer = getByHeaderMailTemplate(ACCEPTED_COURSE).get(0);
+        final Mail mailRejectedTemplate = getByHeaderMailTemplate(REJECTED).get(0);
+        final Mail mailWorkOffer = getByHeaderMailTemplate(ACCEPTED_WORK).get(0);
+        final Mail mailCourseOffer = getByHeaderMailTemplate(ACCEPTED_COURSE).get(0);
 
         if ((!mailRejectedTemplate.getBodyTemplate().isEmpty()) && (!mailWorkOffer.getBodyTemplate().isEmpty()) &&
                 (!mailCourseOffer.getBodyTemplate().isEmpty())) {
 
-            Set<User> finalJobOfferUsers = jobOfferUsers;
-            Set<User> finalCourseRejectedUsers = courseRejectedUsers;
-            Set<User> finalCourseAcceptedUsers = courseAcceptedUsers;
+            final Set<User> finalJobOfferUsers = jobOfferUsers;
+            final Set<User> finalCourseRejectedUsers = courseRejectedUsers;
+            final Set<User> finalCourseAcceptedUsers = courseAcceptedUsers;
             schedulerMassDeliveryService.schedule(new Runnable() {
                 public void run() {
                     massDelivery(finalJobOfferUsers, mailWorkOffer);

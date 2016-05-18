@@ -13,7 +13,7 @@
     <script type="text/javascript" src="/resources/js/bootstrap-timepicker.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </head>
-<body ng-app="app" class="ng-cloack">
+<body ng-app="mailer" class="ng-cloack">
 
 
 
