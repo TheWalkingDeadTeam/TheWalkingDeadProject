@@ -1,5 +1,7 @@
 package ua.nc.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.type.*;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpHeaders;
@@ -19,6 +21,7 @@ import ua.nc.service.user.UserService;
 import ua.nc.service.user.UserServiceImpl;
 import ua.nc.validator.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -76,26 +79,26 @@ public class AdminController {
         return "admin-create-user";
     }
 
+
     @RequestMapping(value = {"/remove-ces-interviewer"}, method = RequestMethod.POST)
-    public
-    @ResponseBody
-    HttpStatus removeInterviewers(@RequestBody IntegerList integerList) {
-        CES currentCES = cesService.getCurrentCES();
-        ;
-        if (currentCES != null) {
-            int cesId = currentCES.getId();
-            Iterator<Integer> iterator = integerList.getInterviewersId().iterator();
+    public void removeInterviewers(@RequestBody String json) throws IOException {
+        CESService cesService = new CESServiceImpl();
+        if (cesService != null) {
+            int cesId = cesService.getCurrentCES().getId();
+            ObjectMapper objectMapper = new ObjectMapper();
+            List<Integer> integerList = objectMapper.readValue(json, new TypeReference<List<Integer>>() {});
+            Iterator<Integer> iterator = integerList.iterator();
             while (iterator.hasNext()) {
                 try {
+                    System.out.println(iterator.next());
                     cesService.removeInterviewer(iterator.next(), cesId);
                 } catch (DAOException e) {
                     LOGGER.error("Can't Sign out interviewer", e);
-                    return HttpStatus.FOUND;
                 }
             }
         }
-        return HttpStatus.OK;
     }
+
 
     /**
      * Method for view student list from admin controle panale UC 7

@@ -17,6 +17,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.type.*;
 
 /**
  * Created by Hlib on 09.05.2016.
@@ -50,6 +52,27 @@ public class InterviewerController {
 //            LOGGER.info("Can't enroll to current CES. Current CES session is not exist");
 //        }
 //    }
+
+    @RequestMapping(value = "/enroll-ces-interviewer",method = RequestMethod.POST)
+    public void enroll(@RequestBody String json) throws IOException {
+        CES currentCES = cesService.getCurrentCES();
+        if (currentCES != null) {
+            int cesId = cesService.getCurrentCES().getId();
+            ObjectMapper objectMapper = new ObjectMapper();
+            List<Integer> integerList = objectMapper.readValue(json, new TypeReference<List<Integer>>() {});
+            Iterator<Integer> iterator = integerList.iterator();
+            while (iterator.hasNext()) {
+                try {
+                    System.out.println(iterator.next());
+                    cesService.enrollAsInterviewer(iterator.next(), cesId);
+                } catch (DAOException e) {
+                    LOGGER.info(e);
+                }
+            }
+        }else{
+            LOGGER.info("Can't enroll to current CES. Current CES session is not exist");
+        }
+    }
 
 
 
