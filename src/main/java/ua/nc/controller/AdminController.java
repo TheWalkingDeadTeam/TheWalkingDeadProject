@@ -38,6 +38,7 @@ public class AdminController {
     private final StudentService studentService = new StudentServiceImpl();
     private final InterviewerService interviewerService = new InterviewerServiceImpl();
     private final IntervieweeService intervieweeService = new IntervieweeServiceImpl();
+    private final MailService mailService = new MailServiceImpl();
 
     @RequestMapping(method = RequestMethod.GET)
     public String login() {
@@ -486,6 +487,7 @@ public class AdminController {
     @ResponseBody
     String closeCES() {
         System.out.println("admin");
+        mailService.sendFinalNotification();
         cesService.closeCES();
         return null;
     }

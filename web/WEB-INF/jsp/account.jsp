@@ -102,6 +102,7 @@
 <script src="/resources/js/photo.js"></script>
 <script src="/resources/js/account.js"></script>
 <script src="/resources/js/hideShowPassword.min.js"></script>
+<script src="/resources/js/changeRoles.js"></script>
 <script src="http://code.jquery.com/jquery-latest.js" type="text/javascript"></script>
 <script src="/resources/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
 <script src="/resources/bootstrap/js/jasny-bootstrap.js"></script>

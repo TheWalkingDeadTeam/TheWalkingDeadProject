@@ -102,15 +102,8 @@ public class SchedulerController {
 
         try {
             List<Date> interviewDates = cesService.planSchedule();
-            CES ces = cesService.getCurrentCES();
-            int reminderTime = ces.getReminders();
-            Set<User> interviewersList = userDAO.getInterviewersForCurrentCES();
-            ApplicationDAO appDAO = new PostgreApplicationDAO(connection);
-            Map<Integer, Integer> applicationList = appDAO.getAllAcceptedApplications(ces.getId());
-            Set<User> studentsList = userDAO.getAllAcceptedStudents(ces.getId());
-            System.out.println("!!!");
-            mailService.sendInterviewReminders(interviewDates, reminderTime, interviewerMail, interviewerParameters,
-                    studentMail, studentParameters, interviewersList, studentsList, applicationList);
+            mailService.sendInterviewReminders(interviewDates, interviewerMail, interviewerParameters,
+                    studentMail, studentParameters);
         } catch (DAOException e) {
             log.warn("Check Scheduler paramters", e);
         }
