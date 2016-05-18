@@ -38,6 +38,21 @@ class EnrollOnInterviewingServiceImpl implements CESService {
         return ces;
     }
 
+    @Override
+    public CES getCES() throws DAOException {
+        return null;
+    }
+
+    @Override
+    public void setCES(CES ces) throws DAOException {
+
+    }
+
+    @Override
+    public void closeCES() {
+
+    }
+
 //    @Override
 //    public void enrollAsStudent(Integer userId, Integer cesId) throws DAOException {
 //
@@ -46,6 +61,26 @@ class EnrollOnInterviewingServiceImpl implements CESService {
     @Override
     public void enrollAsInterviewer(Integer userId, Integer cesId) throws DAOException {
 
+    }
+
+    @Override
+    public void removeInterviewer(Integer interviewerId, Integer cesId) throws DAOException {
+
+    }
+
+    @Override
+    public List<CES> getAllCES() {
+        return null;
+    }
+
+    @Override
+    public void switchToInterviewingOngoing() throws DAOException {
+
+    }
+
+    @Override
+    public List<Date> planSchedule() throws DAOException {
+        return null;
     }
 
     @Override
@@ -74,8 +109,4 @@ class EnrollOnInterviewingServiceImpl implements CESService {
      * @return schedule of the current CES interviews.
      * @throws DAOException missing data about current course enrolment session.
      */
-    @Override
-    public List<Date> planSchedule(Mail interviewerMail, Map<String, String> interviewerParameters, Mail studentMail, Map<String, String> studentParameters) throws DAOException {
-        return null;
-    }
 }

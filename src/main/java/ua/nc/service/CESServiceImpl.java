@@ -183,6 +183,8 @@ public class CESServiceImpl implements CESService {
             if (cesDAO.getCurrentCES() != null) {
                 cesFromDb = cesDAO.getCurrentCES();
                 cesFromDb.setQuota(ces.getQuota());
+                System.out.println(ces.toString());
+                cesDAO.update(cesFromDb);
                 if (cesDAO.getCurrentCES().getStatusId() < 4) {
                     cesFromDb.setStartInterviewingDate(ces.getStartInterviewingDate());
                     cesFromDb.setEndInterviewingDate(ces.getEndInterviewingDate());
@@ -201,6 +203,7 @@ public class CESServiceImpl implements CESService {
                     switchToPostRegistration();
                 }
             } else {
+                ces.setStatusId(1);
                 cesDAO.create(ces);
             }
             LOGGER.info("CES was updated");
@@ -323,33 +326,48 @@ public class CESServiceImpl implements CESService {
         }, date);
     }
 
-    private void switchToInterviewingOngoing() throws DAOException {
-        String dateFromDB = getCES().getStartInterviewingDate().toString() + TIME_FOR_DATE_FROM_DB;
+//    private void switchToInterviewingOngoing() throws DAOException {
+//        String dateFromDB = getCES().getStartInterviewingDate().toString() + TIME_FOR_DATE_FROM_DB;
+//        final Connection connection = daoFactory.getConnection();
+//        final CESStatusDAO cesStatus = daoFactory.getCESStatusDAO(connection);
+//        final CESDAO cesDAO = daoFactory.getCESDAO(connection);
+//        Date date = null;
+//        try {
+//            date = dateFormatter.parse(dateFromDB);
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//        scheduler.schedule(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    CES ces = cesDAO.getPendingCES();
+//                    ces.setStatusId(cesStatus.read(4).getId()); //id of current session?
+//                    cesDAO.update(ces);
+//                    LOGGER.info("Status changed to 'InterviewingOngoing'");
+//                } catch (Exception e) {
+//                    LOGGER.error("Failed to change status", e);
+//                } finally {
+//                    daoFactory.putConnection(connection);
+//                }
+//            }
+//        }, date);
+//    }
+    @Override
+    public void switchToInterviewingOngoing() throws DAOException {
         final Connection connection = daoFactory.getConnection();
         final CESStatusDAO cesStatus = daoFactory.getCESStatusDAO(connection);
         final CESDAO cesDAO = daoFactory.getCESDAO(connection);
-        Date date = null;
         try {
-            date = dateFormatter.parse(dateFromDB);
-        } catch (ParseException e) {
-            e.printStackTrace();
+            CES ces = cesDAO.getPendingCES();
+            ces.setStatusId(cesStatus.read(4).getId()); //id of current session?
+            cesDAO.update(ces);
+            LOGGER.info("Status changed to 'InterviewingOngoing'");
+        } catch (Exception e) {
+            LOGGER.error("Failed to change status", e);
+        } finally {
+            daoFactory.putConnection(connection);
         }
-        scheduler.schedule(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    CES ces = cesDAO.getPendingCES();
-                    ces.setStatusId(cesStatus.read(4).getId()); //id of current session?
-                    cesDAO.update(ces);
-                    LOGGER.info("Status changed to 'InterviewingOngoing'");
-                } catch (Exception e) {
-                    LOGGER.error("Failed to change status", e);
-                } finally {
-                    daoFactory.putConnection(connection);
-                }
-            }
-        }, date);
     }
-
 
 }

@@ -14,6 +14,7 @@ import ua.nc.entity.profile.StudentData;
 import ua.nc.service.*;
 import ua.nc.service.user.UserService;
 import ua.nc.service.user.UserServiceImpl;
+import ua.nc.validator.CESValidator;
 import ua.nc.validator.RegistrationValidator;
 import ua.nc.validator.ValidationError;
 import ua.nc.validator.Validator;
@@ -227,16 +228,20 @@ public class AdminController {
     }
 
 
-    @RequestMapping(value = {"/cesPost"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/cesPost"}, method = RequestMethod.POST, produces = "application/json")
     public
     @ResponseBody
-    CES getCES(@RequestBody CES ces) {
-        try {
-            cesService.setCES(ces);
-        } catch (DAOException e) {
-            e.printStackTrace();
+    Set<ValidationError> getCES(@RequestBody CES ces) {
+        CESValidator cesValidator = new CESValidator();
+        Set<ValidationError> errors = cesValidator.validate(ces);
+        if (errors.isEmpty()) {
+            try {
+                cesService.setCES(ces);
+            } catch (DAOException e) {
+                e.printStackTrace();
+            }
         }
-        return ces;
+        return errors;
     }
 
 
