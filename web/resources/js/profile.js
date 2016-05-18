@@ -33,7 +33,6 @@
 
             },
             error: function (jqXHR, exception) {
-                console.log(exception.toString());
                 window.location.href = "/error"
             }
         });

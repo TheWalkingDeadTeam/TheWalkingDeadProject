@@ -43,7 +43,7 @@
                     <li><a href="/information">Information</a></li>
                     <li><a href="/contacts">Contacts</a></li>
                     <sec:authorize access="hasRole('ROLE_STUDENT')">
-                        <li><a href="/profile/{id}">Profile</a></li>
+                        <li><a href="/account/profile">Profile</a></li>
                     </sec:authorize>
                     <li><a href="/logout">Logout</a></li>
                 </ul>
@@ -58,7 +58,7 @@
             <div class="col-xs-6 col-sm-6 col-md-6">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="headline-one"><h1>Headquarters</h1></div>
+                        <div class="headline-one"><h3>Headquarters</h3></div>
                         <div class="standard-copy">University Office Park III</div>
                         <div class="standard-copy">95 Sawyer Road Waltham, MA 02453</div>
                         <div class="standard-copy">United States of America</div>
@@ -66,7 +66,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="standard-copy"><h1>Phone numbers</h1></div>
+                        <div class="standard-copy"><h3>Phone numbers</h3></div>
                     </div>
                 </div>
                 <div class="row">
@@ -102,7 +102,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xs-6 col-sm-6 col-md-6"><img class="map-location" src="http://www.netcracker.com/assets/img/map-office-location.png" alt=""></div>
+            <div class="col-xs-6 col-sm-6 col-md-6"><img class="map-location" style="margin-bottom: 20px;" src="http://www.netcracker.com/assets/img/map-office-location.png" alt=""></div>
         </div>
     </div>
 </div>
