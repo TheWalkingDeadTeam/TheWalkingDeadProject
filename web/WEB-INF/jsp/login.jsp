@@ -9,6 +9,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+
+
+
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -42,10 +46,12 @@
                 </a>
             </div>
             <div id='collapsed-menu' class='navbar-collapse collapse'>
+                <a href="?lang=en">English</a>                |
+                <a href="?lang=uk">Українська</a>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="/login">Home</a></li>
-                    <li><a href="/information">Information</a></li>
-                    <li><a href="/contacts">Contacts</a></li>
+                    <li><a href="/login"><spring:message code="locale.home"/></a></li>
+                    <li><a href="/information"><spring:message code="locale.info"/></a></li>
+                    <li><a href="/contacts"><spring:message code="locale.contacts"/></a></li>
                 </ul>
             </div>
         </div>
@@ -61,23 +67,23 @@
                 <div id="messageRegistration"></div>
                 <div class="row container-fluid reg-head">
                     <div class="col-lg-6 col-md-8 col-sm-9 col-xs-9">
-                        <h2 class="form-signin-heading">Student Registration</h2>
+                        <h2 class="form-signin-heading"><spring:message code="locale.registration"/></h2>
                     </div>
                     <div class="col-lg-6 col-md-4 col-sm-3 col-xs-3 ">
                         <i class="material-icons closeico"><span class="closebtn">highlight_off</span></i>
                     </div>
                 </div>
-                <input id="name" name="name" class="form-control" placeholder="Name" type="text" value="">
+                <input id="name" name="name" class="form-control" placeholder=<spring:message code="locale.name"/> type="text" value="">
                 <div class="correct-name"></div>
-                <input id="surname" name="surname" class="form-control" placeholder="Surname" type="text" value="">
+                <input id="surname" name="surname" class="form-control" placeholder=<spring:message code="locale.surname"/> type="text" value="">
                 <div class="correct-surname"></div>
-                <input id="email" name="email" class="form-control" placeholder="Email address" type="text" value="">
+                <input id="email" name="email" class="form-control" placeholder=<spring:message code="locale.email"/> type="text" value="">
                 <div class="correct-email"></div>
-                <input id="password" name="password" class="form-control login-field  login-field-password" placeholder="Password" type="password"
+                <input id="password" name="password" class="form-control login-field  login-field-password" placeholder=<spring:message code="locale.password"/> type="password"
                        value="">
                 <div class="correct-password"></div>
                 <div class="g-recaptcha" data-sitekey="6LdZ1R8TAAAAAMwVjN-N-oTtZR51Li8QmKoSYEiF"></div>
-                <button id="buttonRegistration" class="btn btn-lg btn-primary btn-block">Register</button>
+                <button id="buttonRegistration" class="btn btn-lg btn-primary btn-block"><spring:message code="locale.register"/></button>
 
             </form>
         </sec:authorize>
@@ -90,16 +96,16 @@
                 <div id="passwordRecoveryMessage"></div>
                 <div class="row container-fluid recovery-head">
                     <div class="col-lg-6 col-md-8 col-sm-9 col-xs-9">
-                        <h2 class="form-signin-heading">Password recovery</h2>
+                        <h2 class="form-signin-heading"><spring:message code="locale.recoverPassword"/></h2>
                     </div>
                     <div class="col-lg-6 col-md-4 col-sm-3 col-xs-3 ">
                         <i class="material-icons closeico"><span class="closebtn">clear</span></i>
                     </div>
                 </div>
-                <input id="userEmail" name="email" class="form-control" placeholder="Email address" type="text"
+                <input id="userEmail" name="email" class="form-control" placeholder=<spring:message code="locale.email"/> type="text"
                        value="">
                 <div class="correct-email"></div>
-                <button id="buttonRecoverPassword" class="btn btn-lg btn-primary btn-block">Send request</button>
+                <button id="buttonRecoverPassword" class="btn btn-lg btn-primary btn-block"><spring:message code="locale.sendRequest"/></button>
             </form>
         </sec:authorize>
     </div>
@@ -114,11 +120,11 @@
                 <div class="alert alert-info" role="alert">
                     <div id="messageCheckPassword"></div>
                     <form>
-                        <input id="changePassword" name="password" class="form-control" placeholder="Password"
+                        <input id="changePassword" name="password" class="form-control" placeholder=<spring:message code="locale.password"/>
                                type="password"
                                value="">
                         <button id="buttonChangePassword" class="btn btn-lg btn-primary btn-block changebtn">
-                            ChangePassword
+                            <spring:message code="locale.changePassword"/>
                         </button>
                     </form>
                 </div>
@@ -128,18 +134,18 @@
            <sec:authorize access="!isAuthenticated()">
                 <form>
                     <div id="messageSignIn"></div>
-                    <h2 class="form-signin-heading">Please sign in</h2>
+                    <h2 class="form-signin-heading"><spring:message code="locale.pleaseSignIn"/></h2>
                     <input id="j_username" type="text" class="form-control" name="j_username"
-                           placeholder="Email address" required>
-                    <input id="j_password" type="password" class="form-control login-field  login-field-password" name="j_password" placeholder="Password"
+                           placeholder=<spring:message code="locale.email"/> required>
+                    <input id="j_password" type="password" class="form-control login-field  login-field-password" name="j_password" placeholder=<spring:message code="locale.password"/>
                            required>
-                    <button id="buttonSignIn" class="btn btn-lg btn-primary btn-block signbtn" type="submit">Sign in
+                    <button id="buttonSignIn" class="btn btn-lg btn-primary btn-block signbtn" type="submit"><spring:message code="locale.signin"/>
                     </button>
-                    <button type="button" class="btn btn-lg btn-primary btn-block regbut">Registration</button>
+                    <button type="button" class="btn btn-lg btn-primary btn-block regbut"><spring:message code="locale.registration"/></button>
                     <button style="display: none;" type="button" id="recpass"
                             class="btn btn-lg btn-primary btn-block recoverybtn">Forgot password
                     </button>
-                    <label for="recpass">Forgot password?</label>
+                    <label for="recpass"><spring:message code="locale.forgotPassword"/></label>
                 </form>
             </sec:authorize>
             <sec:authorize access="isAuthenticated()">
@@ -150,7 +156,7 @@
                             onError="this.src='/resources/images/user-photo.png'"/></p>
                 </div>
 &lt;%&ndash;
-                <p><a id="buttonLogout" class="btn btn-lg btn-danger" href="/logout" role="button">Logout</a></p>
+                <p><a id="buttonLogout" class="btn btn-lg btn-danger" href="/logout" role="button"><spring:message code="locale.logout"/></a></p>
 
             </sec:authorize>
 

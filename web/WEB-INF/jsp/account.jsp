@@ -1,4 +1,5 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%--
   Created by IntelliJ IDEA.
   User: Neltarion
@@ -54,7 +55,7 @@
                 </div>
                  <div class="footer" style="margin-bottom: 20px">
                         <button class="btn btn-simple" onclick="rotateCard(this)">
-                            <i class="fa fa-mail-forward"></i> Options
+                            <i class="fa fa-mail-forward"></i> <spring:message code="locale.options"/>
                         </button>
                     </div>
                 </div>
@@ -69,14 +70,14 @@
                             </div>
 
                             <div class="stats">
-                                <h5>Change Password</h5>
+                                <h5><spring:message code="locale.changePassword"/></h5>
                                 <jsp:include page="change-password.jsp"/>
                             </div>
                             <div class="stats">
-                                <h5>Enrollment</h5>
+                                <h5><spring:message code="locale.enrollment"/></h5>
                                 <sec:authorize access="!hasRole('ROLE_STUDENT')">
                                     <div id="enrollMessages"></div>
-                                    <button id="enroll_button" type="submit">Enroll</button>
+                                    <button id="enroll_button" type="submit"><spring:message code="locale.enroll"/></button>
                                 </sec:authorize>
                             </div>
                             <div class="stats">
@@ -85,7 +86,7 @@
                     </div>
                 </div>
                     <button class="btn btn-simple" rel="tooltip" title="Flip Card" onclick="rotateCard(this)">
-                        <i class="fa fa-reply"></i> Back
+                        <i class="fa fa-reply"></i> <spring:message code="locale.back"/>
                     </button>
             </div> <!-- end back panel -->
         </div> <!-- end card -->

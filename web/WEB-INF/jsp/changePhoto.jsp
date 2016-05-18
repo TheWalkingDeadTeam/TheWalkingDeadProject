@@ -1,3 +1,4 @@
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%--
   Created by IntelliJ IDEA.
   User: Alexander
@@ -8,7 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Upload Photo</title>
+    <title><spring:message code="locale.uploadPhoto"/></title>
 </head>
 <body>
 <div>
@@ -20,12 +21,12 @@
             <div class="fileinput-preview fileinput-exists thumbnail"
                  style="max-width: 100px; max-height: 100px;"></div>
             <div>
-                                            <span class="btn btn-default btn-file"><span class="fileinput-new">Select image</span><span
-                                                    class="fileinput-exists">Change</span><input type="file" name="..."></span>
+                                            <span class="btn btn-default btn-file"><span class="fileinput-new"><spring:message code="locale.selectPhoto"/></span><span
+                                                    class="fileinput-exists"><spring:message code="locale.change"/></span><input type="file" name="..."></span>
                 <a href="#" class="btn btn-default fileinput-exists"
-                   data-dismiss="fileinput">Remove</a>
+                   data-dismiss="fileinput"><spring:message code="locale.remove"/></a>
                 <a href="#" class="btn btn-default fileinput-exists"
-                   id="photo_button" type="submit">Upload</a>
+                   id="photo_button" type="submit"><spring:message code="locale.upload"/></a>
             </div>
         </div>
     </form>

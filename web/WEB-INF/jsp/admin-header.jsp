@@ -46,7 +46,7 @@
                     <%--                    <img width="100" height="100" src="/resources/images/rainbow.jpg" class="img-circle"
                                              alt="User Image">--%>
                     <img id="photo_img" src="/getPhoto" alt="User's photo" width="100" height="100"
-                         onError="this.src='/resources/images/rainbow.jpg'" class="profile-photo img-circle"">
+                         onError="this.src='/resources/images/rainbow.jpg'" class="profile-photo img-circle">
                 </div>
                 <div class="pull-left">
                     <p>

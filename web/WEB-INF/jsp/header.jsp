@@ -1,4 +1,5 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%--
   Created by IntelliJ IDEA.
   User: Alexnader
@@ -24,15 +25,17 @@
                 </a>
             </div>
             <div id='collapsed-menu' class='navbar-collapse collapse'>
+                <a href="?lang=en">English</a>                |
+                <a href="?lang=uk">Українська</a>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="/login">Home</a></li>
-                    <li><a href="/information">Information</a></li>
-                    <li><a href="/contacts">Contacts</a></li>
+                    <li><a href="/login"><spring:message code="locale.home"/></a></li>
+                    <li><a href="/information"><spring:message code="locale.info"/></a></li>
+                    <li><a href="/contacts"><spring:message code="locale.contacts"/></a></li>
                     <sec:authorize access="hasRole('ROLE_STUDENT')">
-                        <li><a href="/profile/{id}">Profile</a></li>
+                        <li><a href="/profile/{id}"><spring:message code="locale.profile"/></a></li>
                     </sec:authorize>
                     <sec:authorize access="isAuthenticated()">
-                    <li><a href="/logout">Logout</a></li>
+                    <li><a href="/logout"><spring:message code="locale.logout"/></a></li>
                     </sec:authorize>
                 </ul>
             </div>
