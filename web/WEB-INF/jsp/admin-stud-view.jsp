@@ -14,7 +14,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="A front-end template that helps you build fast, modern mobile web apps.">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <title>Students</title>
+    <title>Material Design Lite</title>
 
     <!-- Add to homescreen for Chrome on Android -->
     <meta name="mobile-web-app-capable" content="yes">
@@ -45,7 +45,6 @@
     <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.cyan-light_blue.min.css">
     <link rel="stylesheet" href="/resources/css/styles.css">
     <link rel="stylesheet" href="/resources/css/checkbox.css">
-    <link rel="stylesheet" href="/resources/css/notification/angular-ui-notification.min.css">
 
     <style>
         #view-source {
@@ -58,7 +57,6 @@
             z-index: 900;
         }
     </style>
-    <link href="<c:url value='/resources/css/app.css' />" rel="stylesheet">
 </head>
 <body>
 <main ng-controller="StudentCtrl as data"
@@ -66,10 +64,8 @@
 
     <jsp:include page="admin-header.jsp"/>
 
-
     <main class="mdl-layout__content mdl-color--grey-100">
         <div>
-
             <button ng-click="rejectStud()"
                     class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
                 Reject
@@ -78,17 +74,6 @@
                     class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
                 Accept
             </button>
-
-
-
-            <a href="#FooOne"
-               class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white"
-               data-toggle="collapse">Mail</a>
-
-            <a href="#FooTwo"
-               class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white"
-               data-toggle="collapse">Mail With Template</a>
-
 
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
                 <label class="mdl-button mdl-js-button mdl-button--icon" for="search">
@@ -105,12 +90,6 @@
                 <div class="cssload-cube cssload-c4"></div>
                 <div class="cssload-cube cssload-c3"></div>
             </div>
-
-
-            <div id="FooTwo" class="collapse">
-                <jsp:include page="custom-mail-template.jsp"/>
-            </div>
-
         </div>
         <table id="tableUsers" class="table table-striped table-hover">
             <thead>
@@ -119,9 +98,9 @@
                     <input type="checkbox" ng-model="selectedAll" ng-click="checkAll()">
                 </td>
                 <%--<td>--%>
-                    <%--<a ng-click="sortType = 'id'; sortReverse = !sortReverse; n">--%>
-                        <%--#--%>
-                    <%--</a>--%>
+                <%--<a ng-click="sortType = 'id'; sortReverse = !sortReverse; n">--%>
+                <%--#--%>
+                <%--</a>--%>
                 <%--</td>--%>
                 <td>
                     <a ng-click="sortReverse = !sortReverse; sortType(0,sortReverse)">
@@ -156,12 +135,12 @@
             </tbody>
         </table>
         <div id="pagination">
-        <dir-pagination-controls
-                max-size="8"
-                direction-links="true"
-                boundary-links="true"
-                on-page-change="data.setPageno(newPageNumber)">
-        </dir-pagination-controls>
+            <dir-pagination-controls
+                    max-size="8"
+                    direction-links="true"
+                    boundary-links="true"
+                    on-page-change="data.setPageno(newPageNumber)">
+            </dir-pagination-controls>
         </div>
 
     </main>
