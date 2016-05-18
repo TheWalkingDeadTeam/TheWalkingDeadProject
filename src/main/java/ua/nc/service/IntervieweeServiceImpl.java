@@ -9,9 +9,12 @@ import ua.nc.dao.postgresql.PostgreIntervieweeTableDAO;
 import ua.nc.entity.CES;
 import ua.nc.entity.Interviewee;
 import ua.nc.entity.IntervieweeRow;
+import ua.nc.entity.User;
 
 import java.sql.Connection;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Hlib on 10.05.2016.
@@ -119,5 +122,26 @@ public class IntervieweeServiceImpl implements IntervieweeService {
             LOGGER.error("Can`t get Interviewee size " + e.getCause());
         }
         return null;
+    }
+
+    @Override
+    public void createInteviewees(List<User> studentGroup, Map<Integer, Integer> applicationList, Date interviewDate,
+                                  int startMillis) {
+        Connection connection = daoFactory.getConnection();
+        IntervieweeDAO intDAO = daoFactory.getIntervieweeDAO(connection);
+        for (User user : studentGroup) {
+            int appId = applicationList.remove(user.getId());
+            try {
+                intDAO.read(appId);
+            } catch (DAOException ex) {
+                if (ex.getMessage().equals("Record with PK = " + appId + " not found.")) {
+                    try {
+                        intDAO.create(new Interviewee(appId, new Date(interviewDate.getTime() + startMillis)));
+                    } catch (DAOException e) {
+                        LOGGER.error("Unable to get DB.");
+                    }
+                }
+            }
+        }
     }
 }
