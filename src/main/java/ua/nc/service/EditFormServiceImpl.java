@@ -126,6 +126,8 @@ public class EditFormServiceImpl implements EditFormService {
             return cesDAO.getCurrentCES().getId();
         } catch (DAOException e) {
             LOGGER.error(e);
+        } finally {
+            daoFactory.putConnection(connection);
         }
         return 1;
     }
