@@ -3,9 +3,9 @@
  * Created by Alexander Haliy on 05.05.2016.
  */
 
-var app = angular.module('app',[]);
+var mailer = angular.module('mailer',[]);
 
-app.controller('MailController', ['$scope', 'MailService','$http', function($scope, MailService,$http) {
+mailer.controller('MailController', ['$scope', 'MailService','$http', function($scope, MailService,$http) {
 
     $scope.list = [];
 
@@ -61,6 +61,7 @@ app.controller('MailController', ['$scope', 'MailService','$http', function($sco
     };
 
     self.updateMail = function(mail, id){
+        MailService.updateMail(mail, id)
         MailService.updateMail(mail, id)
             .then(
                 self.fetchAllMails,
@@ -121,7 +122,7 @@ app.controller('MailController', ['$scope', 'MailService','$http', function($sco
 
 
 
-app.factory('MailService', ['$http', '$q', function($http, $q){
+mailer.factory('MailService', ['$http', '$q', function($http, $q){
 
     return {
 

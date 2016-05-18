@@ -2,14 +2,11 @@
     var requestData;
     var id = location.search.substr(1);
     var isAgree = false;
-/*
-    $('#photo_img').attr({'src':('/getPhoto/'+id)});
-*/
+
     $(document).ready(function () {
         $.ajax({
             type: 'get',
             url: "/profile/" + id,
-            // url: "/resources/json/myJSON.json",
             dataType: 'json',
             contentType: "application/json",
             success: function (response) {
@@ -23,9 +20,6 @@
                             isAgree = true;
                         }
                     });
-                    $('<div id="agreement">').appendTo('#fields');
-                    $('#agreement').append('<label for="agree">' + "I agree to have my personal information been proceeded " + '</label>');
-                    $('<input>').attr({id: "agree", type: "checkbox"}).appendTo('#agreement');
                     $('#agree').on('click', enableSave);
                     checkAgreement();
                     enableSave();
@@ -33,7 +27,6 @@
 
             },
             error: function (jqXHR, exception) {
-                console.log(exception.toString());
                 window.location.href = "/error"
             }
         });
@@ -59,7 +52,7 @@
                 contentType: "application/json",
                 url: '/profile/enroll',
                 success: function (response) {
-                    if(response.length){
+                    if (response.length) {
                         $('#fieldsCheck').removeClass().empty();
                         var errorMsg = '';
                         for (var i in response) {
@@ -76,8 +69,8 @@
     });
 
 
-    function checkAgreement () {
-        if(isAgree) {
+    function checkAgreement() {
+        if (isAgree) {
             $('#agree').prop("checked", true);
         } else {
             $('#agree').prop("checked", false);
@@ -225,7 +218,7 @@
                         var isSelected = item_value.value == "true";
                         $('#select' + item.id)
                             .append('<option id="' + item_value.id + '" value="' + item_value.fieldValueName + '">' + item_value.fieldValueName + '</option>');
-                        if(isSelected) {
+                        if (isSelected) {
                             $("#select" + item.id + " option[value='" + item_value.fieldValueName + "']").prop('selected', true);
                         }
                     });

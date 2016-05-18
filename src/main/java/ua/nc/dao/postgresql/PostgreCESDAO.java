@@ -17,20 +17,14 @@ import java.util.List;
  * Created by Rangar on 04.05.2016.
  */
 public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements CESDAO {
-    private static final String GET_CURRENT_CES_QUERY = "SELECT ces.* from course_enrollment_session ces " +
-            "JOIN ces_status stat ON ces.ces_status_id = stat.ces_status_id AND stat.name != 'Closed'";
-    private static final String GET_PENDING_CES_QUERY = "SELECT ces.* FROM course_enrollment_session ces " +
+    private static final String getCurrentCESQuery = "SELECT ces.* from course_enrollment_session ces " +
+            "JOIN ces_status stat ON ces.ces_status_id = stat.ces_status_id AND stat.name = 'Active'";
+    private static final String getPendingCESQuery = "SELECT ces.* FROM course_enrollment_session ces " +
             "JOIN ces_status stat ON ces.ces_status_id = stat.ces_status_id WHERE name = 'Pending'";
-    private static final String GET_REGISTRATION_ONGOING_CES_QUERY = "SELECT ces.* FROM course_enrollment_session ces " +
-            "JOIN ces_status stat ON ces.ces_status_id = stat.ces_status_id WHERE name = 'RegistrationOngoing'";
-    private static final String GET_POST_REGISTRATION_CES_QUERY = "SELECT ces.* FROM course_enrollment_session ces " +
-            "JOIN ces_status stat ON ces.ces_status_id = stat.ces_status_id WHERE name = 'PostRegistration'";
-    private static final String GET_INTERVIEWING_ONGOING_CES_QUERY = "SELECT ces.* FROM course_enrollment_session ces " +
-            "JOIN ces_status stat ON ces.ces_status_id = stat.ces_status_id WHERE name = 'InterviewingOngoing'";
-    private static final String GET_POST_INTERVIEWING_CES_QUERY = "SELECT ces.* FROM course_enrollment_session ces " +
-            "JOIN ces_status stat ON ces.ces_status_id = stat.ces_status_id WHERE name = 'PostInterviewing'";
+    private static final String getCurrentInterviewBegunCESQuery = "SELECT ces.* FROM course_enrollment_session ces " +
+            "JOIN ces_status stat ON ces.ces_status_id = stat.ces_status_id WHERE name = 'ActiveInterviewBegan'";
 
-    private static final String ADD_INTERVIEWER_FOR_CURRENT_CES = "INSERT INTO interviewer_participation (ces_id, system_user_id) VALUES (?, ?);";
+    private static final String addInterviewerForCurrentCES = "INSERT INTO interviewer_participation (ces_id, system_user_id) VALUES (?, ?);";
     private static final String addCESFieldQuery = "INSERT INTO ces_field (ces_id, field_id) VALUES (?, ?);";
 
     private static final String removeCESFieldQuery = "DELETE FROM ces_field WHERE ces_id = ? AND field_id = ?";
@@ -41,7 +35,7 @@ public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements C
         super(connection);
     }
 
-    private class PersistCES extends CES {
+    private class PersistCES extends CES{
         public PersistCES(Integer year, Date startRegistrationDate, Integer quota, Integer reminders, Integer statusId,
                           Integer interviewTimeForPerson, Integer interviewTimeForDay) {
             super(year, startRegistrationDate, quota, reminders, statusId,
@@ -76,7 +70,6 @@ public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements C
     public String getAllQuery() {
         return "SELECT * FROM course_enrollment_session";
     }
-
 
 
     @Override
@@ -159,33 +152,18 @@ public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements C
     }
 
     @Override
-    public CES getCurrentCES() throws DAOException { //TODO
-        return getSomeCES(GET_CURRENT_CES_QUERY);
+    public CES getCurrentCES() throws DAOException {
+        return getSomeCES(getCurrentCESQuery);
     }
 
     @Override
     public CES getPendingCES() throws DAOException {
-        return getSomeCES(GET_PENDING_CES_QUERY);
+        return getSomeCES(getPendingCESQuery);
     }
 
     @Override
-    public CES getRegistrationOngoingCES() throws DAOException {
-        return getSomeCES(GET_REGISTRATION_ONGOING_CES_QUERY);
-    }
-
-    @Override
-    public CES getPostRegistrationCES() throws DAOException {
-        return getSomeCES(GET_POST_REGISTRATION_CES_QUERY);
-    }
-
-    @Override
-    public CES getInterviewingOngoingCES() throws DAOException {
-        return getSomeCES(GET_INTERVIEWING_ONGOING_CES_QUERY);
-    }
-
-    @Override
-    public CES getPostInterviewingCES() throws DAOException {
-        return getSomeCES(GET_POST_INTERVIEWING_CES_QUERY);
+    public CES getCurrentInterviewBegunCES() throws DAOException {
+        return getSomeCES(getCurrentInterviewBegunCESQuery);
     }
 
     private CES getSomeCES(String query) throws DAOException {
@@ -228,7 +206,7 @@ public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements C
 
     @Override
     public void addInterviewerForCurrentCES(int cesId, int interviewerId) throws DAOException {
-        doSmthWithCESFieldOrInterviewerParticipation(ADD_INTERVIEWER_FOR_CURRENT_CES, cesId, interviewerId);
+        doSmthWithCESFieldOrInterviewerParticipation(addInterviewerForCurrentCES, cesId, interviewerId);
     }
 
     @Override
@@ -240,4 +218,5 @@ public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements C
     public CES create(CES object) throws DAOException {
         return persist(object);
     }
+
 }

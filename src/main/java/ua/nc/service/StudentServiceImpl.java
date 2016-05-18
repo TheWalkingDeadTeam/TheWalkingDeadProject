@@ -83,13 +83,13 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Integer getSize() {
+    public Integer getSize(String pattern) {
         Connection connection = daoFactory.getConnection();
         PostgreApplicationTableDAO applicationTableDAO = new PostgreApplicationTableDAO(connection);
         CESServiceImpl cesService = new CESServiceImpl();
         CES ces = cesService.getCurrentCES();
         try {
-            return applicationTableDAO.getApplicationsCount(ces.getId(), "");
+            return applicationTableDAO.getApplicationsCount(ces.getId(),pattern);
         } catch (DAOException e) {
             log.warn("Can't get students", e.getCause());
         }

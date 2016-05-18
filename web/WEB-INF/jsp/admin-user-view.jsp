@@ -14,7 +14,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="A front-end template that helps you build fast, modern mobile web apps.">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <title>Material Design Lite</title>
+    <title>Users</title>
 
     <!-- Add to homescreen for Chrome on Android -->
     <meta name="mobile-web-app-capable" content="yes">
@@ -84,20 +84,26 @@
                     <label class="mdl-textfield__label" for="search">Enter your query...</label>
                 </div>
             </div>
+            <div class="cssload-thecube">
+                <div class="cssload-cube cssload-c1"></div>
+                <div class="cssload-cube cssload-c2"></div>
+                <div class="cssload-cube cssload-c4"></div>
+                <div class="cssload-cube cssload-c3"></div>
+            </div>
         </div>
-        <table class="table table-striped table-hover">
+        <table id="tableUsers" class="table table-striped table-hover">
             <thead>
             <tr>
                 <td>
                     <input type="checkbox" ng-model="selectedAll" ng-click="checkAll()">
                 </td>
                 <td>
-                    <a href="#" ng-click="sortType('id',sortReverse); sortReverse = !sortReverse">
+                    <a ng-click="sortType('system_user_id',sortReverse); sortReverse = !sortReverse">
                         Id
                     </a>
                 </td>
                 <td>
-                    <a href="#" ng-click="sortType('name',sortReverse); sortReverse = !sortReverse">
+                    <a ng-click="sortType('name',sortReverse); sortReverse = !sortReverse">
                         Name
                     </a>
                 </td>
@@ -117,7 +123,7 @@
                     </a>
                 </td>
                 <td>
-                    <a href="#" ng-click="sortType('status',sortReverse); sortReverse = !sortReverse">
+                    <a ng-click="sortType('status',sortReverse); sortReverse = !sortReverse">
                         Status
                     </a>
                 </td>
@@ -129,8 +135,7 @@
             </tr>
             <tr dir-paginate="user in data.users|itemsPerPage:data.itemsPerPage" total-items="data.total_count">
                 <td><input type="checkbox" checklist-model="dataStudents.studId" checklist-value="user.id"></td>
-                <%--<td ng-init="index=$index + 1">{{index}}</td>--%>
-                <td><a href="/account?{{user.id}}" target="_blanks">{{user.id}}</a></td>
+                <td>{{user.id}}</td>
                 <td>{{user.name}}</td>
                 <td>{{user.surname}}</td>
                 <td>{{user.email}}</td>
@@ -139,13 +144,14 @@
 
             </tr>
             </tbody>
-        </table>
+        </table><div id="pagination">
         <dir-pagination-controls
                 max-size="8"
                 direction-links="true"
                 boundary-links="true"
                 on-page-change="data.setPageno(newPageNumber)">
         </dir-pagination-controls>
+    </div>
 
 
     </main>
@@ -153,7 +159,7 @@
 
 <script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
-<script src="/resources/js/admin-create-user.js"></script>
+<%--<script src="/resources/js/admin-create-user.js"></script>--%>
 <script src="/resources/bootstrap/js/bootstrap.js"></script>
 <script src="/resources/js/checkboxScript.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.js"></script>
