@@ -63,13 +63,13 @@
                         </div>
                         <div name="myForm" id="CESfields" ng-submit="ctrl.save()"
                              class="col-lg-11 col-md-8 col-sm-9 col-xs-9">
-                            <div><span class="myTextInfo">Year</span><input type="number" name="year" min="2016"
-                                                                            max="2100" id="1" class="form-control"
+                            <div><span class="myTextInfo">Year</span><input type="number" name="year"
+                                                                            id="1" class="form-control"
                                                                             ng-model="ctrl.ces.year"
                                                                             ng-readonly="current" required/></div>
                             <div class="correct-year"></div>
                             <div><span class="myTextInfo">Quota</span><input type="number" name="quota" id="quota"
-                                                                             class="form-control" min="1"
+                                                                             class="form-control"
                                                                              ng-model="ctrl.ces.quota"
                                                                              required/></div>
                             <div class="correct-quota"></div>
@@ -78,6 +78,7 @@
                                                                                                class="form-control"
                                                                                                ng-model="ctrl.ces.startRegistrationDate"
                                                                                                ng-readonly="current"
+                                                                                               placeholder="yyyy-MM-dd"
                                                                                                id="3" required></div>
                             <div class="correct-date"></div>
                             <div><span class="myTextInfo">End registration date</span><input type="date"
@@ -85,12 +86,14 @@
                                                                                              class="form-control"
                                                                                              ng-model="ctrl.ces.endRegistrationDate"
                                                                                              ng-readonly="current"
+                                                                                             placeholder="yyyy-MM-dd"
                                                                                              id="4" required/></div>
                             <div class="correct-date"></div>
                             <div><span class="myTextInfo">Start interviewing date</span><input type="date"
                                                                                                name="startInterviewingDate"
                                                                                                class="form-control"
                                                                                                ng-model="ctrl.ces.startInterviewingDate"
+                                                                                               placeholder="yyyy-MM-dd"
                                                                                                ng-readonly="interviewBegan"
                                                                                                id="5"/></div>
                             <div class="correct-date"></div>
@@ -98,6 +101,7 @@
                                                                                              name="endInterviewingDate"
                                                                                              class="form-control"
                                                                                              ng-model="ctrl.ces.endInterviewingDate"
+                                                                                             placeholder="yyyy-MM-dd"
                                                                                              ng-readonly=true id="6"/>
                             </div>
                             <div class="correct-date"></div>
@@ -118,13 +122,18 @@
                                                                ng-model="ctrl.ces.interviewTimeForDay"
                                                                ng-readonly="interviewBegan" required/></div>
                             <div class="correct-int"></div>
-                            <input type="submit" value="Save" style="margin-top: 5px;"
+                            <%--<div>Status: <input type="text" name="interviewTimeForDay" id="10"--%>
+                                                               <%--class="form-control"--%>
+                                                               <%--ng-model="ctrl.ces.status"--%>
+                                                               <%--ng-readonly=true required/></div>--%>
+                            <input type="submit" ng-click="ctrl.save()" value="Save" style="margin-top: 5px;"
                                    class="btn btn-lg btn-primary btn-block mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white formControllingButt">
                             <%--<button ng-click="backButton()" class="btn btn-lg btn-primary btn-block"> Back </button>--%>
                             <button ng-click="ctrl.closeButton()"
                                     class="btn btn-lg btn-primary btn-block mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white formControllingButt">
                                 Close session
                             </button>
+                            <div id="errorsDiv" style="margin-top: 10px;"></div>
                         </div>
                         </form>
                     </div>
@@ -159,4 +168,3 @@
 <script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
 <script src="/resources/bootstrap/js/bootstrap.js"></script>
 </html>
-

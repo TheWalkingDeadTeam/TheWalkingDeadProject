@@ -1,14 +1,10 @@
 package ua.nc.controller;
 
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.log4j.Logger;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.entity.*;
 import ua.nc.entity.profile.Field;
@@ -19,7 +15,6 @@ import ua.nc.service.user.UserService;
 import ua.nc.service.user.UserServiceImpl;
 import ua.nc.validator.*;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -81,7 +76,6 @@ public class AdminController {
     @ResponseBody
     HttpStatus removeInterviewers(@RequestBody IntegerList integerList) {
         CES currentCES = cesService.getCurrentCES();
-        ;
         if (currentCES != null) {
             int cesId = currentCES.getId();
             Iterator<Integer> iterator = integerList.getInterviewersId().iterator();
@@ -115,6 +109,8 @@ public class AdminController {
         StudentService studentService = new StudentServiceImpl();
         return studentService.getSize("");
     }
+
+
     @RequestMapping(value = {"/students/size/{pattern}"}, method = RequestMethod.GET, produces = "application/json")
     public
     @ResponseBody
@@ -134,7 +130,7 @@ public class AdminController {
         if (studentData == null) {
             LOGGER.warn("studData == null");
         }
-        LOGGER.info("studData == "+studentData.toString());
+        LOGGER.info("studData == " + studentData.toString());
         return studentData;
     }
 
@@ -148,7 +144,7 @@ public class AdminController {
         if (studentData == null) {
             LOGGER.warn("studData == null");
         }
-        LOGGER.info("studData == "+studentData.toString());
+        LOGGER.info("studData == " + studentData.toString());
         return studentData;
     }
 
@@ -191,7 +187,7 @@ public class AdminController {
     }
 
     /**
-     * Method for view interview list from admin controlle panel
+     * Method for view interview list from admin controller panel
      *
      * @return page with interviewer data
      */
@@ -241,6 +237,7 @@ public class AdminController {
         InterviewerService interviewerService = new InterviewerServiceImpl();
         return interviewerService.getInterviewerSize("");
     }
+
     @RequestMapping(value = {"/interviewers/size/{pattern}"}, method = RequestMethod.GET, produces = "application/json")
     public
     @ResponseBody
@@ -451,16 +448,20 @@ public class AdminController {
     }
 
 
-    @RequestMapping(value = {"/cesPost"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/cesPost"}, method = RequestMethod.POST, produces = "application/json")
     public
     @ResponseBody
-    CES getCES(@RequestBody CES ces) {
-        try {
-            cesService.setCES(ces);
-        } catch (DAOException e) {
-            e.printStackTrace();
+    Set<ValidationError> getCES(@RequestBody CES ces) {
+        CESValidator cesValidator = new CESValidator();
+        Set<ValidationError> errors = cesValidator.validate(ces);
+        if (errors.isEmpty()) {
+            try {
+                cesService.setCES(ces);
+            } catch (DAOException e) {
+                e.printStackTrace();
+            }
         }
-        return ces;
+        return errors;
     }
 
 
@@ -474,7 +475,6 @@ public class AdminController {
     @ResponseBody
     CES ces() {
         try {
-            System.out.println(cesService.getCES());
             return cesService.getCES();
         } catch (DAOException e) {
             LOGGER.error("DAO error");

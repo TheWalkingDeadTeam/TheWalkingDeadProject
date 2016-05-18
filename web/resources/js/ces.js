@@ -2,6 +2,11 @@ var app = angular.module('myApp', []);
 app.controller('FormController', ['$scope', '$http', function ($scope, $http) {
 
 
+
+    $scope.backButton = function() {
+        window.location = '/admin';
+    };
+
     this.ces = {
         "id": '',
         "year": '',
@@ -17,69 +22,113 @@ app.controller('FormController', ['$scope', '$http', function ($scope, $http) {
     };
     $scope.current = false;
     $scope.interviewBegan = false;
-    $http.get('/cessettings').success(function(response) {
-        if (response.statusId == 1){
-            $scope.current = true;
-        } else if (response.statusId == 4 ){
-            $scope.current = true;
-            $scope.interviewBegan = true;
-        }
-        console.log(response);
-        $scope.ctrl.ces.year =  response.year;
-        $scope.ctrl.ces.id = response.id;
-        $scope.ctrl.ces.statusId = response.statusId;
-        $scope.ctrl.ces.startRegistrationDate = new Date(response.startRegistrationDate);
-        $scope.ctrl.ces.endRegistrationDate = new Date(response.endRegistrationDate);
-        $scope.ctrl.ces.startInterviewingDate = new Date(response.startInterviewingDate);
-        $scope.ctrl.ces.endInterviewingDate = new Date(response.endInterviewingDate);
-        $scope.ctrl.ces.quota = response.quota;
-        $scope.ctrl.ces.reminders = response.reminders;
-        $scope.ctrl.ces.interviewTimeForDay = response.interviewTimeForDay;
-        $scope.ctrl.ces.interviewTimeForPerson = response.interviewTimeForPerson;
-    }).error(function(){
-        $scope.postError = true;
-    });
-    this.save = function () {
-        if (!$scope.current) {
-            if (new Date() > new Date(this.ces.startRegistrationDate)) {
-                alert("choose another start registration day!");
-                return
-            }
-            if (new Date(this.ces.startRegistrationDate) >= new Date(this.ces.endRegistrationDate)) {
-                alert("Start registration date >= end registration date ");
-                return
-            }
-        }
 
-        if ((this.ces.startInterviewingDate != ' ') && (!$scope.interviewBegan)) {
-            if (new Date(this.ces.startInterviewingDate) <= new Date()){
-                alert("choose another start interviewing day!");
-                return
+    var getReq = function() {
+        $http.get('/admin/cessettings').success(function (response) {
+            console.log(response)
+            if (response == '') {
+                $scope.ctrl.ces.year = '';
+                $scope.ctrl.ces.id = '';
+                $scope.ctrl.ces.statusId = '';
+                $scope.ctrl.ces.startRegistrationDate = new Date(response.startRegistrationDate);
+                $scope.ctrl.ces.endRegistrationDate = '';
+                $scope.ctrl.ces.startInterviewingDate = '';
+                $scope.ctrl.ces.endInterviewingDate = '';
+                $scope.ctrl.ces.quota = '';
+                $scope.ctrl.ces.reminders = '';
+                $scope.ctrl.ces.interviewTimeForDay = '';
+                $scope.ctrl.ces.interviewTimeForPerson = '';
+                $scope.current = false;
+                $scope.interviewBegan = false;
+                return;
             }
-            if (new Date(this.ces.startInterviewingDate) >= new Date(this.ces.endInterviewingDate)) {
-                alert("Start interviewing date >= end interviewing date ");
-                return
+            if (1 == response.statusId) {
+                $scope.current = false;
+                $scope.interviewBegan = false;
+            } else if (response.statusId < 4) {
+                $scope.current = true;
+                $scope.interviewBegan = false;
+            } else if (response.statusId >= 4) {
+                $scope.current = true;
+                $scope.interviewBegan = true;
             }
-            if (new Date(this.ces.startRegistrationDate) >= new Date(this.ces.startInterviewingDate)) {
-                alert("Start registration date >= start interviewing date ");
-                return
+            $scope.ctrl.ces.year = response.year;
+            $scope.ctrl.ces.id = response.id;
+            $scope.ctrl.ces.statusId = response.statusId;
+            $scope.ctrl.ces.startRegistrationDate = new Date(response.startRegistrationDate);
+            $scope.ctrl.ces.endRegistrationDate = new Date(response.endRegistrationDate);
+            if (response.startInterviewingDate != null) {
+                $scope.ctrl.ces.startInterviewingDate = new Date(response.startInterviewingDate);
             }
-            if (new Date(this.ces.startInterviewingDate) <= new Date(this.ces.endRegistrationDate)) {
-                alert("Start interviewing date <= end registration date ");
-                return
+            if (response.endInterviewingDate != null){
+                $scope.ctrl.ces.endInterviewingDate = new Date(response.endInterviewingDate);
             }
-        }
-        if (new Date() < new Date(this.ces.startRegistrationDate)){
-            this.ces.statusId = '1';
-        } else if (new Date() > new Date(this.ces.endInterviewingDate)){
-            this.ces.statusId = '3';
-        } else {
-            this.ces.statusId = '2';
-        }
-        $http.post('/cesPost', this.ces).success(function() {
-            $scope.postSuccess = true
-        }).error(function(){
+            $scope.ctrl.ces.quota = response.quota;
+            $scope.ctrl.ces.reminders = response.reminders;
+            $scope.ctrl.ces.interviewTimeForDay = response.interviewTimeForDay;
+            $scope.ctrl.ces.interviewTimeForPerson = response.interviewTimeForPerson;
+        }).error(function () {
             $scope.postError = true;
         });
+    }
+    getReq();
+
+    this.save = function () {
+        if ( isNaN( new Date(this.ces.startRegistrationDate).getTime() ) ) {  // d.valueOf() could also work
+            var errors_out = "Start registration date is not valid";
+            $('#errorsDiv')
+                .removeClass()
+                .empty()
+                .addClass('alert alert-danger')
+                .html(errors_out);
+            return;
+        }
+        if ( isNaN( new Date(this.ces.endRegistrationDate).getTime() ) ) {  // d.valueOf() could also work
+            var errors_out = "Start registration date is not valid";
+            $('#errorsDiv')
+                .removeClass()
+                .empty()
+                .addClass('alert alert-danger')
+                .html(errors_out);
+            return;
+        }
+
+        $http.post('/admin/cesPost', this.ces).success(function (responseData) {
+                if (responseData.length) {
+                    var errors_out = "";
+                    for (var i in responseData) {
+                        errors_out += responseData[i].errorMessage + "</br>"
+                    }
+                    $('#errorsDiv')
+                        .removeClass()
+                        .empty()
+                        .addClass('alert alert-danger')
+                        .html(errors_out);
+                } else {
+                    $scope.postSuccess = true;
+                    $('#errorsDiv')
+                        .removeClass()
+                        .empty()
+                        .addClass('alert alert-success')
+                        .html('Session saved');
+                }
+                $scope.message = responseData;
+            }).error(function () {
+            window.location.href = "/error"
+        });
     };
+    this.closeButton = function(){
+        $http({
+            method : "POST",
+            url : '/admin/cesclose'
+        }).then(function mySucces(response) {
+            if (confirm("Session will be removed") == true) {
+                getReq();
+            }
+
+        }, function myError(response) {
+            $scope.postError = true;
+        });
+    }
 }]);
+

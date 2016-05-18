@@ -29,7 +29,6 @@ import java.util.Set;
  * Created by Pavel on 06.05.2016.
  */
 public class CESServiceImpl implements CESService {
-
     private final static Logger LOGGER = Logger.getLogger(CESServiceImpl.class);
     private static final String TIME_FOR_DATE_FROM_DB = " 00:00:00";
     private final DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
@@ -132,7 +131,6 @@ public class CESServiceImpl implements CESService {
 
     @Override
     public List<Date> planSchedule() throws DAOException {
-        System.out.println("Interview list making.");
         Connection connection = daoFactory.getConnection();
         UserDAO userDAO = new PostgreUserDAO(connection);
         CESDAO cesDAO = new PostgreCESDAO(connection);
@@ -154,7 +152,6 @@ public class CESServiceImpl implements CESService {
             currentTime += MILLIS_PER_DAY;
             interviewDates.add(new Date(currentTime));
         }
-        System.out.println("Interview list was made.");
         return interviewDates;
     }
 
@@ -237,35 +234,32 @@ public class CESServiceImpl implements CESService {
         Connection connection = daoFactory.getConnection();
         CESDAO cesDAO = daoFactory.getCESDAO(connection);
         CES cesFromDb = null;
-        if (cesDAO.getCurrentCES() != null) {
-            cesFromDb = cesDAO.getCurrentCES();
-        } else {
-            cesFromDb = new CES();
-            cesDAO.create(cesFromDb);
-        }
         try {
-            cesFromDb.setQuota(ces.getQuota());
-            if (cesDAO.getCurrentCES().getStatusId() < 4) {
-                cesFromDb.setStartInterviewingDate(ces.getStartInterviewingDate());
-                cesFromDb.setEndInterviewingDate(ces.getEndInterviewingDate());
-                cesFromDb.setInterviewTimeForPerson(ces.getInterviewTimeForPerson());
-                cesFromDb.setInterviewTimeForDay(ces.getInterviewTimeForDay());
-                cesDAO.update(cesFromDb);
-                checkInterviewDate();
-            }
-            if (cesDAO.getCurrentCES().getStatusId() == 1) {
-                cesFromDb.setYear(ces.getYear());
-                cesFromDb.setStartRegistrationDate(ces.getStartRegistrationDate());
-                cesFromDb.setEndRegistrationDate(ces.getEndRegistrationDate());
-                cesFromDb.setStartInterviewingDate(ces.getStartInterviewingDate());
-                cesFromDb.setEndInterviewingDate(ces.getEndInterviewingDate());
+            if (cesDAO.getCurrentCES() != null) {
+                cesFromDb = cesDAO.getCurrentCES();
                 cesFromDb.setQuota(ces.getQuota());
-                cesFromDb.setReminders(ces.getReminders());
-                cesFromDb.setInterviewTimeForPerson(ces.getInterviewTimeForPerson());
-                cesFromDb.setInterviewTimeForDay(ces.getInterviewTimeForDay());
+                System.out.println(ces.toString());
                 cesDAO.update(cesFromDb);
-                switchToRegistrationOngoing();
-                switchToPostRegistration();
+                if (cesDAO.getCurrentCES().getStatusId() < 4) {
+                    cesFromDb.setStartInterviewingDate(ces.getStartInterviewingDate());
+                    cesFromDb.setEndInterviewingDate(ces.getEndInterviewingDate());
+                    cesFromDb.setInterviewTimeForPerson(ces.getInterviewTimeForPerson());
+                    cesFromDb.setInterviewTimeForDay(ces.getInterviewTimeForDay());
+                    cesDAO.update(cesFromDb);
+                    checkInterviewDate();
+                }
+                if (cesDAO.getCurrentCES().getStatusId() == 1) {
+                    cesFromDb.setYear(ces.getYear());
+                    cesFromDb.setStartRegistrationDate(ces.getStartRegistrationDate());
+                    cesFromDb.setEndRegistrationDate(ces.getEndRegistrationDate());
+                    cesFromDb.setReminders(ces.getReminders());
+                    cesDAO.update(cesFromDb);
+                    switchToRegistrationOngoing();
+                    switchToPostRegistration();
+                }
+            } else {
+                ces.setStatusId(1);
+                cesDAO.create(ces);
             }
             LOGGER.info("CES was updated");
         } catch (DAOException e) {
@@ -402,6 +396,5 @@ public class CESServiceImpl implements CESService {
             daoFactory.putConnection(connection);
         }
     }
-
 
 }

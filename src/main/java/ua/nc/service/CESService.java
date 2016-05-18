@@ -26,6 +26,7 @@ public interface CESService {
     void enrollAsInterviewer(Integer userId, Integer cesId) throws DAOException;
     void removeInterviewer(Integer interviewerId, Integer cesId)throws DAOException;
     List<CES> getAllCES();
+    void switchToInterviewingOngoing() throws DAOException;
 
     /**
      * Plan current interview schedule.

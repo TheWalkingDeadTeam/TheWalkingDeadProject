@@ -5,10 +5,10 @@
 <head>
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
     <title>Scheduler</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
-    <link href="/resources/css/app.css" rel="stylesheet"/>
-    <link href="/resources/css/scheduler-styles.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap.timepicker/0.2.6/css/bootstrap-timepicker.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link href="<c:url value='/resources/css/app.css' />" rel="stylesheet">
+    <link href="<c:url value='/resources/css/scheduler-styles.css' />" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap.timepicker/0.2.6/css/bootstrap-timepicker.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script type="text/javascript" src="/resources/js/bootstrap-timepicker.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
@@ -28,7 +28,7 @@
                 <%-- Interview Start Date --%>
                 <div class="row">
                     <div class="form-group col-md-12">
-                        <label class="col-md-2 control-lable" for="file">Start Time</label>
+                        <label class="col-md-2 control-lable" for="file">Start time</label>
                         <div class="col-md-7">
 
                             <div class="input-group bootstrap-timepicker timepicker">
@@ -47,7 +47,7 @@
                 <%-- Interview contact info--%>
                 <div class="row">
                     <div class="form-group col-md-12">
-                        <label class="col-md-2 control-lable" for="file">Interviewer Contact Information</label>
+                        <label class="col-md-2 control-lable" for="file">Interviewers Contact Information</label>
                         <div class="col-md-7">
                             <input type="text" data-ng-model="contactStaff" name="contactStaff"
                                    class="contact form-control input-sm" placeholder="Enter contact information"
@@ -106,75 +106,75 @@
                         </div>
                     </div>
                 </div>
+                <%--Student Mail View--%>
+                <div class="panel panel-default">
+                    <div class="panel-heading"><span class="lead">Student Mail Template</span></div>
+                    <div class="tablecontainer">
+                        <table class="table table-hover" class="ng-cloak">
+                            <thead>
+                            <tr>
+                                <th><img src="/resources/images/checkbox.png" width="15" height="15"></th>
+                                <th>Topic</th>
+                                <th>Body</th>
+                                <th width="20%"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="m in ctrl.mails">
+                                <td><input type="radio" data-ng-model="$parent.mailIdUser" ng-value="{{m.id}}"></td>
+                                <td><span ng-bind="m.bodyTemplate"></span></td>
+                                <td><span ng-bind="m.headTemplate"></span></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <%--Staff Mail Template--%>
+                    <div class="panel-heading"><span class="lead">Staff Mail Template</span></div>
+                    <div class="tablecontainer">
+                        <table class="table table-hover" class="ng-cloak">
+                            <thead>
+                            <tr>
+                                <th><img src="/resources/images/checkbox.png" width="15" height="15"></th>
+                                <th>Topic</th>
+                                <th>Body</th>
+                                <th width="20%"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="m in ctrl.mails">
+                                <td><input type="radio" data-ng-model="$parent.mailIdStaff" ng-value="{{m.id}}">
+                                </td>
+                                <td><span ng-bind="m.bodyTemplate"></span></td>
+                                <td><span ng-bind="m.headTemplate"></span></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <%--Buttons--%>
+                <div class="row">
+                    <div class="form-actions floatRight">
+                        <input type="submit" id="submit" value="Submit" class="btn btn-primary btn-sm"
+                               ng-disabled="myForm.$invalid">
+                        <button type="button" ng-click="ctrl.reset()" class="btn btn-warning btn-sm"
+                                ng-disabled="myForm.$pristine">Reset Form
+                        </button>
+
+                        <a href="/admin/mail-template">
+                            <button type="button" class="btn btn-success btn-sm"> Mail Templates
+                            </button>
+                        </a>
+
+                    </div>
+                </div>
             </form>
-        </div>
-    </div>
-    <%--Student Mail View--%>
-    <div class="panel panel-default">
-        <div class="panel-heading"><span class="lead">Student Mail Template</span></div>
-        <div class="tablecontainer">
-            <table class="table table-hover" class="ng-cloak">
-                <thead>
-                <tr>
-                    <th><img src="/resources/images/checkbox.png" width="15" height="15"></th>
-                    <th>Topic</th>
-                    <th>Body</th>
-                    <th width="20%"></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="m in ctrl.mails">
-                    <td><input type="radio" data-ng-model="$parent.mailIdUser" ng-value="{{m.id}}" ></td>
-                    <td><span ng-bind="m.headTemplate"></span></td>
-                    <td><span ng-bind="m.bodyTemplate"></span></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <div class="panel panel-default">
-        <%--Staff Mail Template--%>
-        <div class="panel-heading"><span class="lead">Staff Mail Template</span></div>
-        <div class="tablecontainer">
-            <table class="table table-hover" class="ng-cloak">
-                <thead>
-                <tr>
-                    <th><img src="/resources/images/checkbox.png" width="15" height="15"></th>
-                    <th>Topic</th>
-                    <th>Body</th>
-                    <th width="20%"></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="m in ctrl.mails">
-                    <td><input type="radio" data-ng-model="$parent.mailIdStaff" ng-value="{{m.id}}">
-                    </td>
-                    <td><span ng-bind="m.headTemplate"></span></td>
-                    <td><span ng-bind="m.bodyTemplate"></span></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <%--Buttons--%>
-    <div class="row">
-        <div class="form-actions floatRight">
-            <input type="submit" id="submit" value="Submit" class="btn btn-primary btn-sm"
-                   ng-disabled="myForm.$invalid">
-            <button type="button" ng-click="ctrl.reset()" class="btn btn-warning btn-sm"
-                    ng-disabled="myForm.$pristine">Reset Form
-            </button>
-
-            <a href="/admin/mail-template">
-                <button type="button" class="btn btn-success btn-sm"> Mail Templates
-                </button>
-            </a>
-
         </div>
     </div>
 </div>
 <script src="/resources/js/google-api.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
-<script src="<c:url value='/resources/js/mail_controller.js' />"></script>
+<script src="/resources/js/mail_controller.js"></script>
 </body>
 </html>
