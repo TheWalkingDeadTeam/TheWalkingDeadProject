@@ -375,41 +375,54 @@ public class MailServiceImpl implements MailService {
                               Map<Integer, Integer> applicationList) {
         Connection connection = daoFactory.getConnection();
         IntervieweeDAO intDAO = daoFactory.getIntervieweeDAO(connection);
+        UserDAO userDAO = daoFactory.getUserDAO(connection);
         String startHours = dateTimeParameters.get(START_HOURS_PATTERN);
         String startMins = dateTimeParameters.get(START_MINS_PATTERN);
         List<User> interviewersList = new ArrayList<>(interviewersSet);
         List<User> studentsList = new ArrayList<>(studentsSet);
         int studentsPerDay = (int) Math.ceil(studentsList.size() / interviewDates.size());
         int todaysLastStudent = studentsPerDay;
-        CESService cesService = new CESServiceImpl();
-        int studentsPerGroup = cesService.getMinimalInterviewersAmount(interviewersSet);
-        int firstStudent = 0;
-        int lastStudent = studentsPerGroup;
-        for (Date interviewDate : interviewDates) {
-            dateTimeParameters.put(DATE_PATTERN, dateFormat.format(interviewDate));
-            while (lastStudent < todaysLastStudent) {
-                List<User> studentGroup = studentsList.subList(firstStudent, Math.min(lastStudent, studentsList.size()));
-                int startMillis = Integer.parseInt(dateTimeParameters.get(START_HOURS_PATTERN)) * MILLIS_PER_HOUR +
-                        Integer.parseInt(dateTimeParameters.get(START_MINS_PATTERN)) / MIN_DELIMITER * MILLIS_PER_MINUTE;
-                Date reminderDate = new Date(interviewDate.getTime() + startMillis - reminderMillis);
-                massDelivery(reminderDate, interviewersList, customizeMail(interviewerMail, dateTimeParameters));
-                massDelivery(reminderDate, studentGroup, customizeMail(studentMail, dateTimeParameters));
-                firstStudent = lastStudent;
-                lastStudent += studentsPerGroup;
-                dateTimeParameters = increaseGroupTime(dateTimeParameters);
-                for (User user : studentGroup) {
-                    int appId = applicationList.remove(user.getId());
-                    try {
-                        intDAO.create(new Interviewee(appId, new Date(interviewDate.getTime() + startMillis)));
-                    } catch (DAOException e) {
-                        LOGGER.error("Unable to create new interviewee for user " + user.getId());
+        CESServiceImpl cesService = new CESServiceImpl();
+        CESDAO cesDAO = daoFactory.getCESDAO(connection);
+        try {
+            CES ces = cesDAO.getCurrentCES();
+            int studentsPerGroup = Math.min(userDAO.getDEVCount(ces.getId()), userDAO.getHRBACount(ces.getId())); //cesService.getMinimalInterviewersAmount(interviewersSet);
+            int firstStudent = 0;
+            int lastStudent = studentsPerGroup;
+            for (Date interviewDate : interviewDates) {
+                dateTimeParameters.put(DATE_PATTERN, dateFormat.format(interviewDate));
+                while (lastStudent < todaysLastStudent) {
+                    List<User> studentGroup = studentsList.subList(firstStudent, Math.min(lastStudent, studentsList.size()));
+                    int startMillis = Integer.parseInt(dateTimeParameters.get(START_HOURS_PATTERN)) * MILLIS_PER_HOUR +
+                            Integer.parseInt(dateTimeParameters.get(START_MINS_PATTERN)) / MIN_DELIMITER * MILLIS_PER_MINUTE;
+                    Date reminderDate = new Date(interviewDate.getTime() + startMillis - reminderMillis);
+                    massDelivery(reminderDate, interviewersList, customizeMail(interviewerMail, dateTimeParameters));
+                    massDelivery(reminderDate, studentGroup, customizeMail(studentMail, dateTimeParameters));
+                    firstStudent = lastStudent;
+                    lastStudent += studentsPerGroup;
+                    dateTimeParameters = increaseGroupTime(dateTimeParameters);
+                    System.out.println("IS");
+                    for (User user : studentGroup) {
+                        int appId = applicationList.remove(user.getId());
+                        try {
+                            intDAO.read(appId);
+                        } catch (DAOException ex) {
+                            if (ex.getMessage().equals("Record with PK = " + appId + " not found.")) {
+                                intDAO.create(new Interviewee(appId, new Date(interviewDate.getTime() + startMillis)));
+                            }
+                        }
                     }
+                    System.out.println("IF");
                 }
+                dateTimeParameters.put(START_HOURS_PATTERN, startHours);
+                dateTimeParameters.put(START_MINS_PATTERN, startMins);
+                todaysLastStudent += studentsPerDay;
             }
-            dateTimeParameters.put(START_HOURS_PATTERN, startHours);
-            dateTimeParameters.put(START_MINS_PATTERN, startMins);
-            todaysLastStudent += studentsPerDay;
+            cesService.switchToInterviewingOngoing();
+        } catch (DAOException e) {
+            LOGGER.error("Current CES is absent.");
         }
+
     }
 
     private Map<String, String> increaseGroupTime(Map<String, String> dateTimeParameters) {
