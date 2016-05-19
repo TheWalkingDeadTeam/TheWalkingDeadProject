@@ -76,12 +76,27 @@ public class AdminController {
         return "admin-create-user";
     }
 
+
+    @RequestMapping(value = {"/remove"}, method = RequestMethod.POST, produces = "application/json")
+    public void removeInterviewers(@RequestBody ArrayList<Integer> interviewersId) {
+        CESService cesService = new CESServiceImpl();
+        int cesId = cesService.getCurrentCES().getId();
+        Iterator<Integer> iterator = interviewersId.iterator();
+        while (iterator.hasNext()) {
+            try {
+                cesService.removeInterviewer(iterator.next(), cesId);
+            } catch (DAOException e) {
+                LOGGER.error("Can't Sign out interviewer");
+                LOGGER.error(e);
+            }
+        }
+
     @RequestMapping(value = {"/remove-ces-interviewer"}, method = RequestMethod.POST)
     public
     @ResponseBody
     HttpStatus removeInterviewers(@RequestBody IntegerList integerList) {
         CES currentCES = cesService.getCurrentCES();
-        ;
+
         if (currentCES != null) {
             int cesId = currentCES.getId();
             Iterator<Integer> iterator = integerList.getInterviewersId().iterator();
@@ -95,6 +110,7 @@ public class AdminController {
             }
         }
         return HttpStatus.OK;
+
     }
 
     /**
@@ -134,7 +150,7 @@ public class AdminController {
         if (studentData == null) {
             LOGGER.warn("studData == null");
         }
-        LOGGER.info("studData == "+studentData.toString());
+        LOGGER.info("studData == " + studentData.toString());
         return studentData;
     }
 
@@ -148,7 +164,7 @@ public class AdminController {
         if (studentData == null) {
             LOGGER.warn("studData == null");
         }
-        LOGGER.info("studData == "+studentData.toString());
+        LOGGER.info("studData == " + studentData.toString());
         return studentData;
     }
 
@@ -203,13 +219,6 @@ public class AdminController {
     @RequestMapping(value = {"/interviewers/list/{itemsPerPage}/{pageNumber}"}, method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<Interviewer> interviewGetJSON(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber) {
-//        StudentData studentData;
-//        StudentService studentService = new StudentServiceImpl();
-//        studentData = studentService.getStudents(itemsPerPage, pageNumber);
-//        if (studentData == null) {
-//            LOGGER.warn("studData == null");
-//        }
-//        return studentData;
         List<Interviewer> interviewers;
         InterviewerService interviewerService = new InterviewerServiceImpl();
         interviewers = interviewerService.getInterviewer(itemsPerPage, (pageNumber * itemsPerPage - 10));
@@ -241,6 +250,7 @@ public class AdminController {
         InterviewerService interviewerService = new InterviewerServiceImpl();
         return interviewerService.getInterviewerSize("");
     }
+
     @RequestMapping(value = {"/interviewers/size/{pattern}"}, method = RequestMethod.GET, produces = "application/json")
     public
     @ResponseBody
@@ -349,6 +359,27 @@ public class AdminController {
             LOGGER.warn("users == null");
         }
         return userRows;
+    }
+
+
+    /**
+     * Takes a json file with students status changes
+     *
+     * @param status
+     */
+    @RequestMapping(value = {"/users"}, method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public HttpStatus userStatus(@RequestBody Status status) {
+        Status userStatus = status;
+        if (!status.getType().isEmpty() && (status.getValues().size() > 0)) {
+            userService.changeStatus(userStatus.getType(), userStatus.getValues());
+            return HttpStatus.OK;
+        } else {
+            LOGGER.warn("Request type is not supported");
+            return HttpStatus.BAD_REQUEST;
+        }
+
+
     }
 
     @RequestMapping(value = {"/interviewee"}, method = RequestMethod.GET)
@@ -474,7 +505,7 @@ public class AdminController {
     @ResponseBody
     CES ces() {
         try {
-            System.out.println(cesService.getCES());
+            LOGGER.info(cesService.getCES());
             return cesService.getCES();
         } catch (DAOException e) {
             LOGGER.error("DAO error");
@@ -500,6 +531,11 @@ public class AdminController {
     @RequestMapping(value = {"/edit-form"}, method = RequestMethod.GET)
     public String editFormView() {
         return "edit-form";
+    }
+
+    @RequestMapping(value = {"/report"}, method = RequestMethod.GET)
+    public String report() {
+        return "admin-report-template";
     }
 
     @RequestMapping(value = {"/edit-form"}, method = RequestMethod.GET, produces = "application/json")
@@ -600,6 +636,7 @@ public class AdminController {
     public String mailSend() {
         return "mail-send";
     }
+
 
 
 }

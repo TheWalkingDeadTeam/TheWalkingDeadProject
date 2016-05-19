@@ -1,6 +1,8 @@
 package ua.nc.controller;
 
+import com.sun.deploy.net.HttpResponse;
 import org.apache.log4j.Logger;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -32,24 +34,26 @@ public class InterviewerController {
     private IntervieweeService intervieweeService = new IntervieweeServiceImpl();
     private CESService cesService = new CESServiceImpl();
 
-//    @RequestMapping(value = "/enroll-ces-interviewer",method = RequestMethod.POST)
-//    public void enroll(@RequestBody IntegerList integerList) {
-//        System.out.println(integerList.getInterviewersId().size());
-//        CES currentCES = cesService.getCurrentCES();
-//        if (currentCES != null) {
-//            int cesId = cesService.getCurrentCES().getId();
-//            Iterator<Integer> iterator = integerList.getInterviewersId().iterator();
-//            while (iterator.hasNext()) {
-//                try {
-//                    cesService.enrollAsInterviewer(iterator.next(), cesId);
-//                } catch (DAOException e) {
-//                    LOGGER.info(e);
-//                }
-//            }
-//        }else{
-//            LOGGER.info("Can't enroll to current CES. Current CES session is not exist");
-//        }
-//    }
+    @RequestMapping(value = "/enroll-ces-interviewer",method = RequestMethod.POST)
+    public @ResponseBody HttpStatus enroll(@RequestBody IntegerList integerList) {
+        LOGGER.info(integerList.getInterviewersId().size());
+        CES currentCES = cesService.getCurrentCES();
+        if (currentCES != null) {
+            int cesId = cesService.getCurrentCES().getId();
+            Iterator<Integer> iterator = integerList.getInterviewersId().iterator();
+            while (iterator.hasNext()) {
+                try {
+                    cesService.enrollAsInterviewer(iterator.next(), cesId);
+                } catch (DAOException e) {
+                    LOGGER.info(e);
+                }
+            }
+        }else{
+            LOGGER.info("Can't enroll to current CES. Current CES session is not exist");
+            return HttpStatus.BAD_REQUEST;
+        }
+        return HttpStatus.OK;
+    }
 
 
 

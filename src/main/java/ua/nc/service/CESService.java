@@ -14,12 +14,13 @@ import java.util.Set;
 public interface CESService {
     CES getCurrentCES();
 
-    //int getMinimalInterviewersAmount(Set<User> interviewersList);
+    int getMinimalInterviewersAmount(Set<User> interviewersList);
 
     CES getCES() throws DAOException;
 
     void setCES(CES ces) throws DAOException;
 
+    void deleteCES();
     void closeCES();
     void enrollAsStudent(Integer userId, Integer cesId) throws DAOException;
 
