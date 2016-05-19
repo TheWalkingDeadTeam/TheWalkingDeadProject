@@ -376,7 +376,7 @@ public class CESServiceImpl implements CESService {
         }, date);
     }
 
-    private void switchToInterviewingOngoing() throws DAOException {
+    void switchToInterviewingOngoing() throws DAOException {
         String dateFromDB = getCES().getStartInterviewingDate().toString() + TIME_FOR_DATE_FROM_DB;
         final Connection connection = daoFactory.getConnection();
         final CESStatusDAO cesStatus = daoFactory.getCESStatusDAO(connection);

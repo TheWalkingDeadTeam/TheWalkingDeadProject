@@ -111,7 +111,7 @@
 
 
             <div id="FooTwo" class="collapse">
-                <jsp:include page="custom-mail-template.jsp"/>
+                <jsp:include page="custom-mail.jsp"/>
             </div>
 
         </div>
@@ -177,8 +177,8 @@
 <script src="/resources/js/checkboxScript.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-route.js"></script>
-<script src="/resources/js/studentListAngular.js"></script>
-<script src="/resources/js/dirPagination.js"></script>
+<script src="../../resources/js/studentListAngular.js"></script>
+<script src="../../resources/js/dirPagination.js"></script>
 <script src="http://vitalets.github.io/checklist-model/checklist-model.js"></script>
 
 </body>
