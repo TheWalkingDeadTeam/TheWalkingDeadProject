@@ -25,12 +25,19 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public StudentData getStudents(Integer itemPerPage, Integer pageNumber) {
+        log.info("GET STUDENTS START");
         Connection connection = daoFactory.getConnection();
+        log.info("GET STUDENTS CONNECTION");
         PostgreApplicationTableDAO applicationTableDAO = new PostgreApplicationTableDAO(connection);
+        log.info("GET STUDENTS POSTGRETABLEDAO");
         CESServiceImpl cesService = new CESServiceImpl();
+        log.info("GET STUDENTS CESSERVICE");
         CES ces = cesService.getCurrentCES();
+        log.info("TRACE STUDENT SERVIСE" + ces.toString());
         try {
-            return applicationTableDAO.getApplicationsTable(ces.getId(), itemPerPage, pageNumber);
+            StudentData studentData = applicationTableDAO.getApplicationsTable(ces.getId(), itemPerPage, pageNumber);
+            log.info("TRACE STUDENT SERVIСE" + studentData.toString());
+            return studentData;
         } catch (DAOException e) {
             log.warn("Can't get students", e.getCause());
         }

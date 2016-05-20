@@ -161,7 +161,9 @@ public class AdminController {
     public StudentData getStudents(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber) {
         StudentData studentData;
         StudentService studentService = new StudentServiceImpl();
+        LOGGER.info("TRACE STUDENT " + studentService.toString());
         studentData = studentService.getStudents(itemsPerPage, (pageNumber * itemsPerPage - 10));
+        LOGGER.info("TRACE STUDENT STUDENT DATA " + studentData.toString());
         if (studentData == null) {
             LOGGER.warn("studData == null");
         }

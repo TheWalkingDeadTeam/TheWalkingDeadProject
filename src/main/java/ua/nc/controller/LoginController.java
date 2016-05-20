@@ -62,7 +62,7 @@ public class LoginController implements HandlerExceptionResolver {
         return new ModelAndView("redirect:/login");
     }
 
-    @RequestMapping(value = {"/", "/login"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/","/login"}, method = RequestMethod.GET)
     public String login(HttpServletRequest request, HttpServletResponse response) {
         SavedRequest savedRequest =
                 new HttpSessionRequestCache().getRequest(request, response);

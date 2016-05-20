@@ -45,7 +45,7 @@
     <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.cyan-light_blue.min.css">
     <link rel="stylesheet" href="/resources/css/styles.css">
     <link rel="stylesheet" href="/resources/css/checkbox.css">
-    <link rel="stylesheet" href="/resources/css/notification/angular-ui-notification.min.css">
+    <%--<link rel="stylesheet" href="/resources/css/notification/angular-ui-notification.min.css">--%>
 
     <style>
         #view-source {
@@ -58,7 +58,7 @@
             z-index: 900;
         }
     </style>
-    <link href="<c:url value='/resources/css/app.css' />" rel="stylesheet">
+    <%--<link href="<c:url value='/resources/css/app.css' />" rel="stylesheet">--%>
 </head>
 <body>
 <main ng-controller="StudentCtrl as data"
@@ -100,7 +100,7 @@
                 </div>
             </div>
             <div id="FooOne" class="collapse">
-                <jsp:include page="custom-mail.jsp"/>
+                <%--<jsp:include page="custom-mail.jsp"/>--%>
             </div>
             <div class="cssload-thecube">
                 <div class="cssload-cube cssload-c1"></div>
@@ -111,7 +111,7 @@
 
 
             <div id="FooTwo" class="collapse">
-                <jsp:include page="custom-mail.jsp"/>
+                <%--<jsp:include page="custom-mail.jsp"/>--%>
             </div>
 
         </div>
@@ -169,12 +169,12 @@
 
     </main>
 </main>
-<script src="/resources/js/notification/angular-ui-notification.min.js"></script>
+<%--<script src="/resources/js/notification/angular-ui-notification.min.js"></script>--%>
 <script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
-<script src="/resources/js/admin-create-user.js"></script>
-<script src="/resources/bootstrap/js/bootstrap.js"></script>
-<script src="/resources/js/checkboxScript.js"></script>
+<%--<script src="/resources/js/admin-create-user.js"></script>--%>
+<%--<script src="/resources/bootstrap/js/bootstrap.js"></script>--%>
+<%--<script src="/resources/js/checkboxScript.js"></script>--%>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-route.js"></script>
 <script src="../../resources/js/studentListAngular.js"></script>
