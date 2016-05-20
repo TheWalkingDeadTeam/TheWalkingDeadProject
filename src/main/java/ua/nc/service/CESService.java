@@ -14,7 +14,7 @@ import java.util.Set;
 public interface CESService {
     CES getCurrentCES();
 
-    //int getMinimalInterviewersAmount(Set<User> interviewersList);
+    int getMinimalInterviewersAmount(Set<User> interviewersList);
 
     CES getCES() throws DAOException;
 

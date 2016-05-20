@@ -1,10 +1,14 @@
 package ua.nc.controller;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.log4j.Logger;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.entity.*;
 import ua.nc.entity.profile.Field;
@@ -15,6 +19,7 @@ import ua.nc.service.user.UserService;
 import ua.nc.service.user.UserServiceImpl;
 import ua.nc.validator.*;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -348,6 +353,27 @@ public class AdminController {
         return userRows;
     }
 
+
+    /**
+     * Takes a json file with students status changes
+     *
+     * @param status
+     */
+    @RequestMapping(value = {"/users"}, method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public HttpStatus userStatus(@RequestBody Status status) {
+        Status userStatus = status;
+        if (!status.getType().isEmpty() && (status.getValues().size() > 0)) {
+            userService.changeStatus(userStatus.getType(), userStatus.getValues());
+            return HttpStatus.OK;
+        } else {
+            LOGGER.warn("Request type is not supported");
+            return HttpStatus.BAD_REQUEST;
+        }
+
+
+    }
+
     @RequestMapping(value = {"/interviewee"}, method = RequestMethod.GET)
     public String intervieweeView() {
         return "admin-interviwee-view";
@@ -475,6 +501,7 @@ public class AdminController {
     @ResponseBody
     CES ces() {
         try {
+            LOGGER.info(cesService.getCES());
             return cesService.getCES();
         } catch (DAOException e) {
             LOGGER.error("DAO error");

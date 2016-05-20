@@ -241,4 +241,5 @@ public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements C
     public CES create(CES object) throws DAOException {
         return persist(object);
     }
+
 }
