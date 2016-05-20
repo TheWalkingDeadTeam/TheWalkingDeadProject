@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements CESDAO {
     private static final String getCurrentCESQuery = "SELECT ces.* from course_enrollment_session ces " +
-            "JOIN ces_status stat ON ces.ces_status_id = stat.ces_status_id AND stat.name = 'Active'";
+            "JOIN ces_status stat ON ces.ces_status_id = stat.ces_status_id AND stat.name = 'InterviewingOngoing'";
     private static final String getPendingCESQuery = "SELECT ces.* FROM course_enrollment_session ces " +
             "JOIN ces_status stat ON ces.ces_status_id = stat.ces_status_id WHERE name = 'Pending'";
     private static final String getCurrentInterviewBegunCESQuery = "SELECT ces.* FROM course_enrollment_session ces " +

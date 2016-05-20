@@ -32,7 +32,7 @@ public class StudentServiceImpl implements StudentService {
         log.info("GET STUDENTS POSTGRETABLEDAO");
         CESServiceImpl cesService = new CESServiceImpl();
         log.info("GET STUDENTS CESSERVICE");
-        CES ces = cesService.getCurrentCES();
+        CES ces = cesService.getCurrentCES();      ///!!!!!!!!!
         log.info("TRACE STUDENT SERVIСE" + ces.toString());
         try {
             StudentData studentData = applicationTableDAO.getApplicationsTable(ces.getId(), itemPerPage, pageNumber);

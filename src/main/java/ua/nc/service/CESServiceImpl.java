@@ -74,10 +74,12 @@ public class CESServiceImpl implements CESService {
         try {
             ces = cesdao.getCurrentCES();
             LOGGER.info("Successfully get current CES");
+            System.out.println(ces);
         } catch (DAOException e) {
             LOGGER.warn("Can't get current CES", e.getCause());
         } finally {
             daoFactory.putConnection(connection);
+            LOGGER.info("GET CURCES DAOLALA");
         }
         return ces;
     }
