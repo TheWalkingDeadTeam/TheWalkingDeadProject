@@ -31,7 +31,7 @@
             }
         });
 
-        $('#fields').submit(function () {
+        $('#fields').submit(function (event) {
             event.preventDefault();
             $.ajax({
                 method: 'POST',
@@ -48,7 +48,7 @@
             })
         });
 
-        $('#buttonEnroll').bind('click', function () {
+        $('#buttonEnroll').bind('click', function (event) {
             event.preventDefault();
             $.ajax({
                 method: 'GET',

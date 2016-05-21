@@ -4,7 +4,7 @@
 
 $(document).ready(function () {
 
-    $("#save_roles").click(function () {
+    $("#save_roles").click(function (event) {
         var checkroles = [];
         $("input:checked").each(function () {
             checkroles.push({name: $(this).val()});

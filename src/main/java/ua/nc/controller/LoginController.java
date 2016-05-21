@@ -84,22 +84,22 @@ public class LoginController implements HandlerExceptionResolver {
             LOGGER.info("Login and redirect to" + savedRequest.getRedirectUrl());
             return "redirect:" + savedRequest.getRedirectUrl();
         } else {
-            if (request.isUserInRole(UserRoles.ROLE_ADMIN.name()) || request.isUserInRole(UserRoles.ROLE_HR.name())) {
-                LOGGER.info("Login and redirect to Admin page");
-                return "admin";
+            if (request.isUserInRole(UserRoles.ROLE_BA.name())
+                    || request.isUserInRole(UserRoles.ROLE_DEV.name())
+                    || request.isUserInRole(UserRoles.ROLE_STUDENT.name())) {
+                LOGGER.info("Login and redirect to Account page");
+                return "account";
             } else {
-                if (request.isUserInRole(UserRoles.ROLE_BA.name())
-                        || request.isUserInRole(UserRoles.ROLE_DEV.name())
-                        || request.isUserInRole(UserRoles.ROLE_STUDENT.name())) {
-                    LOGGER.info("Login and redirect to Account page");
-                    return "account";
-                } else {
-                    LOGGER.info("Login and redirect to Login page");
-                    return "login";
+                if (request.isUserInRole(UserRoles.ROLE_ADMIN.name()) || request.isUserInRole(UserRoles.ROLE_HR.name())) {
+                    LOGGER.info("Login and redirect to Admin page");
+                    return "admin";
                 }
             }
+
         }
+        return "login";
     }
+
 
     /**
      * Method authorize user with Spring Security
@@ -133,7 +133,7 @@ public class LoginController implements HandlerExceptionResolver {
      * If user with user.email not exist, create new user.
      *
      * @param user the user that want to register
-     * @return  json of errors that were created during registration
+     * @return json of errors that were created during registration
      */
     @RequestMapping(value = {"/register"}, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public
