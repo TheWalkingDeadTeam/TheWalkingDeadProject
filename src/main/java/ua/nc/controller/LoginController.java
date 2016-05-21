@@ -84,18 +84,18 @@ public class LoginController implements HandlerExceptionResolver {
             LOGGER.info("Login and redirect to" + savedRequest.getRedirectUrl());
             return "redirect:" + savedRequest.getRedirectUrl();
         } else {
-            if (request.isUserInRole(UserRoles.ROLE_BA.name())
-                    || request.isUserInRole(UserRoles.ROLE_DEV.name())
-                    || request.isUserInRole(UserRoles.ROLE_STUDENT.name())) {
-                LOGGER.info("Login and redirect to Account page");
-                return "account";
+            if (request.isUserInRole(UserRoles.ROLE_ADMIN.name()) || request.isUserInRole(UserRoles.ROLE_HR.name())) {
+                LOGGER.info("Login and redirect to Admin page");
+                return "admin";
+
             } else {
-                if (request.isUserInRole(UserRoles.ROLE_ADMIN.name()) || request.isUserInRole(UserRoles.ROLE_HR.name())) {
-                    LOGGER.info("Login and redirect to Admin page");
-                    return "admin";
+                if (request.isUserInRole(UserRoles.ROLE_BA.name())
+                        || request.isUserInRole(UserRoles.ROLE_DEV.name())
+                        || request.isUserInRole(UserRoles.ROLE_STUDENT.name())) {
+                    LOGGER.info("Login and redirect to Account page");
+                    return "account";
                 }
             }
-
         }
         return "login";
     }
