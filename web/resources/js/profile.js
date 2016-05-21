@@ -41,6 +41,9 @@
                 success: function () {
                     $('#fieldsCheck').removeClass().empty();
                     $('#fieldsCheck').addClass('alert alert-success').html('Profile saved successfully');
+                    setTimeout(function() {
+                        $("#fieldsCheck").fadeOut().empty();
+                    }, 3000);
                 }
             })
         });
@@ -62,6 +65,9 @@
                     } else {
                         $('#fieldsCheck').removeClass().empty();
                         $('#fieldsCheck').addClass('alert alert-success').html('You have successfully enrolled on current courses!');
+                        setTimeout(function() {
+                            $("#fieldsCheck").fadeOut().empty();
+                        }, 3000);
                     }
                 }
             })

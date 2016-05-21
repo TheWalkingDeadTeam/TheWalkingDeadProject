@@ -38,7 +38,6 @@ public class UserController {
     @RequestMapping(value = {"/changePassword"}, method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public Set<ValidationError> changePassword(@RequestBody String password) {
-        System.out.println("OK");
         Validator validator = new PasswordValidator();
         Set<ValidationError> errors = null;
         User user = userService.getUser(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
@@ -56,7 +55,7 @@ public class UserController {
             userService.changePassword(user, password);
         } else {
             log.warn("User  pass word can't be changed ");
-            errors.add(new ValidationError("userPassword", "Pass change error"));
+//            errors.add(new ValidationError("userPassword", "Pass change error"));
         }
         return errors;
     }

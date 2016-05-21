@@ -43,6 +43,9 @@ $(document).ready(function () {
                         .val("");
                     $("#check").prop("checked", false);
                     $("input").filter(".roles").prop("checked", false);
+                    setTimeout(function() {
+                        $("#messageRegistration").fadeOut().empty();
+                    }, 3000);
                 }
             },
             error: function (jqXHR, exception) {

@@ -70,6 +70,9 @@ sendFormModule.controller('sendFr', ["$scope", "$http", function ($scope, $http)
                     .empty()
                     .addClass('alert alert-success')
                     .html('Saved successfully');
+                setTimeout(function() {
+                    $("#messageDiv").fadeOut().empty();
+                }, 3000);
             }
         }).error(function () {
             $scope.postError = true;

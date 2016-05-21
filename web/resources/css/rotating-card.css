@@ -183,7 +183,7 @@ body {
 }
 
 .card .stats:first-child{
-	border-right: 1px solid #EEEEEE;
+	/*border-right: 1px solid #EEEEEE;*/
 }
 .card .stats:last-child{
 	border-left: 1px solid #EEEEEE;
