@@ -1,7 +1,6 @@
 package ua.nc.service;
 
 import org.apache.log4j.Logger;
-import org.joda.time.DateTime;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
@@ -9,18 +8,19 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Service;
-import ua.nc.dao.*;
+import ua.nc.dao.ApplicationDAO;
+import ua.nc.dao.CESDAO;
+import ua.nc.dao.MailDAO;
+import ua.nc.dao.UserDAO;
 import ua.nc.dao.enums.DataBaseType;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.dao.factory.DAOFactory;
-import ua.nc.dao.postgresql.PostgreApplicationDAO;
-import ua.nc.dao.postgresql.PostgreConnectionPool;
 import ua.nc.dao.postgresql.PostgreUserDAO;
-import ua.nc.entity.*;
+import ua.nc.entity.CES;
+import ua.nc.entity.Mail;
+import ua.nc.entity.User;
 
 import java.sql.Connection;
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -48,9 +48,7 @@ public class MailServiceImpl implements MailService {
     private static final String ACCEPTED_COURSE = "course";
     private static final int MIN_DELIMITER = 30;
     private DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
-    private Connection connection = daoFactory.getConnection();
-    private UserDAO userDAO = daoFactory.getUserDAO(connection);
-    private CESDAO cesDAO = daoFactory.getCESDAO(connection);
+
 
     private static final int POOL_SIZE = 5;
     private static final int POOL_SIZE_SCHEDULER = 10;
@@ -147,7 +145,7 @@ public class MailServiceImpl implements MailService {
                     LOGGER.error("Failed to send email", e);
                 }
             }
-        },date);
+        }, date);
     }
 
     /**
@@ -265,8 +263,10 @@ public class MailServiceImpl implements MailService {
     public void sendInterviewReminders(List<Date> interviewDates, Mail interviewerMail,
                                        Map<String, String> interviewerParameters, Mail studentMail,
                                        Map<String, String> studentParameters) {
+        Connection connection = daoFactory.getConnection();
+        UserDAO userDAO = daoFactory.getUserDAO(connection);
+        CES ces = cesService.getCurrentCES();
         try {
-            CES ces = cesService.getCurrentCES();
             int reminderTime = ces.getReminders();
             Set<User> interviewersSet = userDAO.getInterviewersForCurrentCES();
             ApplicationDAO appDAO = daoFactory.getApplicationDAO(connection);
@@ -285,6 +285,8 @@ public class MailServiceImpl implements MailService {
                     customizedStudentMail, dateTimeParameters, dateFormat, applicationList);
         } catch (DAOException e) {
             LOGGER.error("Unable to access DB.");
+        } finally {
+            daoFactory.putConnection(connection);
         }
     }
 
@@ -409,6 +411,9 @@ public class MailServiceImpl implements MailService {
     private void calculateGroupTime(int todaysLastStudent, List<User> studentsList, Map<Integer, Integer> applicationList,
                                     List<User> interviewersList, Map<String, String> dateTimeParameters,
                                     Date interviewDate, int reminderMillis, Mail interviewerMail, Mail studentMail) {
+        Connection connection = daoFactory.getConnection();
+        UserDAO userDAO = daoFactory.getUserDAO(connection);
+        CESDAO cesDAO = daoFactory.getCESDAO(connection);
         try {
             IntervieweeService intService = new IntervieweeServiceImpl();
             CES ces = cesDAO.getCurrentCES();
@@ -429,10 +434,14 @@ public class MailServiceImpl implements MailService {
             }
         } catch (DAOException e) {
             LOGGER.error("Current CES is absent.");
+        } finally {
+            daoFactory.putConnection(connection);
         }
     }
 
     private Map<String, String> increaseGroupTime(Map<String, String> dateTimeParameters) {
+        Connection connection = daoFactory.getConnection();
+        CESDAO cesDAO = daoFactory.getCESDAO(connection);
         try {
             CES ces = cesDAO.getCurrentCES();
             int minutesPerStudent = ces.getInterviewTimeForPerson();
@@ -446,6 +455,8 @@ public class MailServiceImpl implements MailService {
             dateTimeParameters.put(START_MINS_PATTERN, Integer.toString(minutes));
         } catch (DAOException e) {
             LOGGER.error("Current CES is absent.");
+        } finally {
+            daoFactory.putConnection(connection);
         }
         return dateTimeParameters;
     }

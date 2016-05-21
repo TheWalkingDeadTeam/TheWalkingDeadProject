@@ -288,5 +288,6 @@ public class ProfileServiceImpl implements ProfileService {
         } else {
             createProfile(profile, userId, ces.getId());
         }
+        daoFactory.putConnection(connection);
     }
 }

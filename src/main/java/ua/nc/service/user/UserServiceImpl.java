@@ -42,6 +42,8 @@ public class UserServiceImpl implements UserService {
             return postgreUserTableDAO.getUsersTable(itemPerPage, pageNumber);
         } catch (DAOException e) {
             LOGGER.warn("Can't get students", e.getCause());
+        } finally {
+            daoFactory.putConnection(connection);
         }
         return null;
     }
@@ -54,6 +56,8 @@ public class UserServiceImpl implements UserService {
             return postgreUserTableDAO.getUsersTable(itemPerPage, pageNumber, orderBy, asc);
         } catch (DAOException e) {
             LOGGER.warn("Can't get students", e.getCause());
+        } finally {
+            daoFactory.putConnection(connection);
         }
         return null;
     }
@@ -66,6 +70,8 @@ public class UserServiceImpl implements UserService {
             return postgreUserTableDAO.getUsersTable(itemPerPage, pageNumber, orderBy, pattern);
         } catch (DAOException e) {
             LOGGER.warn("Can't get students", e.getCause());
+        } finally {
+            daoFactory.putConnection(connection);
         }
         return null;
     }
@@ -78,6 +84,8 @@ public class UserServiceImpl implements UserService {
             return postgreUserTableDAO.getUsersTable(itemPerPage, pageNumber,pattern);
         } catch (DAOException e) {
             LOGGER.warn("Can't get students", e.getCause());
+        } finally {
+            daoFactory.putConnection(connection);
         }
         return null;
     }
@@ -102,6 +110,8 @@ public class UserServiceImpl implements UserService {
             return postgreUserTableDAO.getUsersCount("");
         } catch (DAOException e) {
             LOGGER.warn("Can't get students", e.getCause());
+        } finally {
+            daoFactory.putConnection(connection);
         }
         return null;
     }
@@ -113,6 +123,8 @@ public class UserServiceImpl implements UserService {
             return postgreUserTableDAO.getUsersCount(pattern);
         } catch (DAOException e) {
             LOGGER.warn("Can't get students", e.getCause());
+        } finally {
+            daoFactory.putConnection(connection);
         }
         return null;
     }
@@ -218,6 +230,8 @@ public class UserServiceImpl implements UserService {
             return user.getRoles().contains(roleDAO.findByName(roleName));
         } catch (DAOException ex) {
             LOGGER.warn(ex);
+        } finally {
+            daoFactory.putConnection(connection);
         }
         return false;
     }
@@ -233,6 +247,8 @@ public class UserServiceImpl implements UserService {
                 userDAO.updateUser(getUser(id));
             } catch (DAOException e) {
                 LOGGER.warn("Cannot activate user with id " + id);
+            } finally {
+                daoFactory.putConnection(connection);
             }
         }
         LOGGER.info("activation users - OK");
@@ -250,6 +266,8 @@ public class UserServiceImpl implements UserService {
                 userDAO.updateUser(getUser(id));
             } catch (DAOException e) {
                 LOGGER.warn("Cannot deactivate user with id " + id);
+            } finally {
+                daoFactory.putConnection(connection);
             }
         }
 
@@ -277,6 +295,7 @@ public class UserServiceImpl implements UserService {
             System.out.println("***");
         } catch (DAOException e) {
             System.out.println("@@@");
+            daoFactory.putConnection(connection);
             LOGGER.warn("Cannot find user with email " + email + " in DB.");
         }
     }

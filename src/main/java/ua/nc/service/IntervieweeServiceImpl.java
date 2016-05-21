@@ -48,6 +48,8 @@ public class IntervieweeServiceImpl implements IntervieweeService {
             return postgreIntervieweeTableDAO.getIntervieweeTable(ces.getId(), itemPerPage, pageNumber);
         } catch (DAOException e) {
             LOGGER.warn("Can't get interviewee", e.getCause());
+        } finally {
+            daoFactory.putConnection(connection);
         }
         return null;
     }
@@ -62,6 +64,8 @@ public class IntervieweeServiceImpl implements IntervieweeService {
             return postgreIntervieweeTableDAO.getIntervieweeTable(ces.getId(), itemPerPage, pageNumber,orderBy);
         } catch (DAOException e) {
             LOGGER.warn("Can't get interviewee", e.getCause());
+        } finally {
+            daoFactory.putConnection(connection);
         }
         return null;
     }
@@ -76,6 +80,8 @@ public class IntervieweeServiceImpl implements IntervieweeService {
             return postgreIntervieweeTableDAO.getIntervieweeTable(ces.getId(), itemPerPage, pageNumber, orderBy, asc);
         } catch (DAOException e) {
             LOGGER.warn("Can't get interviewee", e.getCause());
+        } finally {
+            daoFactory.putConnection(connection);
         }
         return null;
     }
@@ -90,6 +96,8 @@ public class IntervieweeServiceImpl implements IntervieweeService {
             return postgreIntervieweeTableDAO.getIntervieweeTable(ces.getId(), itemPerPage, pageNumber, orderBy, pattern);
         } catch (DAOException e) {
             LOGGER.warn("Can't get interviewee", e.getCause());
+        } finally {
+            daoFactory.putConnection(connection);
         }
         return null;
     }
@@ -120,6 +128,8 @@ public class IntervieweeServiceImpl implements IntervieweeService {
             return userIntervieweeTableDAO.getIntervieweeCount(ces.getId(), pattern);
         } catch (DAOException e) {
             LOGGER.error("Can`t get Interviewee size " + e.getCause());
+        } finally {
+            daoFactory.putConnection(connection);
         }
         return null;
     }
@@ -141,6 +151,8 @@ public class IntervieweeServiceImpl implements IntervieweeService {
                         LOGGER.error("Unable to get DB.");
                     }
                 }
+            } finally {
+                daoFactory.putConnection(connection);
             }
         }
     }

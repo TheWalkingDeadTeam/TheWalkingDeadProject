@@ -40,6 +40,8 @@ public class StudentServiceImpl implements StudentService {
             return studentData;
         } catch (DAOException e) {
             log.warn("Can't get students", e.getCause());
+        } finally {
+            daoFactory.putConnection(connection);
         }
         return null;
     }
@@ -55,6 +57,8 @@ public class StudentServiceImpl implements StudentService {
             return applicationTableDAO.getApplicationsTable(ces.getId(), itemPerPage, pageNumber, orderBy);
         } catch (DAOException e) {
             log.warn("Can't get students", e.getCause());
+        } finally {
+            daoFactory.putConnection(connection);
         }
         return null;
     }
@@ -70,6 +74,8 @@ public class StudentServiceImpl implements StudentService {
             return applicationTableDAO.getApplicationsTable(ces.getId(), itemPerPage, pageNumber, pattern);
         } catch (DAOException e) {
             log.warn("Can't get students", e.getCause());
+        } finally {
+            daoFactory.putConnection(connection);
         }
         return null;
     }
@@ -85,6 +91,8 @@ public class StudentServiceImpl implements StudentService {
             return applicationTableDAO.getApplicationsTable(ces.getId(), itemPerPage, pageNumber, sortType, asc);
         } catch (DAOException e) {
             log.warn("Can't get students", e.getCause());
+        } finally {
+            daoFactory.putConnection(connection);
         }
         return null;
     }
@@ -99,6 +107,8 @@ public class StudentServiceImpl implements StudentService {
             return applicationTableDAO.getApplicationsCount(ces.getId(),pattern);
         } catch (DAOException e) {
             log.warn("Can't get students", e.getCause());
+        } finally {
+            daoFactory.putConnection(connection);
         }
         return null;
     }
@@ -151,10 +161,11 @@ public class StudentServiceImpl implements StudentService {
         }
     }
 
-    @Override
+    @Override  // WTF ????
     public Integer getStudentsSize() {
         Connection connection = daoFactory.getConnection();
         ApplicationDAO applicationDAO = daoFactory.getApplicationDAO(connection);
+        daoFactory.putConnection(connection);
         return null;
     }
 }

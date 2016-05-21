@@ -35,6 +35,8 @@ public class InterviewerServiceImpl implements InterviewerService {
             return userInterviewerTableDAO.getInterviewersTable(ces.getId(), itemPerPage, pageNumber);
         } catch (DAOException e) {
             log.warn("Can't get interviews", e.getCause());
+        } finally {
+            daoFactory.putConnection(connection);
         }
         return null;
     }
@@ -49,6 +51,8 @@ public class InterviewerServiceImpl implements InterviewerService {
             return userInterviewerTableDAO.getInterviewersTable(ces.getId(), itemPerPage, pageNumber, orderBy);
         } catch (DAOException e) {
             log.warn("Can't get interviews", e.getCause());
+        } finally {
+            daoFactory.putConnection(connection);
         }
         return null;
     }
@@ -63,6 +67,8 @@ public class InterviewerServiceImpl implements InterviewerService {
             return userInterviewerTableDAO.getInterviewersTable(ces.getId(), itemPerPage, pageNumber, orderBy, asc);
         } catch (DAOException e) {
             log.warn("Can't get interviews", e.getCause());
+        } finally {
+            daoFactory.putConnection(connection);
         }
         return null;
     }
@@ -77,6 +83,8 @@ public class InterviewerServiceImpl implements InterviewerService {
             return userInterviewerTableDAO.getInterviewersTable(ces.getId(), itemPerPage, pageNumber, orderBy, pattern);
         } catch (DAOException e) {
             log.warn("Can't get interviews", e.getCause());
+        } finally {
+            daoFactory.putConnection(connection);
         }
         return null;
     }
@@ -165,6 +173,8 @@ public class InterviewerServiceImpl implements InterviewerService {
             return userInterviewerTableDAO.getInterviewersCount(pattern);
         } catch (DAOException e) {
             log.error("Can`t get Interviewers size " + e.getCause());
+        } finally {
+            daoFactory.putConnection(connection);
         }
         return null;
     }
