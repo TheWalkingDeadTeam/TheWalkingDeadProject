@@ -135,6 +135,7 @@ public class EditFormServiceImpl implements EditFormService {
     public void deleteOption() {
         Connection connection = daoFactory.getConnection();
         ListValueDAO listValueDAO = daoFactory.getListValueDAO(connection);
+        daoFactory.putConnection(connection);
     }
 
     @Override

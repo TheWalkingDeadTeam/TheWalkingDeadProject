@@ -71,6 +71,8 @@ public class ReportServiceImpl implements ReportService {
             reportTemplateDAO.update(report);
         } catch (DAOException e) {
             LOGGER.warn("Can't update report " + report.getId());
+        } finally {
+            daoFactory.putConnection(connection);
         }
     }
 

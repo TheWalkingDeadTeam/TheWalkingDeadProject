@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import ua.nc.dao.enums.UserRoles;
 import ua.nc.entity.Role;
 import ua.nc.entity.User;
 import ua.nc.service.UserDetailsImpl;

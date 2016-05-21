@@ -11,13 +11,26 @@ app.controller('UserCtrl', ["$http", "$scope", function ($http, $scope) {
     vm.sortAsc = null;
     vm.pattern = null;
     $scope.sortReverse = false;
-
+    showSpin = function () {
+        angular.element($(".cssload-thecube")).css('display','block');
+        angular.element($("#tableUsers")).css('display','none');
+        angular.element($("#pagination")).css('display','none');
+    };
+    hideSpin = function () {
+        angular.element($(".cssload-thecube")).css('display','none');
+        angular.element($("#tableUsers")).css('display','table');
+        angular.element($("#pagination")).css('display','block');
+    };
 
     vm.getData = function () {
+        showSpin();
+        
         vm.users = [];
         $http.get(vm.selectUrl).success(function (response) {
             vm.users = response;
         });
+
+        hideSpin();
     };
     vm.getSize = function () {
         if(vm.pattern == null) {
@@ -29,6 +42,8 @@ app.controller('UserCtrl', ["$http", "$scope", function ($http, $scope) {
                 vm.total_count = response;
             });
         }
+        // elem.find('.modal-content').style.display = "none";
+
     };
     
     $scope.dataStudents = {
@@ -70,7 +85,7 @@ app.controller('UserCtrl', ["$http", "$scope", function ($http, $scope) {
         vm.order_by = type;
         vm.sortAsc = revers;
         vm.selectUrl = "users/list/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by + "/" + vm.sortAsc;
-        vm.getData()
+        vm.getData();
         vm.getSize();
     };
 
@@ -80,6 +95,7 @@ app.controller('UserCtrl', ["$http", "$scope", function ($http, $scope) {
             values: $scope.dataStudents.studId
         };
         if ($scope.dataStudents.studId.length != 0) {
+            showSpin();
             var res = $http.post('users', dataObj);
             res.success(function (data, status, headers, config) {
                 $scope.message = data;
@@ -92,11 +108,13 @@ app.controller('UserCtrl', ["$http", "$scope", function ($http, $scope) {
     };
 
     $scope.deactivateUser = function () {
+
         var dataObj = {
             type: 'deactivate',
             values: $scope.dataStudents.studId
         };
         if ($scope.dataStudents.studId.length != 0) {
+            showSpin();
             var res = $http.post('users', dataObj);
             res.success(function (data, status, headers, config) {
                 $scope.message = data;
@@ -109,15 +127,16 @@ app.controller('UserCtrl', ["$http", "$scope", function ($http, $scope) {
     };
 
     $scope.searchFiltr = function (pattern) {
+        showSpin();
         var dataObj = {
             type: "search",
             values: [$scope.searchFilt]
         };
+        vm.pattern = pattern;
         if (pattern == undefined || pattern == "" || pattern == null) {
             vm.selectUrl = "users/list/" + vm.itemsPerPage + "/" + vm.pageno;
 
         } else {
-            vm.pattern = pattern;
             if (vm.order_by === null) {
                 vm.selectUrl = "users/search/" + vm.itemsPerPage + "/" + vm.pageno + "/system_user_id/" + pattern;
             } else {

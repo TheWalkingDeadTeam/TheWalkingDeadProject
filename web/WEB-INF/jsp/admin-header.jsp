@@ -15,17 +15,38 @@
         </a>
         <div class="mdl-layout-spacer"></div>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+            <%--            <label class="mdl-button mdl-js-button mdl-button--icon" for="search">
+                            <i class="material-icons">search</i>
+                        </label>--%>
+            <%--            <div class="mdl-textfield__expandable-holder">
+                            <form ng-submit="searchFiltr()"><input class="mdl-textfield__input" type="text" id="search"></form>
+                            <label class="mdl-textfield__label" for="search">Enter your query...</label>
+                        </div>
+                    </div>
+                    <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" id="hdrbtn">
+                        <i class="material-icons">more_vert</i>
+                    </button>
+                    <ul class="dropdown-content" for="hdrbtn">
+                        <li class="mdl-menu__item">About</li>
+                        <li class="mdl-menu__item">Contact</li>
+                        <li class="mdl-menu__item">Legal information</li>
+                    </ul>--%>
         </div>
     </div>
 </header>
 <div class="demo-drawer mdl-layout__drawer mdl-color--blue-grey-900 mdl-color-text--blue-grey-50">
     <header class="demo-drawer-header">
+        <%--
+                <img width="100" height="100" src="/resources/images/user-photo.png" class="img-circle  ">
+        --%>
         <div class="demo-avatar-dropdown">
             <sec:authentication var="principal" property="principal"/>
             <div class="user-panel">
                 <div class="pull-left image">
-                    <img width="100" height="100" src="/resources/images/rainbow.jpg" class="img-circle"
-                         alt="User Image">
+                    <%--                    <img width="100" height="100" src="/resources/images/rainbow.jpg" class="img-circle"
+                                             alt="User Image">--%>
+                    <img id="photo_img" src="/getPhoto" alt="User's photo" width="100" height="100"
+                         onError="this.src='/resources/images/rainbow.jpg'" class="profile-photo img-circle"">
                 </div>
                 <div class="pull-left">
                     <p>
@@ -39,6 +60,18 @@
                         <i class="material-icons" role="presentation">power_settings_new</i></a>
                 </div>
             </div>
+            <%--
+                        <div class="mdl-layout-spacer">${principal.username}
+            --%>
+            <%--               <button id="accbtn" class="mdl-button  mdl-js-b utton mdl-js-ripple-effect mdl-button--icon">
+                               <i class="material-icons" role="presentation">arrow_drop_down</i>
+                               <span class="visuallyhidden">Accounts</span>
+                           </button>
+                       </div>
+                       <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="accbtn">
+                           <li class="mdl-menu__item">ion@gmail.com</li>
+                           <li class="mdl-menu__item">info@example.com</li>
+                       </ul>--%>
         </div>
     </header>
     <nav class="demo-navigation mdl-navigation mdl-color--blue-grey-800">
@@ -48,23 +81,31 @@
         </div>
         <a class="mdl-navigation__link" href="/admin/scheduler"><i class="mdl-color-text--blue-grey-400 material-icons"
                                                                    role="presentation">schedule</i>Schedule Planning</a>
-        <a class="mdl-navigation__link" href="/admin/edit-form"><i class="mdl-color-text--blue-grey-400 material-icons"
-                                                                   role="presentation">inbox</i>Form Template</a>
+
+        <sec:authorize access="hasRole('ROLE_ADMIN')">
+            <a class="mdl-navigation__link" href="/admin/edit-form"><i
+                    class="mdl-color-text--blue-grey-400 material-icons"
+                    role="presentation">inbox</i>Form Template</a>
+        </sec:authorize>
         <a class="mdl-navigation__link" href="/admin/cessettings"><i
                 class="mdl-color-text--blue-grey-400 material-icons"
                 role="presentation">local_offer</i>Registration Period</a>
         <a class="mdl-navigation__link" href="/admin/students"><i class="mdl-color-text--blue-grey-400 material-icons"
                                                                   role="presentation">people</i>Student List</a>
-        <a class="mdl-navigation__link" href="/admin/users"><i class="mdl-color-text--blue-grey-400 material-icons"
-                                                               role="presentation">people</i>Users List</a>
+        <sec:authorize access="hasRole('ROLE_ADMIN')">
+            <a class="mdl-navigation__link" href="/admin/users"><i class="mdl-color-text--blue-grey-400 material-icons"
+                                                                   role="presentation">people</i>Users List</a>
+        </sec:authorize>
         <a class="mdl-navigation__link" href="/admin/interviewee"><i
                 class="mdl-color-text--blue-grey-400 material-icons"
                 role="presentation">people</i>Interviewee List</a>
         <a class="mdl-navigation__link" href="/admin/interviewers"><i
                 class="mdl-color-text--blue-grey-400 material-icons"
                 role="presentation">people</i>Interviewer List</a>
-        <a class="mdl-navigation__link" href="/admin/create"><i class="mdl-color-text--blue-grey-400 material-icons"
-                                                                role="presentation">people</i>Create Interviewer</a>
+        <sec:authorize access="hasRole('ROLE_ADMIN')">
+            <a class="mdl-navigation__link" href="/admin/create"><i class="mdl-color-text--blue-grey-400 material-icons"
+                                                                    role="presentation">people</i>Create Interviewer</a>
+        </sec:authorize>
         <a class="mdl-navigation__link" href="/admin/mail-template"><i
                 class="mdl-color-text--blue-grey-400 material-icons"
                 role="presentation">mail</i>Edit Letter Templates</a>

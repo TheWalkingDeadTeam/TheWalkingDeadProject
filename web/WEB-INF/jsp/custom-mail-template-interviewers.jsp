@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 
 </head>
-<body ng-controller="interCtrl as ctrl">
+<body>
 <div class="container">
     <div class="row">
         <div class="col-md-8">
@@ -41,7 +41,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr ng-repeat="m in ctrl.mails">
+                                <tr ng-repeat="m in data.mails">
 
                                     <td class="vert-align">
                                         <div class="radio radio-success">
@@ -78,8 +78,8 @@
     }
 </script>
 
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
 <script src="/resources/js/studentListAngular.js"></script>
 <script type="text/javascript" src="js/mdb.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
 </body>
 </html>

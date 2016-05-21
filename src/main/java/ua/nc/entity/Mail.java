@@ -1,7 +1,5 @@
 package ua.nc.entity;
 
-import java.util.List;
-
 /**
  * Created by Alexander on 24.04.2016.
  */
@@ -9,25 +7,6 @@ public class Mail implements Identified<Integer> {
     private Integer id;
     private String bodyTemplate;
     private String headTemplate;
-    private List<Integer> usersId;
-    private Integer mailIdUser;
-
-
-    public Integer getMailIdUser() {
-        return mailIdUser;
-    }
-
-    public void setMailIdUser(Integer mailIdUser) {
-        this.mailIdUser = mailIdUser;
-    }
-
-    public List<Integer> getUsersId() {
-        return usersId;
-    }
-
-    public void setUsersId(List<Integer> usersId) {
-        this.usersId = usersId;
-    }
 
     public Integer getId() {
         return id;
@@ -51,17 +30,5 @@ public class Mail implements Identified<Integer> {
 
     public void setHeadTemplate(String headTemplate) {
         this.headTemplate = headTemplate;
-    }
-
-
-    @Override
-    public String toString() {
-        return "Mail{" +
-                "id=" + id +
-                ", bodyTemplate='" + bodyTemplate + '\'' +
-                ", headTemplate='" + headTemplate + '\'' +
-                ", usersId=" + usersId +
-                ", mailIdUser=" + mailIdUser +
-                '}';
     }
 }

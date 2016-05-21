@@ -262,10 +262,7 @@ public class PostgreUserDAO extends AbstractPostgreDAO<User, Integer> implements
         return null;
     }
 
-    @Override
-    public User read(Integer key) throws DAOException {
-        return null;
-    }
+
 
     @Override
     public void update(User object) throws DAOException {
@@ -377,6 +374,106 @@ public class PostgreUserDAO extends AbstractPostgreDAO<User, Integer> implements
             throw new DAOException(e);
         }
     }
+
+    private static final String GET_SOME_INTERVIEWEE = "SELECT system_user.* FROM system_user  " +
+            "JOIN application ON system_user.system_user_id = application.system_user_id " +
+            "JOIN interviewee ON application.application_id = interviewee.application_id " +
+            "WHERE application.ces_id = ? AND interviewee.special_mark = ? OR interviewee.special_mark = ?;";
+
+    private static final String GET_REJECTED_INTERVIEWEE = "SELECT * FROM system_user " +
+            "JOIN application ON system_user.system_user_id = application.system_user_id " +
+            "JOIN interviewee ON application.application_id = interviewee.application_id " +
+            "WHERE application.ces_id = ? AND interviewee.special_mark = ? OR (interviewee.special_mark = ?) IS NOT FALSE";
+
+    // The next methods are used for interviewee mailing.
+
+    private static final String JOB_OFFER = "job offer";
+    private static final String TAKE_ON_COURSES = "take on courses";
+    private static final String REJECTED = "rejected";
+    private static final String GET_ON_COURSES = "get on courses";
+
+    @Override
+    public Set<User> getJobOfferedUsers(Integer cesId) throws DAOException {
+        return getSomeInterviewee(GET_SOME_INTERVIEWEE, cesId, JOB_OFFER, JOB_OFFER);
+    }
+
+    @Override
+    public Set<User> getCourseAcceptedUsers(Integer cesId) throws DAOException {
+        return getSomeInterviewee(GET_SOME_INTERVIEWEE, cesId, TAKE_ON_COURSES, GET_ON_COURSES);
+    }
+
+    @Override
+    public Set<User> getCourseRejectedStudents(Integer cesId) throws DAOException {
+        return getSomeInterviewee(GET_REJECTED_INTERVIEWEE, cesId, REJECTED, "");
+    }
+
+    private Set<User> getSomeInterviewee(String query, Integer cesId, String specialMark1, String specialMark2) throws DAOException {
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, cesId);
+            statement.setString(2, specialMark1);
+            statement.setString(3, specialMark2);
+            ResultSet rs = statement.executeQuery();
+            if (!rs.isBeforeFirst()) {
+                return null;
+            } else {
+                return getStudentsParse(rs);
+            }
+        } catch (Exception e) {
+            throw new DAOException(e);
+        }
+    }
+
+    private static final String GET_HRBA_COUNT = "SELECT COUNT(*) FROM system_user " +
+            "JOIN system_user_role ON system_user.system_user_id = system_user_role.system_user_id " +
+            "JOIN role ON role.role_id = system_user_role.role_id " +
+            "JOIN interviewer_participation ON system_user.system_user_id = interviewer_participation.system_user_id " +
+            "WHERE interviewer_participation.ces_id = ? AND (role.role_id = 3 OR role.role_id = 5)";
+
+    private static final String GET_DEV_COUNT = "SELECT COUNT(*) FROM system_user " +
+            "JOIN system_user_role ON system_user.system_user_id = system_user_role.system_user_id " +
+            "JOIN role ON role.role_id = system_user_role.role_id " +
+            "JOIN interviewer_participation ON system_user.system_user_id = interviewer_participation.system_user_id " +
+            "WHERE interviewer_participation.ces_id = ? AND role.role_id = 4";
+
+    @Override
+    public Integer getDEVCount(Integer cesId) throws DAOException {
+        return getRoleCount(GET_DEV_COUNT, cesId);
+    }
+
+    @Override
+    public Integer getHRBACount(Integer cesId) throws DAOException {
+        return getRoleCount(GET_HRBA_COUNT, cesId);
+    }
+
+    private Integer getRoleCount(String query, Integer cesId) throws DAOException {
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, cesId);
+            ResultSet rs = statement.executeQuery();
+            rs.next();
+            return rs.getInt("count");
+        } catch (Exception e) {
+            throw new DAOException(e);
+        }
+    }
+
+    private static final String IS_APPLIED_AS_INTERVIEWER = "SELECT * FROM interviewer_participation WHERE system_user_id = ? AND ces_id = ?";
+
+    @Override
+    public Boolean isAppliedAsInterviewer(Integer userId, Integer cesId) throws DAOException{
+        try (PreparedStatement statement = connection.prepareStatement(IS_APPLIED_AS_INTERVIEWER)) {
+            statement.setInt(1, userId);
+            statement.setInt(2, cesId);
+            ResultSet rs = statement.executeQuery();
+            if (!rs.isBeforeFirst()) {
+                return false;
+            } else {
+                return true;
+            }
+        } catch (Exception e) {
+            throw new DAOException(e);
+        }
+    }
+
     /////////////////////////////
 
     private class PersistUser extends User {

@@ -1,6 +1,5 @@
-var app = angular.module('studentView', ['checklist-model', 'angularUtils.directives.dirPagination','ui-notification']);
-
-app.factory('MailService', ['$http', '$q', function ($http, $q) {
+var studentView = angular.module('studentView',['checklist-model', 'angularUtils.directives.dirPagination','ui-notification']);
+studentView.factory('MailService', ['$http', '$q', function ($http, $q) {
 
     return {
 
@@ -61,7 +60,7 @@ app.factory('MailService', ['$http', '$q', function ($http, $q) {
 }]);
 
 
-app.controller('StudentCtrl', ["$http", "$scope", 'MailService','Notification', function ($http, $scope, MailService,Notification) {
+studentView.controller('StudentCtrl', ["$http", "$scope", 'MailService','Notification', function ($http, $scope, MailService, Notification) {
     var vm = this;
     vm.users = []; //declare an empty array
     vm.pageno = 1; // initialize page no to 1
@@ -128,9 +127,6 @@ app.controller('StudentCtrl', ["$http", "$scope", 'MailService','Notification', 
         }
     };
 
-
-
-
     vm.fetchAllMails = function () {
         MailService.fetchAllMails()
             .then(
@@ -178,18 +174,38 @@ app.controller('StudentCtrl', ["$http", "$scope", 'MailService','Notification', 
     ///////////////////////////////ALEXANDER////////////////////////
 
 
-    vm.getData = function () { // This would fetch the data on page change.
-        //In practice this should be in a factory.
+    vm.showSpin = function () {
+        angular.element($(".cssload-thecube")).css('display', 'block');
+        angular.element($("#tableUsers")).css('display', 'none');
+        angular.element($("#pagination")).css('display', 'none');
+    };
+    vm.hideSpin = function () {
+        angular.element($(".cssload-thecube")).css('display', 'none');
+        angular.element($("#tableUsers")).css('display', 'table');
+        angular.element($("#pagination")).css('display', 'block');
+    };
+    vm.getData = function () {
+        vm.showSpin();
+
         vm.users = [];
-        // "students/list/"+vm.itemsPerPage+"/"+pageno
         $http.get(vm.selectUrl).success(function (response) {
-            vm.header = response.header;
-            vm.users = response.rows;
-            // vm.order_by = vm.header[0].id;
+            vm.users = response;
         });
-        $http.get("students/size").success(function (response) {
-            vm.total_count = response;
-        });
+
+        vm.hideSpin();
+    };
+    vm.getSize = function () {
+        if (vm.pattern == null) {
+            $http.get("students/size").success(function (response) {
+                vm.total_count = response;
+            });
+        } else {
+            $http.get("students/size/" + vm.pattern).success(function (response) {
+                vm.total_count = response;
+            });
+        }
+        // elem.find('.modal-content').style.display = "none";
+
     };
 
     $scope.dataStudents = {
@@ -201,7 +217,7 @@ app.controller('StudentCtrl', ["$http", "$scope", 'MailService','Notification', 
     };
 
     vm.getData(); // Call the function to fetch initial data on page load.
-
+    vm.getSize();
     vm.setPageno = function (pageno) {
         vm.pageno = pageno;
         if (vm.order_by === null) {
@@ -214,7 +230,7 @@ app.controller('StudentCtrl', ["$http", "$scope", 'MailService','Notification', 
 
     $scope.checkAll = function () {
         if ($scope.selectedAll) {
-            $scope.dataStudents.studId = vm.users.map(function (item) {
+            $scope.dataStudents.studId = vm.users.rows.map(function (item) {
                 return item.userId;
             });
             $scope.selectdAll = true;
@@ -227,14 +243,16 @@ app.controller('StudentCtrl', ["$http", "$scope", 'MailService','Notification', 
     };
 
     $scope.sortType = function (type, revers) {
-
+        vm.showSpin();
         vm.order_by = type;
         vm.selectUrl = "students/list/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by + "/" + revers;
 
-        vm.getData()
+        vm.getData();
+        vm.getSize();
     };
 
     $scope.rejectStud = function () {
+        vm.showSpin();
         var dataObj = {
             type: 'reject',
             values: $scope.dataStudents.studId
@@ -244,6 +262,7 @@ app.controller('StudentCtrl', ["$http", "$scope", 'MailService','Notification', 
             res.success(function (data, status, headers, config) {
                 $scope.message = data;
                 vm.getData();
+
             });
             res.error(function (data, status, headers, config) {
                 alert("failure message: " + JSON.stringify({data: data}));
@@ -252,6 +271,7 @@ app.controller('StudentCtrl', ["$http", "$scope", 'MailService','Notification', 
     };
 
     $scope.unrejectStud = function () {
+        vm.showSpin();
         var dataObj = {
             type: 'unreject',
             values: $scope.dataStudents.studId
@@ -269,10 +289,12 @@ app.controller('StudentCtrl', ["$http", "$scope", 'MailService','Notification', 
     };
 
     $scope.searchFiltr = function (pattern) {
+        vm.showSpin();
         var dataObj = {
             type: "search",
             values: [$scope.searchFilt]
         };
+        vm.pattern = pattern;
         if (pattern == undefined || pattern == "" || pattern == null) {
             vm.selectUrl = "students/list/" + vm.itemsPerPage + "/" + vm.pageno;
 
@@ -284,17 +306,6 @@ app.controller('StudentCtrl', ["$http", "$scope", 'MailService','Notification', 
             }
         }
         vm.getData();
-
+        vm.getSize();
     }
 }]);
-
-
-it('should change state', function () {
-    var value1 = element(by.binding('user.isActive'));
-
-    expect(value1.getText()).toContain('1');
-
-    element(by.model('user.isActive')).click();
-    expect(isActive.getText()).toContain('0');
-
-});
