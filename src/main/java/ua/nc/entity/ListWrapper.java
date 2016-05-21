@@ -7,6 +7,10 @@ import java.util.NoSuchElementException;
 /**
  * Created by Neltarion on 14.05.2016.
  */
+
+/**
+ * Iterable wrapper class for List of Integers
+ */
 public class ListWrapper implements Iterable<Integer>{
 
     List<Integer> id;

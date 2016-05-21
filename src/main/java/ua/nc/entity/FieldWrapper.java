@@ -9,8 +9,15 @@ import java.util.NoSuchElementException;
 /**
  * Created by Neltarion on 16.05.2016.
  */
+
+/**
+ * Iterable wrapper class for a list of Field objects.
+ */
 public class FieldWrapper implements Iterable<Field>{
 
+    /**
+     * List of Field objects
+     */
     List<Field> fields;
 
     public List<Field> getFields() {

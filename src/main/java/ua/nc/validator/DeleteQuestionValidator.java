@@ -10,13 +10,20 @@ import java.util.Set;
  * Created by Neltarion on 14.05.2016.
  */
 public class DeleteQuestionValidator implements Validator {
+
+    /**
+     * Validates if incoming values are Integer
+     *
+     * @param obj Object to validate
+     * @return Set of errors if last are present. Else returns empty LinkedHashSet.
+     */
     @Override
     public Set<ValidationError> validate(Object obj) {
         ListWrapper values = (ListWrapper) obj;
         Set<ValidationError> errors = new LinkedHashSet<>();
 
         if (!values.getId().isEmpty() && values != null) {
-            for (Integer id: values.getId()) {
+            for (Integer id : values.getId()) {
                 if (!(id instanceof Integer)) {
                     errors.add(new ValidationError("id", "ID should be an integer, sorry :)"));
                 }

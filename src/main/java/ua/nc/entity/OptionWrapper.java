@@ -3,6 +3,10 @@ package ua.nc.entity;
 /**
  * Created by Neltarion on 16.05.2016.
  */
+
+/**
+ * Wrapper class for option properties required for new question in student application form
+ */
 public class OptionWrapper {
     private Integer opt_id;
     private String value;
