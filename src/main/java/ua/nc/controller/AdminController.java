@@ -1,14 +1,11 @@
 package ua.nc.controller;
 
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.log4j.Logger;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.entity.*;
 import ua.nc.entity.profile.Field;
@@ -19,7 +16,6 @@ import ua.nc.service.user.UserService;
 import ua.nc.service.user.UserServiceImpl;
 import ua.nc.validator.*;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -45,7 +41,11 @@ public class AdminController {
         return "admin";
     }
 
-    @RequestMapping(value = {"/register"}, method = RequestMethod.POST, produces = "application/json")
+    /**
+     * @param user
+     * @return json of errors that were created during registration
+     */
+    @RequestMapping(value = {"/register"}, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public
     @ResponseBody
     Set<ValidationError> registerUser(@RequestBody User user) {
@@ -71,6 +71,9 @@ public class AdminController {
         return errors;
     }
 
+    /**
+     * @return view of the page that register new Admin, HR, DEV, BA
+     */
     @RequestMapping(value = {"/create"})
     public String createUser() {
         return "admin-create-user";
@@ -449,7 +452,6 @@ public class AdminController {
     }
 
 
-
     @RequestMapping(value = {"/mail-template"}, method = RequestMethod.GET)
     public String mail() {
         return "admin-mail-template";
@@ -600,6 +602,9 @@ public class AdminController {
         return "admin-es-view";
     }
 
+    /**
+     * @return view of the reports with admin header
+     */
     @RequestMapping(value = {"/report"}, method = RequestMethod.GET)
     public String report() {
         return "admin-report-template";
