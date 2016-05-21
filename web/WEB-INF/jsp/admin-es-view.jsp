@@ -190,6 +190,8 @@
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-route.js"></script>
 <script src="/resources/js/enrollment-session.js"></script>
 <script src="http://vitalets.github.io/checklist-model/checklist-model.js"></script>
+<script type="text/javascript" src="/resources/js/mdb.js"></script>
+
 </body>
 
 </html>
