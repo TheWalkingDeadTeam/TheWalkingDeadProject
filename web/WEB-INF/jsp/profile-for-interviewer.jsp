@@ -110,7 +110,7 @@
     </div>
     <%--</sec:authorize>--%>
 
-    <sec:authorize access="@feedbackPermissions.isInterviewingPeriod()">
+    <sec:authorize access="@feedbackPermissions.isAfterInterviewingPeriod()">
         <div id="getall_message"></div>
         <div id = "all_feedbacks">
             <p id = "dev_feedback">Dev's feedback<br></p>
