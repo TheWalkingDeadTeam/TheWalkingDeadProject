@@ -61,42 +61,56 @@
     </nav>
 </header>
 <sec:authorize access="isAuthenticated()">
-<form id="accountForm">
-    <div class="container-fluid  smprofile">
-        <div class="row">
-            <div class=" col-lg-3 col-md-4 col-sm-4 col-xs-12 ">
-                <img id="photo_img" src="/getPhoto" alt="User's photo" width="100" height="100"
-                     onError="this.src='/resources/images/user-photo.png'" class="profile-photo">
-                <form id="photo_form" type=post enctype="multipart/form-data">
-                    <div id="photoMessages"></div>
-                    Photo to upload: <input type="file" id="photo_input" name=" photo_input" accept="image/*"><br/>
-                    <button id="photo_button" type="submit">Upload</button>
-                </form>
+    <form id="accountForm">
+        <div class="container-fluid  smprofile">
+            <div class="row">
+                <div class=" col-lg-2 col-md-4 col-sm-4 col-xs-4 ">
+                    <div>
+                        <img id="photo_img" src="/getPhoto" alt="User's photo" width="100" height="100"
+                             onError="this.src='/resources/images/user-photo.png'" class="profile-photo">
+                    </div>
+
+                </div>
+                <div class=" col-lg-4 col-md-4 col-sm-4 col-xs-4 ">
+                    <form id="photo_form" type=post enctype="multipart/form-data">
+                        <div id="photoMessages"></div>
+                        Photo to upload: <input type="file" id="photo_input" name=" photo_input"
+                                                accept="image/*"><br/>
+                        <button id="photo_button" type="submit">Upload</button>
+                    </form>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-4 col-xs-4">
+                    <h4>Name:</h4>
+                    <h4>Surname:</h4>
+                    <h4>E-mail:</h4>
+                    <sec:authorize access="!hasRole('ROLE_STUDENT')">
+                        <div id="enrollMessages"></div>
+                        <button id="enroll_button" type="submit">Enroll</button>
+                    </sec:authorize>
+                </div>
+                <div class="col-lg-3 col-md-2 col-sm-4 col-xs-4">
+                    <sec:authentication var="principal" property="principal"/>
+                    <span>${principal.username}</span>
+                    <span>${principal.username}</span>
+                    <span>${principal.username}</span>
+                </div>
+                    <%--<div class="col-lg-6 col-md-4 col-xs-3">--%>
+                    <%--<jsp:include page="change-password.jsp"/>--%>
+                    <%--</div>--%>
+                    <%--<div class="col-lg-6 col-md-4 col-sm-3 col-xs-2">--%>
+                    <%--<jsp:include page="change-roles.jsp"/>--%>
+                    <%--</div>--%>
             </div>
-            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4">
-                <h4>Name:</h4>
-                <h4>Surname:</h4>
-                <h4>E-mail:</h4>
-                <sec:authorize access="!hasRole('ROLE_STUDENT')">
-                    <div id="enrollMessages"></div>
-                    <button id="enroll_button" type="submit">Enroll</button>
-                </sec:authorize>
-            </div>
-            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-3">
-                <sec:authentication var="principal" property="principal"/>
-                <span>${principal.username}</span>
-                <span>${principal.username}</span>
-                <span>${principal.username}</span>
-            </div>
-            <div class="col-lg-6 col-md-4 col-xs-3">
-                <jsp:include page="change-password.jsp"/>
-            </div>
-            <div class="col-lg-6 col-md-4 col-sm-3 col-xs-2">
-                <jsp:include page="change-roles.jsp"/>
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <jsp:include page="change-password.jsp"/>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <jsp:include page="change-roles.jsp"/>
+                </div>
             </div>
         </div>
-    </div>
-</form>
+    </form>
 </sec:authorize>
 
 <footer class="footer container-fluid">
@@ -144,7 +158,7 @@
 <script src="/resources/js/photo.js"></script>
 <script src="/resources/js/changeRoles.js"></script>
 <%--<script>--%>
-    <%--$('#changePassword').hideShowPassword(false, true);--%>
+<%--$('#changePassword').hideShowPassword(false, true);--%>
 <%--</script>--%>
 </body>
 </html>
