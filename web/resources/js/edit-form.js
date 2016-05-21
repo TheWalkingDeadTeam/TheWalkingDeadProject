@@ -15,7 +15,6 @@ tableController.controller('tableCtrl', ["$scope", "$http", function ($scope, $h
         url: '/admin/edit-form',
         headers: { Accept: 'application/json'}
     }).success(function (response) {
-        console.log(response);
         $scope.fields = response;
     });
 
@@ -24,9 +23,7 @@ tableController.controller('tableCtrl', ["$scope", "$http", function ($scope, $h
     };
 
     $scope.sortableOptions = {
-        // containment: 'tbody'
         orderChanged: function (event) {
-            console.log($scope.fields);
             $scope.isShown = true;
         }
 
