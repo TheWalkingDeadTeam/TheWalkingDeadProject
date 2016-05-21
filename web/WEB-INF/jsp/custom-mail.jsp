@@ -37,7 +37,7 @@
                                    <%--data-toggle="collapse"><i class="material-icons">add_to_photos</i></a>--%>
                             <%--</div>--%>
                             <div class="form-group col-md-12">
-                                <label class="col-md-2 control-lable"></label>
+                                <label class="col-md-2 control-lable" for="file"></label>
                                 <div class="col-md-8">
                                     <input type="text" data-ng-model="mailHead" name="mailHead"
                                            class="contact form-control input-sm" placeholder="Enter Topic"
@@ -51,7 +51,7 @@
                         </div>
                         <div class="row">
                             <div class="form-group col-md-12">
-                                <label class="col-md-2 control-lable"></label>
+                                <label class="col-md-2 control-lable" for="file"></label>
                                 <div class="col-md-8">
                                     <textarea type="text" data-ng-model="mailBody" name="mailBody"
                                               class="materialize-textarea" placeholder="Enter Body"

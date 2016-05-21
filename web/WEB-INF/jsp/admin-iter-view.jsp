@@ -161,7 +161,7 @@
                 <td>{{user.name}}</td>
                 <td>{{user.surname}}</td>
                 <td>{{user.email}}</td>
-                <td>{{user.role}}</td>
+                     <td>{{user.role}}</td>
                 <td ng-style="{opacity:0.5,'background-color':'{{user.participation ? 'green' : 'red'}}'}">{{user.participation}}</td>
             </tr>
             </tbody>
@@ -189,7 +189,6 @@
 <script src="/resources/js/interviewListAngular.js"></script>
 <script src="/resources/js/dirPagination.js"></script>
 <script src="http://vitalets.github.io/checklist-model/checklist-model.js"></script>
-
 </body>
 
 </html>
