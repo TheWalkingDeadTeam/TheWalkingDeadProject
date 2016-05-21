@@ -35,8 +35,8 @@
         </div>
         <div class="footerSmText col-sm-7 col-xs-12">
             <div class="col-sm-8 col-xs-6">
-                <a class="col-sm-6 col-xs-7" href="http://localhost:8080/profile#"><p>Courses Info</p></a>
-                <a class="col-sm-6 col-xs-7" href="http://localhost:8080/profile#"><p>Contacts</p></a>
+                <a class="col-sm-6 col-xs-7" href="/information"><p>Courses Info</p></a>
+                <a class="col-sm-6 col-xs-7" href="/contacts"><p>Contacts</p></a>
             </div>
             <div class="col-sm-4 col-xs-3 pull-right">
                 <p>Privacy Policy</p>

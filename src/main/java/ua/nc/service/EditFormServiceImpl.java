@@ -126,6 +126,8 @@ public class EditFormServiceImpl implements EditFormService {
             return cesDAO.getCurrentCES().getId();
         } catch (DAOException e) {
             LOGGER.error(e);
+        } finally {
+            daoFactory.putConnection(connection);
         }
         return 1;
     }
@@ -133,6 +135,7 @@ public class EditFormServiceImpl implements EditFormService {
     public void deleteOption() {
         Connection connection = daoFactory.getConnection();
         ListValueDAO listValueDAO = daoFactory.getListValueDAO(connection);
+        daoFactory.putConnection(connection);
     }
 
     @Override

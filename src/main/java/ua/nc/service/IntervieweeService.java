@@ -2,8 +2,11 @@ package ua.nc.service;
 
 import ua.nc.entity.Interviewee;
 import ua.nc.entity.IntervieweeRow;
+import ua.nc.entity.User;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Hlib on 10.05.2016.
@@ -25,7 +28,8 @@ public interface IntervieweeService {
 
     public void unsubscribeInterviewee(List<Integer> studentsId);
 
-    public Integer getIntervieweeSize();
-
     public Integer getIntervieweeSize(String pattern);
+
+    void createInteviewees(List<User> studentGroup, Map<Integer, Integer> applicationList, Date interviewDate,
+                           int startMillis);
 }

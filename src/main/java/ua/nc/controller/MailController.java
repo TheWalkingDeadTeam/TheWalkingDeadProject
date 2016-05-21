@@ -29,7 +29,7 @@ public class MailController {
     UserService userService = new UserServiceImpl();
 
     /**
-     * Retrieve all mail list from database
+     * Retrieve all mail
      *
      * @return mail list
      */
@@ -45,8 +45,8 @@ public class MailController {
     /**
      * Retrieve mail by id
      *
-     * @param id of the mail to be retrieved
-     * @return mail
+     * @param id
+     * @return
      */
     @RequestMapping(value = "/mails/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Mail> getMail(@PathVariable("id") Integer id) {
@@ -59,11 +59,11 @@ public class MailController {
     }
 
     /**
-     * Create mail from template
+     * Create mail
      *
-     * @param mail      template to be created
-     * @param ucBuilder new Uri for currently created mail
-     * @return headers and HTTP Created Status
+     * @param mail
+     * @param ucBuilder
+     * @return
      */
     @RequestMapping(value = "/mails/", method = RequestMethod.POST)
     public ResponseEntity<Void> createMail(@RequestBody Mail mail, UriComponentsBuilder ucBuilder) {
@@ -77,9 +77,9 @@ public class MailController {
     /**
      * Update mail
      *
-     * @param id   of the mail to be updated
-     * @param mail will replace origin mail
-     * @return current updated mail
+     * @param id
+     * @param mail
+     * @return
      */
     @RequestMapping(value = "/mails/{id}", method = RequestMethod.POST)
     public ResponseEntity<Mail> updateMail(@PathVariable("id") Integer id, @RequestBody Mail mail) {
@@ -98,8 +98,8 @@ public class MailController {
     /**
      * Delete mail by id
      *
-     * @param id of the mail to be deleted
-     * @return success response
+     * @param id
+     * @return
      */
     @RequestMapping(value = "/mails/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Mail> deleteMail(@PathVariable("id") Integer id) {
@@ -113,9 +113,9 @@ public class MailController {
     }
 
     /**
-     * Delete all mail from database
+     * Delete all mail
      *
-     * @return HTTP STATUS.NO_CONTENT
+     * @return
      */
     @RequestMapping(value = "/mails/", method = RequestMethod.DELETE)
     public ResponseEntity<Mail> deleteAllMail() {
@@ -172,4 +172,5 @@ public class MailController {
             }
         }
     }
+
 }

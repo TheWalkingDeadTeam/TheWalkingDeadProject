@@ -69,7 +69,7 @@ public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements C
     public String getUpdateQuery() {
         return "UPDATE course_enrollment_session SET end_registration_date = ? ,start_interviewing_date = ?, " +
                 "end_interviewing_date = ?, quota = ?, ces_status_id = ?, reminders = ?, interviewing_time_person = ?, " +
-                "interviewing_time_day = ? WHERE ces_id = ?;";
+                "interviewing_time_day = ?, year = ? WHERE ces_id = ?;";
     }
 
     @Override
@@ -152,14 +152,15 @@ public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements C
             statement.setInt(6, object.getReminders());
             statement.setInt(7, object.getInterviewTimeForPerson());
             statement.setInt(8, object.getInterviewTimeForDay());
-            statement.setInt(9, object.getId());
+            statement.setInt(9, object.getYear());
+            statement.setInt(10, object.getId());
         } catch (Exception e) {
             throw new DAOException(e);
         }
     }
 
     @Override
-    public CES getCurrentCES() throws DAOException { //TODO
+    public CES getCurrentCES() throws DAOException {
         return getSomeCES(GET_CURRENT_CES_QUERY);
     }
 
@@ -240,4 +241,5 @@ public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements C
     public CES create(CES object) throws DAOException {
         return persist(object);
     }
+
 }

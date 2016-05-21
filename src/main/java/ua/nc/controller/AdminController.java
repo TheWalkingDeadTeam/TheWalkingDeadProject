@@ -17,16 +17,13 @@ import ua.nc.entity.profile.StudentData;
 import ua.nc.service.*;
 import ua.nc.service.user.UserService;
 import ua.nc.service.user.UserServiceImpl;
-import ua.nc.validator.RegistrationValidator;
-import ua.nc.validator.ValidationError;
-import ua.nc.validator.Validator;
+import ua.nc.validator.*;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import javax.management.relation.Role;
-import java.util.*;
 
 
 /**
@@ -41,6 +38,7 @@ public class AdminController {
     private final StudentService studentService = new StudentServiceImpl();
     private final InterviewerService interviewerService = new InterviewerServiceImpl();
     private final IntervieweeService intervieweeService = new IntervieweeServiceImpl();
+    private final MailService mailService = new MailServiceImpl();
 
     @RequestMapping(method = RequestMethod.GET)
     public String login() {
@@ -79,8 +77,10 @@ public class AdminController {
     }
 
     @RequestMapping(value = {"/remove-ces-interviewer"}, method = RequestMethod.POST)
-    public @ResponseBody HttpStatus removeInterviewers(@RequestBody IntegerList integerList) {
-        CES currentCES = cesService.getCurrentCES();;
+    public
+    @ResponseBody
+    HttpStatus removeInterviewers(@RequestBody IntegerList integerList) {
+        CES currentCES = cesService.getCurrentCES();
         if (currentCES != null) {
             int cesId = currentCES.getId();
             Iterator<Integer> iterator = integerList.getInterviewersId().iterator();
@@ -112,7 +112,16 @@ public class AdminController {
     @ResponseBody
     Integer studentsGetJSONSize() {
         StudentService studentService = new StudentServiceImpl();
-        return studentService.getSize();
+        return studentService.getSize("");
+    }
+
+
+    @RequestMapping(value = {"/students/size/{pattern}"}, method = RequestMethod.GET, produces = "application/json")
+    public
+    @ResponseBody
+    Integer studentsGetJSONSize(@PathVariable("pattern") String pattern) {
+        StudentService studentService = new StudentServiceImpl();
+        return studentService.getSize(pattern);
     }
 
 
@@ -126,6 +135,7 @@ public class AdminController {
         if (studentData == null) {
             LOGGER.warn("studData == null");
         }
+        LOGGER.info("studData == " + studentData.toString());
         return studentData;
     }
 
@@ -139,6 +149,7 @@ public class AdminController {
         if (studentData == null) {
             LOGGER.warn("studData == null");
         }
+        LOGGER.info("studData == " + studentData.toString());
         return studentData;
     }
 
@@ -181,7 +192,7 @@ public class AdminController {
     }
 
     /**
-     * Method for view interview list from admin controlle panel
+     * Method for view interview list from admin controller panel
      *
      * @return page with interviewer data
      */
@@ -215,7 +226,7 @@ public class AdminController {
     public List<Interviewer> interviewGetJSONSort(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("sortType") String sortType, @PathVariable("type") Boolean asc) {
         List<Interviewer> interviewers;
         InterviewerService interviewerService = new InterviewerServiceImpl();
-        interviewers = interviewerService.getInterviewer(itemsPerPage, (pageNumber * itemsPerPage - 10), sortType,asc);
+        interviewers = interviewerService.getInterviewer(itemsPerPage, (pageNumber * itemsPerPage - 10), sortType, asc);
         if (interviewers == null) {
             LOGGER.warn("interviewers == null");
         }
@@ -229,7 +240,15 @@ public class AdminController {
     @ResponseBody
     Integer interviewGetJSONSize() {
         InterviewerService interviewerService = new InterviewerServiceImpl();
-        return interviewerService.getInterviewerSize();
+        return interviewerService.getInterviewerSize("");
+    }
+
+    @RequestMapping(value = {"/interviewers/size/{pattern}"}, method = RequestMethod.GET, produces = "application/json")
+    public
+    @ResponseBody
+    Integer interviewGetJSONSize(@PathVariable("pattern") String pattern) {
+        InterviewerService interviewerService = new InterviewerServiceImpl();
+        return interviewerService.getInterviewerSize(pattern);
     }
 
     @RequestMapping(value = {"/interviewer/search/{itemsPerPage}/{pageNumber}/{sortType}/{pattern}"}, method = RequestMethod.GET, produces = "application/json")
@@ -273,6 +292,7 @@ public class AdminController {
         UserServiceImpl userService = new UserServiceImpl();
         return userService.getSize();
     }
+
     @RequestMapping(value = {"/users/size/{pattern}"}, method = RequestMethod.GET, produces = "application/json")
     public
     @ResponseBody
@@ -300,7 +320,7 @@ public class AdminController {
     List<UserRow> usersSearch(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("sortType") String sortType, @PathVariable("pattern") String pattern) {
         List<UserRow> userRows;
         UserService userService = new UserServiceImpl();
-        userRows = userService.getUser(itemsPerPage, (pageNumber * itemsPerPage - 10),sortType, pattern);
+        userRows = userService.getUser(itemsPerPage, (pageNumber * itemsPerPage - 10), sortType, pattern);
         if (userRows == null) {
             LOGGER.warn("users == null");
         }
@@ -333,6 +353,27 @@ public class AdminController {
         return userRows;
     }
 
+
+    /**
+     * Takes a json file with students status changes
+     *
+     * @param status
+     */
+    @RequestMapping(value = {"/users"}, method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public HttpStatus userStatus(@RequestBody Status status) {
+        Status userStatus = status;
+        if (!status.getType().isEmpty() && (status.getValues().size() > 0)) {
+            userService.changeStatus(userStatus.getType(), userStatus.getValues());
+            return HttpStatus.OK;
+        } else {
+            LOGGER.warn("Request type is not supported");
+            return HttpStatus.BAD_REQUEST;
+        }
+
+
+    }
+
     @RequestMapping(value = {"/interviewee"}, method = RequestMethod.GET)
     public String intervieweeView() {
         return "admin-interviwee-view";
@@ -355,7 +396,7 @@ public class AdminController {
     public List<IntervieweeRow> intervieweeGetJSONSort(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("sortType") String sortType, @PathVariable("type") Boolean asc) {
         List<IntervieweeRow> interviewee;
         IntervieweeService intervieweeService = new IntervieweeServiceImpl();
-        interviewee = intervieweeService.getInterviewee(itemsPerPage, (pageNumber * itemsPerPage - 10), sortType,asc);
+        interviewee = intervieweeService.getInterviewee(itemsPerPage, (pageNumber * itemsPerPage - 10), sortType, asc);
         if (interviewee == null) {
             LOGGER.warn("interviewee == null");
         }
@@ -369,7 +410,7 @@ public class AdminController {
     @ResponseBody
     Integer intervieweeGetJSONSize() {
         IntervieweeService intervieweeService = new IntervieweeServiceImpl();
-        return intervieweeService.getIntervieweeSize();
+        return intervieweeService.getIntervieweeSize("");
     }
 
     @RequestMapping(value = {"/interviewee/size/{pattern}"}, method = RequestMethod.GET, produces = "application/json")
@@ -407,25 +448,7 @@ public class AdminController {
         }
     }
 
-    /**
-     * Takes a json file with students status changes
-     *
-     * @param status
-     */
-    @RequestMapping(value = {"/users"}, method = RequestMethod.POST, produces = "application/json")
-    @ResponseBody
-    public HttpStatus userStatus(@RequestBody Status status) {
-        Status userStatus = status;
-        if (!status.getType().isEmpty() && (status.getValues().size() > 0)) {
-            userService.changeStatus(userStatus.getType(), userStatus.getValues());
-            return HttpStatus.OK;
-        } else {
-            LOGGER.warn("Request type is not supported");
-            return HttpStatus.BAD_REQUEST;
-        }
 
-
-    }
 
     @RequestMapping(value = {"/mail-template"}, method = RequestMethod.GET)
     public String mail() {
@@ -433,16 +456,20 @@ public class AdminController {
     }
 
 
-    @RequestMapping(value = {"/cesPost"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/cesPost"}, method = RequestMethod.POST, produces = "application/json")
     public
     @ResponseBody
-    CES getCES(@RequestBody CES ces) {
-        try {
-            cesService.setCES(ces);
-        } catch (DAOException e) {
-            e.printStackTrace();
+    Set<ValidationError> getCES(@RequestBody CES ces) {
+        CESValidator cesValidator = new CESValidator();
+        Set<ValidationError> errors = cesValidator.validate(ces);
+        if (errors.isEmpty()) {
+            try {
+                cesService.setCES(ces);
+            } catch (DAOException e) {
+                e.printStackTrace();
+            }
         }
-        return ces;
+        return errors;
     }
 
 
@@ -456,7 +483,7 @@ public class AdminController {
     @ResponseBody
     CES ces() {
         try {
-            System.out.println(cesService.getCES());
+            LOGGER.info(cesService.getCES());
             return cesService.getCES();
         } catch (DAOException e) {
             LOGGER.error("DAO error");
@@ -469,6 +496,7 @@ public class AdminController {
     @ResponseBody
     String closeCES() {
         System.out.println("admin");
+        mailService.sendFinalNotification();
         cesService.closeCES();
         return null;
     }
@@ -476,6 +504,95 @@ public class AdminController {
     @RequestMapping(value = {"/scheduler"}, method = RequestMethod.GET)
     public String schedulerView() {
         return "admin-scheduler";
+    }
+
+    @RequestMapping(value = {"/edit-form"}, method = RequestMethod.GET)
+    public String editFormView() {
+        return "edit-form";
+    }
+
+    @RequestMapping(value = {"/edit-form"}, method = RequestMethod.GET, produces = "application/json")
+    public
+    @ResponseBody
+    List<Field> editFormGet(Integer ces_id) {
+        EditFormService efs = new EditFormServiceImpl();
+        List<Field> fields = new LinkedList<>();
+        fields.addAll(efs.getAllFields(efs.getCES_ID()));
+        return fields;
+    }
+
+    @RequestMapping(value = "/edit-form/appformfield/{listTypeID}/{id}", method = RequestMethod.GET, produces = "application/json")
+    public
+    @ResponseBody
+    List<ListValue> getFieldInfoById(@PathVariable("listTypeID") Integer listType_id, @PathVariable("id") Integer id) {
+        EditFormService efs = new EditFormServiceImpl();
+        List<ListValue> listValues = new LinkedList<>();
+        listValues.addAll(efs.getListValues(listType_id));
+        return listValues;
+    }
+
+    @RequestMapping(value = "/edit-form/appformfield", method = RequestMethod.GET)
+    public String getFieldInfo() {
+        return "appformfield";
+    }
+
+    @RequestMapping(value = "/edit-form/new-question", method = RequestMethod.GET)
+    public String addNewQuestion() {
+        return "new-question";
+    }
+
+    @RequestMapping(value = "/edit-form/new-question", method = RequestMethod.POST, produces = "application/json")
+    public
+    @ResponseBody
+    Set<ValidationError> sendNewQuestion(@RequestBody FullFieldWrapper field) {
+        Validator validator = new NewQuestionValidator();
+        Set<ValidationError> errors = validator.validate(field);
+        if (errors.isEmpty()) {
+            EditFormService efs = new EditFormServiceImpl();
+            field.setOrderNum(efs.newPositionNumber());
+            efs.addNewQuestion(field);
+        }
+        return errors;
+    }
+
+    @RequestMapping(value = "/edit-form", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+    public
+    @ResponseBody
+    Set<ValidationError> deleteQuestion(@RequestBody ListWrapper id) {
+        Validator validator = new DeleteQuestionValidator();
+        Set<ValidationError> errors = validator.validate(id);
+        if (errors.isEmpty()) {
+            EditFormService efs = new EditFormServiceImpl();
+            for (Integer idToWrite : id) {
+                efs.deleteQuestionFromCES(efs.getCES_ID(), idToWrite);
+            }
+        }
+        return errors;
+    }
+
+    @RequestMapping(value = "/edit-form/save-position", method = RequestMethod.POST, produces = "application/json")
+    public
+    @ResponseBody
+    Set<ValidationError> savePosition(@RequestBody FieldWrapper fields) {
+        Validator validator = new SavePositionValidator();
+        Set<ValidationError> errors = validator.validate(fields);
+        if (errors.isEmpty()) {
+            EditFormService efs = new EditFormServiceImpl();
+            for (int i = 0; i < new LinkedList<Field>(fields.getFields()).size(); i++) {
+                fields.getFields().get(i).setOrderNum(i + 1);
+                efs.updatePosition(fields.getFields().get(i));
+            }
+        }
+        return errors;
+    }
+
+    @RequestMapping(value = "/edit-form/appformfield/get-field/{id}", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    Field getField(@PathVariable("id") Integer id) {
+        EditFormService efs = new EditFormServiceImpl();
+        Field field = efs.getField(id);
+        return field;
     }
 
     @RequestMapping(value = {"/enroll-session"}, method = RequestMethod.GET)
@@ -496,20 +613,3 @@ public class AdminController {
 
 }
 
-
-class IntegerList {
-    private List<Integer> interviewersId;
-
-    public IntegerList() {
-    }
-
-
-    public List<Integer> getInterviewersId() {
-        return interviewersId;
-    }
-
-    public void setInterviewersId(List<Integer> interviewersId) {
-        this.interviewersId = interviewersId;
-    }
-
-}

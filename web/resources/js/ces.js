@@ -25,20 +25,44 @@ app.controller('FormController', ['$scope', '$http', function ($scope, $http) {
 
     var getReq = function() {
         $http.get('/admin/cessettings').success(function (response) {
-            if (response.statusId < 4) {
+            console.log(response)
+            if (response == '') {
+                $scope.ctrl.ces.year = '';
+                $scope.ctrl.ces.id = '';
+                $scope.ctrl.ces.statusId = '';
+                $scope.ctrl.ces.startRegistrationDate = new Date(response.startRegistrationDate);
+                $scope.ctrl.ces.endRegistrationDate = '';
+                $scope.ctrl.ces.startInterviewingDate = '';
+                $scope.ctrl.ces.endInterviewingDate = '';
+                $scope.ctrl.ces.quota = '';
+                $scope.ctrl.ces.reminders = '';
+                $scope.ctrl.ces.interviewTimeForDay = '';
+                $scope.ctrl.ces.interviewTimeForPerson = '';
+                $scope.current = false;
+                $scope.interviewBegan = false;
+                return;
+            }
+            if (1 == response.statusId) {
+                $scope.current = false;
+                $scope.interviewBegan = false;
+            } else if (response.statusId < 4) {
                 $scope.current = true;
+                $scope.interviewBegan = false;
             } else if (response.statusId >= 4) {
                 $scope.current = true;
                 $scope.interviewBegan = true;
             }
-            console.log(response)
             $scope.ctrl.ces.year = response.year;
             $scope.ctrl.ces.id = response.id;
             $scope.ctrl.ces.statusId = response.statusId;
             $scope.ctrl.ces.startRegistrationDate = new Date(response.startRegistrationDate);
             $scope.ctrl.ces.endRegistrationDate = new Date(response.endRegistrationDate);
-            $scope.ctrl.ces.startInterviewingDate = new Date(response.startInterviewingDate);
-            $scope.ctrl.ces.endInterviewingDate = new Date(response.endInterviewingDate);
+            if (response.startInterviewingDate != null) {
+                $scope.ctrl.ces.startInterviewingDate = new Date(response.startInterviewingDate);
+            }
+            if (response.endInterviewingDate != null){
+                $scope.ctrl.ces.endInterviewingDate = new Date(response.endInterviewingDate);
+            }
             $scope.ctrl.ces.quota = response.quota;
             $scope.ctrl.ces.reminders = response.reminders;
             $scope.ctrl.ces.interviewTimeForDay = response.interviewTimeForDay;
@@ -50,42 +74,50 @@ app.controller('FormController', ['$scope', '$http', function ($scope, $http) {
     getReq();
 
     this.save = function () {
-        if (!$scope.current) {
-            if (new Date() > new Date(this.ces.startRegistrationDate)) {
-                alert("choose another start registration day!");
-                return
-            }
-            if (new Date(this.ces.startRegistrationDate) >= new Date(this.ces.endRegistrationDate)) {
-                alert("Start registration date >= end registration date ");
-                return
-            }
+        if ( isNaN( new Date(this.ces.startRegistrationDate).getTime() ) ) {  // d.valueOf() could also work
+            var errors_out = "Start registration date is not valid";
+            $('#errorsDiv')
+                .removeClass()
+                .empty()
+                .addClass('alert alert-danger')
+                .html(errors_out);
+            return;
+        }
+        if ( isNaN( new Date(this.ces.endRegistrationDate).getTime() ) ) {  // d.valueOf() could also work
+            var errors_out = "Start registration date is not valid";
+            $('#errorsDiv')
+                .removeClass()
+                .empty()
+                .addClass('alert alert-danger')
+                .html(errors_out);
+            return;
         }
 
-        if ((this.ces.startInterviewingDate != ' ') && (!$scope.interviewBegan)) {
-            if (new Date(this.ces.startInterviewingDate) <= new Date()) {
-                alert("choose another start interviewing day!");
-                return
-            }
-            if (new Date(this.ces.startInterviewingDate) >= new Date(this.ces.endInterviewingDate)) {
-                alert("Start interviewing date >= end interviewing date ");
-                return
-            }
-            if (new Date(this.ces.startRegistrationDate) >= new Date(this.ces.startInterviewingDate)) {
-                alert("Start registration date >= start interviewing date ");
-                return
-            }
-            if (new Date(this.ces.startInterviewingDate) <= new Date(this.ces.endRegistrationDate)) {
-                alert("Start interviewing date <= end registration date ");
-                return
-            }
-        }
-        if (new Date() < new Date(this.ces.startRegistrationDate)) {
-            this.ces.statusId = '1';
-        }
-        $http.post('/admin/cesPost', this.ces).success(function () {
-            $scope.postSuccess = true
-        }).error(function () {
-            $scope.postError = true;
+        $http.post('/admin/cesPost', this.ces).success(function (responseData) {
+                if (responseData.length) {
+                    var errors_out = "";
+                    for (var i in responseData) {
+                        errors_out += responseData[i].errorMessage + "</br>"
+                    }
+                    $('#errorsDiv')
+                        .removeClass()
+                        .empty()
+                        .addClass('alert alert-danger')
+                        .html(errors_out);
+                } else {
+                    $scope.postSuccess = true;
+                    $('#errorsDiv')
+                        .removeClass()
+                        .empty()
+                        .addClass('alert alert-success')
+                        .html('Session saved');
+                    setTimeout(function() {
+                        $('#errorsDiv').fadeOut().empty();
+                    }, 3000);
+                }
+                $scope.message = responseData;
+            }).error(function () {
+            window.location.href = "/error"
         });
     };
     this.closeButton = function(){
