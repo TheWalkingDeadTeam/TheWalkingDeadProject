@@ -79,7 +79,5 @@
 </script>
 
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
-<script src="/resources/js/studentListAngular.js"></script>
-<script type="text/javascript" src="js/mdb.js"></script>
 </body>
 </html>
