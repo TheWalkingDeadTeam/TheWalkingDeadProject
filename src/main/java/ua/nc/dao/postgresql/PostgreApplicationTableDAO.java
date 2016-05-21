@@ -221,4 +221,19 @@ public class PostgreApplicationTableDAO {
         rs.next();
         return rs.getInt("count");
     }
+
+    public String getFullQuery(Integer cesId) throws DAOException {
+        List<FieldData> fieldData = getFieldIds(cesId);
+        String fullQuery = buildBaseFullQuery(fieldData, 0, true);
+        try (PreparedStatement statement = this.connection.prepareStatement(fullQuery)) {
+            statement.setInt(1, cesId);
+            statement.setString(2, "%");
+            statement.setString(3, "%");
+            statement.setObject(4, null);
+            statement.setObject(5, null);
+            return statement.toString().substring(45);
+        } catch (Exception e) {
+            throw new DAOException(e);
+        }
+    }
 }

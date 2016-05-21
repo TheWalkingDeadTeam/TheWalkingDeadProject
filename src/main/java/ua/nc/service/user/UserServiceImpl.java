@@ -30,8 +30,6 @@ import java.util.*;
 public class UserServiceImpl implements UserService {
     private final static Logger LOGGER = Logger.getLogger(UserServiceImpl.class);
     private DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
-    //private UserDAO userDAO = daoFactory.getUserDAO(daoFactory.getConnection());
-    // private RoleDAO roleDAO = daoFactory.getRoleDAO(daoFactory.getConnection());
     private MailService mailService = new MailServiceImpl();
 
     @Override
@@ -129,6 +127,10 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+    /**
+     * @param email
+     * @return
+     */
     @Override
     public User getUser(String email) {
         Connection connection = daoFactory.getConnection();
@@ -146,6 +148,10 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    /**
+     * @param id
+     * @return
+     */
     @Override
     public User getUser(Integer id) {
         Connection connection = daoFactory.getConnection();
@@ -163,6 +169,10 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    /**
+     * @param user
+     * @return
+     */
     @Override
     public User createUser(User user) {
         Connection connection = daoFactory.getConnection();
@@ -177,7 +187,6 @@ public class UserServiceImpl implements UserService {
             }
             user.setRoles(roles);
             userDAO.createUser(user, user.getRoles());
-            //roleDAO.setRoleToUser(user.getRoles(), user);
             mailService.sendMail(user.getEmail(), "Registration", "Welcome " + user.getName() + " ! \n NetCracker[TheWalkingDeadTeam] ");
             return user;
         } catch (DAOException e) {
