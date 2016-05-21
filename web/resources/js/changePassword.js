@@ -19,7 +19,7 @@ $(document).ready(function () {
 
     $('.form-control').bind('input', ValidateChangeForm);
 
-    $("#buttonChangePassword").click(function () {
+    $("#buttonChangePassword").click(function (event) {
         event.preventDefault();
         $.ajax({
             type: 'post',
