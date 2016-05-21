@@ -156,6 +156,7 @@ public class CESServiceImpl implements CESService {
             currentTime += MILLIS_PER_DAY;
             interviewDates.add(new Date(currentTime));
         }
+        daoFactory.putConnection(connection);
         return interviewDates;
     }
 
@@ -196,6 +197,8 @@ public class CESServiceImpl implements CESService {
                 System.out.println(2);
             } catch (DAOException e) {
                 LOGGER.warn("Unable to get interviewers roles.", e);
+            } finally {
+                daoFactory.putConnection(connection);
             }
             for (Role role : intrwr.getRoles()) {
                 System.out.println(3);
@@ -220,6 +223,7 @@ public class CESServiceImpl implements CESService {
         if (cesDAO.getCurrentCES() != null) {
             return cesDAO.getCurrentCES();
         }
+        daoFactory.putConnection(connection);
         return null;
     }
 
@@ -375,7 +379,7 @@ public class CESServiceImpl implements CESService {
         }, date);
     }
 
-    void switchToInterviewingOngoing() throws DAOException {
+    public void switchToInterviewingOngoing() throws DAOException {
         String dateFromDB = getCES().getStartInterviewingDate().toString() + TIME_FOR_DATE_FROM_DB;
         final Connection connection = daoFactory.getConnection();
         final CESStatusDAO cesStatus = daoFactory.getCESStatusDAO(connection);

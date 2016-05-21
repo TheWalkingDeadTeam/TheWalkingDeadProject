@@ -57,8 +57,6 @@
         <access-denied-handler error-page="/403"/>
 
         <form-login login-page="/login"
-                    login-processing-url="/j_spring_security_check"
-                    username-parameter="j_username" password-parameter="j_password"
                     authentication-failure-url="/login?error" />
              <!--       authentication-success-handler-ref="myAuthenticationSuccessHandler"-->
 

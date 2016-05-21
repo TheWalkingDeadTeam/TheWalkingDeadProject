@@ -448,25 +448,7 @@ public class AdminController {
         }
     }
 
-    /**
-     * Takes a json file with students status changes
-     *
-     * @param status
-     */
-    @RequestMapping(value = {"/users"}, method = RequestMethod.POST, produces = "application/json")
-    @ResponseBody
-    public HttpStatus userStatus(@RequestBody Status status) {
-        Status userStatus = status;
-        if (!status.getType().isEmpty() && (status.getValues().size() > 0)) {
-            userService.changeStatus(userStatus.getType(), userStatus.getValues());
-            return HttpStatus.OK;
-        } else {
-            LOGGER.warn("Request type is not supported");
-            return HttpStatus.BAD_REQUEST;
-        }
 
-
-    }
 
     @RequestMapping(value = {"/mail-template"}, method = RequestMethod.GET)
     public String mail() {

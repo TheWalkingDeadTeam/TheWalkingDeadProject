@@ -157,15 +157,14 @@
     </main>
 </main>
 
-<script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
-<script src="http://code.jquery.com/jquery-latest.js"></script>
-<%--<script src="/resources/js/admin-create-user.js"></script>--%>
-<script src="/resources/bootstrap/js/bootstrap.js"></script>
-<script src="/resources/js/checkboxScript.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-route.js"></script>
-<script src="../../resources/js/userListAngular.js"></script>
-<script src="../../resources/js/dirPagination.js"></script>
+<script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="/resources/bootstrap/js/bootstrap.js"></script>
+<script src="/resources/js/checkboxScript.js"></script>
+<script src="/resources/js/userListAngular.js"></script>
+<script src="/resources/js/dirPagination.js"></script>
 <script src="http://vitalets.github.io/checklist-model/checklist-model.js"></script>
 
 </body>
