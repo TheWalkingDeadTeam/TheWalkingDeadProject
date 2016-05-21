@@ -26,6 +26,8 @@
 
         </div>
         <img src="/resources/images/error.gif"/>
+        <h1 class="page-header"><a href="/">Back to sweat home</a>
+        </h1>
     </div>
 </div>
 </body>

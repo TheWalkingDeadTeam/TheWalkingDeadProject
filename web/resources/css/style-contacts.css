@@ -1,0 +1,16 @@
+.names {
+    float: left;
+}
+
+.num {
+    float: right;
+}
+
+.map-location {
+    width: 80%;
+    margin-top: 5px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 15px;
+    display: table-cell;
+}

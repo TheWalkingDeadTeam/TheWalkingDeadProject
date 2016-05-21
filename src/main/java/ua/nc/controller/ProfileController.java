@@ -39,9 +39,10 @@ public class ProfileController {
                 || ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal()).getId().equals(id)) {
             try {
+                LOGGER.info("Try to get profile " + id);
                 profile = profileService.getProfile(id, efs.getCES_ID());
             } catch (DAOException e) {
-                LOGGER.error(e);
+                LOGGER.error("Cant get profile " ,e);
             }
         }
         return profile;
