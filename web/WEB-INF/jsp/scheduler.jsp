@@ -9,9 +9,11 @@
     <link href="<c:url value='/resources/css/app.css' />" rel="stylesheet">
     <link href="<c:url value='/resources/css/scheduler-styles.css' />" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap.timepicker/0.2.6/css/bootstrap-timepicker.min.css">
+    <link rel="stylesheet" href="/resources/css/datepicker/bootstrap-datetimepicker.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script type="text/javascript" src="/resources/js/bootstrap-timepicker.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="/resources/js/datapicker/bootstrap-datetimepicker.js"></script>
 </head>
 <body ng-app="mailer" class="ng-cloack">
 
@@ -30,15 +32,27 @@
                     <div class="form-group col-md-12">
                         <label class="col-md-2 control-lable" for="file">Start time</label>
                         <div class="col-md-7">
-
-                            <div class="input-group bootstrap-timepicker timepicker">
-                                <input id="timepicker1" data-ng-model="interviewTime" placeholder="Provide interview time" name="interviewTime"   type="text" class="form-control input-small">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+                            <div class="input-append  date form_datetime">
+                                <input class="input-sm"  type="text" value=""  data-ng-model="interviewTime" placeholder="Provide interview time" name="nterviewTime"  readonly>
+                                <span class="add-on"><i class="icon-th"></i></span>
                             </div>
 
+
                             <script type="text/javascript">
-                                $('#timepicker1').timepicker();
+                                $(".form_datetime").datetimepicker({
+                                    format: "dd MM yyyy - hh:ii"
+                                });
                             </script>
+
+
+                            <%--<div class="input-group bootstrap-timepicker timepicker">--%>
+                                <%--<input id="timepicker1" data-ng-model="interviewTime" placeholder="Provide interview time" name="interviewTime"   type="text" class="form-control input-small">--%>
+                                <%--<span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>--%>
+                            <%--</div>--%>
+
+                            <%--<script type="text/javascript">--%>
+                                <%--$('#timepicker1').timepicker();--%>
+                            <%--</script>--%>
 
                         </div>
                     </div>

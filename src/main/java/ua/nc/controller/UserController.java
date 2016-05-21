@@ -56,7 +56,6 @@ public class UserController {
             userService.changePassword(user, password);
         } else {
             log.warn("User  pass word can't be changed ");
-            errors.add(new ValidationError("userPassword", "Pass change error"));
         }
         return errors;
     }

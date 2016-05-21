@@ -6,24 +6,22 @@ import com.google.maps.model.GeocodingResult;
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import ua.nc.dao.ApplicationDAO;
-import ua.nc.dao.UserDAO;
-import ua.nc.dao.enums.DataBaseType;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import ua.nc.dao.exception.DAOException;
-import ua.nc.dao.factory.DAOFactory;
-import ua.nc.dao.postgresql.PostgreApplicationDAO;
-import ua.nc.dao.postgresql.PostgreUserDAO;
-import ua.nc.entity.*;
+import ua.nc.entity.Mail;
+import ua.nc.entity.Scheduler;
 import ua.nc.service.CESService;
 import ua.nc.service.CESServiceImpl;
 import ua.nc.service.MailService;
 import ua.nc.service.MailServiceImpl;
 
-import java.sql.Connection;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Alexander on 05.05.2016.
@@ -40,9 +38,7 @@ public class SchedulerController {
     private final static String CONTACT_INTERVIEWERS = "$contactInterviewers";
     private final static String CONTACT_STUDENTS = "$contactStudent";
 
-    private final DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
-    private final Connection connection = daoFactory.getConnection();
-    private final UserDAO userDAO = new PostgreUserDAO(connection);
+
     private final CESService cesService = new CESServiceImpl();
     private final MailService mailService = new MailServiceImpl();
 
@@ -99,7 +95,6 @@ public class SchedulerController {
         Map<String, String> studentParameters = param(scheduler);
         interviewerParameters.put(CONTACT_INTERVIEWERS, scheduler.getContactStaff());
         studentParameters.put(CONTACT_STUDENTS, scheduler.getContactStudent());
-
         try {
             List<Date> interviewDates = cesService.planSchedule();
             mailService.sendInterviewReminders(interviewDates, interviewerMail, interviewerParameters,
