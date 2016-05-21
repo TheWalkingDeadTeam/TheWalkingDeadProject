@@ -111,6 +111,9 @@ app.controller('FormController', ['$scope', '$http', function ($scope, $http) {
                         .empty()
                         .addClass('alert alert-success')
                         .html('Session saved');
+                    setTimeout(function() {
+                        $('#errorsDiv').fadeOut().empty();
+                    }, 3000);
                 }
                 $scope.message = responseData;
             }).error(function () {
