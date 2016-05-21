@@ -96,20 +96,16 @@
 
 </sec:authorize>
 
+<script src="http://code.jquery.com/jquery-latest.js"></script>
 <jsp:include page="footer.jsp"/>
 <script src="/resources/js/changePassword.js"></script>
-<script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="/resources/js/photo.js"></script>
 <script src="/resources/js/account.js"></script>
 <script src="/resources/js/hideShowPassword.min.js"></script>
 <script src="/resources/js/changeRoles.js"></script>
-<script src="http://code.jquery.com/jquery-latest.js" type="text/javascript"></script>
 <script src="/resources/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
 <script src="/resources/bootstrap/js/jasny-bootstrap.js"></script>
-<script>
-    $('#changePassword').hideShowPassword(false, true);
 
-</script>
 
 <script type="text/javascript">
     $().ready(function () {
