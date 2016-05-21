@@ -148,13 +148,14 @@
                     $('<div id=\"radioBlock' + i + '\">').appendTo($(divname));
                     $('<span>').text(item.fieldName + ': ').appendTo($('#radioBlock' + i));
                     item.values.forEach(function (item_value, j) {
+                        var rand = _getRandomInt();
                         var isChecked = (item_value.value == "true") ? 'checked' : '',
-                            attributes = {type: 'radio', id: item_value.id, name: item.id};
+                            attributes = {type: 'radio', id: item_value.id + rand, name: item.id};
                         attributes.required = "required";
                         if (isChecked) {
                             attributes.checked = isChecked;
                         }
-                        $('<label>').attr({for: item_value.id}).text(' ' + item_value.fieldValueName).appendTo($('#radioBlock' + i));
+                        $('<label>').attr({for: item_value.id + rand}).text(' ' + item_value.fieldValueName).appendTo($('#radioBlock' + i));
                         $('<input>')
                             .attr(attributes)
                             .attr('ng-model', i)
@@ -221,9 +222,10 @@
                     $('<select>').attr(attributes).attr('ng-model', i).appendTo($('#block' + i));
                     $('#select' + item.id).append('<option ' + 'disabled' + '>' + 'University' + '</option>');
                     item.values.forEach(function (item_value, j) {
+                        var rand = _getRandomInt();
                         var isSelected = item_value.value == "true";
                         $('#select' + item.id)
-                            .append('<option id="' + item_value.id + '" value="' + item_value.fieldValueName + '">' + item_value.fieldValueName + '</option>');
+                            .append('<option id="' + item_value.id + rand + '" value="' + item_value.fieldValueName + '">' + item_value.fieldValueName + '</option>');
                         if (isSelected) {
                             $("#select" + item.id + " option[value='" + item_value.fieldValueName + "']").prop('selected', true);
                         }
@@ -266,24 +268,29 @@
                     $('<div id=\"checkBlock' + i + '\">').appendTo($(divname));
                     $('<span>').text(item.fieldName + ': ').appendTo($('#checkBlock' + i));
                     item.values.forEach(function (item_value, j) {
+                        var rand = _getRandomInt();
                         var isChecked = (item_value.value == "true") ? 'checked' : '',
-                            attributes = {type: 'checkbox', id: item_value.id, value: item_value.value};
+                            attributes = {type: 'checkbox', id: item_value.id + rand, value: item_value.value};
                         if (isChecked) {
                             attributes.checked = isChecked;
                         }
-                        $('<label>').attr({for: item_value.id}).text(' ' + item_value.fieldValueName).appendTo($('#checkBlock' + i));
+                        $('<label>').attr({for: item_value.id + rand}).text(' ' + item_value.fieldValueName).appendTo($('#checkBlock' + i));
                         $('<input>')
                             .attr(attributes)
                             .attr('ng-model', i)
                             .appendTo($('#checkBlock' + i))
                             .on('change', function () {
-                                enableSave()
+                                enableSave();
                                 requestData.fields[$(this).attr('ng-model')].values[j].value = this.checked;
                             });
                     });
                     break;
             }
         }
+    }
+
+    function _getRandomInt() {
+        return Math.round(1 + Math.random() * (998)) + Math.round(1 + Math.random() * (998));
     }
 })();
 
