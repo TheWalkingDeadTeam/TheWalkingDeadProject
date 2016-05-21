@@ -30,7 +30,7 @@
                     <li><a href="/contacts">Contacts</a></li>
                     <sec:authorize access="hasRole('ROLE_STUDENT')">
                         <sec:authentication var="principal" property="principal"/>
-                        <li><a href="/profile/${principal.id}">Profile</a></li>
+                        <li><a href="/profile?${principal.id}">Profile</a></li>
                     </sec:authorize>
                     <sec:authorize access="isAuthenticated()">
                     <li><a href="/logout">Logout</a></li>
