@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
 <html>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Mail Page</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="/resources/css/app.css" rel="stylesheet"/>
@@ -26,7 +27,7 @@
                                         <input type="text" ng-model="ctrl.mail.headTemplate" name="mhead"
                                                class="md-textarea"
                                                placeholder="Enter mail topic" required
-                                               ng-minlength="3"></textarea>
+                                               ng-minlength="3"/>
                                         <div class="has-error" ng-show="myForm.$dirty">
                                             <span ng-show="myForm.mhead.$error.required">This is a required field!</span>
                                             <span ng-show="myForm.mhead.$error.minlength">Minimum length required is 3</span>
@@ -42,7 +43,8 @@
                                                     <textarea rows="5" cols="5" type="text"
                                                               ng-model="ctrl.mail.bodyTemplate"
                                                               class="materialize-textarea"
-                                                              placeholder="Enter mail body"></textarea>
+                                                              placeholder="Enter mail body">
+                                                    </textarea>
                                     </div>
                                 </div>
                             </div>
@@ -59,7 +61,9 @@
                         </form>
                     </div>
                 </div>
+            </div>
 
+            <div class="card hoverable">
                 <div class="card-content">
                     <div class="panel panel-default">
                         <h5 align="center">List of Mails </h5>
@@ -83,7 +87,7 @@
                                                 class="btn btn-success btn-sm">Edit
                                         </button>
                                         <button type="button" ng-click="ctrl.remove(m.id)"
-                                                class="btn btn-danger btn-sm ">Remove
+                                                class="btn btn-danger btn-sm">Remove
                                         </button>
                                     </td>
                                 </tr>
@@ -94,6 +98,8 @@
                 </div>
             </div>
         </div>
+
+
     </div>
 </div>
 
