@@ -5,6 +5,7 @@ import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,7 +24,9 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import ua.nc.dao.enums.UserRoles;
 import ua.nc.entity.User;
-import ua.nc.service.*;
+import ua.nc.service.PhotoService;
+import ua.nc.service.PhotoServiceImpl;
+import ua.nc.service.UserDetailsImpl;
 import ua.nc.service.user.UserDetailsServiceImpl;
 import ua.nc.service.user.UserService;
 import ua.nc.service.user.UserServiceImpl;
@@ -43,7 +46,6 @@ public class LoginController implements HandlerExceptionResolver {
     private static final Logger LOGGER = Logger.getLogger(LoginController.class);
     private final UserService userService = new UserServiceImpl();
     private final PhotoService photoService = new PhotoServiceImpl();
-    private final CESService cesService = new CESServiceImpl();
 
 
     @Autowired
@@ -51,7 +53,8 @@ public class LoginController implements HandlerExceptionResolver {
     protected AuthenticationManager authenticationManager;
 
     @Override
-    public ModelAndView resolveException(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) {
+    public ModelAndView resolveException(HttpServletRequest httpServletRequest,
+                                         HttpServletResponse httpServletResponse, Object o, Exception e) {
         if (e instanceof MaxUploadSizeExceededException) {
             ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
             Set<ValidationError> errors = new LinkedHashSet<>();
@@ -62,7 +65,14 @@ public class LoginController implements HandlerExceptionResolver {
         return new ModelAndView("redirect:/login");
     }
 
-    @RequestMapping(value = {"/","/login"}, method = RequestMethod.GET)
+    /**
+     * Depending on the Role return home page
+     *
+     * @param request
+     * @param response
+     * @return page view
+     */
+    @RequestMapping(value = {"/", "/login"}, method = RequestMethod.GET)
     public String login(HttpServletRequest request, HttpServletResponse response) {
         SavedRequest savedRequest =
                 new HttpSessionRequestCache().getRequest(request, response);
@@ -77,24 +87,29 @@ public class LoginController implements HandlerExceptionResolver {
             if (request.isUserInRole(UserRoles.ROLE_ADMIN.name()) || request.isUserInRole(UserRoles.ROLE_HR.name())) {
                 LOGGER.info("Login and redirect to Admin page");
                 return "admin";
+
             } else {
                 if (request.isUserInRole(UserRoles.ROLE_BA.name())
                         || request.isUserInRole(UserRoles.ROLE_DEV.name())
                         || request.isUserInRole(UserRoles.ROLE_STUDENT.name())) {
                     LOGGER.info("Login and redirect to Account page");
                     return "account";
-                } else {
-                    LOGGER.info("Login and redirect to Login page");
-                    return "login";
                 }
             }
         }
+        return "login";
     }
 
-    @RequestMapping(value = "/security_check ", method = RequestMethod.POST, produces = "application/json")
-    public
+
+    /**
+     * Method authorize user with Spring Security
+     *
+     * @param user the user that want to authorize
+     * @return json of errors that were created during authorization
+     */
     @ResponseBody
-    Set<ValidationError> authentication(@RequestBody User user) {
+    @RequestMapping(value = "/security_check ", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Set<ValidationError> authentication(@RequestBody User user) {
         Set<ValidationError> errors = new LinkedHashSet<>();
         UserDetailsService userDetailsService = new UserDetailsServiceImpl();
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
@@ -113,7 +128,14 @@ public class LoginController implements HandlerExceptionResolver {
         return errors;
     }
 
-    @RequestMapping(value = {"/register"}, method = RequestMethod.POST, produces = "application/json")
+    /**
+     * This method create new user of the system and validate his information
+     * If user with user.email not exist, create new user.
+     *
+     * @param user the user that want to register
+     * @return json of errors that were created during registration
+     */
+    @RequestMapping(value = {"/register"}, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public
     @ResponseBody
     Set<ValidationError> registerUser(@RequestBody User user) {

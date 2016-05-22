@@ -6,14 +6,14 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
 <sec:authorize access="isAuthenticated()">
     <div class="" role="alert">
-        <div id="messageCheckPassword"></div>
+
         <form>
-            <input id="changePassword" name="password" class="form-control login-field  login-field-password" placeholder="Password" type="password"
+            <input id="changePassword" name="password" style="margin-bottom: 5px;" class="form-control login-field  login-field-password" placeholder="Password" type="password"
                    value="">
-            <button id="buttonChangePassword" class="btn btn-lg btn-primary btn-block changebtn">ChangePassword</button>
+            <button id="buttonChangePassword" class="btn btn-lg btn-primary btn-block changebtn mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">Change password</button>
         </form>
+        <div id="messageCheckPassword"></div>
     </div>
 </sec:authorize>

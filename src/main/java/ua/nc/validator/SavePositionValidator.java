@@ -17,6 +17,12 @@ import java.util.regex.Pattern;
  */
 public class SavePositionValidator implements Validator {
 
+    /**
+     * Validates if incoming values are Integer and > 0
+     *
+     * @param obj Object to validate
+     * @return Set of errors if last are present. Else returns empty LinkedHashSet.
+     */
     @Override
     public Set<ValidationError> validate(Object obj) {
         FieldWrapper fields = (FieldWrapper) obj;

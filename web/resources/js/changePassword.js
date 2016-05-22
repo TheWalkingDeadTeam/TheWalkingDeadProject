@@ -19,7 +19,7 @@ $(document).ready(function () {
 
     $('.form-control').bind('input', ValidateChangeForm);
 
-    $("#buttonChangePassword").click(function () {
+    $("#buttonChangePassword").click(function (event) {
         event.preventDefault();
         $.ajax({
             type: 'post',
@@ -50,6 +50,9 @@ $(document).ready(function () {
                         .addClass('alert alert-success')
                         .html('Password changed successfully');
                     $('#changePassword').val("");
+                    setTimeout(function() {
+                        $("#messageCheckPassword").fadeOut().empty();
+                    }, 3000);
                 }
             },
             error: function (jqXHR, exception) {

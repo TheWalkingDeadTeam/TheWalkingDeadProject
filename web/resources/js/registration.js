@@ -142,7 +142,7 @@
     // ------------------------------------------validation
 
 
-    $("#buttonRegistration").click(function () {
+    $("#buttonRegistration").click(function (event) {
         event.preventDefault();
         $.ajax({
             type: 'post',
@@ -180,10 +180,14 @@
                     $('.registration')
                         .fadeOut(300);
                     $('#messageSignIn')
+                        .show()
                         .addClass('alert alert-success')
                         .html('Registered successfully');
                     $('.registration input')
                         .val("");
+                    setTimeout(function() {
+                        $("#messageSignIn").fadeOut().empty();
+                    }, 3000);
                 }
             },
             error: function (jqXHR, exception) {

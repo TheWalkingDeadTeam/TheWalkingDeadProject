@@ -6,9 +6,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" sizes="32x32" href="/resources/images/ico.png"/>
-    <%--<link rel="stylesheet" type="text/css" href="/resources/css/reset.css"/>--%>
-    <%--<link rel="stylesheet" type="text/css" href="/resources/css/styles.css"/>--%>
-    <%--<link rel="stylesheet" type="text/css" href="/resources/bootstrap/css/bootstrap.css"/>--%>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <link rel="icon" type="image/png" sizes="32x32" href="/images/ico.png">
@@ -17,10 +14,7 @@
     <link rel="stylesheet" type="text/css" href="resources/css/media-profile.css" rel="stylesheet">
     <script src="resources/bootstrap/js/jquery-2.2.2.min.js" defer></script>
     <script src="resources/bootstrap/js/bootstrap.min.js" defer></script>
-    <%--<style type="text/css">--%>
-    <%--/*<img src='images/logo.png' alt="Brand" class="header-img">*/--%>
-    <%--/*<img src='images/error.gif' class="img-responsive profile-photo">*/--%>
-    <%--/*<img class='img-responsive' src="images/logo-gray.png">*/--%>
+
 </head>
 <body>
 <header>
@@ -82,7 +76,7 @@
     </div>
 
     <form id="fields">
-            <%--<br>--%>
+
     </form>
     <sec:authorize access="hasRole('ROLE_STUDENT')">
         <div id="fieldsCheck"></div>
@@ -100,46 +94,7 @@
 </sec:authorize>
 
 
-<footer class="footer container-fluid">
-    <div class="footerLg container visible-md visible-lg">
-        <div class="col-lg-3 col-lg-3 col-sm-3"><img class='img-responsive' src="resources/images/logo-gray.png"></div>
-
-        <div class="col-lg-8 col-md-8 col-lg-offset-1 col-lg-offset-1 col-md-offset-1">
-            <div class="footerLgText col-lg-3 col-md-3 col-lg-offset-1 col-md-offset-1">
-                <p>Univercity Office Park III</p>
-                <p>95 Sawyer Road</p>
-                <p>Waltham, MA 02453 USA</p>
-                <p>1-781-419-3300</p>
-            </div>
-            <div class="footerLgText col-lg-3 col-md-3 col-lg-offset-1 col-md-offset-1">
-                <p>Facebook /NetcrackerTech</p>
-                <p>Twitter @NetcrackerTech</p>
-                <p>LikedIn /netcracker</p>
-            </div>
-            <div class="footerLgText col-lg-3 col-md-3 col-lg-offset-1 col-md-offset-1">
-                <p>Privacy Policy</p>
-                <p>Terms of Use</p>
-                <p>Sitemap</p>
-            </div>
-        </div>
-    </div>
-    <div class="footerSm row visible-sm visible-xs">
-        <div class="col-sm-5 visible-sm">
-            <img src="resources/images/logo-gray.png">
-        </div>
-        <div class="footerSmText col-sm-7 col-xs-12">
-            <div class="col-sm-8 col-xs-6">
-                <a class="col-sm-6 col-xs-7" href="http://localhost:8080/profile#"><p>Courses Info</p></a>
-                <a class="col-sm-6 col-xs-7" href="http://localhost:8080/profile#"><p>Contacts</p></a>
-            </div>
-            <div class="col-sm-4 col-xs-3 pull-right">
-                <p>Privacy Policy</p>
-                <p>Terms of Use</p>
-                <p>Sitemap</p>
-            </div>
-        </div>
-    </div>
-</footer>
+<jsp:include page="footer.jsp"/>
 
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="/resources/js/profile.js"></script>

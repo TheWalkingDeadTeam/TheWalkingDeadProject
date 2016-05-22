@@ -4,6 +4,8 @@ import java.util.List;
 
 /**
  * Created by Neltarion on 16.05.2016.
+ *
+ * Wrapper class for Field and accompanying values required to create a new question in student application form
  */
 public class FullFieldWrapper {
 

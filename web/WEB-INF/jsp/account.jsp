@@ -27,6 +27,7 @@
     <script src="/resources/bootstrap/js/bootstrap.min.js" defer></script>
     <link rel="stylesheet" type="text/css" href="/resources/bootstrap/css/jasny-bootstrap.css">
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport'/>
+    <link rel="stylesheet" href="/resources/css/style-account.css">
     <style>
         .card .stats:last-child {
             border-left: 0px solid #EEEEEE;
@@ -48,11 +49,11 @@
                 </div>
                 <div class="content">
                     <div class="main">
-                    <h3 id="userName" class="name"></h3>
-                    <p id="userSurname" class="profession"></p>
-                    <p id="userEmail" class="profession"></p>
-                </div>
-                 <div class="footer" style="margin-bottom: 20px">
+                        <h3 id="userName" class="name"></h3>
+                        <p id="userSurname" class="profession"></p>
+                        <p id="userEmail" class="profession"></p>
+                    </div>
+                    <div class="footer" style="margin-bottom: 20px">
                         <button class="btn btn-simple" onclick="rotateCard(this)">
                             <i class="fa fa-mail-forward"></i> Options
                         </button>
@@ -64,29 +65,32 @@
                 <div class="content">
                     <div class="main">
 
-                            <div align="center">
-                                <jsp:include page="changePhoto.jsp"/>
-                            </div>
+                        <div align="center">
+                            <jsp:include page="changePhoto.jsp"/>
+                        </div>
 
-                            <div class="stats">
-                                <h5>Change Password</h5>
+                        <div>
+                            <div class="stats class="col-lg-4 col-md-4 col-sm-5 col-xs-5">
+                                <h5 style="float: right;">Change Password</h5>
                                 <jsp:include page="change-password.jsp"/>
                             </div>
-                            <div class="stats">
-                                <h5>Enrollment</h5>
+                            <div class="stats class="col-lg-4 col-md-4 col-sm-2 col-xs-2">
                                 <sec:authorize access="!hasRole('ROLE_STUDENT')">
+                                    <h5>Enrollment</h5>
                                     <div id="enrollMessages"></div>
-                                    <button id="enroll_button" type="submit">Enroll</button>
+                                    <button id="enroll_button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white" type="submit">Enroll</button>
                                 </sec:authorize>
                             </div>
-                            <div class="stats">
+                            <div class="stats class="col-lg-4 col-md-4 col-sm-5 col-xs-5">
+
                                 <jsp:include page="change-roles.jsp"/>
                             </div>
+                        </div>
                     </div>
                 </div>
-                    <button class="btn btn-simple" rel="tooltip" title="Flip Card" onclick="rotateCard(this)">
-                        <i class="fa fa-reply"></i> Back
-                    </button>
+                <button class="btn btn-simple" rel="tooltip" title="Flip Card" onclick="rotateCard(this)">
+                    <i class="fa fa-reply"></i> Back
+                </button>
             </div> <!-- end back panel -->
         </div> <!-- end card -->
     </div>
@@ -96,20 +100,16 @@
 
 </sec:authorize>
 
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="/resources/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="/resources/bootstrap/js/jasny-bootstrap.js"></script>
 <jsp:include page="footer.jsp"/>
 <script src="/resources/js/changePassword.js"></script>
-<script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="/resources/js/photo.js"></script>
 <script src="/resources/js/account.js"></script>
 <script src="/resources/js/hideShowPassword.min.js"></script>
 <script src="/resources/js/changeRoles.js"></script>
-<script src="http://code.jquery.com/jquery-latest.js" type="text/javascript"></script>
-<script src="/resources/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-<script src="/resources/bootstrap/js/jasny-bootstrap.js"></script>
-<script>
-    $('#changePassword').hideShowPassword(false, true);
 
-</script>
 
 <script type="text/javascript">
     $().ready(function () {
