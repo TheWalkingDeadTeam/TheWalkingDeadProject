@@ -1,13 +1,12 @@
 <!--Created by Alexander Haliy on 05.05.2016. !-->
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
     <title>Scheduler</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <link href="<c:url value='/resources/css/app.css' />" rel="stylesheet">
-    <link href="<c:url value='/resources/css/scheduler-styles.css' />" rel="stylesheet">
+    <link href="/resources/css/app.css" rel="stylesheet">
+    <link href="/resources/css/scheduler-styles.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap.timepicker/0.2.6/css/bootstrap-timepicker.min.css">
     <link rel="stylesheet" href="/resources/css/datepicker/bootstrap-datetimepicker.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -15,11 +14,11 @@
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="/resources/js/datapicker/bootstrap-datetimepicker.js"></script>
 </head>
+
+
+
+
 <body ng-app="mailer" class="ng-cloack">
-
-
-
-
 <div class="generic-container">
     <div class="panel panel-default">
         <div class="panel-heading"><span class="lead">Scheduler paramaters </span></div>
@@ -40,7 +39,7 @@
 
                             <script type="text/javascript">
                                 $(".form_datetime").datetimepicker({
-                                    format: "dd MM yyyy - hh:ii"
+                                    format: "yyyy-mm-dd hh:ii"
                                 });
                             </script>
 
