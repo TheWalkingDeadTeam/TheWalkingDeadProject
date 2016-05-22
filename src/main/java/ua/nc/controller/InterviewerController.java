@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import ua.nc.dao.enums.UserRoles;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.entity.*;
 import ua.nc.service.*;
@@ -17,10 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.Writer;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Hlib on 09.05.2016.
@@ -65,14 +63,14 @@ public class InterviewerController {
         return "profile-for-interviewer";
     }
 
-    @RequestMapping(value = "/feedback/{id}", method = RequestMethod.GET, produces = "application/json")
+  /*  @RequestMapping(value = "/feedback/{id}", method = RequestMethod.GET, produces = "application/json")
     public Application specificFeedback(@PathVariable("id") Integer id, HttpServletResponse response) {
         Application application = applicationService.getApplicationByUserForCurrentCES(id);
         if (application == null) {
             fillNullResponse(response);
         }
         return application;
-    }
+    }*/
 
     @ResponseBody
     @RequestMapping(value = "feedback/{id}/save", method = RequestMethod.POST, produces = "application/json")
@@ -98,52 +96,94 @@ public class InterviewerController {
 
     @ResponseBody
     @RequestMapping(value = "getFeedback/{id}", method = RequestMethod.GET, produces = "application/json")
-    public FeedbackAndSpecialMark getFeedback(@PathVariable("id") Integer id, HttpServletRequest request, HttpServletResponse response) {
+    public FeedbackDTO getFeedback(@PathVariable("id") Integer id, HttpServletRequest request, HttpServletResponse response) {
         Application application = applicationService.getApplicationByUserForCurrentCES(id);
-        if (application == null) {
-            response.setHeader("interviewee", "null");
-            fillNullResponse(response);
+        FeedbackDTO feedbackDTO = new FeedbackDTO();
+        if (request.isUserInRole(UserRoles.ROLE_DEV.name())){
+            feedbackDTO.setInterviewerRole(UserRoles.ROLE_DEV);
+        } else if (request.isUserInRole(UserRoles.ROLE_BA.name())){
+            feedbackDTO.setInterviewerRole(UserRoles.ROLE_BA);
+        } else if (request.isUserInRole(UserRoles.ROLE_HR.name())){
+            feedbackDTO.setInterviewerRole(UserRoles.ROLE_HR);
+        } else {
             return null;
         }
-        Interviewee interviewee = intervieweeService.getInterviewee(application.getId());
-        if (interviewee == null) {
-            response.setHeader("interviewee", "application");
-            fillNullResponse(response);
-            return null;
-        }
-        response.setHeader("interviewee", "interviewee");
-        User user = userService.getUser(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
-                .getPrincipal()).getUsername());
-        FeedbackAndSpecialMark feedbackAndSpecialMark = new FeedbackAndSpecialMark();
-        Feedback feedback = null;
-        Integer feedbackId = null;
-        if (request.isUserInRole("ROLE_DEV")) {
-            feedbackId = interviewee.getDevFeedbackID();
-
+        Date today = new Date();
+        CES currentCES = cesService.getCurrentCES();
+        if (today.after(currentCES.getStartInterviewingDate())&&today.before(currentCES.getEndInterviewingDate())) {
+            feedbackDTO.setInterviewingPeriod();
+            if (application == null) {
+                feedbackDTO.setApplicationExists(false);
+                return feedbackDTO;
+            } else {
+                feedbackDTO.setApplicationExists(true);
+            }
+            Interviewee interviewee = intervieweeService.getInterviewee(application.getId());
+            if (interviewee == null) {
+                feedbackDTO.setIntervieweeExists(false);
+                return feedbackDTO;
+            } else {
+                feedbackDTO.setIntervieweeExists(true);
+            }
+            User user = userService.getUser(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+                    .getPrincipal()).getUsername());
+            Feedback feedback = null;
+            Integer feedbackId = null;
+            if (feedbackDTO.getInterviewerRole().equals(UserRoles.ROLE_DEV)) {
+                feedbackId = interviewee.getDevFeedbackID();
+            } else {
+                feedbackId = interviewee.getHrFeedbackID();
+            }
+            if (feedbackId != null) {
+                feedback = feedbackService.getFeedback(feedbackId);
+            }
+            if (feedback == null) {
+                feedbackDTO.setRestricted(false);
+                feedbackDTO.setSpecialMark(interviewee.getSpecialMark());
+                return feedbackDTO;
+            } else if (feedback.getInterviewerID() == user.getId()) {
+                feedbackDTO.setRestricted(false);
+                if (feedbackDTO.getInterviewerRole().equals(UserRoles.ROLE_DEV)) {
+                    feedbackDTO.setDevFeedback(feedback);
+                } else{
+                    feedbackDTO.setHrFeedback(feedback);
+                }
+                feedbackDTO.setSpecialMark(interviewee.getSpecialMark());
+                return feedbackDTO;
+            } else {
+                feedbackDTO.setRestricted(true);
+                return feedbackDTO;
+            }
+        } else if (today.after(currentCES.getEndInterviewingDate())) {
+            feedbackDTO.setAfterInterviewingPeriod();
+            if (application == null) {
+                feedbackDTO.setApplicationExists(false);
+                return feedbackDTO;
+            } else {
+                feedbackDTO.setApplicationExists(true);
+            }
+            Interviewee interviewee = intervieweeService.getInterviewee(application.getId());
+            if (interviewee == null) {
+                feedbackDTO.setIntervieweeExists(false);
+                return feedbackDTO;
+            } else {
+                feedbackDTO.setIntervieweeExists(true);
+            }
+            if (interviewee.getDevFeedbackID() != null) {
+                feedbackDTO.setDevFeedback(feedbackService.getFeedback(interviewee.getDevFeedbackID()));
+            }
+            if (interviewee.getHrFeedbackID() != null) {
+                feedbackDTO.setHrFeedback(feedbackService.getFeedback(interviewee.getHrFeedbackID()));
+            }
+            feedbackDTO.setSpecialMark(interviewee.getSpecialMark());
+            return feedbackDTO;
         } else {
-            feedbackId = interviewee.getHrFeedbackID();
+            feedbackDTO.setRestricted();
+            return feedbackDTO;
         }
-        if (feedbackId != null) {
-            feedback = feedbackService.getFeedback(feedbackId);
-        }
-        if (feedback == null) {
-            response.setHeader("restricted", "false");
-            feedbackAndSpecialMark.setSpecialMark(interviewee.getSpecialMark());
-            fillNullResponse(response);
-            return feedbackAndSpecialMark;
-        } else if (feedback.getInterviewerID() == user.getId()) {
-            response.setHeader("restricted", "false");
-            feedbackAndSpecialMark.setFeedback(feedback);
-            feedbackAndSpecialMark.setSpecialMark(interviewee.getSpecialMark());
-            return feedbackAndSpecialMark;
-        } else {
-            response.setHeader("restricted", "true");
-        }
-        fillNullResponse(response);
-        return null;
     }
 
-    @ResponseBody
+    /*@ResponseBody
     @RequestMapping(value = "getallfeedbacks/{id}", method = RequestMethod.GET, produces = "application/json")
     public List<FeedbackAndSpecialMark> getAllFeedbacks(@PathVariable("id") Integer id, HttpServletResponse response) {
         Application application = applicationService.getApplicationByUserForCurrentCES(id);
@@ -179,5 +219,5 @@ public class InterviewerController {
         } catch (IOException ex) {
             LOGGER.warn(ex);
         }
-    }
+    }*/
 }

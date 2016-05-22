@@ -75,52 +75,14 @@
             </div>
         </div>
     </div>
+    <div id = "profile">
     </div>
 
-    <div id="profile">
+    <div id="feedbacks">
     </div>
     <br>
 
-    <%--<sec:authorize access="@feedbackPermissions.isInterviewingPeriod()">--%>
 
-    <div id="restrict_message"></div>
-    <div id="feedback">
-        <form id="feedback_form">
-            <div>
-                <input type="number" id="feedback_score" max="100" min="1" align="centre" required/>
-
-            </div>
-            <div><textarea id="feedback_text" placeholder="Put your feedback here" cols="40" rows="10"
-                           required></textarea>
-            </div>
-            <div>
-                <select id = "special_mark">
-                    <option disabled>Special mark</option>
-                    <option value="none" id = "none">None</option>
-                    <option value="reject" id = "reject">Reject</option>
-                    <option value="take on courses" id="take_on_courses">Take on courses</option>
-                    <option value="job offer" id="job_offer">Job offer</option>
-                </select>
-            </div>
-            <div id="save_message"></div>
-            <div>
-                <button id="submitFeedback" type="submit" title="Submit">Submit</button>
-            </div>
-        </form>
-    </div>
-    <%--</sec:authorize>--%>
-
-    <sec:authorize access="@feedbackPermissions.isAfterInterviewingPeriod()">
-        <div id="getall_message"></div>
-        <div id = "all_feedbacks">
-            <p id = "dev_feedback">Dev's feedback<br></p>
-            <p id = "dev_score">Dev's score: <br></p>
-            <p id = "hr_feedback">HR's feedback<br></p>
-            <p id = "hr_score">HR's score: <br></p>
-            <p id = "special_mark_display">Special mark: </p>
-        </div>
-
-    </sec:authorize>
 
 
 
@@ -178,9 +140,6 @@
 <script src="/resources/js/profileForInterviewer.js"></script>
 <script src="/resources/js/photo.js"></script>
 <script src="/resources/js/account.js"></script>
-<sec:authorize access="@feedbackPermissions.isInterviewingPeriod()">
-<script src="/resources/js/getAllFeedbacks.js"></script>
-</sec:authorize>
 
 </body>
 </html>
