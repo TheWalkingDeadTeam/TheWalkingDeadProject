@@ -14,13 +14,13 @@
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
     <title>Report Template</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <link href="/resources/css/app.css" rel="stylesheet"/>
     <link href="/resources/css/scheduler-styles.css" rel="stylesheet"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap.timepicker/0.2.6/css/bootstrap-timepicker.min.css">
     <link rel="stylesheet" href="/resources/css/notification/angular-ui-notification.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script type="text/javascript" src="/resources/js/bootstrap-timepicker.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <link href="/resources/css/app.css" rel="stylesheet"/>
     <link href="/resources/css/mdb.min.css" rel="stylesheet"/>
 </head>
 
@@ -28,7 +28,7 @@
 <body ng-app="reporter">
 
 
-<div class="container" ng-controller="ReportController as rc">
+<div class="generic-container" ng-controller="ReportController as rc">
     <div class="row">
         <div class="col-md-12">
             <div class="card hoverable">
@@ -92,7 +92,8 @@
                 <div class="card-content">
                     <div class="panel panel-default">
                         <h5 align="center">Report Template </h5>
-                        <div class="tablecontainer">
+
+                        <div class="table-responsive tablecontainer">
                             <table class="table table-hover">
                                 <thead>
                                 <tr>

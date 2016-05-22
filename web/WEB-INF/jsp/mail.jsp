@@ -8,7 +8,7 @@
     <link href="/resources/css/mdb.min.css" rel="stylesheet"/>
 </head>
 <body ng-app="mailer" class="ng-cloak">
-<div class="container" ng-controller="MailController as ctrl">
+<div class="generic-container" ng-controller="MailController as ctrl">
     <div class="row">
         <div class="col-md-12">
             <div class="card hoverable">
@@ -18,6 +18,7 @@
                 <div class="card-content">
                     <div class="panel panel-default">
                         <h5 align="center">Mail Template </h5>
+                        <div class="tablecontainer ">
                         <form ng-submit="ctrl.submit()" name="myForm" class="form-horizontal">
                             <input type="hidden" ng-model="ctrl.mail.id"/>
                             <div class="row">
@@ -59,6 +60,7 @@
                                 </div>
                             </div>
                         </form>
+                            </div>
                     </div>
                 </div>
             </div>
@@ -67,7 +69,7 @@
                 <div class="card-content">
                     <div class="panel panel-default">
                         <h5 align="center">List of Mails </h5>
-                        <div class="tablecontainer">
+                        <div class="table-responsive tablecontainer">
                             <table class="table table-hover">
                                 <thead>
                                 <tr>
