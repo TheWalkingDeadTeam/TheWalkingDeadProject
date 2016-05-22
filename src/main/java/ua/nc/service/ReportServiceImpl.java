@@ -96,6 +96,7 @@ public class ReportServiceImpl implements ReportService {
         List<Map<String, Object>> reportRows = null;
         try {
             reportRows = reportTemplateDAO.execute(report);
+            LOGGER.info("Report " + report.getName() + " successfully execute");
         } catch (DAOException e) {
             LOGGER.warn("Can't execute report query " + report.getId());
             throw new DAOException(e);
