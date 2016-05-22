@@ -87,17 +87,9 @@
                             <label class="checkbox">
                                 <input type="checkbox" id="checkbox_admin" value="ROLE_ADMIN" class="roles"> Admin
                             </label>
-                            <%--                            <label class="checkbox">
-                                                            <input type="checkbox" id="checkbox_hr" value="ROLE_HR" class="roles"> HR
-                                                        </label>
-                                                        <label class="checkbox">
-                                                            <input type="checkbox" id="checkbox_dev" value="ROLE_DEV" class="roles"> Developer
-                                                        </label>
-                                                        <label class="checkbox">
-                                                            <input type="checkbox" id="checkbox_ba" value="ROLE_BA" class="roles"> BA
-                                                        </label>--%>
                         </div>
                         <select id="role" class="col-lg-2 col-md-4 col-sm-3 col-xs-3">
+                            <option value="">-</option>
                             <option value="ROLE_HR">HR</option>
                             <option value="ROLE_DEV">DEV</option>
                             <option value="ROLE_BA">BA</option>

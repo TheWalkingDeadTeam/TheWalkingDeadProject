@@ -8,9 +8,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <footer class="footer container-fluid">
     <div class="footerLg container visible-md visible-lg">
-        <div class="col-lg-3 col-lg-3 col-sm-3"><img class='img-responsive' src="resources/images/logo-gray.png"></div>
+        <div class="col-lg-3 col-lg-3 col-sm-3" style="margin-top: 5px;"><img class='img-responsive' src="resources/images/logo-gray.png"></div>
 
-        <div class="col-lg-8 col-md-8 col-lg-offset-1 col-lg-offset-1 col-md-offset-1">
+        <div class="col-lg-8 col-md-8 col-lg-offset-1 col-lg-offset-1 col-md-offset-1" style="margin-top: 5px;">
             <div class="footerLgText col-lg-3 col-md-3 col-lg-offset-1 col-md-offset-1">
                 <p>Univercity Office Park III</p>
                 <p>95 Sawyer Road</p>
@@ -34,11 +34,11 @@
             <img src="resources/images/logo-gray.png">
         </div>
         <div class="footerSmText col-sm-7 col-xs-12">
-            <div class="col-sm-8 col-xs-6">
-                <a class="col-sm-6 col-xs-7" href="/information"><p>Courses Info</p></a>
-                <a class="col-sm-6 col-xs-7" href="/contacts"><p>Contacts</p></a>
+            <div class="col-sm-8 col-xs-6" style="margin-top: 5px;">
+                <a class="col-sm-6 col-xs-7" style="margin: 5px;" href="/information"><p>Courses Info</p></a>
+                <a class="col-sm-6 col-xs-7" style="margin: 5px;" href="/contacts"><p>Contacts</p></a>
             </div>
-            <div class="col-sm-4 col-xs-3 pull-right">
+            <div class="col-sm-4 col-xs-3 pull-right" style="margin-top: 5px;">
                 <p>Privacy Policy</p>
                 <p>Terms of Use</p>
                 <p>Sitemap</p>

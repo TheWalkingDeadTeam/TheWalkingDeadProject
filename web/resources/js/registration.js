@@ -142,7 +142,7 @@
     // ------------------------------------------validation
 
 
-    $("#buttonRegistration").click(function () {
+    $("#buttonRegistration").click(function (event) {
         event.preventDefault();
         $.ajax({
             type: 'post',

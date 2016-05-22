@@ -25,7 +25,7 @@ app.controller('FormController', ['$scope', '$http', function ($scope, $http) {
 
     var getReq = function() {
         $http.get('/admin/cessettings').success(function (response) {
-            console.log(response)
+            // console.log(response)
             if (response == '') {
                 $scope.ctrl.ces.year = '';
                 $scope.ctrl.ces.id = '';
