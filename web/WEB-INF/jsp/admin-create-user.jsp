@@ -13,11 +13,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="A front-end template that helps you build fast, modern mobile web apps.">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <title>Create new user</title>
+    <title>Create user</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/resources/images/ico.png"/>
 
     <!-- Add to homescreen for Chrome on Android -->
     <meta name="mobile-web-app-capable" content="yes">
-    <link rel="icon" sizes="192x192" href="images/android-desktop.png">
 
     <!-- Add to homescreen for Safari on iOS -->
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -31,7 +31,6 @@
     <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
     <meta name="msapplication-TileColor" content="#3372DF">
 
-    <link rel="shortcut icon" href="images/favicon.png">
 
     <!-- SEO: If your mobile URL is different from the desktop URL, add a canonical link to the desktop page https://developers.google.com/webmasters/smartphone-sites/feature-phones -->
     <!--
@@ -58,10 +57,10 @@
                     <div>
                         <div class="row container-fluid reg-head">
                             <div style="margin-left: 30px;">
-                                <h4 class="form-signin-heading">Interviewer Registration</h4>
+                                <h4 class="form-signin-heading">User Registration</h4>
                             </div>
                         </div>
-                        <div id="regform" class="col-lg-10 col-md-8 col-sm-9 col-xs-9">
+                        <div id="regform" class="col-lg-8 col-md-8 col-sm-9 col-xs-9">
                             <input id="name" style="margin-bottom: 3px;" name="name" class="form-control"
                                    placeholder="Name" type="text" value="">
                             <div class="correct-name"></div>
@@ -78,22 +77,25 @@
                                    type="password"
                                    value="">
                             <div class="correct-password"></div>
-                            <button id="buttonRegistration" style="border-radius: 4px;"
-                                    class="btn btn-lg btn-primary btn-block mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
-                                Register
-                            </button>
                         </div>
-                        <div id="roleAdmin" class="col-lg-2 col-md-4 col-sm-3 col-xs-3">
+                        <div id="roleAdmin" class="col-lg-4 col-md-8 col-sm-9 col-xs-9">
+                            <label>Roles: </label>
                             <label class="checkbox">
                                 <input type="checkbox" id="checkbox_admin" value="ROLE_ADMIN" class="roles"> Admin
                             </label>
-                        </div>
-                        <select id="role" class="col-lg-2 col-md-4 col-sm-3 col-xs-3">
-                            <option value="">-</option>
+                        <select id="role" class="form-control">
+                            <option value="" selected>-</option>
                             <option value="ROLE_HR">HR</option>
                             <option value="ROLE_DEV">DEV</option>
                             <option value="ROLE_BA">BA</option>
                         </select>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-9 col-xs-9">
+                        <button id="buttonRegistration" style="border-radius: 4px;    margin-top: 4px ;"
+                                class="btn btn-lg btn-primary btn-block mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
+                            Register
+                        </button>
+                        </div>
                         </form>
                     </div>
                 </div>

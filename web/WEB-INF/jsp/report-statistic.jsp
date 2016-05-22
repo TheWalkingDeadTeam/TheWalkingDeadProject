@@ -36,7 +36,7 @@
                     <label class="col-md-2 control-lable" for="file">Report name</label>
                     <div class="col-md-7">
                         <input type="text" ng-model="rc.report.name" class="form-control input-sm"
-                               placeholder="Enter report name" required ng-minlength="3" name="rname" />
+                               placeholder="Enter report name" required ng-minlength="3" name="rname"/>
                         <div class="has-error" ng-show="myForm.$dirty">
                             <span ng-show="myForm.rname.$error.required">This is a required field</span>
                             <span ng-show="myForm.rname.$error.minlength">Minimum length required is 3</span>
@@ -52,7 +52,8 @@
                     <label class="col-md-2 control-lable" for="file">Report Query</label>
                     <div class="col-md-7">
                         <textarea rows="5" cols="5" type="text" ng-model="rc.report.query"
-                                  class="form-control input-sm" placeholder="Enter query" name="rquery" required> </textarea>
+                                  class="form-control input-sm" placeholder="Enter query" name="rquery"
+                                  required> </textarea>
                         <div class="has-error" ng-show="myForm.$dirty">
                             <span ng-show="myForm.rquery.$error.required">This is a required field</span>
                             <span ng-show="myForm.rquery.$invalid">This field is invalid </span>
@@ -66,7 +67,7 @@
                 <div class="form-actions floatRight">
                     <input type="submit" value="{{!rc.report.id ? 'Add' : 'Update'}}" class="btn btn-primary btn-sm"
                            ng-disabled="myForm.$invalid">
-                    <button type="button" ng-click="rc.reset()" class="btn btn-warning btn-sm" >Reset Form</button>
+                    <button type="button" ng-click="rc.reset()" class="btn btn-warning btn-sm">Reset Form</button>
                 </div>
             </div>
 
@@ -75,39 +76,40 @@
 
         </div>
     </div>
-    <%--Student Mail View--%>
+    <%-- Report View--%>
+
     <div class="panel panel-default">
         <div class="panel-heading"><span class="lead">Report Template</span></div>
-        <div class="tablecontainer">
-            <table class="table table-hover">
-                <thead>
+        <div class="tablecontainer ">
+            <table class="table table-striped" style="table-layout:fixed;">
+                <thead >
                 <tr>
-<%--                    <th><img src="/resources/images/checkbox.png" width="15" height="15"></th>--%>
-                    <th>#</th>
-                    <th>Name</th>
-                    <th>Query</th>
-                    <th width="20%"></th>
+                    <%--                    <th><img src="/resources/images/checkbox.png" width="15" height="15"></th>--%>
+                    <th class="col-md-1 ">#</th>
+                    <th class="col-md-1 ">Name</th>
+                    <th class="col-md-8 ">Query</th>
+                    <th class="col-md-2 "></th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody >
                 <tr ng-repeat="r in rc.reports">
-<%--                    <td><input
-                            type="checkbox" &lt;%&ndash;data-ng-model="$parent.mailIdUser" ng-value="{{r.id}}"&ndash;%&gt;>
-                    </td>--%>
-                    <td ng-init="index=$index + 1">{{index}}</td>
-                    <td>{{r.name}}</td>
-                    <td>{{r.query}}</td>
-                    <td>
-                        <a href="" ng-click="rc.edit(r.id)""><img src="/resources/images/edit.png" alt="Edit"
-                                                                  width="50" height="50" title="Edit"/></a>
+                    <%--                    <td><input
+                                                type="checkbox" &lt;%&ndash;data-ng-model="$parent.mailIdUser" ng-value="{{r.id}}"&ndash;%&gt;>
+                                        </td>--%>
+                    <td class="col-md-1 " ng-init="index=$index + 1">{{index}}</td>
+                    <td class="col-md-1 ">{{r.name}}</td>
+                    <td class="col-md-8 ">{{r.query}}</td>
+                    <td class="col-md-1 ">
+                        <a href="" ng-click="rc.edit(r.id)"><img src="/resources/images/edit.png" alt="Edit"
+                                                                 width="50" height="50" title="Edit"/></a>
                         <a href="/report/view?{{r.id}}" target="_blank"><img src="/resources/images/view.png"
-                                                                                      alt="View" width="50" height="50"
-                                                                                      title="View"/></a>
+                                                                             alt="View" width="50" height="50"
+                                                                             title="View"/></a>
                         <a href="/reports/download/{{r.id}}"><img src="/resources/images/excel.png" alt="Excel"
                                                                   width="50" height="50" title="Excel"/></a>
-                        <a href="" ng-click="rc.remove(r.id)""><img src="/resources/images/delete.png"
-                                                                    alt="Delete" width="50" height="50"
-                                                                    title="Delete"/></a>
+                        <a href="" ng-click="rc.remove(r.id)"><img src="/resources/images/delete.png"
+                                                                   alt="Delete" width="50" height="50"
+                                                                   title="Delete"/></a>
                     </td>
                 </tr>
                 </tbody>
