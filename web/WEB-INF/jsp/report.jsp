@@ -13,7 +13,7 @@
 <head>
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
-    <script src="/resources/js/reportid.js"></script>
+    <script src="/resources/js/report.js"></script>
     <link href="/resources/css/report.css" rel="stylesheet"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
     <link href=/resources/css/app.css" rel="stylesheet"/>

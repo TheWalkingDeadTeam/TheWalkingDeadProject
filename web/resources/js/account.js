@@ -27,6 +27,29 @@ $(document).ready(function(){
     })
 
 
+    $("#enroll_button").click(function (event) {
+        event.preventDefault();
+        var arrid = [];
+        arrid.push($("#userid").val());
+        $.ajax({
+            type: 'post',
+            url: '/interviewer/enroll-ces-interviewer',
+            dataType: 'json',
+            contentType: "application/json",
+            data: JSON.stringify({
+                values: arrid
+            }),
+            success: function (response) {
+
+            },
+            error: function (jqXHR, exception) {
+                window.location.href = "/error"
+            }
+        });
+    });
+
+
+
 })
 
 

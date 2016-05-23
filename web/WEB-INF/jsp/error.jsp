@@ -6,7 +6,6 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <html>
 <head>
     <title>Error</title>
@@ -24,8 +23,8 @@
                     <small>or error caught you...</small>
                 </h1>
                 <img class="img-responsive" src="/resources/images/error.gif" style="margin: 0 auto;"/>
-                <h1 class="page-header"><a href="/">Back to sweat home</a>
-                </h1>
+                <h1 class="page-header"><a href="/">Back to sweat home</a></h1>
+                <small>${error == null ? " " : error}</small>
             </div>
 
         </div>

@@ -40,7 +40,6 @@ public class InterviewerController {
     public
     @ResponseBody
     HttpStatus enroll(@RequestBody IntegerList integerList) {
-        LOGGER.info(integerList.getValues().size());
         CES currentCES = cesService.getCurrentCES();
         if (currentCES != null) {
             int cesId = cesService.getCurrentCES().getId();
@@ -48,8 +47,9 @@ public class InterviewerController {
             while (iterator.hasNext()) {
                 try {
                     cesService.enrollAsInterviewer(iterator.next(), cesId);
+                    LOGGER.info("Successfully enrolled on current CES");
                 } catch (DAOException e) {
-                    LOGGER.info(e);
+                    LOGGER.info("Cant enroll on current CES", e);
                 }
             }
         } else {
