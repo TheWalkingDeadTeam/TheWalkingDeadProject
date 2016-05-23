@@ -1,12 +1,12 @@
 $(document).ready(function () {
-    
+
     $("#buttonRegistration").click(function (event) {
         event.preventDefault();
         var checkroles = [];
-        $("#checkbox_admin").each(function () {
-            checkroles.push({name: $("#checkbox_admin").val()});
-        });
-        if ($("#role").val() != '-') {
+        if ($("#checkboxAdmin").prop('checked')) {
+            checkroles.push({name: $("#checkboxAdmin").val()});
+        }
+        if ($("#role").val() != '') {
             checkroles.push({name: $("#role").val()});
         }
         $.ajax({

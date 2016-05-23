@@ -81,7 +81,7 @@
                         <div id="roleAdmin" class="col-lg-4 col-md-8 col-sm-9 col-xs-9">
                             <label>Roles: </label>
                             <label class="checkbox">
-                                <input type="checkbox" id="checkbox_admin" value="ROLE_ADMIN" class="roles"> Admin
+                                <input type="checkbox" id="checkboxAdmin" value="ROLE_ADMIN"> Admin
                             </label>
                         <select id="role" class="form-control">
                             <option value="" selected>-</option>
