@@ -1,5 +1,6 @@
 package ua.nc.service;
 
+import ua.nc.entity.Application;
 import ua.nc.entity.Mail;
 import ua.nc.entity.User;
 
@@ -88,6 +89,14 @@ public interface MailService {
      */
     void massDelivery(Date date, final List<User> users, final Mail mail);
 
+
+    /**
+     * Massive notification delivery
+     * @param users to send email notifications
+     * @param mail template
+     */
+    void massDelivery(Set<User> users, final Mail mail);
+
         /**
          * Spread all the students by interview dates and send notifications to all the participants.
          *
@@ -97,11 +106,18 @@ public interface MailService {
          * @param interviewerParameters parameters to set in interviewer template to personalize the emails.
          * @param studentMail email template to send to all the students.
          * @param studentParameters parameters to set in student template to personalize the emails.
-         * @param interviewersList list of all the interviewers who take part in the current interview.
-         * @param studentsList list of all the students who take part in the current interview.
+         * @param interviewersSet list of all the interviewers who take part in the current interview.
+         * @param studentsSet list of all the students who take part in the current interview.
          */
     void sendInterviewReminders(List<Date> interviewDates, int reminderTime, Mail interviewerMail,
                                 Map<String, String> interviewerParameters, Mail studentMail,
-                                Map<String, String> studentParameters, Set<User> interviewersList,
-                                Set<User> studentsList);
+                                Map<String, String> studentParameters, Set<User> interviewersSet,
+                                Set<User> studentsSet, Map<Integer, Integer> applicationList);
+
+    /**
+     * Send notification to all users when CES will be finished by admin. Notifications include
+     * those who successfully passed their interviews(job offer, course participation) as well
+     * the system will notify students who failed their interviews.
+     */
+    void sendFinalNotification();
 }

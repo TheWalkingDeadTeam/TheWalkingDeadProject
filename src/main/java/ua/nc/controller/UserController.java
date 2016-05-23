@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,6 +38,7 @@ public class UserController {
     @RequestMapping(value = {"/changePassword"}, method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     public Set<ValidationError> changePassword(@RequestBody String password) {
+        System.out.println("OK");
         Validator validator = new PasswordValidator();
         Set<ValidationError> errors = null;
         User user = userService.getUser(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
@@ -60,7 +60,6 @@ public class UserController {
         }
         return errors;
     }
-
 }
 
 

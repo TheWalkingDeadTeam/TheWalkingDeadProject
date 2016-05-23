@@ -67,21 +67,45 @@ public class StudentServiceImpl implements StudentService {
         return null;
     }
 
+    @Override
+    public StudentData getStudents(Integer itemPerPage, Integer pageNumber, Integer sortType, Boolean asc) {
+        Connection connection = daoFactory.getConnection();
+        PostgreApplicationTableDAO applicationTableDAO = new PostgreApplicationTableDAO(connection);
+        CESServiceImpl cesService = new CESServiceImpl();
+        CES ces = cesService.getCurrentCES();
+        try {
+            //ORDER BY
+            return applicationTableDAO.getApplicationsTable(ces.getId(), itemPerPage, pageNumber, sortType, asc);
+        } catch (DAOException e) {
+            log.warn("Can't get students", e.getCause());
+        }
+        return null;
+    }
+
+    @Override
+    public Integer getSize(String pattern) {
+        Connection connection = daoFactory.getConnection();
+        PostgreApplicationTableDAO applicationTableDAO = new PostgreApplicationTableDAO(connection);
+        CESServiceImpl cesService = new CESServiceImpl();
+        CES ces = cesService.getCurrentCES();
+        try {
+            return applicationTableDAO.getApplicationsCount(ces.getId(),pattern);
+        } catch (DAOException e) {
+            log.warn("Can't get students", e.getCause());
+        }
+        return null;
+    }
+
     /**
      * @param action
      * @param studentsId list of Integer
      */
     @Override
     public void changeStatus(String action, List<Integer> studentsId) {
-        if (Objects.equals(action, "activate")) {
-            //activateStudents(studentsId);
-            //log.info("Sudent list activate" + studentsId.toString());
-        } else if (Objects.equals(action, "deactivate")) {
-            //deactivateStudents(studentsId);
-            //log.info("Sudent list deactivate" + studentsId.toString());
-        } else if (Objects.equals(action, "reject")) {
+        if (Objects.equals(action, "reject")) {
             rejectStudents(studentsId);
-            log.info("Sudent list reject" + studentsId.toString());
+        } else if (Objects.equals(action, "unreject")) {
+            acceptStudents(studentsId);
         } else {
             log.error(action + " action not supported");
         }
@@ -93,14 +117,16 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public void rejectStudents(List<Integer> studentsId) {
         changeApplicationStatus(studentsId, true);
+        log.info("List of applications was rejected " + studentsId);
     }
 
     @Override
     public void acceptStudents(List<Integer> studentsId) {
         changeApplicationStatus(studentsId, false);
+        log.info("List of applications was accepted " + studentsId);
     }
 
-    private void changeApplicationStatus(List<Integer> studentsId, Boolean status){
+    private void changeApplicationStatus(List<Integer> studentsId, Boolean status) {
         Connection connection = daoFactory.getConnection();
         ApplicationDAO applicationDAO = daoFactory.getApplicationDAO(connection);
         CESDAO cesDAO = daoFactory.getCESDAO(connection);

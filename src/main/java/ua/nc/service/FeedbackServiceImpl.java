@@ -109,6 +109,8 @@ public class FeedbackServiceImpl implements FeedbackService {
             feedback = feedbackDAO.read(id);
         } catch (DAOException ex){
             LOGGER.warn(ex.getMessage());
+        } finally {
+            daoFactory.putConnection(connection);
         }
         return feedback;
     }

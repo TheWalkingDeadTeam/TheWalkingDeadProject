@@ -14,7 +14,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="A front-end template that helps you build fast, modern mobile web apps.">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <title>Material Design Lite</title>
+    <title>Interviewers</title>
 
     <!-- Add to homescreen for Chrome on Android -->
     <meta name="mobile-web-app-capable" content="yes">
@@ -65,16 +65,31 @@
 
     <main class="mdl-layout__content mdl-color--grey-100">
         <div>
-            <button ng-click="activateStud()"
+            <button ng-click="subscribeInterviewer()"
                     class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
-                Activate
+                Subscribe for CES
             </button>
-            <button ng-click="deactivateStud()"
+            <button ng-click="unsubscribeInterviewer()"
                     class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
-                Deactivate
+                Unsubscribe from CES
             </button>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+                <label class="mdl-button mdl-js-button mdl-button--icon" for="search">
+                    <i class="material-icons">search</i>
+                </label>
+                <div class="mdl-textfield__expandable-holder">
+                    <form ng-submit = "searchFiltr(field)"><input  class="mdl-textfield__input" type="text" id="search" name="field" ng-model="field"></form>
+                    <label class="mdl-textfield__label" for="search">Enter your query...</label>
+                </div>
+            </div>
+            <div class="cssload-thecube">
+                <div class="cssload-cube cssload-c1"></div>
+                <div class="cssload-cube cssload-c2"></div>
+                <div class="cssload-cube cssload-c4"></div>
+                <div class="cssload-cube cssload-c3"></div>
+            </div>
         </div>
-        <table class="table table-bordered table-striped" style="{margin-top: 200px}">
+        <table id="tableUsers" class="table table-bordered table-striped" style="{margin-top: 200px}">
 
             <thead>
             <tr>
@@ -82,32 +97,32 @@
                     <input type="checkbox" ng-model="selectedAll" ng-click="checkAll()">
                 </td>
                 <td>
-                    <a href="#" ng-click="order_by = 'id'; sortReverse = !sortReverse; sortType(order_by)">
-                        #
+                    <a ng-click="order_by = 'id'; sortReverse = !sortReverse; sortType(order_by,sortReverse)">
+                        id
                     </a>
                 </td>
                 <td>
-                    <a href="#" ng-click="order_by = 'name'; sortReverse = !sortReverse; sortType(order_by)">
+                    <a ng-click="order_by = 'name'; sortReverse = !sortReverse; sortType(order_by,sortReverse)">
                         Name
                     </a>
                 </td>
                 <td>
-                    <a href="#" ng-click="order_by = 'university'; sortReverse = !sortReverse; sortType(order_by)">
+                    <a ng-click="order_by = 'surname'; sortReverse = !sortReverse; sortType(order_by,sortReverse)">
                         Surname
                     </a>
                 </td>
                 <td>
-                    <a href="#" ng-click="order_by = 'email'; sortReverse = !sortReverse; sortType(order_by)">
+                    <a ng-click="order_by = 'email'; sortReverse = !sortReverse; sortType(order_by,sortReverse)">
                         Email
                     </a>
                 </td>
                 <td>
-                    <a href="#" ng-click="order_by = 'role'; sortReverse = !sortReverse; sortType(order_by)">
+                    <a ng-click="order_by = 'role'; sortReverse = !sortReverse; sortType(order_by,sortReverse)">
                         Role
                     </a>
                 </td>
                 <td>
-                    <a href="#" ng-click="order_by = 'participation'; sortReverse = !sortReverse; sortType(order_by)">
+                    <a ng-click="order_by = 'participation'; sortReverse = !sortReverse; sortType(order_by,sortReverse)">
                         Participation
                     </a>
                 </td>
@@ -115,28 +130,29 @@
             </thead>
             <tbody>
             <tr ng-show="data.users.length <= 0">
-                <td colspan="5" style="text-align:center;">Bratiska POGODI</td>
+                <td colspan="5" style="text-align:center;">Please Wait</td>
             </tr>
             <tr dir-paginate="user in data.users|itemsPerPage:data.itemsPerPage" total-items="data.total_count">
                 <td><input type="checkbox" checklist-model="dataStudents.studId" checklist-value="user.id">
                 </td>
-                <td ng-init="index=$index + 1">{{index}}</td>
+                <%--<td ng-init="index=$index + 1">{{index}}</td>--%>
+                <td><a href="/account/{{user.id}}" target="_blanks">{{user.id}}</a></td>
                 <td>{{user.name}}</td>
                 <td>{{user.surname}}</td>
                 <td>{{user.email}}</td>
                 <td>{{user.role}}</td>
-                <td>{{user.participation}}</td>
+                <td ng-style="{opacity:0.5,'background-color':'{{user.participation ? 'green' : 'red'}}'}">{{user.participation}}</td>
             </tr>
             </tbody>
         </table>
-
+        <div id="pagination">
         <dir-pagination-controls
                 max-size="8"
                 direction-links="true"
                 boundary-links="true"
                 on-page-change="data.setPageno(newPageNumber)">
         </dir-pagination-controls>
-
+        </div>
 
     </main>
 </main>

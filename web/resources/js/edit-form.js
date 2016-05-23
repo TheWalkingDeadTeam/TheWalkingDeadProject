@@ -8,9 +8,16 @@ var tableController = angular.module('tableController', []);
 
 tableController.controller('tableCtrl', ["$scope", "$http", function ($scope, $http) {
 
-    $http.get('/admin/edit-form').success(function (response) {
+    $scope.isShown = false;
+
+    $http({
+        method: 'GET',
+        url: '/admin/edit-form',
+        headers: { Accept: 'application/json'}
+    }).success(function (response) {
+        console.log(response);
         $scope.fields = response;
-    })
+    });
 
     $scope.dataFields = {
         fieldId: []
@@ -20,8 +27,36 @@ tableController.controller('tableCtrl', ["$scope", "$http", function ($scope, $h
         // containment: 'tbody'
         orderChanged: function (event) {
             console.log($scope.fields);
+            $scope.isShown = true;
         }
-        
+
+    };
+
+    $scope.chooseType = function (typeID) {
+        if (typeID == 1) {
+            return "Number";
+        }
+        if (typeID == 2) {
+            return "Text";
+        }
+        if (typeID == 3) {
+            return "Textarea";
+        }
+        if (typeID == 4) {
+            return "Select";
+        }
+        if (typeID == 5) {
+            return "Checkbox";
+        }
+        if (typeID == 6) {
+            return "Radiobutton";
+        }
+        if (typeID == 7) {
+            return "Tel";
+        }
+        if (typeID == 8) {
+            return "Date";
+        }
     };
 
     $scope.savePosition = function () {
@@ -30,29 +65,29 @@ tableController.controller('tableCtrl', ["$scope", "$http", function ($scope, $h
         }
         if ($scope.fields.length != 0) {
             var res = $http.post('/admin/edit-form/save-position', dataObject);
-            // res.success(function (responseData) {
-            //     if (responseData.length) {
-            //         var errors_out = "";
-            //         for (var i in responseData) {
-            //             errors_out += responseData[i].errorMessage + "</br>"
-            //         }
-            //         $('#errorsDiv')
-            //             .removeClass()
-            //             .empty()
-            //             .addClass('alert alert-danger')
-            //             .html(errors_out);
-            //     } else {
-            //         // $scope.postSuccess = true;
-            //         $('#errorsDiv')
-            //             .removeClass()
-            //             .empty()
-            //             .addClass('alert alert-success')
-            //             .html('Position saved successfully');
-            //     }
-            //     // $scope.message = responseData;
-            // });
+            res.success(function (responseData) {
+                if (responseData.length) {
+                    console.log(responseData);
+                    var errors_out = "";
+                    for (var i in responseData) {
+                        errors_out += responseData[i].errorMessage + "</br>"
+                    }
+                    $('#errorsDiv')
+                        .removeClass()
+                        .empty()
+                        .addClass('alert alert-danger')
+                        .html(errors_out);
+                } else {
+                    $('#errorsDiv')
+                        .removeClass()
+                        .empty()
+                        .addClass('alert alert-success')
+                        .html('Position saved successfully');
+                    window.location.href = "/admin/edit-form";
+                }
+            });
         }
-    }
+    };
 
     $scope.checkAll = function () {
         if ($scope.selectedAll) {
@@ -70,7 +105,7 @@ tableController.controller('tableCtrl', ["$scope", "$http", function ($scope, $h
 
     $scope.addQuestion = function () {
         window.location.href = "/admin/edit-form/new-question";
-    }
+    };
 
     $scope.deleteQuestion = function () {
         var dataObject = {

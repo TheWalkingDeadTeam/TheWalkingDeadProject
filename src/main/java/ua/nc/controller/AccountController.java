@@ -3,16 +3,16 @@ package ua.nc.controller;
 import org.apache.log4j.Logger;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import ua.nc.dao.enums.UserRoles;
+import ua.nc.entity.Role;
 import ua.nc.entity.User;
 import ua.nc.service.UserDetailsImpl;
 import ua.nc.service.user.UserService;
 import ua.nc.service.user.UserServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Set;
 
 /**
  * Created by Neltarion on 04.05.2016.
@@ -27,6 +27,12 @@ public class AccountController {
         return "account";
     }
 
+    @RequestMapping(value = "/account/{id}", method = RequestMethod.GET)
+    public User account(@PathVariable("id") Integer id) {
+        User user = userService.getUser(id);
+        return user;
+    }
+
     @RequestMapping(value = "/account/profile", method = RequestMethod.GET)
     public String profileTest(HttpServletRequest request) {
         if (request.isUserInRole("ROLE_STUDENT")) {
@@ -39,6 +45,18 @@ public class AccountController {
         return "account";
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/changeroles", method = RequestMethod.POST)
+    public void changeRoles(@RequestBody User user) {
+        String email = user.getEmail();
+        Set<Role> roles = user.getRoles();
+        System.out.println(email);
+        for (Role role : roles) {
+            System.out.println(role.getId());
+        }
+        userService.changeRoles(email, roles);
+        System.out.println("!!!");
+    }
 
     @ResponseBody
     @RequestMapping(value = "/getUser", method = RequestMethod.GET)
