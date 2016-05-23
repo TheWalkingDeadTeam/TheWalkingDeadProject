@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.entity.CES;
 import ua.nc.entity.Interviewer;
-import ua.nc.entity.StudentStatus;
+//import ua.nc.entity.StudentStatus;
 import ua.nc.entity.User;
 import ua.nc.entity.profile.StudentData;
 import ua.nc.service.*;
@@ -151,20 +151,19 @@ public class AdminController {
     /**
      * Takes a json file with students status changes
      *
-     * @param studentStatus
      */
-    @RequestMapping(value = {"/students"}, method = RequestMethod.POST, produces = "application/json")
-    @ResponseStatus(value = HttpStatus.OK)
-    public void studentStatus(@RequestBody StudentStatus studentStatus) {
-        StudentStatus status = studentStatus;
-        if (!status.getType().isEmpty() && (status.getValues().size() > 0)) {
-            studentService.changeStatus(status.getType(), status.getValues());
-        } else {
-            LOGGER.warn("Request type is not supported");
-        }
-
-
-    }
+//    @RequestMapping(value = {"/students"}, method = RequestMethod.POST, produces = "application/json")
+//    @ResponseStatus(value = HttpStatus.OK)
+//    public void studentStatus(@RequestBody StudentStatus studentStatus) {
+//        StudentStatus status = studentStatus;
+//        if (!status.getType().isEmpty() && (status.getValues().size() > 0)) {
+//            studentService.changeStatus(status.getType(), status.getValues());
+//        } else {
+//            LOGGER.warn("Request type is not supported");
+//        }
+//
+//
+//    }
 
     @RequestMapping(value = "/students/{id}", method = RequestMethod.GET, produces = "application/json")
     public String getStudentById(@PathVariable("id") Integer id) {
@@ -213,13 +212,13 @@ public class AdminController {
         return studentData;
     }*/
 
-    @RequestMapping(value = {"/interviewers/size"}, method = RequestMethod.GET, produces = "application/json")
-    public
-    @ResponseBody
-    Integer interviewGetJSONSize() {
-        InterviewerService interviewerService = new InterviewerServiceImpl();
-        return interviewerService.getInterviewerSize();
-    }
+//    @RequestMapping(value = {"/interviewers/size"}, method = RequestMethod.GET, produces = "application/json")
+//    public
+//    @ResponseBody
+//    Integer interviewGetJSONSize() {
+//        InterviewerService interviewerService = new InterviewerServiceImpl();
+//        return interviewerService.getInterviewerSize();
+//    }
 
 
     @RequestMapping(value = {"/mail-template"}, method = RequestMethod.GET)

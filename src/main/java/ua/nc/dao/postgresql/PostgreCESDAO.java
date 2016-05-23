@@ -170,21 +170,22 @@ public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements C
     }
 
     @Override
+    public CES getCurrentInterviewBegunCES() throws DAOException {
+        return null;
+    }
+
     public CES getRegistrationOngoingCES() throws DAOException {
         return getSomeCES(GET_REGISTRATION_ONGOING_CES_QUERY);
     }
 
-    @Override
     public CES getPostRegistrationCES() throws DAOException {
         return getSomeCES(GET_POST_REGISTRATION_CES_QUERY);
     }
 
-    @Override
     public CES getInterviewingOngoingCES() throws DAOException {
         return getSomeCES(GET_INTERVIEWING_ONGOING_CES_QUERY);
     }
 
-    @Override
     public CES getPostInterviewingCES() throws DAOException {
         return getSomeCES(GET_POST_INTERVIEWING_CES_QUERY);
     }
