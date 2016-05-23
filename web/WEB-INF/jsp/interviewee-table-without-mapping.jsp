@@ -123,7 +123,7 @@
                     </a>
                 </td>
                 <td>
-                    <a ng-click="sortType('color',sortReverse); sortReverse = !sortReverse">
+                    <a ng-click="sortType('special_mark',sortReverse); sortReverse = !sortReverse">
                         Color
                     </a>
                 </td>
