@@ -63,7 +63,7 @@
                     <div class="col-lg-6 col-md-8 col-sm-9 col-xs-9">
                         <h2 class="form-signin-heading">Student Registration</h2>
                     </div>
-                    <div class="col-lg-6 col-md-4 col-sm-3 col-xs-3 ">
+                    <div class="col-lg-6 col-md-4 col-sm-3 col-xs-3">
                         <i class="material-icons closeico"><span class="closebtn">highlight_off</span></i>
                     </div>
                 </div>

@@ -7,7 +7,7 @@
 var logoutParam = new RegExp('[\?&]' + 'logout').exec(window.location.href);
 if (logoutParam != null) {
     $('#messageSignIn').addClass('alert alert-success');
-    $('#messageSignIn').html("You have been logged out");
+    $('#messageSignIn').html("You have been logged out").fadeIn();
     setTimeout(function() {
         $("#messageSignIn").fadeOut().empty();
     }, 3000);

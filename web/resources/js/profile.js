@@ -41,7 +41,7 @@
                 data: JSON.stringify(requestData),
                 success: function () {
                     $('#fieldsCheck').removeClass().empty();
-                    $('#fieldsCheck').addClass('alert alert-success').html('Profile saved successfully');
+                    $('#fieldsCheck').addClass('alert alert-success').html('Profile saved successfully').fadeIn();
                     setTimeout(function() {
                         $("#fieldsCheck").fadeOut().empty();
                     }, 3000);
@@ -62,10 +62,10 @@
                         for (var i in response) {
                             errorMsg += response[i].errorMessage + "</br>";
                         }
-                        $('#fieldsCheck').addClass('alert alert-danger').html(errorMsg);
+                        $('#fieldsCheck').addClass('alert alert-danger').html(errorMsg).fadeIn();
                     } else {
                         $('#fieldsCheck').removeClass().empty();
-                        $('#fieldsCheck').addClass('alert alert-success').html('You have successfully enrolled on current courses!');
+                        $('#fieldsCheck').addClass('alert alert-success').html('You have successfully enrolled on current courses!').fadeIn();
                         setTimeout(function() {
                             $("#fieldsCheck").fadeOut().empty();
                         }, 3000);
@@ -94,7 +94,7 @@
         });
 
         if (empty || !$('#agree').is(':checked') || !checkCheckboxes() || !checkRadio()) {
-            $('#fieldsCheck').addClass('alert alert-danger').html('Please, fill each field and check Agree button');
+            $('#fieldsCheck').addClass('alert alert-danger').html('Please, fill each field and check Agree button').fadeIn();
             $('#save').attr('disabled', 'disabled');
         } else if (!empty && $('#agree').is(':checked') && checkCheckboxes() && checkRadio()) {
             $('#fieldsCheck').removeClass().empty();
