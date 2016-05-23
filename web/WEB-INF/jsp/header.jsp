@@ -37,7 +37,9 @@
                             Hr Panel
                         </sec:authorize>
                     </a></li>
-
+                    <sec:authorize access="hasAnyRole('ROLE_HR','ROLE_DEV','ROLE_BA')">
+                    <li><a href="/interviewee">Interviewees</a></li>
+                    </sec:authorize>
                     <li><a href="/information">Information</a></li>
                     <li><a href="/contacts">Contacts</a></li>
                     <sec:authorize access="hasRole('ROLE_STUDENT')">

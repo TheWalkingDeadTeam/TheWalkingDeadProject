@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
  * Created by Pavel on 23.05.2016.
  */
 public class ReportExecuteValidator implements Validator {
-    private String SQL_UDI_PATTERN = "^.*?(update|delete|insert).*$";
+    private String SQL_UDI_PATTERN = "^.*?(update|delete|insert|drop).*$";
     private Pattern pattern;
     private Matcher matcher;
 
