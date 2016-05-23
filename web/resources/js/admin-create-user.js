@@ -32,18 +32,23 @@ $(document).ready(function () {
                         .empty();
                     $('#messageRegistration')
                         .addClass('alert alert-danger')
-                        .html(errors_out);
+                        .html(errors_out)
+                        .fadeIn();
                     $('#j_password').val("");
                 } else {
                     $('#messageRegistration')
                         .removeClass()
                         .empty()
                         .addClass('alert alert-success')
-                        .html('Registered successfully');
+                        .html('Registered successfully')
+                        .fadeIn();
                     $('#regform input')
                         .val("");
                     $("#check").prop("checked", false);
                     $("input").filter(".roles").prop("checked", false);
+                    setTimeout(function() {
+                        $("#messageRegistration").fadeOut().empty();
+                    }, 3000);
                 }
             },
             error: function (jqXHR, exception) {
