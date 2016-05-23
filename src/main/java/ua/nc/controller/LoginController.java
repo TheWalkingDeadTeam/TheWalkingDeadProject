@@ -11,6 +11,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
@@ -23,6 +24,7 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import ua.nc.dao.enums.UserRoles;
+import ua.nc.dao.enums.UserStatus;
 import ua.nc.entity.User;
 import ua.nc.service.PhotoService;
 import ua.nc.service.PhotoServiceImpl;
@@ -114,10 +116,16 @@ public class LoginController implements HandlerExceptionResolver {
         UserDetailsService userDetailsService = new UserDetailsServiceImpl();
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
         try {
-            token.setDetails(userDetailsService.loadUserByUsername(user.getEmail()));
-            Authentication auth = authenticationManager.authenticate(token);
-            SecurityContextHolder.getContext().setAuthentication(auth);
-            LOGGER.info("Sign in successful with email " + user.getEmail());
+            UserDetailsImpl userDetails = (UserDetailsImpl) userDetailsService.loadUserByUsername(user.getEmail());
+            if (userDetails.getStatus() == UserStatus.Active) {
+                token.setDetails(userDetails);
+                Authentication auth = authenticationManager.authenticate(token);
+                SecurityContextHolder.getContext().setAuthentication(auth);
+                LOGGER.info("Sign in successful with email " + user.getEmail());
+            } else {
+                errors.add(new ValidationError("signin", "Authorization deny. Account is not active"));
+                LOGGER.warn("Authorization deny email " + user.getEmail() + " . Account status is not Active");
+            }
         } catch (BadCredentialsException e) {
             LOGGER.warn("Authorization deny " + user.getEmail() + " has another password");
             errors.add(new ValidationError("signin", "Invalid username or password"));

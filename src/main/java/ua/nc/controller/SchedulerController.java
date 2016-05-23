@@ -79,6 +79,23 @@ public class SchedulerController {
 
 
     /**
+     * Converts string time to data object
+     * @param time
+     * @return
+     */
+    private Date convertDate (String time){
+        SimpleDateFormat formatter = new SimpleDateFormat(DATA_FORMAT);
+        Date date = new Date();
+        try {
+            date = formatter.parse(time);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
+    }
+
+
+    /**
      * Scheduler Controller is responsible for student distribution between interview date
      * after distribution the system is automatically sending notification to all students
      * which were not rejected during current CES. The notifications  will be send after
@@ -105,23 +122,6 @@ public class SchedulerController {
         } catch (DAOException e) {
             log.error("Check Scheduler paramters", e);
         }
-    }
 
-    /**
-     * Converts string time to data object
-     * @param time
-     * @return
-     */
-    private Date convertDate (String time){
-        SimpleDateFormat formatter = new SimpleDateFormat(DATA_FORMAT);
-        Date date = new Date();
-        try {
-            date = formatter.parse(time);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return date;
     }
-
-    private final static String DATA_FORMAT = "dd MMMMM yyyy - HH:mm";
 }

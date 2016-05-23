@@ -8,7 +8,7 @@ var reporterid = angular.module('reporterid', []);
 reporterid.controller('ReportControllerId', ['$scope', 'ReportServiceId', '$http', '$location', '$window', function ($scope, ReportServiceId, $http, $location, $window) {
     var self = this;
     self.report = {id: null, name: '', query: ''};
-    self.reports = [];
+    self.reportRows = [];
 
 
     self.getReport = function (id) {
@@ -16,7 +16,8 @@ reporterid.controller('ReportControllerId', ['$scope', 'ReportServiceId', '$http
             .then(
                 function (d) {
                     self.loading = true;
-                    self.reports = d;
+                    self.report = d.report;
+                    self.reportRows = d.reportRows;
                 }, function (errResponse) {
                     console.error('Error while fetching Currencies');
                     $window.location.href = '/error';

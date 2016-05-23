@@ -1,6 +1,7 @@
 package ua.nc.controller;
 
 import org.apache.log4j.Logger;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.entity.ReportTemplate;
+import ua.nc.entity.ReportWrapper;
 import ua.nc.service.ReportService;
 import ua.nc.service.ReportServiceImpl;
 
@@ -130,15 +132,15 @@ public class ReportController {
      */
     @RequestMapping(value = "/reports/view/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity<List<Map<String, Object>>> showReport(@PathVariable Integer id) {
+    public ResponseEntity<ReportWrapper> showReport(@PathVariable Integer id) {
         ReportTemplate report = reportService.getReportById(id);
         List<Map<String, Object>> reportRows = null;
         try {
             reportRows = reportService.getReportRows(report);
-            return new ResponseEntity<List<Map<String, Object>>>(reportRows, HttpStatus.OK);
+            return new ResponseEntity<ReportWrapper>(new ReportWrapper(report, reportRows), HttpStatus.OK);
 
         } catch (DAOException e) {
-            return new ResponseEntity<List<Map<String, Object>>>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<ReportWrapper>(HttpStatus.NOT_FOUND);
         }
     }
 
