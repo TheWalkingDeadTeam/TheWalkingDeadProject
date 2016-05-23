@@ -66,7 +66,7 @@ public class ProfileController {
                         .getAuthentication()
                         .getPrincipal()).getId(), profile);
             } catch (DAOException e) {
-                LOGGER.equals(e);
+                LOGGER.error(e);
             }
         }
         return errors;

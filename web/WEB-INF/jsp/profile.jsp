@@ -79,11 +79,11 @@
 
     </form>
     <sec:authorize access="hasRole('ROLE_STUDENT')">
-        <div id="fieldsCheck"></div>
         <div id="agreement">
             <label for="agree">I agree to have my personal information been proceeded</label>
             <input id="agree" type="checkbox"/>
         </div>
+        <div id="fieldsCheck"></div>
         <div id="profileButtons">
             <button id="save" type="submit" form="fields" value="Submit" disabled="disabled">Save</button>
                 <%--<button id="buttonEnroll" type="submit" value="Enroll" href="/enroll">Enroll</button>--%>
