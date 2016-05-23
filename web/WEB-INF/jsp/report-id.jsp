@@ -41,39 +41,8 @@
         display: block;
     }
 
-    table {
-        width: 100%;
-    }
-
-    thead, tbody, tr, td, th {
-        display: block;
-    }
-
-    tr:after {
-        content: ' ';
-        display: block;
-        visibility: hidden;
-        clear: both;
-    }
-
-    thead th {
-        height: 30px;
-
-        text-align: left;
-    }
-
-    tbody {
-        height: 700px;
-        overflow-y: auto;
-    }
-
-    thead {
-        /* fallback */
-    }
-
-    tbody td, thead th {
-        width: 15%;
-        float: left;
+    .table td {
+        text-align: center;
     }
 
 </style>
@@ -83,25 +52,22 @@
 </div>
 
 
-                <h4>
-                    Fixed Header Scrolling Table
-                </h4>
-<div class="container">
-    <div class="row">
-        <table class="table header-fixed ">
+
+    <h4>Report name : <span ng-bind="rc.report.name"></span> </h4>
+
+        <table class="table table-responsive table-bordered table-striped">
             <thead>
             <tr>
-                <th class="col-xs-1" ng-repeat="(key, val) in rc.reports[0]">{{key}}</th>
+                <th class="col-xs-1" ng-repeat="(key, val) in rc.reportRows[0]">{{key}}</th>
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="r in rc.reports">
-                <td class="col-xs-1 filterable-cell" ng-repeat="(key,val) in r">{{val}}</td>
+            <tr ng-repeat="r in rc.reportRows">
+                <td class="col-xs-1" ng-repeat="(key,val) in r">{{val}}</td>
             </tr>
             </tbody>
         </table>
-    </div>
-</div>
+
 
 
 
