@@ -151,6 +151,12 @@
                 boundary-links="true"
                 on-page-change="data.setPageno(newPageNumber)">
         </dir-pagination-controls>
+        <select>
+            <option>10</option>
+            <option>25</option>
+            <option>50</option>
+            <option>100</option>
+        </select>
     </div>
 
 

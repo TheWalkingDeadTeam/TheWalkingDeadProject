@@ -118,32 +118,32 @@
                     <input type="checkbox" ng-model="selectedAll" ng-click="checkAll()">
                 </td>
                 <td>
-                    <a ng-click="order_by = 'id'; sortReverse = !sortReverse; sortType(order_by,sortReverse)">
+                    <a ng-click="sortType('system_user_id',sortReverse); sortReverse = !sortReverse; ">
                         id
                     </a>
                 </td>
                 <td>
-                    <a ng-click="order_by = 'name'; sortReverse = !sortReverse; sortType(order_by,sortReverse)">
+                    <a ng-click="sortType('name',sortReverse); sortReverse = !sortReverse; ">
                         Name
                     </a>
                 </td>
                 <td>
-                    <a ng-click="order_by = 'surname'; sortReverse = !sortReverse; sortType(order_by,sortReverse)">
+                    <a ng-click="sortType('surname',sortReverse); sortReverse = !sortReverse; ">
                         Surname
                     </a>
                 </td>
                 <td>
-                    <a ng-click="order_by = 'email'; sortReverse = !sortReverse; sortType(order_by,sortReverse)">
+                    <a ng-click="sortType('email',sortReverse); sortReverse = !sortReverse; ">
                         Email
                     </a>
                 </td>
                 <td>
-                    <a ng-click="order_by = 'role'; sortReverse = !sortReverse; sortType(order_by,sortReverse)">
+                    <a ng-click="sortType('role',sortReverse); sortReverse = !sortReverse; ">
                         Role
                     </a>
                 </td>
                 <td>
-                    <a ng-click="order_by = 'participation'; sortReverse = !sortReverse; sortType(order_by,sortReverse)">
+                    <a>
                         Participation
                     </a>
                 </td>
