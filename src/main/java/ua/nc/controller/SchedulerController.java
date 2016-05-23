@@ -33,7 +33,6 @@ public class SchedulerController {
     private final Logger log = Logger.getLogger(SchedulerController.class);
     private final static String GEO_CODE_GOOGLE = "AIzaSyBzqTdqxQtAvZzhVZofehN2mvetgdYpZf0";
     private final static String DEFAULT_PLACE_LINK = "http://www.google.com/maps/place/lat,lng";
-    //params
     private final static String LOCATION = "$location";
     private final static String COURSE_TYPE = "$courseType";
     private final static String GOOGLE_MAPS = "$googleMaps";
@@ -78,21 +77,6 @@ public class SchedulerController {
     }
 
 
-    /**
-     * Converts string time to data object
-     * @param time
-     * @return
-     */
-/*    private Date convertDate (String time){
-        SimpleDateFormat     formatter = new SimpleDateFormat(DATA_FORMAT);
-        Date date = new Date();
-        try {
-            date = formatter.parse(time);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return date;
-    }*/
 
 
     /**
@@ -114,7 +98,7 @@ public class SchedulerController {
         Map<String, String> studentParameters = param(scheduler);
         interviewerParameters.put(CONTACT_INTERVIEWERS, scheduler.getContactStaff());
         studentParameters.put(CONTACT_STUDENTS, scheduler.getContactStudent());
-        Date startDate = new Date(new Date().getTime() + 48 * 60 * 60 * 1000 + 10000); //TODO
+        Date startDate = new Date(scheduler.getInterviewTime());
         try {
             List<Date> interviewDates = cesService.planSchedule(startDate);
             mailService.sendInterviewReminders(interviewDates, interviewerMail, interviewerParameters,
