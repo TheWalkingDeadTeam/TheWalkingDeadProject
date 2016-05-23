@@ -62,7 +62,7 @@ app.controller('IntervieweeCtrl', ["$http", "$scope", function ($http, $scope) {
         if (vm.order_by === null) {
             vm.selectUrl = "interviewee/list/" + vm.itemsPerPage + "/" + vm.pageno;
         } else {
-            vm.selectUrl = "interviewee/list/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by + "/" + vm.sortAsc;
+            vm.selectUrl = "interviewee/list/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by + "/" + $scope.sortReverse;
         }
         vm.getData();
         vm.getSize();

@@ -134,7 +134,6 @@
                 <td colspan="5" style="text-align:center;">Please Wait</td>
             </tr>
             <tr dir-paginate="interviewee in data.users|itemsPerPage:data.itemsPerPage" total-items="data.total_count">
-                <%--<td><input type="checkbox" checklist-model="dataStudents.studId" checklist-value="interviewee.id"></td>--%>
                 <td><a href="/interviewer/feedback?{{interviewee.id}}" target="_blanks">{{interviewee.id}}</a></td>
                 <td>{{interviewee.name}}</td>
                 <td>{{interviewee.surname}}</td>
