@@ -71,31 +71,37 @@
                         </div>
 
                         <div>
-                            <div class="stats class="col-lg-4 col-md-4 col-sm-5 col-xs-5">
-                                <h5 style="float: right;">Change Password</h5>
-                                <jsp:include page="change-password.jsp"/>
-                            </div>
-                            <div class="stats class="col-lg-4 col-md-4 col-sm-2 col-xs-2">
-                                <sec:authorize access="!hasRole('ROLE_STUDENT')">
-                                    <h5>Enrollment</h5>
-                                    <sec:authentication var="principal" property="principal"/>
-                                    <input id="userid" type="hidden" value=" ${principal.id}"/>
-                                    <div id="enrollMessages"></div>
-                                    <button id="enroll_button" href="/interviewer/enroll-ces-interviewer" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white" type="submit">Enroll</button>
-                                </sec:authorize>
-                            </div>
-                            <div class="stats class="col-lg-4 col-md-4 col-sm-5 col-xs-5">
-
-                                <jsp:include page="change-roles.jsp"/>
-                            </div>
+                            <div class="stats class=" col-lg-4 col-md-4 col-sm-5 col-xs-5
+                            ">
+                            <h5 style="float: right;">Change Password</h5>
+                            <jsp:include page="change-password.jsp"/>
                         </div>
+                        <div class="stats class=" col-lg-4 col-md-4 col-sm-2 col-xs-2
+                        ">
+                        <sec:authorize access="!hasRole('ROLE_STUDENT')">
+                            <h5>Enrollment</h5>
+                            <sec:authentication var="principal" property="principal"/>
+                            <input id="userid" type="hidden" value=" ${principal.id}"/>
+                            <div id="enrollMessages"></div>
+                            <button id="enroll_button" href="/interviewer/enroll-ces-interviewer"
+                                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white"
+                                    type="submit">Enroll
+                            </button>
+                        </sec:authorize>
                     </div>
+                    <div class="stats class=" col-lg-4 col-md-4 col-sm-5 col-xs-5
+                    ">
+
+                    <jsp:include page="change-roles.jsp"/>
                 </div>
-                <button class="btn btn-simple" rel="tooltip" title="Flip Card" onclick="rotateCard(this)">
-                    <i class="fa fa-reply"></i> Back
-                </button>
-            </div> <!-- end back panel -->
-        </div> <!-- end card -->
+            </div>
+        </div>
+    </div>
+    <button class="btn btn-simple" rel="tooltip" title="Flip Card" onclick="rotateCard(this)">
+        <i class="fa fa-reply"></i> Back
+    </button>
+    </div> <!-- end back panel -->
+    </div> <!-- end card -->
     </div>
     <!-- end card-container -->
     </div>
