@@ -6,13 +6,18 @@
     <title>Scheduler</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link href="/resources/css/app.css" rel="stylesheet">
-    <link href="/resources/css/scheduler-styles.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap.timepicker/0.2.6/css/bootstrap-timepicker.min.css">
     <link rel="stylesheet" href="/resources/css/datepicker/bootstrap-datetimepicker.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script type="text/javascript" src="/resources/js/bootstrap-timepicker.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="/resources/js/datapicker/bootstrap-datetimepicker.js"></script>
+    <link href="/resources/css/mdb.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="/resources/css/roboto-font/roboto.css">
+    <link rel="stylesheet" href="/resources/css/radio-butoon/build.css">
+
+
+
 </head>
 
 
@@ -21,7 +26,7 @@
 <body ng-app="mailer" class="ng-cloack">
 <div class="generic-container">
     <div class="panel panel-default">
-        <div class="panel-heading"><span class="lead">Scheduler paramaters </span></div>
+        <h5 align="center">Scheduler Parameters </h5>
         <div class="formcontainer">
             <form ng-submit="submit()" name="myForm" class="form-horizontal"
                   data-ng-controller="MailController as ctrl" autocomplete="on">
@@ -121,9 +126,9 @@
                 </div>
                 <%--Student Mail View--%>
                 <div class="panel panel-default">
-                    <div class="panel-heading"><span class="lead">Student Mail Template</span></div>
-                    <div class="tablecontainer">
-                        <table class="table table-hover" class="ng-cloak">
+                    <h5 align="center">Student Mail Template</h5>
+                    <div class="table-responsive tablecontainer">
+                        <table class="table" class="ng-cloak">
                             <thead>
                             <tr>
                                 <th><img src="/resources/images/checkbox.png" width="15" height="15"></th>
@@ -134,9 +139,10 @@
                             </thead>
                             <tbody>
                             <tr ng-repeat="m in ctrl.mails">
-                                <td><input type="radio" data-ng-model="$parent.mailIdUser" ng-value="{{m.id}}"></td>
-                                <td><span ng-bind="m.bodyTemplate"></span></td>
-                                <td><span ng-bind="m.headTemplate"></span></td>
+                                <td class="vert-align"><input type="radio" data-ng-model="$parent.mailIdUser" ng-value="{{m.id}}"></td>
+                                <td class="vert-align"><span ng-bind="m.headTemplate"></span></td>
+                                <td class="vert-align"><span ng-bind="m.bodyTemplate"></span></td>
+
                             </tr>
                             </tbody>
                         </table>
@@ -144,9 +150,9 @@
                 </div>
                 <div class="panel panel-default">
                     <%--Staff Mail Template--%>
-                    <div class="panel-heading"><span class="lead">Staff Mail Template</span></div>
-                    <div class="tablecontainer">
-                        <table class="table table-hover" class="ng-cloak">
+                        <h5 align="center">Interviewer Mail Template</h5>
+                    <div class="table-responsive tablecontainer">
+                        <table class="table" class="ng-cloak">
                             <thead>
                             <tr>
                                 <th><img src="/resources/images/checkbox.png" width="15" height="15"></th>
@@ -157,10 +163,10 @@
                             </thead>
                             <tbody>
                             <tr ng-repeat="m in ctrl.mails">
-                                <td><input type="radio" data-ng-model="$parent.mailIdStaff" ng-value="{{m.id}}">
+                                <td class="vert-align"><input type="radio" data-ng-model="$parent.mailIdStaff" ng-value="{{m.id}}">
                                 </td>
-                                <td><span ng-bind="m.bodyTemplate"></span></td>
-                                <td><span ng-bind="m.headTemplate"></span></td>
+                                <td class="vert-align"><span ng-bind="m.headTemplate"></span></td>
+                                <td class="vert-align"><span ng-bind="m.bodyTemplate"></span></td>
                             </tr>
                             </tbody>
                         </table>
