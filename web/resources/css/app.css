@@ -9,7 +9,7 @@ body, .form-control {
 
 .floatRight {
     float: right;
-    margin-right: 18px;
+    margin-right: 5px;
 }
 
 .has-error {
@@ -17,11 +17,11 @@ body, .form-control {
 }
 
 .formcontainer {
-    padding: 20px;
+    padding: 10px;
 }
 
 .tablecontainer {
-    padding-left: 20px;
+    padding-left: 5px;
 }
 
 .generic-container {
