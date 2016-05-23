@@ -1,5 +1,5 @@
 body, #mainWrapper {
-    height: 70%;
+    height: 100%;
     background-color: rgb(245, 245, 245);
 }
 
@@ -25,13 +25,7 @@ body, .form-control {
 }
 
 .generic-container {
-    width: 80%;
-    margin-left: 20px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    padding: 20px;
+    width: 100%;
+
 }
 
-.custom-width {
-    width: 80px !important;
-}

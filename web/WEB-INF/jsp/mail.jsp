@@ -103,6 +103,7 @@
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
+<script src="/resources/js/notification/angular-ui-notification.min.js"></script>
 <script src="/resources/js/mail_controller.js"></script>
 </body>
 </html>
