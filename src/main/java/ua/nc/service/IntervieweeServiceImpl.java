@@ -135,8 +135,7 @@ public class IntervieweeServiceImpl implements IntervieweeService {
     }
 
     @Override
-    public void createInteviewees(List<User> studentGroup, Map<Integer, Integer> applicationList, Date interviewDate,
-                                  int startMillis) {
+    public void createInteviewees(List<User> studentGroup, Map<Integer, Integer> applicationList, Date interviewDate) {
         Connection connection = daoFactory.getConnection();
         IntervieweeDAO intDAO = daoFactory.getIntervieweeDAO(connection);
         for (User user : studentGroup) {
@@ -146,14 +145,14 @@ public class IntervieweeServiceImpl implements IntervieweeService {
             } catch (DAOException ex) {
                 if (ex.getMessage().equals("Record with PK = " + appId + " not found.")) {
                     try {
-                        intDAO.create(new Interviewee(appId, new Date(interviewDate.getTime() + startMillis)));
+                        intDAO.create(new Interviewee(appId, interviewDate));
                     } catch (DAOException e) {
-                        LOGGER.error("Unable to get DB.");
+                        daoFactory.putConnection(connection);
+                        LOGGER.error(e.getCause());
                     }
                 }
-            } finally {
-                daoFactory.putConnection(connection);
             }
         }
+        daoFactory.putConnection(connection);
     }
 }

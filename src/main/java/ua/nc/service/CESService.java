@@ -14,8 +14,6 @@ import java.util.Set;
 public interface CESService {
     CES getCurrentCES();
 
-    int getMinimalInterviewersAmount(Set<User> interviewersList);
-
     CES getCES() throws DAOException;
 
     void setCES(CES ces) throws DAOException;
@@ -34,6 +32,6 @@ public interface CESService {
      * @return list of dates of the current CES interviews.
      * @throws DAOException missing data about current course enrolment session.
      */
-    List<Date> planSchedule() throws DAOException;
+    List<Date> planSchedule(Date startDate) throws DAOException;
 
 }

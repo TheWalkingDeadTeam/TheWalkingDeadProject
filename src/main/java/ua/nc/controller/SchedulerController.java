@@ -18,6 +18,8 @@ import ua.nc.service.CESServiceImpl;
 import ua.nc.service.MailService;
 import ua.nc.service.MailServiceImpl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -95,13 +97,31 @@ public class SchedulerController {
         Map<String, String> studentParameters = param(scheduler);
         interviewerParameters.put(CONTACT_INTERVIEWERS, scheduler.getContactStaff());
         studentParameters.put(CONTACT_STUDENTS, scheduler.getContactStudent());
+        Date startDate = new Date(new Date().getTime() + 48 * 60 * 60 * 1000 + 10000); //TODO
         try {
-            List<Date> interviewDates = cesService.planSchedule();
+            List<Date> interviewDates = cesService.planSchedule(startDate);
             mailService.sendInterviewReminders(interviewDates, interviewerMail, interviewerParameters,
                     studentMail, studentParameters);
         } catch (DAOException e) {
-            log.warn("Check Scheduler paramters", e);
+            log.error("Check Scheduler paramters", e);
         }
-
     }
+
+    /**
+     * Converts string time to data object
+     * @param time
+     * @return
+     */
+    private Date convertDate (String time){
+        SimpleDateFormat formatter = new SimpleDateFormat(DATA_FORMAT);
+        Date date = new Date();
+        try {
+            date = formatter.parse(time);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
+    }
+
+    private final static String DATA_FORMAT = "dd MMMMM yyyy - HH:mm";
 }

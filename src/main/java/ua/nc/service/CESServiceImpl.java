@@ -36,8 +36,9 @@ public class CESServiceImpl implements CESService {
     private DateFormat dateFormatter = new SimpleDateFormat(DATE_FORMAT);
     private static final String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss";
     private static final int MINUTES_PER_HOUR = 60;
-    private static final int INTERVIEWERS_PER_STUDENT = 2;
-    private static final int MILLIS_PER_DAY = 1000 * 60 * 60 * 24;
+    private static final int MILLIS_PER_MINUTE = 1000 * 60;
+    private static final int MILLIS_PER_HOUR = MILLIS_PER_MINUTE * 60;
+    private static final int MILLIS_PER_DAY = MILLIS_PER_HOUR * 24;
 
     static {
         scheduler.setPoolSize(POOL_SIZE);
@@ -134,87 +135,45 @@ public class CESServiceImpl implements CESService {
     }
 
     @Override
-    public List<Date> planSchedule() throws DAOException {
+    public List<Date> planSchedule(Date startDate) throws DAOException {
         Connection connection = daoFactory.getConnection();
-        UserDAO userDAO = new PostgreUserDAO(connection);
         CESDAO cesDAO = new PostgreCESDAO(connection);
-        //get parameters
+        UserDAO userDAO = daoFactory.getUserDAO(connection);
         CES ces = cesDAO.getCurrentCES();
-        Date startDate = ces.getStartInterviewingDate();
         int hoursPerDay = ces.getInterviewTimeForDay();
         int timePerStudent = ces.getInterviewTimeForPerson();
-
-        Set<User> interviewersList = userDAO.getInterviewersForCurrentCES();
+        ces.setStartRegistrationDate(startDate);
         Set<User> studentsList = userDAO.getAllAcceptedStudents(ces.getId());
-        Date endDate = calculateEndDate(ces, startDate, hoursPerDay, timePerStudent, interviewersList, studentsList);
-
-        //make interview dates list
-        List<Date> interviewDates = new ArrayList<>();
-        interviewDates.add(startDate);
-        long currentTime = startDate.getTime();
-        while (currentTime < endDate.getTime()) {
-            currentTime += MILLIS_PER_DAY;
-            interviewDates.add(new Date(currentTime));
-        }
+        int studentsAmount = studentsList.size();
+        int studentsTogether = Math.min(userDAO.getDEVCount(ces.getId()), userDAO.getHRBACount(ces.getId()));
+        List<Date> interviewDates = getInterviewDates(startDate, studentsAmount, studentsTogether, timePerStudent, hoursPerDay);
+        ces.setEndInterviewingDate(interviewDates.get(interviewDates.size() - 1));
+        cesDAO.update(ces);
         daoFactory.putConnection(connection);
         return interviewDates;
     }
 
-    /**
-     * Calculate end interviews date using start date, amount of CES participators and CES time limits.
-     *
-     * @param ces current CES.
-     * @param startDate date of interviews start.
-     * @param hoursPerDay everyday interview duration.
-     * @param timePerStudent time to interview a student by an interviewer.
-     * @param interviewersList all the interviewers that take part in the CES.
-     * @param studentsList all the students invited to interview.
-     * @return date of interviews finish.
-     */
-    private Date calculateEndDate(CES ces, Date startDate, int hoursPerDay, int timePerStudent,
-                                  Set<User> interviewersList, Set<User> studentsList) {
-        System.out.println("Date calculating.");
-        int studentsAmount = studentsList.size();
-        int studsPerDayPerOneIntrwr = MINUTES_PER_HOUR * hoursPerDay / timePerStudent;
-        int studentsPerDay = studsPerDayPerOneIntrwr * getMinimalInterviewersAmount(interviewersList);
-        Date endDate = new Date(startDate.getTime() + (studentsAmount / studentsPerDay) * MILLIS_PER_DAY);
-        ces.setEndInterviewingDate(endDate);
-        System.out.println("Date calculated");
-        return endDate;
-    }
-
-    @Override
-    public int getMinimalInterviewersAmount(Set<User> interviewersList) {
-        Connection connection = daoFactory.getConnection();
-        RoleDAO roleDAO = new PostgreRoleDAO(connection);
-        int devAmount = 0;
-        int hrbaAmount = 0;
-        System.out.println(0);
-        for (User intrwr : interviewersList) {
-            try {
-                System.out.println(1);
-                intrwr.setRoles(roleDAO.findByEmail(intrwr.getEmail()));
-                System.out.println(2);
-            } catch (DAOException e) {
-                LOGGER.warn("Unable to get interviewers roles.", e);
-            } finally {
-                daoFactory.putConnection(connection);
+    private List<Date> getInterviewDates(Date startDate, int studentsAmount, int studentsTogether,
+                                         int minutesPerStudent, int hoursPerDay) {
+        int millisPerStudent = minutesPerStudent * MILLIS_PER_MINUTE;
+        int millisPerDay = hoursPerDay * MILLIS_PER_HOUR;
+        List<Date> interviewDates = new ArrayList<>();
+        interviewDates.add(startDate);
+        long currentDate = startDate.getTime();
+        int currentTime = 0;
+        int stud = studentsTogether;
+        while (stud < studentsAmount) {
+            if (currentTime + millisPerStudent < millisPerDay) {
+                interviewDates.add(new Date(currentDate + currentTime));
+                currentTime += millisPerStudent;
+                stud += studentsTogether;
+            } else {
+                currentDate += MILLIS_PER_DAY;
+                currentTime = 0;
             }
-            for (Role role : intrwr.getRoles()) {
-                System.out.println(3);
-                if ("ROLE_DEV".equals(role.getName())) {
-                    devAmount++;
-                }
-                if (("ROLE_HR".equals(role.getName())) || ("ROLE_BA".equals(role.getName()))) {
-                    hrbaAmount++;
-                }
-                System.out.println(4);
-            }
-            System.out.println(devAmount + " " + hrbaAmount);
         }
-        return Math.min(devAmount, hrbaAmount);
+        return interviewDates;
     }
-
 
     @Override
     public CES getCES() throws DAOException {
