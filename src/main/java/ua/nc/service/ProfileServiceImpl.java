@@ -103,6 +103,8 @@ public class ProfileServiceImpl implements ProfileService {
         return result;
     }
 
+
+
     private ProfileFieldValue setProfileFieldValue(FieldValue fieldValue) {
         ProfileFieldValue pfValue = new ProfileFieldValue();
         if (fieldValue.getValueText() != null) {
@@ -288,5 +290,6 @@ public class ProfileServiceImpl implements ProfileService {
         } else {
             createProfile(profile, userId, ces.getId());
         }
+        daoFactory.putConnection(connection);
     }
 }

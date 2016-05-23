@@ -41,7 +41,7 @@ public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements C
         super(connection);
     }
 
-    private class PersistCES extends CES {
+    private class PersistCES extends CES{
         public PersistCES(Integer year, Date startRegistrationDate, Integer quota, Integer reminders, Integer statusId,
                           Integer interviewTimeForPerson, Integer interviewTimeForDay) {
             super(year, startRegistrationDate, quota, reminders, statusId,
@@ -170,18 +170,16 @@ public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements C
     }
 
     @Override
-    public CES getCurrentInterviewBegunCES() throws DAOException {
-        return null;
-    }
-
     public CES getRegistrationOngoingCES() throws DAOException {
         return getSomeCES(GET_REGISTRATION_ONGOING_CES_QUERY);
     }
 
+    @Override
     public CES getPostRegistrationCES() throws DAOException {
         return getSomeCES(GET_POST_REGISTRATION_CES_QUERY);
     }
 
+    @Override
     public CES getInterviewingOngoingCES() throws DAOException {
         return getSomeCES(GET_INTERVIEWING_ONGOING_CES_QUERY);
     }
@@ -230,7 +228,7 @@ public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements C
 
     @Override
     public void addInterviewerForCurrentCES(int cesId, int interviewerId) throws DAOException {
-        doSmthWithCESFieldOrInterviewerParticipation(ADD_INTERVIEWER_FOR_CURRENT_CES, cesId, interviewerId);
+        doSmthWithCESFieldOrInterviewerParticipation(addInterviewerForCurrentCES, cesId, interviewerId);
     }
 
     @Override

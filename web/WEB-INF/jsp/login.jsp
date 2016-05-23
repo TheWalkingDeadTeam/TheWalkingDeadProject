@@ -63,7 +63,7 @@
                     <div class="col-lg-6 col-md-8 col-sm-9 col-xs-9">
                         <h2 class="form-signin-heading">Student Registration</h2>
                     </div>
-                    <div class="col-lg-6 col-md-4 col-sm-3 col-xs-3 ">
+                    <div class="col-lg-6 col-md-4 col-sm-3 col-xs-3">
                         <i class="material-icons closeico"><span class="closebtn">highlight_off</span></i>
                     </div>
                 </div>
@@ -73,7 +73,8 @@
                 <div class="correct-surname"></div>
                 <input id="email" name="email" class="form-control" placeholder="Email address" type="text" value="">
                 <div class="correct-email"></div>
-                <input id="password" name="password" class="form-control login-field  login-field-password" placeholder="Password" type="password"
+                <input id="password" name="password" class="form-control login-field  login-field-password"
+                       placeholder="Password" type="password"
                        value="">
                 <div class="correct-password"></div>
                 <div class="g-recaptcha" data-sitekey="6LdZ1R8TAAAAAMwVjN-N-oTtZR51Li8QmKoSYEiF"></div>
@@ -125,13 +126,14 @@
             </sec:authorize>
 
 
-           <sec:authorize access="!isAuthenticated()">
+            <sec:authorize access="!isAuthenticated()">
                 <form>
                     <div id="messageSignIn"></div>
                     <h2 class="form-signin-heading">Please sign in</h2>
                     <input id="j_username" type="text" class="form-control" name="j_username"
                            placeholder="Email address" required>
-                    <input id="j_password" type="password" class="form-control login-field  login-field-password" name="j_password" placeholder="Password"
+                    <input id="j_password" type="password" class="form-control login-field  login-field-password"
+                           name="j_password" placeholder="Password"
                            required>
                     <button id="buttonSignIn" class="btn btn-lg btn-primary btn-block signbtn" type="submit">Sign in
                     </button>
@@ -149,7 +151,7 @@
                     <p><img id="photo_img" src="/getPhoto" alt="User's photo" width="100" height="100"
                             onError="this.src='/resources/images/user-photo.png'"/></p>
                 </div>
-&lt;%&ndash;
+                <%--&lt;%&ndash;--%>
                 <p><a id="buttonLogout" class="btn btn-lg btn-danger" href="/logout" role="button">Logout</a></p>
 
             </sec:authorize>
@@ -164,46 +166,7 @@
 </div>
 
 
-<footer class="footer container-fluid">
-    <div class="footerLg container visible-md visible-lg">
-        <div class="col-lg-3 col-lg-3 col-sm-3"><img class='img-responsive' src="resources/images/logo-gray.png"></div>
-
-        <div class="col-lg-8 col-md-8 col-lg-offset-1 col-lg-offset-1 col-md-offset-1">
-            <div class="footerLgText col-lg-3 col-md-3 col-lg-offset-1 col-md-offset-1">
-                <p>Univercity Office Park III</p>
-                <p>95 Sawyer Road</p>
-                <p>Waltham, MA 02453 USA</p>
-                <p>1-781-419-3300</p>
-            </div>
-            <div class="footerLgText col-lg-3 col-md-3 col-lg-offset-1 col-md-offset-1">
-                <p>Facebook /NetcrackerTech</p>
-                <p>Twitter @NetcrackerTech</p>
-                <p>LikedIn /netcracker</p>
-            </div>
-            <div class="footerLgText col-lg-3 col-md-3 col-lg-offset-1 col-md-offset-1">
-                <p>Privacy Policy</p>
-                <p>Terms of Use</p>
-                <p>Sitemap</p>
-            </div>
-        </div>
-    </div>
-    <div class="footerSm row visible-sm visible-xs">
-        <div class="col-sm-5 visible-sm" >
-            <img src="resources/images/logo-gray.png">
-        </div>
-        <div class="footerSmText col-sm-7 col-xs-12">
-            <div class="col-sm-8 col-xs-6">
-                <a class="col-sm-6 col-xs-7" href="http://localhost:8080/profile#"><p>Courses Info</p></a>
-                <a class="col-sm-6 col-xs-7" href="http://localhost:8080/profile#"><p>Contacts</p></a>
-            </div>
-            <div class="col-sm-4 col-xs-3 pull-right">
-                <p>Privacy Policy</p>
-                <p>Terms of Use</p>
-                <p>Sitemap</p>
-            </div>
-        </div>
-    </div>
-</footer>
+<jsp:include page="footer.jsp"/>
 
 </body>
 <script src="http://code.jquery.com/jquery-latest.js"></script>

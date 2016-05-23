@@ -42,21 +42,26 @@
         <div class="demo-avatar-dropdown">
             <sec:authentication var="principal" property="principal"/>
             <div class="user-panel">
-                <div class="pull-left image">
-                    <img width="100" height="100" src="/resources/images/rainbow.jpg" class="img-circle"
-                         alt="User Image">
+                <div>
+                    <p style="margin-right: 7px; float: right; margin-top: 0px; margin-bottom: 0px; margin-left: 0px;">
+                    <sec:authorize access="isAuthenticated()">
+                        ${principal.username}
+                    </sec:authorize>
+                </p>
                 </div>
-                <div class="pull-left">
-                    <p>
-                        <sec:authorize access="isAuthenticated()">
-                            ${principal.username}
-                        </sec:authorize>
-                    </p>
-                    <a href="/account">
-                        <i class="material-icons" role="presentation">account_circle</i></a>
+                <div class=" image" style="display: inline-block;">
+                    <%--                    <img width="100" height="100" src="/resources/images/rainbow.jpg" class="img-circle"
+                                             alt="User Image">--%>
+                    <img id="photo_img" src="/getPhoto" alt="User's photo" width="100" height="100"
+                         onError="this.src='/resources/images/rainbow.jpg'" class="profile-photo img-circle"">
+                </div>
+                <div style="float: right; margin-right: 5px; margin-top: 5px;">
+                    <a href="/account" style="">
+                        <i class="material-icons" role="presentation" style="font-size: 40px;">account_circle</i></a>
                     <a href="/logout">
-                        <i class="material-icons" role="presentation">power_settings_new</i></a>
+                        <i class="material-icons" role="presentation" style="font-size: 40px;">power_settings_new</i></a>
                 </div>
+
             </div>
             <%--
                         <div class="mdl-layout-spacer">${principal.username}
@@ -79,17 +84,31 @@
         </div>
         <a class="mdl-navigation__link" href="/admin/scheduler"><i class="mdl-color-text--blue-grey-400 material-icons"
                                                                    role="presentation">schedule</i>Schedule Planning</a>
-        <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons"
-                                                   role="presentation">inbox</i>Form Template</a>
-        <a class="mdl-navigation__link" href="/admin/cessettings"><i class="mdl-color-text--blue-grey-400 material-icons"
-                                                   role="presentation">local_offer</i>Registration Period</a>
+
+        <sec:authorize access="hasRole('ROLE_ADMIN')">
+            <a class="mdl-navigation__link" href="/admin/edit-form"><i
+                    class="mdl-color-text--blue-grey-400 material-icons"
+                    role="presentation">inbox</i>Form Template</a>
+        </sec:authorize>
+        <a class="mdl-navigation__link" href="/admin/cessettings"><i
+                class="mdl-color-text--blue-grey-400 material-icons"
+                role="presentation">local_offer</i>Registration Period</a>
         <a class="mdl-navigation__link" href="/admin/students"><i class="mdl-color-text--blue-grey-400 material-icons"
                                                                   role="presentation">people</i>Student List</a>
+        <sec:authorize access="hasRole('ROLE_ADMIN')">
+            <a class="mdl-navigation__link" href="/admin/users"><i class="mdl-color-text--blue-grey-400 material-icons"
+                                                                   role="presentation">people</i>Users List</a>
+        </sec:authorize>
+        <a class="mdl-navigation__link" href="/admin/interviewee"><i
+                class="mdl-color-text--blue-grey-400 material-icons"
+                role="presentation">people</i>Interviewee List</a>
         <a class="mdl-navigation__link" href="/admin/interviewers"><i
                 class="mdl-color-text--blue-grey-400 material-icons"
                 role="presentation">people</i>Interviewer List</a>
-        <a class="mdl-navigation__link" href="/admin/create"><i class="mdl-color-text--blue-grey-400 material-icons"
-                                                                role="presentation">people</i>Create Interviewer</a>
+        <sec:authorize access="hasRole('ROLE_ADMIN')">
+            <a class="mdl-navigation__link" href="/admin/create"><i class="mdl-color-text--blue-grey-400 material-icons"
+                                                                    role="presentation">people</i>Create Interviewer</a>
+        </sec:authorize>
         <a class="mdl-navigation__link" href="/admin/mail-template"><i
                 class="mdl-color-text--blue-grey-400 material-icons"
                 role="presentation">mail</i>Edit Letter Templates</a>

@@ -7,10 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ua.nc.dao.exception.DAOException;
-import ua.nc.entity.Mail;
 import ua.nc.entity.ReportTemplate;
+import ua.nc.entity.ReportWrapper;
 import ua.nc.service.ReportService;
 import ua.nc.service.ReportServiceImpl;
 
@@ -25,7 +24,10 @@ public class ReportController {
     private static final Logger LOGGER = Logger.getLogger(ReportController.class);
     private ReportService reportService = new ReportServiceImpl();
 
-    @RequestMapping(value = "/reports", method = RequestMethod.GET, produces = "application/json")
+    /**
+     * @return
+     */
+    @RequestMapping(value = "/reports", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<ReportTemplate>> getReports() {
         List<ReportTemplate> reports = reportService.getReports();
         if (!reports.isEmpty()) {
@@ -37,7 +39,11 @@ public class ReportController {
         }
     }
 
-    @RequestMapping(value = "/reports/{id}", method = RequestMethod.GET, produces = "application/json")
+    /**
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "/reports/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ReportTemplate> getReport(@PathVariable Integer id) {
         ReportTemplate report = reportService.getReportById(id);
         if (report != null) {
@@ -49,6 +55,10 @@ public class ReportController {
         }
     }
 
+    /**
+     * @param report
+     * @return
+     */
     @RequestMapping(value = "/reports/", method = RequestMethod.POST)
     public ResponseEntity<Void> createReport(@RequestBody ReportTemplate report) {
         reportService.createReport(report);
@@ -56,6 +66,11 @@ public class ReportController {
         return new ResponseEntity<Void>(HttpStatus.CREATED);
     }
 
+    /**
+     * @param id
+     * @param report
+     * @return
+     */
     @RequestMapping(value = "/reports/{id}", method = RequestMethod.POST)
     public ResponseEntity<ReportTemplate> updateReport(@PathVariable("id") Integer id, @RequestBody ReportTemplate report) {
         ReportTemplate reportCurrent = reportService.getReportById(id);
@@ -71,6 +86,10 @@ public class ReportController {
     }
 
 
+    /**
+     * @param id
+     * @return
+     */
     @RequestMapping(value = "/reports/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<ReportTemplate> deleteReport(@PathVariable("id") Integer id) {
         ReportTemplate report = reportService.getReportById(id);
@@ -83,7 +102,12 @@ public class ReportController {
         return new ResponseEntity<ReportTemplate>(HttpStatus.NO_CONTENT);
     }
 
-    @RequestMapping(value = "/reports/download/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    /**
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "/reports/download/{id}", method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public ModelAndView downloadReport(@PathVariable Integer id) {
         ReportTemplate report = reportService.getReportById(id);
         ModelAndView modelAndView = new ModelAndView();
@@ -99,27 +123,49 @@ public class ReportController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/reports/view/{id}", method = RequestMethod.GET, produces = "application/json")
+    /**
+     * @param id The report id that want to get
+     * @return json
+     */
+    @RequestMapping(value = "/reports/view/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public  ResponseEntity<List<Map<String, Object>>> showReport(@PathVariable Integer id) {
+    public ResponseEntity<ReportWrapper> showReport(@PathVariable Integer id) {
         ReportTemplate report = reportService.getReportById(id);
         List<Map<String, Object>> reportRows = null;
         try {
             reportRows = reportService.getReportRows(report);
-            return new ResponseEntity<List<Map<String, Object>>>(reportRows, HttpStatus.OK);
+            return new ResponseEntity<ReportWrapper>(new ReportWrapper(report, reportRows), HttpStatus.OK);
 
         } catch (DAOException e) {
-            return new ResponseEntity<List<Map<String, Object>>>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<ReportWrapper>(HttpStatus.NOT_FOUND);
         }
     }
 
-    @RequestMapping(value = "/report/view", method = RequestMethod.GET)
-    public String reportid() {
-        return "report-id" ;
+
+    @RequestMapping(value = "/report/error", method = RequestMethod.GET)
+    public ModelAndView error() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("error");
+        modelAndView.addObject("error", "Wrong query");
+        return modelAndView;
     }
 
+
+
+
+        /**
+         * @return The jsp page of the report view
+         */
+    @RequestMapping(value = "/report/view", method = RequestMethod.GET)
+    public String reportid() {
+        return "report";
+    }
+
+    /**
+     * @return The jsp page of the reports
+     */
     @RequestMapping(value = "/report", method = RequestMethod.GET)
     public String report() {
-        return "report-statistic";
+        return "report-template";
     }
 }

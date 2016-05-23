@@ -25,14 +25,23 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public StudentData getStudents(Integer itemPerPage, Integer pageNumber) {
+        log.info("GET STUDENTS START");
         Connection connection = daoFactory.getConnection();
+        log.info("GET STUDENTS CONNECTION");
         PostgreApplicationTableDAO applicationTableDAO = new PostgreApplicationTableDAO(connection);
+        log.info("GET STUDENTS POSTGRETABLEDAO");
         CESServiceImpl cesService = new CESServiceImpl();
-        CES ces = cesService.getCurrentCES();
+        log.info("GET STUDENTS CESSERVICE");
+        CES ces = cesService.getCurrentCES();      ///!!!!!!!!!
+        log.info("TRACE STUDENT SERVIСE" + ces.toString());
         try {
-            return applicationTableDAO.getApplicationsTable(ces.getId(), itemPerPage, pageNumber);
+            StudentData studentData = applicationTableDAO.getApplicationsTable(ces.getId(), itemPerPage, pageNumber);
+            log.info("TRACE STUDENT SERVIСE" + studentData.toString());
+            return studentData;
         } catch (DAOException e) {
             log.warn("Can't get students", e.getCause());
+        } finally {
+            daoFactory.putConnection(connection);
         }
         return null;
     }
@@ -48,6 +57,8 @@ public class StudentServiceImpl implements StudentService {
             return applicationTableDAO.getApplicationsTable(ces.getId(), itemPerPage, pageNumber, orderBy);
         } catch (DAOException e) {
             log.warn("Can't get students", e.getCause());
+        } finally {
+            daoFactory.putConnection(connection);
         }
         return null;
     }
@@ -63,6 +74,8 @@ public class StudentServiceImpl implements StudentService {
             return applicationTableDAO.getApplicationsTable(ces.getId(), itemPerPage, pageNumber, pattern);
         } catch (DAOException e) {
             log.warn("Can't get students", e.getCause());
+        } finally {
+            daoFactory.putConnection(connection);
         }
         return null;
     }
@@ -78,6 +91,8 @@ public class StudentServiceImpl implements StudentService {
             return applicationTableDAO.getApplicationsTable(ces.getId(), itemPerPage, pageNumber, sortType, asc);
         } catch (DAOException e) {
             log.warn("Can't get students", e.getCause());
+        } finally {
+            daoFactory.putConnection(connection);
         }
         return null;
     }
@@ -92,6 +107,8 @@ public class StudentServiceImpl implements StudentService {
             return applicationTableDAO.getApplicationsCount(ces.getId(),pattern);
         } catch (DAOException e) {
             log.warn("Can't get students", e.getCause());
+        } finally {
+            daoFactory.putConnection(connection);
         }
         return null;
     }
@@ -144,10 +161,11 @@ public class StudentServiceImpl implements StudentService {
         }
     }
 
-    @Override
+    @Override  // WTF ????
     public Integer getStudentsSize() {
         Connection connection = daoFactory.getConnection();
         ApplicationDAO applicationDAO = daoFactory.getApplicationDAO(connection);
+        daoFactory.putConnection(connection);
         return null;
     }
 }

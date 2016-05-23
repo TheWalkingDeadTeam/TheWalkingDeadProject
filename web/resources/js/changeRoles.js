@@ -4,7 +4,7 @@
 
 $(document).ready(function () {
 
-    $("#save_roles").click(function () {
+    $("#save_roles").click(function (event) {
         var checkroles = [];
         $("input:checked").each(function () {
             checkroles.push({name: $(this).val()});
@@ -17,7 +17,7 @@ $(document).ready(function () {
             dataType: 'json',
             contentType: "application/json",
             data: JSON.stringify({
-                email: "sasha@gmail.com",
+                email: $("#userEmail").val(), //"kirkorov@gmail.com",
                 roles: checkroles
             }),
             success: function (response) {

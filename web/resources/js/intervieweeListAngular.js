@@ -11,27 +11,40 @@ app.controller('IntervieweeCtrl', ["$http", "$scope", function ($http, $scope) {
     vm.itemsPerPage = 10; //this could be a dynamic value from a drop down
     vm.selectUrl = "interviewee/list/" + vm.itemsPerPage + "/" + vm.pageno;
     vm.order_by = null;
-    vm.sortAsc = null;
     vm.pattern = null;
     $scope.sortReverse = false;
-
+    vm.showSpin = function () {
+        angular.element($(".cssload-thecube")).css('display','block');
+        angular.element($("#tableUsers")).css('display','none');
+        angular.element($("#pagination")).css('display','none');
+    };
+    vm.hideSpin = function () {
+        angular.element($(".cssload-thecube")).css('display','none');
+        angular.element($("#tableUsers")).css('display','table');
+        angular.element($("#pagination")).css('display','block');
+    };
 
     vm.getData = function () {
+        vm.showSpin();
+
         vm.users = [];
         $http.get(vm.selectUrl).success(function (response) {
             vm.users = response;
         });
+
+        vm.hideSpin();
     };
     vm.getSize = function () {
-        if (vm.pattern == null) {
+        if(vm.pattern == null) {
             $http.get("interviewee/size").success(function (response) {
                 vm.total_count = response;
             });
-        } else {
-            $http.get("interviewee/size/" + vm.pattern).success(function (response) {
+        }else{
+            $http.get("interviewee/size/"+vm.pattern).success(function (response) {
                 vm.total_count = response;
             });
         }
+
     };
 
     $scope.dataStudents = {
@@ -49,7 +62,7 @@ app.controller('IntervieweeCtrl', ["$http", "$scope", function ($http, $scope) {
         if (vm.order_by === null) {
             vm.selectUrl = "interviewee/list/" + vm.itemsPerPage + "/" + vm.pageno;
         } else {
-            vm.selectUrl = "interviewee/list/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by + "/" + vm.sortAsc;
+            vm.selectUrl = "interviewee/list/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by + "/" + $scope.sortReverse;
         }
         vm.getData();
         vm.getSize();
@@ -69,20 +82,22 @@ app.controller('IntervieweeCtrl', ["$http", "$scope", function ($http, $scope) {
 
     };
 
-    $scope.sortType = function (type, revers) {
+    $scope.sortType = function (type) {
+        vm.showSpin();
         vm.order_by = type;
-        vm.sortAsc = revers;
-        vm.selectUrl = "interviewee/list/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by + "/" + vm.sortAsc;
+        vm.selectUrl = "interviewee/list/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by + "/" + $scope.sortReverse;
         vm.getData()
         vm.getSize();
     };
 
     $scope.activateUser = function () {
+        
         var dataObj = {
             type: 'activate',
             values: $scope.dataStudents.studId
         };
         if ($scope.dataStudents.studId.length != 0) {
+            vm.showSpin();
             var res = $http.post('users', dataObj);
             res.success(function (data, status, headers, config) {
                 $scope.message = data;
@@ -95,11 +110,13 @@ app.controller('IntervieweeCtrl', ["$http", "$scope", function ($http, $scope) {
     };
 
     $scope.deactivateUser = function () {
+        
         var dataObj = {
             type: 'deactivate',
             values: $scope.dataStudents.studId
         };
         if ($scope.dataStudents.studId.length != 0) {
+            vm.showSpin();
             var res = $http.post('users', dataObj);
             res.success(function (data, status, headers, config) {
                 $scope.message = data;
@@ -112,6 +129,7 @@ app.controller('IntervieweeCtrl', ["$http", "$scope", function ($http, $scope) {
     };
 
     $scope.searchFiltr = function (pattern) {
+        vm.showSpin();
         var dataObj = {
             type: "search",
             values: [$scope.searchFilt]
@@ -131,14 +149,3 @@ app.controller('IntervieweeCtrl', ["$http", "$scope", function ($http, $scope) {
         vm.getSize();
     }
 }]);
-
-
-it('should change state', function () {
-    var value1 = element(by.binding('user.isActive'));
-
-    expect(value1.getText()).toContain('1');
-
-    element(by.model('user.isActive')).click();
-    expect(isActive.getText()).toContain('0');
-
-});

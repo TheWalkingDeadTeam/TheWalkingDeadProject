@@ -19,7 +19,7 @@ $(document).ready(function () {
 
     $('.form-control').bind('input', ValidateChangeForm);
 
-    $("#buttonChangePassword").click(function () {
+    $("#buttonChangePassword").click(function (event) {
         event.preventDefault();
         $.ajax({
             type: 'post',
@@ -40,7 +40,7 @@ $(document).ready(function () {
                         .empty();
                     $('#messageCheckPassword')
                         .addClass('alert alert-danger')
-                        .html(errors_out);
+                        .html(errors_out).fadeIn();
                     $('#changePassword').val("");
                 } else {
                     $('#messageCheckPassword')
@@ -48,8 +48,11 @@ $(document).ready(function () {
                         .empty();
                     $('#messageCheckPassword')
                         .addClass('alert alert-success')
-                        .html('Password changed successfully');
+                        .html('Password changed successfully').fadeIn();
                     $('#changePassword').val("");
+                    setTimeout(function() {
+                        $("#messageCheckPassword").fadeOut().empty();
+                    }, 3000);
                 }
             },
             error: function (jqXHR, exception) {

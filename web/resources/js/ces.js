@@ -25,7 +25,7 @@ app.controller('FormController', ['$scope', '$http', function ($scope, $http) {
 
     var getReq = function() {
         $http.get('/admin/cessettings').success(function (response) {
-            console.log(response)
+            // console.log(response)
             if (response == '') {
                 $scope.ctrl.ces.year = '';
                 $scope.ctrl.ces.id = '';
@@ -103,14 +103,17 @@ app.controller('FormController', ['$scope', '$http', function ($scope, $http) {
                         .removeClass()
                         .empty()
                         .addClass('alert alert-danger')
-                        .html(errors_out);
+                        .html(errors_out).fadeIn();
                 } else {
                     $scope.postSuccess = true;
                     $('#errorsDiv')
                         .removeClass()
                         .empty()
                         .addClass('alert alert-success')
-                        .html('Session saved');
+                        .html('Session saved').fadeIn();
+                    setTimeout(function() {
+                        $('#errorsDiv').fadeOut().empty();
+                    }, 3000);
                 }
                 $scope.message = responseData;
             }).error(function () {

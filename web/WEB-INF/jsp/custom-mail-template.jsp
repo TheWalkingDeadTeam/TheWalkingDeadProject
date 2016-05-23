@@ -16,12 +16,13 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/resources/css/mdb.min.css">
+    <link rel="stylesheet" href="/resources/css/app.css">
     <link rel="stylesheet" href="/resources/css/radio-butoon/build.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 
 </head>
-<body  ng-controller="StudentCtrl as ctrl">
-<div class="container">
+<body>
+<div class="generic-container">
     <div class="row">
         <div class="col-md-8">
             <div class="card hoverable">
@@ -32,38 +33,51 @@
                     <div class="panel panel-default">
                         <h5 align="center">Student Mail Template </h5>
                         <form ng-submit="templateSend()" name="myForm" class="form-horizontal" autocomplete="on">
-                            <table class="table table-hover" class="ng-cloak">
-                                <thead>
-                                <tr>
-                                    <th><img src="/resources/images/checkbox.png" width="15" height="15"></th>
-                                    <th>Topic</th>
-                                    <th>Body</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr ng-repeat="m in ctrl.mails">
 
-                                   <td class="vert-align"><div class="radio radio-success">
-                                        <input type="radio" id="singleRadio2" data-ng-model="$parent.mailIdUser" ng-value={{m.id}} name="radioSingle1">
-                                        <label></label>
-                                    </div></td>
 
-                                <%--<td><input type="radio" data-ng-model="$parent.mailIdUser" ng-value="{{m.id}}"></td>--%>
-                                    <td class="vert-align"><span ng-bind="m.headTemplate"></span></td>
-                                    <td class="vert-align">
-                                        <span ng-bind="m.bodyTemplate"></span></td>
-                                </tr>
-                                </tbody>
-                            </table>
+                            <div class="table-responsive tablecontainer">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th><img src="/resources/images/checkbox.png" width="15" height="15"></th>
+                                        <th>Topic</th>
+                                        <th>Body</th>
+                                        <th width="20%"></th>
+
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="m in data.mails">
+
+                                        <td class="vert-align">
+                                            <div class="radio radio-success">
+                                                <input type="radio" id="singleRadio2" data-ng-model="$parent.mailIdUser"
+                                                       ng-value={{m.id}} name="radioSingle1">
+                                                <label></label>
+                                            </div>
+                                        </td>
+
+                                        <%--<td><input type="radio" data-ng-model="$parent.mailIdUser" ng-value="{{m.id}}"></td>--%>
+                                        <td class="vert-align"><span ng-bind="m.headTemplate"></span></td>
+                                        <td class="vert-align">
+                                            <span ng-bind="m.bodyTemplate"></span></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
                             <div class="form-actions floatRight" style="margin-top: 2%;margin-bottom: 4%">
                                 <input type="submit" id="templateSend" value="Send"
                                        class="btn btn-default waves-effect waves-light">
                             </div>
                         </form>
                     </div>
+
                 </div>
             </div>
         </div>
+
+
     </div>
 </div>
 
@@ -75,8 +89,6 @@
     }
 </script>
 
-<script src="/resources/js/studentListAngular.js"></script>
-<script type="text/javascript" src="js/mdb.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
 </body>
 </html>

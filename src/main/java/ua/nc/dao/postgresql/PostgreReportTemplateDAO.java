@@ -126,9 +126,6 @@ public class PostgreReportTemplateDAO extends AbstractPostgreDAO<ReportTemplate,
         ResultSet resultSet = null;
         List<Map<String, Object>> rows = new ArrayList<>();
         try {
-            if (sql.toLowerCase().matches("^.*?(update|delete|insert).*$")) {
-                throw new DAOException("Cant update, delete, insert");
-            }
             statement = connection.prepareStatement(sql);
             resultSet = statement.executeQuery();
             ResultSetMetaData metaData = resultSet.getMetaData();

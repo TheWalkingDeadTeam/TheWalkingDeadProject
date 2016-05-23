@@ -1,5 +1,5 @@
 body, #mainWrapper {
-    height: 70%;
+    height: 100%;
     background-color: rgb(245, 245, 245);
 }
 
@@ -9,7 +9,7 @@ body, .form-control {
 
 .floatRight {
     float: right;
-    margin-right: 18px;
+    margin-right: 5px;
 }
 
 .has-error {
@@ -17,25 +17,15 @@ body, .form-control {
 }
 
 .formcontainer {
-    background-color: #DAE8E8;
-    padding: 20px;
+    padding: 10px;
 }
 
 .tablecontainer {
-    padding-left: 20px;
+    padding-left: 5px;
 }
 
 .generic-container {
-    width: 80%;
-    margin-left: 20px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    padding: 20px;
-    background-color: #EAE7E7;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    width: 100%;
+
 }
 
-.custom-width {
-    width: 80px !important;
-}
