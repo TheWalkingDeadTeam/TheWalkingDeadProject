@@ -63,12 +63,12 @@ reporter.controller('ReportController', ['$scope', 'ReportService','$http', 'Not
         if(self.report.id==null){
             console.log('Saving New Mail', self.report);
             self.createReport(self.report);
-            Notification.success({message: 'New report created', delay: 5000});
+            Notification.success({message: 'New report '+ self.report.name +' created', delay: 5000});
 
         }else{
-            console.log('Report updated with id ', self.report.id);
+            console.log('Report updated', self.report.name);
             self.updateReport(self.report, self.report.id);
-            Notification.info({message: 'Report ' + self.report.id + ' changed', delay: 5000});
+            Notification.info({message: 'Report ' + self.report.name + ' updated', delay: 5000});
 
         }
         self.reset();
@@ -85,12 +85,13 @@ reporter.controller('ReportController', ['$scope', 'ReportService','$http', 'Not
     };
 
     self.remove = function(id){
-        console.log('id to be deleted', id);
+        console.log('Report deleted', id);
         if(self.report.id === id) {//clean form if the report to be deleted is shown there.
             self.reset();
         }
-        self.deleteReport(id);
         Notification.info({message: 'Report ' + id + ' deleted', delay: 5000});
+
+        self.deleteReport(id);
     };
 
 
