@@ -22,12 +22,10 @@
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <link href="/resources/css/app.css" rel="stylesheet"/>
     <link href="/resources/css/mdb.min.css" rel="stylesheet"/>
+    <link href="/resources/css/roboto-font/roboto.css" rel="stylesheet"/>
+
 </head>
-
-
 <body ng-app="reporter">
-
-
 <div class="generic-container" ng-controller="ReportController as rc">
     <div class="row">
         <div class="col-md-12">
@@ -85,12 +83,10 @@
                 </div>
             </div>
             <%-- Report View--%>
-
             <div class="card hoverable">
                 <div class="card-content">
                     <div class="panel panel-default">
                         <h5 align="center">Report Template </h5>
-
                         <div class="table-responsive tablecontainer">
                             <table class="table table-hover">
                                 <thead>
@@ -107,10 +103,10 @@
                                     <%--                    <td><input
                                                                 type="checkbox" &lt;%&ndash;data-ng-model="$parent.mailIdUser" ng-value="{{r.id}}"&ndash;%&gt;>
                                                         </td>--%>
-                                    <td ng-init="index=$index + 1">{{index}}</td>
-                                    <td>{{r.name}}</td>
-                                    <td>{{r.query}}</td>
-                                    <td>
+                                    <td class="vert-align" ng-init="index=$index + 1">{{index}}</td>
+                                    <td class="vert-align">{{r.name}}</td>
+                                    <td class="vert-align">{{r.query}}</td>
+                                    <td class="vert-align">
                                         <a href="" ng-click="rc.edit(r.id)"><img src="/resources/images/edit.png"
                                                                                  alt="Edit"
                                                                                  width="50" height="50"
@@ -133,11 +129,8 @@
                     </div>
                 </div>
             </div>
-
-
         </div>
     </div>
-
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
 <script src="/resources/js/report.js"></script>

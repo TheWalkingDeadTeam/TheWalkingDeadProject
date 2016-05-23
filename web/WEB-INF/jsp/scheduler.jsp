@@ -16,13 +16,7 @@
     <link rel="stylesheet" href="/resources/css/roboto-font/roboto.css">
     <link rel="stylesheet" href="/resources/css/radio-butoon/build.css">
 
-
-
 </head>
-
-
-
-
 <body ng-app="mailer" class="ng-cloack">
 <div class="generic-container">
     <div class="panel panel-default">
@@ -40,8 +34,6 @@
                                 <input class="input-sm"  type="text" value=""  data-ng-model="interviewTime" placeholder="Provide interview time" name="nterviewTime"  readonly>
                                 <span class="add-on"><i class="icon-th"></i></span>
                             </div>
-
-
                             <script type="text/javascript">
                                 $(".form_datetime").datetimepicker({
                                     format: "yyyy-mm-dd hh:ii"
@@ -180,7 +172,6 @@
                         <button type="button" ng-click="ctrl.reset()" class="btn btn-warning btn-sm"
                                 ng-disabled="myForm.$pristine">Reset Form
                         </button>
-
                         <a href="/admin/mail-template">
                             <button type="button" class="btn btn-success btn-sm"> Mail Templates
                             </button>
@@ -195,7 +186,6 @@
 <script src="/resources/js/google-api.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
 <script src="/resources/js/notification/angular-ui-notification.min.js"></script>
-
 <script src="/resources/js/mail_controller.js"></script>
 </body>
 </html>
