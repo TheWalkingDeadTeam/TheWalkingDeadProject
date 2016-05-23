@@ -3,9 +3,9 @@
  * Created by Alexander Haliy on 05.05.2016.
  */
 
-var mailer = angular.module('mailer',[]);
+var mailer = angular.module('mailer',['ui-notification']);
 
-mailer.controller('MailController', ['$scope', 'MailService','$http', function($scope, MailService,$http) {
+mailer.controller('MailController', ['$scope', 'MailService','$http','Notification', function($scope, MailService,$http,Notification) {
 
     $scope.list = [];
 
@@ -22,10 +22,12 @@ mailer.controller('MailController', ['$scope', 'MailService','$http', function($
 
         var response = $http.post('/admin/scheduler', formData);
         response.success(function (data, status, headers, config) {
+            Notification.success({message: 'Scheduler  successfully started ', delay: 1000});
             $scope.list.push(data);
         });
         response.error(function (data, status, headers, config) {
             alert("Exception details: " + JSON.stringify({data: data}));
+            Notification.error({message: 'Scheduler didn\'t start', delay: 2000});
         });
         $scope.list = [];
     };
@@ -79,6 +81,7 @@ mailer.controller('MailController', ['$scope', 'MailService','$http', function($
                     console.error('Error while deleting Mail.');
                 }
             );
+        
     };
 
     self.fetchAllMails();
