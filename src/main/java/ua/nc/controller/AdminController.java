@@ -57,14 +57,14 @@ public class AdminController {
 
                 User registeredUser = userService.createUser(user);
                 if (registeredUser == null) {
-                    LOGGER.warn("Register failed " + user.getEmail());
+                    LOGGER.warn("Register failed " + user.getEmail().toString());
                     errors.add(new ValidationError("register", "Register failed"));
                 } else {
                     LOGGER.info(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
-                            .getPrincipal()).getUsername() + " create user " + user.getEmail());
+                            .getPrincipal()).getUsername().toString() + " create user " + user.getEmail().toString());
                 }
             } else {
-                LOGGER.warn("User " + user.getEmail() + " already exists");
+                LOGGER.warn("User " + user.getEmail().toString() + " already exists");
                 errors.add(new ValidationError("user", "Such user already exists"));
             }
         }

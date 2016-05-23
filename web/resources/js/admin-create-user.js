@@ -4,7 +4,7 @@ $(document).ready(function () {
         event.preventDefault();
         var checkroles = [];
         $("#checkbox_admin").each(function () {
-            checkroles.push({name: $(this).val()});
+            checkroles.push({name: $("#checkbox_admin").val()});
         });
         if ($("#role").val() != '-') {
             checkroles.push({name: $("#role").val()});

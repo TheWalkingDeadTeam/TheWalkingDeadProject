@@ -97,6 +97,10 @@ public class ReportServiceImpl implements ReportService {
         try {
             reportRows = reportTemplateDAO.execute(report);
             LOGGER.info("Report " + report.getName() + " successfully execute");
+            if (reportRows.isEmpty()) {
+                LOGGER.info("Report " + report.getName() + " is empty");
+                throw new DAOException("Empty report");
+            }
         } catch (DAOException e) {
             LOGGER.warn("Can't execute report query " + report.getId());
             throw new DAOException(e);

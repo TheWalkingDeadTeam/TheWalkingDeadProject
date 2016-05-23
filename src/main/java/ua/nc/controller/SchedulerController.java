@@ -84,7 +84,7 @@ public class SchedulerController {
      * @return
      */
 /*    private Date convertDate (String time){
-        SimpleDateFormat formatter = new SimpleDateFormat(DATA_FORMAT);
+        SimpleDateFormat     formatter = new SimpleDateFormat(DATA_FORMAT);
         Date date = new Date();
         try {
             date = formatter.parse(time);
