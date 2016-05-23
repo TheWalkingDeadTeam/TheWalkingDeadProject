@@ -36,7 +36,6 @@
                     <div class="mask waves-effect"></div>
                 </div>
                 <div class="card-content">
-                    <div class="panel panel-default">
                         <h5 align="center">Report Template </h5>
                         <form ng-submit="rc.submit()" name="myForm" class="form-horizontal">
                             <input type="hidden" ng-model="rc.report.id"/>
@@ -83,7 +82,6 @@
                                 </div>
                             </div>
                         </form>
-                    </div>
                 </div>
             </div>
             <%-- Report View--%>
