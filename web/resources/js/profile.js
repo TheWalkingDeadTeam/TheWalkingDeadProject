@@ -1,6 +1,7 @@
 (function () {
     var requestData;
     var id = location.search.substr(1);
+    $('#photo_img').attr('src', '/getPhoto/' + id );
     var isAgree = false;
 
     $(document).ready(function () {

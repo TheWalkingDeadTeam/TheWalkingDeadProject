@@ -44,7 +44,7 @@
                     <img src="/resources/images/background-2.jpg"/>
                 </div>
                 <div class="user">
-                    <img id="photo_img" src="/getPhoto" alt="User's photo" width="100" height="120"
+                    <img id="photo_img" src="" alt="User's photo" width="100" height="120"
                          onError="this.src='/resources/images/user-photo.png'" class="img-circle">
                 </div>
                 <div class="content">

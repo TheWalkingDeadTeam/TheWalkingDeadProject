@@ -2,8 +2,12 @@
  * Created by Hlib on 11.05.2016.
  */
 
+
+
 $(document).ready(function(){
     var id = location.search.substr(1);
+    $('#photo_img').attr('src', '/getPhoto/' + id );
+
     $.ajax({
         type: 'get',
         url: isNaN(id) ? '/getUser' : '/getUser/'+id,
@@ -24,8 +28,6 @@ $(document).ready(function(){
 $(document).ready(function(){
     $('.collapsible').collapsible();
 });
-
-
 
 $(document).ready(function(){
     $('.materialboxed').materialbox();
