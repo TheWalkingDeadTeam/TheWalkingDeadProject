@@ -83,7 +83,7 @@ public class SchedulerController {
      * @param time
      * @return
      */
-    private Date convertDate (String time){
+/*    private Date convertDate (String time){
         SimpleDateFormat formatter = new SimpleDateFormat(DATA_FORMAT);
         Date date = new Date();
         try {
@@ -92,7 +92,7 @@ public class SchedulerController {
             e.printStackTrace();
         }
         return date;
-    }
+    }*/
 
 
     /**
