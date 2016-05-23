@@ -16,11 +16,17 @@ $(document).ready(function(){
             $('#userName').text(response.name);
             $('#userSurname').text(response.surname);
             $('#userEmail').text(response.email);
+
+            response.roles.forEach(function(item, i, arr) {
+                $('#userRoles').text($('#userRoles').text() + ' ' + item.name);
+            });
         },
         error: function (jqXHR, exception) {
             window.location.href = "/error"
         }
     })
+
+
 })
 
 

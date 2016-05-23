@@ -51,6 +51,7 @@
                     <div class="main">
                         <h3 id="userName" class="name"></h3>
                         <p id="userSurname" class="profession"></p>
+                        <h5 id="userRoles" class="profession"></h5>
                         <p id="userEmail" class="profession"></p>
                     </div>
                     <div class="footer" style="margin-bottom: 20px">
@@ -78,7 +79,7 @@
                                 <sec:authorize access="!hasRole('ROLE_STUDENT')">
                                     <h5>Enrollment</h5>
                                     <div id="enrollMessages"></div>
-                                    <button id="enroll_button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white" type="submit">Enroll</button>
+                                    <button id="enroll_button" href="/interviewer/enroll-ces-interviewer" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white" type="submit">Enroll</button>
                                 </sec:authorize>
                             </div>
                             <div class="stats class="col-lg-4 col-md-4 col-sm-5 col-xs-5">

@@ -115,8 +115,6 @@ public class ReportController {
         try {
             List<Map<String, Object>> reportRows = reportService.getReportRows(report);
             modelAndView.setViewName("excelView");
-            System.out.println(report.getId());
-            System.out.println(reportRows.size());
             modelAndView.addObject("report", report);
             modelAndView.addObject("reportRows", reportRows);
         } catch (DAOException e) {
