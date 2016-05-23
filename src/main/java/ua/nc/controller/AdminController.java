@@ -86,7 +86,7 @@ public class AdminController {
         CES currentCES = cesService.getCurrentCES();
         if (currentCES != null) {
             int cesId = currentCES.getId();
-            Iterator<Integer> iterator = integerList.getInterviewersId().iterator();
+            Iterator<Integer> iterator = integerList.getValues().iterator();
             while (iterator.hasNext()) {
                 try {
                     cesService.removeInterviewer(iterator.next(), cesId);
