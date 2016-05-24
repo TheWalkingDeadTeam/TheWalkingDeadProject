@@ -28,7 +28,7 @@ public class IntervieweeController {
 
     @RequestMapping(value = {"/interviewee"}, method = RequestMethod.GET)
     public String intervieweeView() {
-        return "interviewee-table-without-mapping";
+        return "interviewee-table";
     }
 
     @RequestMapping(value = {"/interviewee/list/{itemsPerPage}/{pageNumber}"}, method = RequestMethod.GET, produces = "application/json")
