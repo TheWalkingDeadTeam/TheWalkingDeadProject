@@ -113,7 +113,7 @@
 <div class="container">
     <div id="feedbackDiv">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div id="save_message"></div>
+            <div id="save_message" style="margin-top: 10px;"></div>
             <div <%--id="feedback"--%>>
                 <div class="row container-fluid reg-head">
                     <div style="margin-left: 15px;">

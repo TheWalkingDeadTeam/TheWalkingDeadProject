@@ -82,13 +82,17 @@
                         }
                         $('#save_message')
                             .addClass('alert alert-danger')
-                            .html(errors_out);
+                            .html(errors_out)
+                            .fadeIn();
                     }
                     else {
                         $('#save_message')
                             .removeClass()
                             .addClass('alert alert-success')
                             .html('Successfully saved');
+                        setTimeout(function() {
+                            $("#save_message").fadeOut().empty();
+                        }, 3000);
                     }
                 },
                 error: function (jqXHR, exception) {
