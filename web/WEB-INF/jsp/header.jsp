@@ -20,7 +20,7 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand brand-img" href="">
-                    <img src='resources/images/logo.png' alt="Brand" class="header-img">
+                    <img src='/resources/images/logo.png' alt="Brand" class="header-img">
                 </a>
             </div>
             <div id='collapsed-menu' class='navbar-collapse collapse'>
