@@ -115,6 +115,7 @@
 <script src="/resources/js/hideShowPassword.min.js"></script>
 <script src="/resources/js/admin-create-user.js"></script>
 <script src="/resources/js/createNewUserValid.js"></script>
+<script src="/resources/js/adminmenu.js"></script>
 <script>
     $('#password').hideShowPassword(false, true);
 </script>

@@ -167,4 +167,6 @@
 <script src="/resources/js/ces.js"></script>
 <script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
 <script src="/resources/bootstrap/js/bootstrap.js"></script>
+<script src="/resources/js/adminmenu.js"></script>
+
 </html>
