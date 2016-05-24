@@ -27,7 +27,7 @@
                 <ul class="nav navbar-nav navbar-right">
 
                     <li><a href="/login">
-                        <sec:authorize access="hasRole('ROLE_STUDENT')">
+                        <sec:authorize access="hasRole('ROLE_STUDENT') or !isAuthenticated()">
                         Home
                         </sec:authorize>
                         <sec:authorize access="hasRole('ROLE_ADMIN')">
