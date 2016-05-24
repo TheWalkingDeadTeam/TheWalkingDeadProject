@@ -267,9 +267,10 @@ public class MailServiceImpl implements MailService {
         Connection connection = daoFactory.getConnection();
         UserDAO userDAO = daoFactory.getUserDAO(connection);
         ApplicationDAO appDAO = daoFactory.getApplicationDAO(connection);
+        CESDAO cesDAD = daoFactory.getCESDAO(connection);
         IntervieweeService intService = new IntervieweeServiceImpl();
         try {
-            CES ces = cesService.getCurrentCES();
+            CES ces = cesDAD.getPostRegistrationCES();
             int reminderTime = ces.getReminders();
             Map<Integer, Integer> applicationList = appDAO.getAllAcceptedApplications(ces.getId());
             int reminderMillis = reminderTime * MILLIS_PER_HOUR;
@@ -282,7 +283,7 @@ public class MailServiceImpl implements MailService {
             List<User> studentsList = new ArrayList<>(userDAO.getAllAcceptedStudents(ces.getId()));
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyy HH:mm");
             Map<String, String> dateTimeParameters = new HashMap<>();
-            Date previousDate = new Date(interviewDates.get(0).getTime() - reminderMillis - 24 * MILLIS_PER_DAY);
+            Date previousDate = new Date(interviewDates.get(0).getTime() - reminderMillis - MILLIS_PER_DAY);
             for (Date interviewDate : interviewDates) {
                 long preciseTime = interviewDate.getTime();
                 Date estimatedTime = new Date(preciseTime - (preciseTime % (MILLIS_PER_MINUTE * 30)));

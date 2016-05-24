@@ -139,16 +139,24 @@ public class CESServiceImpl implements CESService {
         Connection connection = daoFactory.getConnection();
         CESDAO cesDAO = new PostgreCESDAO(connection);
         UserDAO userDAO = daoFactory.getUserDAO(connection);
-        CES ces = cesDAO.getCurrentCES();
+        CES ces = cesDAO.getPostRegistrationCES();
         int hoursPerDay = ces.getInterviewTimeForDay();
         int timePerStudent = ces.getInterviewTimeForPerson();
         ces.setStartRegistrationDate(startDate);
         Set<User> studentsList = userDAO.getAllAcceptedStudents(ces.getId());
         int studentsAmount = studentsList.size();
         int studentsTogether = Math.min(userDAO.getDEVCount(ces.getId()), userDAO.getHRBACount(ces.getId()));
+        System.out.println(userDAO.getDEVCount(ces.getId()));
+        System.out.println(userDAO.getHRBACount(ces.getId()));
         List<Date> interviewDates = getInterviewDates(startDate, studentsAmount, studentsTogether, timePerStudent, hoursPerDay);
         ces.setEndInterviewingDate(interviewDates.get(interviewDates.size() - 1));
+        System.out.println(ces.getStartRegistrationDate());
+        System.out.println(ces.getEndRegistrationDate());
+        System.out.println(ces.getStartInterviewingDate());
+        System.out.println(ces.getEndInterviewingDate());
+        System.out.println("preupdate");
         cesDAO.update(ces);
+        System.out.println("postupdate");
         daoFactory.putConnection(connection);
         return interviewDates;
     }
