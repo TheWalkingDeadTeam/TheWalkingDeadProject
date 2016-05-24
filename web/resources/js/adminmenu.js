@@ -4,7 +4,7 @@
 
 $(function() {
     var pgurl = location.pathname;
-    if (pgurl == '/admin') {
+    if (pgurl == '/admin' || pgurl == '/' || pgurl == '/login') {
         $("#menu").addClass('active');
     } else {
         $('nav a[href^="' + pgurl + '"]').addClass('active');
