@@ -7,9 +7,9 @@ import ua.nc.dao.enums.UserRoles;
  */
 public class FeedbackDTO {
 
-    private final String RESTRICTED = "restricted";
-    private final String INTERVIEWING_PERIOD = "interviewing period";
-    private final String AFTER_INTERVIEWING_PERIOD = "after interviewing period";
+    private final static String RESTRICTED = "restricted";
+    private final static String INTERVIEWING_PERIOD = "interviewing";
+    private final static String AFTER_INTERVIEWING_PERIOD = "after";
 
     UserRoles interviewerRole;
     String viewLevel;
@@ -26,6 +26,14 @@ public class FeedbackDTO {
 
     public void setInterviewerRole(UserRoles interviewerRole) {
         this.interviewerRole = interviewerRole;
+    }
+
+    public String getViewLevel() {
+        return viewLevel;
+    }
+
+    public void setViewLevel(String viewLevel) {
+        this.viewLevel = viewLevel;
     }
 
     public void setRestricted(){
