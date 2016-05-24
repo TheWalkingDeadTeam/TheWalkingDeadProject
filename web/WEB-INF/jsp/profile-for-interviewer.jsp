@@ -66,7 +66,7 @@
         <div class="panel-heading">
             <h4 class="panel-title">
                 <a data-toggle="collapse" href="#collapse1" >
-                    Profile
+                    Profile <i class="material-icons">keyboard_arrow_down</i>
                 </a>
             </h4>
         </div>
