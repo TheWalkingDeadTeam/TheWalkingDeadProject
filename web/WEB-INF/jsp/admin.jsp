@@ -59,10 +59,10 @@
             <div class="demo-cards mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet mdl-cell--4-col-phone mdl-grid mdl-grid--no-spacing">
                 <div class="demo-updates mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--4-col-phone mdl-cell--12-col-desktop">
                     <div class="mdl-card__title mdl-card--expand mdl-color--teal-300">
-                        <h2 class="mdl-card__title-text">Schedule planning</h2>
+                        <h2 class="mdl-card__title-text"> <i class="material-icons">date_range</i> Schedule planning</h2>
                     </div>
                     <div class="mdl-card__supporting-text mdl-color-text--grey-600">
-                        You are able to create new Schedule
+                         You are able to create new Schedule
                     </div>
                     <div class="mdl-card__actions mdl-card--border">
                         <a href="/admin/scheduler" class="mdl-button mdl-js-button mdl-js-ripple-effect">Create New
@@ -76,7 +76,7 @@
                 <div class="demo-cards mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet mdl-cell--4-col-phone mdl-grid mdl-grid--no-spacing">
                     <div class="demo-updates mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--4-col-phone mdl-cell--12-col-desktop">
                         <div class="mdl-card__title mdl-card--expand mdl-color--teal-300">
-                            <h2 class="mdl-card__title-text">Edit form template</h2>
+                            <h2 class="mdl-card__title-text"><i class="material-icons">assignment_ind</i> Edit form template</h2>
                         </div>
                         <div class="mdl-card__supporting-text mdl-color-text--grey-600">
                             You are able to edit form template
@@ -93,7 +93,7 @@
             <div class="demo-cards mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet mdl-cell--4-col-phone mdl-grid mdl-grid--no-spacing">
                 <div class="demo-updates mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--4-col-phone mdl-cell--12-col-desktop">
                     <div class="mdl-card__title mdl-card--expand mdl-color--teal-300">
-                        <h2 class="mdl-card__title-text">Registration period</h2>
+                        <h2 class="mdl-card__title-text"><i class="material-icons">alarm</i> Registration period</h2>
                     </div>
                     <div class="mdl-card__supporting-text mdl-color-text--grey-600">
                         You are able to set course enroll session settings
@@ -110,7 +110,7 @@
             <div class="demo-cards mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet mdl-cell--4-col-phone mdl-grid mdl-grid--no-spacing">
                 <div class="demo-updates mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--4-col-phone mdl-cell--12-col-desktop">
                     <div class="mdl-card__title mdl-card--expand mdl-color--teal-300">
-                        <h2 class="mdl-card__title-text">Application list</h2>
+                        <h2 class="mdl-card__title-text"><i class="material-icons">view_list</i> Application list</h2>
                     </div>
                     <div class="mdl-card__supporting-text mdl-color-text--grey-600">
                         You are able to view application list
@@ -125,7 +125,7 @@
             <div class="demo-cards mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet mdl-cell--4-col-phone mdl-grid mdl-grid--no-spacing">
                 <div class="demo-updates mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--4-col-phone mdl-cell--12-col-desktop">
                     <div class="mdl-card__title mdl-card--expand mdl-color--teal-300">
-                        <h2 class="mdl-card__title-text">Interviewee list</h2>
+                        <h2 class="mdl-card__title-text"><i class="material-icons">supervisor_account</i> Interviewee list</h2>
                     </div>
                     <div class="mdl-card__supporting-text mdl-color-text--grey-600">
                         You are able to view interviewee list
@@ -140,7 +140,7 @@
             <div class="demo-cards mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet mdl-cell--4-col-phone mdl-grid mdl-grid--no-spacing">
                 <div class="demo-updates mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--4-col-phone mdl-cell--12-col-desktop">
                     <div class="mdl-card__title mdl-card--expand mdl-color--teal-300">
-                        <h2 class="mdl-card__title-text">Interviewer List</h2>
+                        <h2 class="mdl-card__title-text"><i class="material-icons">supervisor_account</i> Interviewer List</h2>
                     </div>
                     <div class="mdl-card__supporting-text mdl-color-text--grey-600">
                         You are able to view interviewer List
@@ -156,7 +156,7 @@
                 <div class="demo-cards mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet mdl-cell--4-col-phone mdl-grid mdl-grid--no-spacing">
                     <div class="demo-updates mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--4-col-phone mdl-cell--12-col-desktop">
                         <div class="mdl-card__title mdl-card--expand mdl-color--teal-300">
-                            <h2 class="mdl-card__title-text">User List</h2>
+                            <h2 class="mdl-card__title-text"><i class="material-icons">supervisor_account</i> User List</h2>
                         </div>
                         <div class="mdl-card__supporting-text mdl-color-text--grey-600">
                             You are able to view user List
@@ -173,7 +173,7 @@
             <div class="demo-cards mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet mdl-cell--4-col-phone mdl-grid mdl-grid--no-spacing">
                     <div class="demo-updates mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--4-col-phone mdl-cell--12-col-desktop">
                         <div class="mdl-card__title mdl-card--expand mdl-color--teal-300">
-                            <h2 class="mdl-card__title-text">Create Interviewer</h2>
+                            <h2 class="mdl-card__title-text"><i class="material-icons">portrait</i> Create Interviewer</h2>
                         </div>
                         <div class="mdl-card__supporting-text mdl-color-text--grey-600">
                             You are able to create Interviewer
@@ -191,7 +191,7 @@
             <div class="demo-cards mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet mdl-cell--4-col-phone mdl-grid mdl-grid--no-spacing">
                 <div class="demo-updates mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--4-col-phone mdl-cell--12-col-desktop">
                     <div class="mdl-card__title mdl-card--expand mdl-color--teal-300">
-                        <h2 class="mdl-card__title-text">Letters Template</h2>
+                        <h2 class="mdl-card__title-text"><i class="material-icons">contact_mail</i> Letters Template</h2>
                     </div>
                     <div class="mdl-card__supporting-text mdl-color-text--grey-600">
                         You are able to edit Letters Template here
@@ -208,7 +208,7 @@
             <div class="demo-cards mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet mdl-cell--4-col-phone mdl-grid mdl-grid--no-spacing">
                 <div class="demo-updates mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--4-col-phone mdl-cell--12-col-desktop">
                     <div class="mdl-card__title mdl-card--expand mdl-color--teal-300">
-                        <h2 class="mdl-card__title-text">Session Enrollment History</h2>
+                        <h2 class="mdl-card__title-text"><i class="material-icons">history</i> Session Enrollment History</h2>
                     </div>
                     <div class="mdl-card__supporting-text mdl-color-text--grey-600">
                         You are able to view session enrollment history
@@ -223,7 +223,7 @@
             <div class="demo-cards mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet mdl-cell--4-col-phone mdl-grid mdl-grid--no-spacing">
                 <div class="demo-updates mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--4-col-phone mdl-cell--12-col-desktop">
                     <div class="mdl-card__title mdl-card--expand mdl-color--teal-300">
-                        <h2 class="mdl-card__title-text">Statistic & Reports</h2>
+                        <h2 class="mdl-card__title-text"><i class="material-icons">show_chart</i> Statistic & Reports</h2>
                     </div>
                     <div class="mdl-card__supporting-text mdl-color-text--grey-600">
                         You are able to view statistic and reports
