@@ -52,7 +52,7 @@
 
         <div class="container">
             <div class="reg registration">
-                <div class="col-lg-6 col-md-8 col-sm-9 col-xs-9">
+                <div class="col-lg-6 col-md-8 col-sm-12 col-xs-12">
                     <div id="messageRegistration"></div>
                     <div>
                         <div class="row container-fluid reg-head">
@@ -60,7 +60,7 @@
                                 <h4 class="form-signin-heading">User Registration</h4>
                             </div>
                         </div>
-                        <div id="regform" class="col-lg-8 col-md-8 col-sm-9 col-xs-9">
+                        <div id="regform" class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
                             <input id="name" style="margin-bottom: 3px;" name="name" class="form-control"
                                    placeholder="Name" type="text" value="">
                             <div class="correct-name"></div>
@@ -78,7 +78,7 @@
                                    value="">
                             <div class="correct-password"></div>
                         </div>
-                        <div id="roleAdmin" class="col-lg-4 col-md-8 col-sm-9 col-xs-9">
+                        <div id="roleAdmin" class="col-lg-4 col-md-8 col-sm-12 col-xs-12">
                             <label>Roles: </label>
                             <label class="checkbox">
                                 <input type="checkbox" id="checkboxAdmin" value="ROLE_ADMIN"> Admin
@@ -90,7 +90,7 @@
                             <option value="ROLE_BA">BA</option>
                         </select>
                         </div>
-                        <div class="col-lg-8 col-md-8 col-sm-9 col-xs-9">
+                        <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
                         <button id="buttonRegistration" style="border-radius: 4px;    margin-top: 4px ;"
                                 class="btn btn-lg btn-primary btn-block mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
                             Register
