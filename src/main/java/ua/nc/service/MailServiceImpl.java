@@ -280,6 +280,7 @@ public class MailServiceImpl implements MailService {
             int firstStudent = 0;
             int lastStudent = studentsPerGroup;
             List<User> interviewersList = new ArrayList<>(userDAO.getInterviewersForCurrentCES());
+            System.out.println(interviewersList);
             List<User> studentsList = new ArrayList<>(userDAO.getAllAcceptedStudents(ces.getId()));
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyy HH:mm");
             Map<String, String> dateTimeParameters = new HashMap<>();

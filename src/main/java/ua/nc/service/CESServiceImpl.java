@@ -153,9 +153,7 @@ public class CESServiceImpl implements CESService {
         System.out.println(ces.getEndRegistrationDate());
         System.out.println(ces.getStartInterviewingDate());
         System.out.println(ces.getEndInterviewingDate());
-        System.out.println("preupdate");
-        cesDAO.update(ces);
-        System.out.println("postupdate");
+        updateInterViewingDate(startDate, interviewDates.get(interviewDates.size() - 1));
         daoFactory.putConnection(connection);
         return interviewDates;
     }
