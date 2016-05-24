@@ -6,6 +6,8 @@
     <link href="/resources/css/app.css" rel="stylesheet"/>
     <link href="/resources/css/mdb.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="/resources/css/roboto-font/roboto.css">
+    <link rel="stylesheet" href="/resources/css/notification/angular-ui-notification.min.css">
+
 
 </head>
 <body ng-app="mailer" class="ng-cloak">

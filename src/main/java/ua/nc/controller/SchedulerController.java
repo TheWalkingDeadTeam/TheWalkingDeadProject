@@ -33,6 +33,7 @@ public class SchedulerController {
     private final Logger log = Logger.getLogger(SchedulerController.class);
     private final static String GEO_CODE_GOOGLE = "AIzaSyBzqTdqxQtAvZzhVZofehN2mvetgdYpZf0";
     private final static String DEFAULT_PLACE_LINK = "http://www.google.com/maps/place/lat,lng";
+    //params
     private final static String LOCATION = "$location";
     private final static String COURSE_TYPE = "$courseType";
     private final static String GOOGLE_MAPS = "$googleMaps";
@@ -77,6 +78,21 @@ public class SchedulerController {
     }
 
 
+    /**
+     * Converts string time to data object
+     * @param time
+     * @return
+     */
+/*    private Date convertDate (String time){
+        SimpleDateFormat formatter = new SimpleDateFormat(DATA_FORMAT);
+        Date date = new Date();
+        try {
+            date = formatter.parse(time);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
+    }*/
 
 
     /**

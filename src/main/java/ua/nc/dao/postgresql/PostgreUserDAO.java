@@ -28,7 +28,7 @@ public class PostgreUserDAO extends AbstractPostgreDAO<User, Integer> implements
             " FROM public.system_user users " +
             " JOIN public.interviewer_participation ip ON ip.system_user_id = users.system_user_id " +
             " WHERE ces_id = (SELECT ces.ces_id FROM public.course_enrollment_session ces JOIN public.ces_status stat " +
-            " ON ces.ces_status_id = stat.ces_status_id AND stat.name = 'Active')";
+            " ON ces.ces_status_id = stat.ces_status_id AND stat.name != 'Closed')";
     private final String GET_STUDENTS_FOR_CURRENT_CES = "SELECT users.system_user_id, users.email, users.name, users.surname " +
             " FROM public.system_user users" +
             " JOIN public.application app ON app.system_user_id = users.system_user_id" +

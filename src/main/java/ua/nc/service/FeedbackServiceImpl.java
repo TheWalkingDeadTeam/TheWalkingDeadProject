@@ -75,7 +75,8 @@ public class FeedbackServiceImpl implements FeedbackService {
                 intervieweeDAO.update(interviewee);
             }
             // vdanchul
-            if (feedbackAndSpecialMark.getSpecialMark() != null){
+            if ((feedbackAndSpecialMark.getSpecialMark() != null) ||
+                    ((interviewee.getHrFeedbackID() != null) && (interviewee.getHrFeedbackID() != null)) ){
                 CES ces = cesDAO.getCurrentCES();
                 intervieweeTableDAO.updateIntervieweeTable(ces.getId(), ces.getQuota());
             }

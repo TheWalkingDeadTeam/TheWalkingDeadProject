@@ -34,7 +34,9 @@ app.controller('IntervieweeCtrl', ["$http", "$scope", function ($http, $scope) {
 
         vm.hideSpin();
     };
+
     vm.getSize = function () {
+
         if(vm.pattern == null) {
             $http.get("interviewee/size").success(function (response) {
                 vm.total_count = response;
@@ -134,6 +136,7 @@ app.controller('IntervieweeCtrl', ["$http", "$scope", function ($http, $scope) {
             type: "search",
             values: [$scope.searchFilt]
         };
+        vm.pattern = pattern;
         if (pattern == undefined || pattern == "" || pattern == null) {
             vm.selectUrl = "interviewee/list/" + vm.itemsPerPage + "/" + vm.pageno;
 
