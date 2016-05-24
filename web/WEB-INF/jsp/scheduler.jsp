@@ -7,11 +7,9 @@
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/resources/js/datapicker/bootstrap-datetimepicker.js"></script>
-    <script type="text/javascript" src="/resources/js/bootstrap-timepicker.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap.timepicker/0.2.6/css/bootstrap-timepicker.min.css"/>
     <link rel="stylesheet" href="/resources/css/mdb.min.css"/>
-    <link rel="stylesheet" href="/resources/css/radio-butoon/build.css"/>
     <link rel="stylesheet" href="/resources/css/notification/angular-ui-notification.min.css"/>
     <link rel="stylesheet" href="/resources/css/app.css"/>
     <link rel="stylesheet" href="/resources/css/datepicker/bootstrap-datetimepicker.css"/>
