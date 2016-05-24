@@ -20,19 +20,21 @@ mailer.controller('MailController', ['$scope', 'MailService', '$http', 'Notifica
             "interviewTime": $scope.interviewTime
         };
 
-
-        var response = $http.post('/admin/scheduler', formData);
-        response.success(function (data, status, headers, config) {
-            $scope.list.push(data);
-            Notification.success({message: 'Scheduler  successfully started ', delay: 1000});
-        });
-        response.error(function (data, status, headers, config) {
-            alert("Exception details: " + JSON.stringify({data: data}));
-            Notification.error({message: 'Scheduler didn\'t start', delay: 2000});
-        });
-        $scope.list = [];
-        $scope.myForm.$setPristine(true);
-
+        if ($scope.mailIdStaff && $scope.mailIdUser != null) {
+            var response = $http.post('/admin/scheduler', formData);
+            response.success(function (data, status, headers, config) {
+                $scope.list.push(data);
+                Notification.success({message: 'Scheduler  successfully started ', delay: 1000});
+            });
+            response.error(function (data, status, headers, config) {
+                alert("Exception details: " + JSON.stringify({data: data}));
+                Notification.error({message: 'Scheduler didn\'t start', delay: 2000});
+            });
+            $scope.list = [];
+            $scope.myForm.$setPristine(true);
+        } else {
+            Notification.error({message: 'Radio button should be specified', delay: 1000});
+        }
     };
 
 
