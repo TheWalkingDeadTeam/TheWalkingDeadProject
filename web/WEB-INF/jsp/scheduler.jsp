@@ -2,20 +2,20 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
 <html>
 <head>
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
     <title>Scheduler</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <link href="/resources/css/app.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap.timepicker/0.2.6/css/bootstrap-timepicker.min.css">
-    <link rel="stylesheet" href="/resources/css/datepicker/bootstrap-datetimepicker.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/resources/js/datapicker/bootstrap-datetimepicker.js"></script>
     <script type="text/javascript" src="/resources/js/bootstrap-timepicker.js"></script>
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <script src="/resources/js/datapicker/bootstrap-datetimepicker.js"></script>
-    <link href="/resources/css/mdb.min.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="/resources/css/roboto-font/roboto.css">
-    <link rel="stylesheet" href="/resources/css/radio-butoon/build.css">
-
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap.timepicker/0.2.6/css/bootstrap-timepicker.min.css"/>
+    <link rel="stylesheet" href="/resources/css/mdb.min.css"/>
+    <link rel="stylesheet" href="/resources/css/radio-butoon/build.css"/>
+    <link rel="stylesheet" href="/resources/css/notification/angular-ui-notification.min.css"/>
+    <link rel="stylesheet" href="/resources/css/app.css"/>
+    <link rel="stylesheet" href="/resources/css/datepicker/bootstrap-datetimepicker.css"/>
+    <link rel="stylesheet" href="/resources/css/roboto-font/roboto.css"/>
 </head>
 <body ng-app="mailer" class="ng-cloack">
 <div class="generic-container">
@@ -28,10 +28,11 @@
                 <%-- Interview Start Date --%>
                 <div class="row">
                     <div class="form-group col-md-12">
-                        <label class="col-md-2 control-lable" for="file">Start time</label>
+                        <label class="col-md-2 control-lable" for="file">Start Time</label>
                         <div class="col-md-7">
                             <div class="input-append  date form_datetime">
-                                <input class="input-sm"  type="text" value=""  data-ng-model="interviewTime" placeholder="Provide interview time" name="nterviewTime"  readonly>
+                                <input class="input-sm" type="text" value="" data-ng-model="interviewTime"
+                                       placeholder="Provide interview time" name="nterviewTime" readonly>
                                 <span class="add-on"><i class="icon-th"></i></span>
                             </div>
                             <script type="text/javascript">
@@ -40,16 +41,6 @@
                                 });
                             </script>
 
-
-                            <%--<div class="input-group bootstrap-timepicker timepicker">--%>
-                                <%--<input id="timepicker1" data-ng-model="interviewTime" placeholder="Provide interview time" name="interviewTime"   type="text" class="form-control input-small">--%>
-                                <%--<span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>--%>
-                            <%--</div>--%>
-
-                            <%--<script type="text/javascript">--%>
-                                <%--$('#timepicker1').timepicker();--%>
-                            <%--</script>--%>
-
                         </div>
                     </div>
                 </div>
@@ -57,7 +48,7 @@
                 <%-- Interview contact info--%>
                 <div class="row">
                     <div class="form-group col-md-12">
-                        <label class="col-md-2 control-lable" for="file">Interviewers Contact Information</label>
+                        <label class="col-md-2 control-lable" for="file">Interviewer Contact Information</label>
                         <div class="col-md-7">
                             <input type="text" data-ng-model="contactStaff" name="contactStaff"
                                    class="contact form-control input-sm" placeholder="Enter contact information"
@@ -74,9 +65,13 @@
                     <div class="form-group col-md-12">
                         <label class="col-md-2 control-lable" for="file">Student Contact Information</label>
                         <div class="col-md-7">
-                            <input type="text" data-ng-model="contactStudent" name="contactStudent"
-                                   class="contact form-control input-sm" placeholder="Enter contact information"
-                                   ng-minlength="3" required/>
+                            <input type="text"
+                                   data-ng-model="contactStudent"
+                                   name="contactStudent"
+                                   class="studContact form-control input-sm"
+                                   placeholder="Enter contact information"
+                                   ng-minlength="3"
+                                   required/>
                             <div class="has-error" ng-show="myForm.$dirty">
                                 <span ng-show="myForm.contact.$error.required">This is a required field </span>
                                 <span ng-show="myForm.contact.$error.minlength">Contact should be at least 3 symbols</span>
@@ -131,7 +126,8 @@
                             </thead>
                             <tbody>
                             <tr ng-repeat="m in ctrl.mails">
-                                <td class="vert-align"><input type="radio" data-ng-model="$parent.mailIdUser" ng-value="{{m.id}}"></td>
+                                <td class="vert-align"><input type="radio" data-ng-model="$parent.mailIdUser"
+                                                              ng-value="{{m.id}}"></td>
                                 <td class="vert-align"><span ng-bind="m.headTemplate"></span></td>
                                 <td class="vert-align"><span ng-bind="m.bodyTemplate"></span></td>
 
@@ -142,7 +138,7 @@
                 </div>
                 <div class="panel panel-default">
                     <%--Staff Mail Template--%>
-                        <h5 align="center">Interviewer Mail Template</h5>
+                    <h5 align="center">Interviewer Mail Template</h5>
                     <div class="table-responsive tablecontainer">
                         <table class="table" class="ng-cloak">
                             <thead>
@@ -155,7 +151,8 @@
                             </thead>
                             <tbody>
                             <tr ng-repeat="m in ctrl.mails">
-                                <td class="vert-align"><input type="radio" data-ng-model="$parent.mailIdStaff" ng-value="{{m.id}}">
+                                <td class="vert-align"><input type="radio" data-ng-model="$parent.mailIdStaff"
+                                                              ng-value="{{m.id}}">
                                 </td>
                                 <td class="vert-align"><span ng-bind="m.headTemplate"></span></td>
                                 <td class="vert-align"><span ng-bind="m.bodyTemplate"></span></td>
@@ -169,8 +166,8 @@
                     <div class="form-actions floatRight">
                         <input type="submit" id="submit" value="Submit" class="btn btn-primary btn-sm"
                                ng-disabled="myForm.$invalid">
-                        <button type="button" ng-click="ctrl.reset()" class="btn btn-warning btn-sm"
-                                ng-disabled="myForm.$pristine">Reset Form
+                        <button type="reset" class="btn btn-warning btn-sm">
+                            Reset Form
                         </button>
                         <a href="/admin/mail-template">
                             <button type="button" class="btn btn-success btn-sm"> Mail Templates
