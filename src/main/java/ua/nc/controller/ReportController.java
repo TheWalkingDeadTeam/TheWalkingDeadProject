@@ -1,7 +1,6 @@
 package ua.nc.controller;
 
 import org.apache.log4j.Logger;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -115,8 +114,6 @@ public class ReportController {
         try {
             List<Map<String, Object>> reportRows = reportService.getReportRows(report);
             modelAndView.setViewName("excelView");
-            System.out.println(report.getId());
-            System.out.println(reportRows.size());
             modelAndView.addObject("report", report);
             modelAndView.addObject("reportRows", reportRows);
         } catch (DAOException e) {
@@ -144,12 +141,24 @@ public class ReportController {
         }
     }
 
-    /**
-     * @return The jsp page of the report view
-     */
+
+    @RequestMapping(value = "/report/error", method = RequestMethod.GET)
+    public ModelAndView error() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("error");
+        modelAndView.addObject("error", "Wrong query");
+        return modelAndView;
+    }
+
+
+
+
+        /**
+         * @return The jsp page of the report view
+         */
     @RequestMapping(value = "/report/view", method = RequestMethod.GET)
     public String reportid() {
-        return "report-id";
+        return "report";
     }
 
     /**
@@ -157,6 +166,6 @@ public class ReportController {
      */
     @RequestMapping(value = "/report", method = RequestMethod.GET)
     public String report() {
-        return "report-statistic";
+        return "report-template";
     }
 }

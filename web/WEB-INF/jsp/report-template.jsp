@@ -133,7 +133,7 @@
     </div>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
-<script src="/resources/js/report.js"></script>
+<script src="/resources/js/reportController.js"></script>
 <script src="/resources/js/notification/angular-ui-notification.min.js"></script>
 </body>
 </html>

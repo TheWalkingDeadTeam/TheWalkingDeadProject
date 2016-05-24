@@ -242,22 +242,22 @@ studentView.controller('StudentCtrl', ["$http", "$scope", 'MailService','Notific
 
     };
 
-    $scope.sortType = function (type, revers) {
+    $scope.sortType = function (type) {
         vm.showSpin();
         vm.order_by = type;
-        vm.selectUrl = "students/list/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by + "/" + revers;
-
+        vm.selectUrl = "students/list/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by + "/" + $scope.sortReverse;
         vm.getData();
         vm.getSize();
     };
 
     $scope.rejectStud = function () {
-        vm.showSpin();
+        
         var dataObj = {
             type: 'reject',
             values: $scope.dataStudents.studId
         };
         if ($scope.dataStudents.studId.length != 0) {
+            vm.showSpin();
             var res = $http.post('students', dataObj);
             res.success(function (data, status, headers, config) {
                 $scope.message = data;
@@ -271,12 +271,13 @@ studentView.controller('StudentCtrl', ["$http", "$scope", 'MailService','Notific
     };
 
     $scope.unrejectStud = function () {
-        vm.showSpin();
+        
         var dataObj = {
             type: 'unreject',
             values: $scope.dataStudents.studId
         };
         if ($scope.dataStudents.studId.length != 0) {
+            vm.showSpin();
             var res = $http.post('students', dataObj);
             res.success(function (data, status, headers, config) {
                 $scope.message = data;

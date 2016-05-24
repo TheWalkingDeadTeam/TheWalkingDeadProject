@@ -168,7 +168,7 @@
                         .empty();
                     $('#messageRegistration')
                         .addClass('alert alert-danger')
-                        .html(errors_out);
+                        .html(errors_out).fadeIn();
                     $('#j_password').val("");
                 } else {
                     $('#messageRegistration')
@@ -182,7 +182,7 @@
                     $('#messageSignIn')
                         .show()
                         .addClass('alert alert-success')
-                        .html('Registered successfully');
+                        .html('Registered successfully').fadeIn();
                     $('.registration input')
                         .val("");
                     setTimeout(function() {

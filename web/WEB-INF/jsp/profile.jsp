@@ -26,7 +26,6 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand brand-img" href="">
                     <img src='resources/images/logo.png' alt="Brand" class="header-img">
@@ -49,24 +48,24 @@
 
     <div class="container smprofile">
         <div class="row">
-            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4">
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
                 <img id="photo_img" src="/getPhoto" alt="User's photo" width="100" height="100"
                      onError="this.src='/resources/images/user-photo.png'" class="profile-photo">
             </div>
-            <div class='col-lg-3 col-md-3 col-sm-3 col-xs-8'>
-                <form id="photo_form" type=post enctype="multipart/form-data">
-                    <div id="photoMessages"></div>
-                    <label for='photo_input' class='file_upload'/>
-                    <input type="file" id="photo_input" name=" photo_input" accept="image/*">
-                    <button id="photo_button" type="submit">Upload</button>
-                </form>
-            </div>
-            <div class=" col-lg-2 col-md-2 col-sm-2 col-xs-4 mainf">
+            <%--<div class='col-lg-3 col-md-3 col-sm-3 col-xs-8'>--%>
+                <%--<form id="photo_form" type=post enctype="multipart/form-data">--%>
+                    <%--<div id="photoMessages"></div>--%>
+                    <%--<label for='photo_input' class='file_upload'/>--%>
+                    <%--<input type="file" id="photo_input" name=" photo_input" accept="image/*">--%>
+                    <%--<button id="photo_button" type="submit">Upload</button>--%>
+                <%--</form>--%>
+            <%--</div>--%>
+            <div class=" col-lg-3 col-md-3 col-sm-3 col-xs-3 mainf">
                 <h4>Name:</h4>
                 <h4>Surname:</h4>
                 <h4>E-mail:</h4>
             </div>
-            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 userDetails">
                 <span id="userName"></span>
                 <span id="userSurname"></span>
                 <span id="userEmail"></span>
@@ -79,11 +78,11 @@
 
     </form>
     <sec:authorize access="hasRole('ROLE_STUDENT')">
-        <div id="fieldsCheck"></div>
         <div id="agreement">
             <label for="agree">I agree to have my personal information been proceeded</label>
             <input id="agree" type="checkbox"/>
         </div>
+        <div id="fieldsCheck"></div>
         <div id="profileButtons">
             <button id="save" type="submit" form="fields" value="Submit" disabled="disabled">Save</button>
                 <%--<button id="buttonEnroll" type="submit" value="Enroll" href="/enroll">Enroll</button>--%>

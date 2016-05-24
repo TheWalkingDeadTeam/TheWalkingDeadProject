@@ -27,7 +27,7 @@ $(document).ready(function () {
                         .empty();
                     $('#messageSignIn')
                         .addClass('alert alert-danger')
-                        .html(errors_out);
+                        .html(errors_out).fadeIn();
                     $('#j_password').val("");
                 } else {
                     location.reload();

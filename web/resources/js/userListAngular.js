@@ -8,7 +8,6 @@ app.controller('UserCtrl', ["$http", "$scope", function ($http, $scope) {
     vm.itemsPerPage = 10; //this could be a dynamic value from a drop down
     vm.selectUrl = "users/list/" + vm.itemsPerPage + "/" + vm.pageno;
     vm.order_by = null;
-    vm.sortAsc = null;
     vm.pattern = null;
     $scope.sortReverse = false;
     showSpin = function () {
@@ -81,10 +80,9 @@ app.controller('UserCtrl', ["$http", "$scope", function ($http, $scope) {
 
     };
 
-    $scope.sortType = function (type,revers) {
+    $scope.sortType = function (type) {
         vm.order_by = type;
-        vm.sortAsc = revers;
-        vm.selectUrl = "users/list/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by + "/" + vm.sortAsc;
+        vm.selectUrl = "users/list/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by + "/" + $scope.sortReverse;
         vm.getData();
         vm.getSize();
     };
@@ -147,14 +145,3 @@ app.controller('UserCtrl', ["$http", "$scope", function ($http, $scope) {
         vm.getSize();
     }
 }]);
-
-
-it('should change state', function () {
-    var value1 = element(by.binding('user.isActive'));
-
-    expect(value1.getText()).toContain('1');
-
-    element(by.model('user.isActive')).click();
-    expect(isActive.getText()).toContain('0');
-
-});

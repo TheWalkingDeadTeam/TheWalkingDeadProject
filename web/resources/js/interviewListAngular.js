@@ -67,12 +67,12 @@ interView.controller('InterCtrl', ["$http", "$scope",'MailService','Notification
     vm.itemsPerPage = 10; //this could be a dynamic value from a drop down
     vm.selectUrl = "interviewers/list/" + vm.itemsPerPage + "/" + vm.pageno;
     vm.order_by = null;
-
+    $scope.sortReverse = false;
     /////////////ALEXANDER///////////////////
     vm.mails = [];
     vm.mail = {id: null, bodyTemplate: ' ', headTemplate: ' '};
     vm.checkNull = true;
-
+    
     $scope.list = [];
     $scope.mail = function () {
         var dataObj = {
@@ -244,22 +244,23 @@ interView.controller('InterCtrl', ["$http", "$scope",'MailService','Notification
 
     };
 
-    $scope.sortType = function (type, asc) {
+    $scope.sortType = function (type) {
         vm.showSpin();
         vm.order_by = type;
-        vm.selectUrl = "interviewers/list/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by + "/" + asc;
+        vm.selectUrl = "interviewers/list/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by + "/" + $scope.sortReverse;
         vm.getData();
         vm.getSize();
     };
 
 
     $scope.subscribeInterviewer = function () {
-        vm.showSpin();
+        
         var dataObj = {
             // type: 'subscribe',
             values: $scope.dataStudents.studId
         };
         if ($scope.dataStudents.studId.length != 0) {
+            vm.showSpin();
             var res = $http.post('/interviewer/enroll-ces-interviewer', dataObj);
             res.success(function (data, status, headers, config) {
                 $scope.message = data;
@@ -273,12 +274,13 @@ interView.controller('InterCtrl', ["$http", "$scope",'MailService','Notification
     };
 
     $scope.unsubscribeInterviewer = function () {
-        vm.showSpin();
+        
         var dataObj = {
             // type: 'unsubscribe',
             values: $scope.dataStudents.studId
         };
         if ($scope.dataStudents.studId.length != 0) {
+            vm.showSpin();
             var res = $http.post('remove-ces-interviewer', dataObj);
             res.success(function (data, status, headers, config) {
                 $scope.message = data;
@@ -316,14 +318,3 @@ interView.controller('InterCtrl', ["$http", "$scope",'MailService','Notification
 
     }
 }]);
-
-
-it('should change stinterViewate', function () {
-    var value1 = element(by.binding('user.isActive'));
-
-    expect(value1.getText()).toContain('1');
-
-    element(by.model('user.isActive')).click();
-    expect(isActive.getText()).toContain('0');
-
-});
