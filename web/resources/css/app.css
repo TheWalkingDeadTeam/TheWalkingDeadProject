@@ -7,6 +7,12 @@ body, .form-control {
     font-size: 15px !important;
 }
 
+label {
+    font-size: 18px;
+    color: #097194;
+}
+
+
 .floatRight {
     float: right;
     margin-right: 5px;
@@ -16,13 +22,15 @@ body, .form-control {
     color: #e83e35;
 }
 
+
 .formcontainer {
     padding: 10px;
     font-size: 18px;
+    margin-left: 50px;
 }
 
 .tablecontainer {
-    padding-left: 5px;
+    padding-left: 30px;
 }
 
 .generic-container {
