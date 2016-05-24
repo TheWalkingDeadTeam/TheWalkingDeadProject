@@ -20,8 +20,9 @@
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.cyan-light_blue.min.css">
-    <link rel="stylesheet" href="/resources/css/styles.css">
+    <link rel="stylesheet" href="/resources/css/style-interv-acc.css">
+    <%--<link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.cyan-light_blue.min.css">--%>
+    <%--<link rel="stylesheet" href="/resources/css/styles.css">--%>
     <%--<style type="text/css">--%>
     <%--/*<img src='images/logo.png' alt="Brand" class="header-img">*/--%>
     <%--/*<img src='images/error.gif' class="img-responsive profile-photo">*/--%>
@@ -60,12 +61,11 @@
 <div id="restrict_message"></div>
 
 
-
 <div class="panel-group">
     <div class="panel panel-default">
         <div class="panel-heading">
             <h4 class="panel-title">
-                <a data-toggle="collapse" href="#collapse1" >
+                <a data-toggle="collapse" href="#collapse1">
                     Profile <i class="material-icons">keyboard_arrow_down</i>
                 </a>
             </h4>
@@ -80,8 +80,6 @@
         </div>
     </div>
 </div>
-
-
 
 
 <%--<sec:authorize access="@feedbackPermissions.isInterviewingPeriod()">--%>
@@ -113,39 +111,41 @@
 
 
 <div class="container">
-    <div class="col-lg-6 col-md-8 col-sm-12 col-xs-12">
-        <div id="save_message"></div>
-        <div <%--id="feedback"--%>>
-            <div class="row container-fluid reg-head">
-                <div>
-                    <h4 class="form-signin-heading">Feedback :</h4>
+    <div id="feedbackDiv">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div id="save_message"></div>
+            <div <%--id="feedback"--%>>
+                <div class="row container-fluid reg-head">
+                    <div style="margin-left: 15px;">
+                        <h4 class="form-signin-heading">Feedback :</h4>
+                    </div>
                 </div>
-            </div>
-            <form id="feedback_form">
-                <div id="regform" class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                <form id="feedback_form">
+                    <div id="regform" class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
                     <textarea rows="10" cols="10" id="feedback_text" style="margin-bottom: 3px;" class="form-control"
                               placeholder="Feedback" required></textarea>
-                </div>
-                <div  class="col-lg-4 col-md-8 col-sm-12 col-xs-12">
-                    <label>Mark: </label>
-                    <input id="feedback_score" style="margin-bottom: 3px;" class="form-control"
-                           placeholder="1 .. 100" type="number"
-                           max="100" min="1" align="centre" required>
-                    <label>Special mark: </label>
-                    <select id="special_mark" style="margin-bottom: 3px;" class="form-control">
-                        <option value="none" id="none">None</option>
-                        <option value="reject" id="reject">Reject</option>
-                        <option value="take on courses" id="take_on_courses">Take on courses</option>
-                        <option value="job offer" id="job_offer">Job offer</option>
-                    </select>
-                </div>
-                <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
-                    <button id="submitFeedback" style="border-radius: 4px;    margin-top: 4px ;"
-                            class="btn btn-lg btn-primary btn-block mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
-                        Submit
-                    </button>
-                </div>
-            </form>
+                    </div>
+                    <div class="col-lg-4 col-md-8 col-sm-12 col-xs-12">
+                        <label class="markLabel">Mark: </label>
+                        <input id="feedback_score" style="margin-bottom: 3px; margin: 0px;" class="form-control markInput"
+                               placeholder="1 .. 100" type="number"
+                               max="100" min="1" align="centre" required>
+                        <label class="markLabel" style="margin-top: 3px;">Special mark: </label>
+                        <select id="special_mark" style="margin-bottom: 3px;" class="form-control markInput">
+                            <option value="none" id="none">None</option>
+                            <option value="reject" id="reject">Reject</option>
+                            <option value="take on courses" id="take_on_courses">Take on courses</option>
+                            <option value="job offer" id="job_offer">Job offer</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                        <button id="submitFeedback" style="border-radius: 4px;    margin-top: 4px ;"
+                                class="btn btn-lg btn-primary btn-block mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
+                            Submit
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
@@ -153,32 +153,32 @@
 
 <%--</sec:authorize>--%>
 <%--<sec:authorize access="@feedbackPermissions.isInterviewingPeriod()">--%>
-    <div id="all_feedbacks">
-        <div class="widget">
-            <div class="widget-header clearfix">
-                <h3><i class="icon ion-ios-browsers"></i> <span>
+<div id="all_feedbacks">
+    <div class="widget">
+        <div class="widget-header clearfix">
+            <h3><i class="icon ion-ios-browsers"></i> <span>
                     <p id="special_mark_display">Special mark: </p>
 
 
         </span></h3>
-                <ul class="nav nav-tabs pull-right">
-                    <li class="active"><a href="#tab1" data-toggle="tab"><i class="icon ion-gear-b"></i> Developer <span
-                            id="dev_score" class="label label-info label-as-badge pull-left">55</span></a></li>
-                    <li class=""><a href="#tab2" data-toggle="tab"><i class="icon ion-help-circled"></i> HR/BA <span
-                            id="hr_score" class="label label-info label-as-badge pull-left">75</span></a></li>
-                </ul>
-            </div>
+            <ul class="nav nav-tabs pull-right">
+                <li class="active"><a href="#tab1" data-toggle="tab"><i class="icon ion-gear-b"></i> Developer <span
+                        id="dev_score" class="label label-info label-as-badge pull-left">55</span></a></li>
+                <li class=""><a href="#tab2" data-toggle="tab"><i class="icon ion-help-circled"></i> HR/BA <span
+                        id="hr_score" class="label label-info label-as-badge pull-left">75</span></a></li>
+            </ul>
+        </div>
 
-            <div class="widget-content tab-content">
-                <div class="tab-pane fade active in" id="tab1">
-                    <p id="dev_feedback">Dev feedback</p>
-                </div>
-                <div class="tab-pane fade" id="tab2">
-                    <p id="hr_feedback">Hr feedback</p>
-                </div>
+        <div class="widget-content tab-content">
+            <div class="tab-pane fade active in" id="tab1">
+                <p id="dev_feedback">Dev feedback</p>
+            </div>
+            <div class="tab-pane fade" id="tab2">
+                <p id="hr_feedback">Hr feedback</p>
             </div>
         </div>
     </div>
+</div>
 
 <%--
 </sec:authorize>
