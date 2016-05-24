@@ -190,23 +190,5 @@ mailer.factory('MailService', ['$http', '$q', function ($http, $q) {
 
 }]);
 
-//Service for shared variable
-mailer.factory('Parameters', function () {
-    var mailId = {
-        "mailId": mailId
-    }
 
-    return {
-        getMailId: function () {
-            return mailId[0]
-        },
-        setMailId: function (id) {
-            mailId[0] = id
-        }
-    }
-});
 
-// mailer.controller('SchedulerController', ['$scope', '$http', function ($scope, $http) {
-//
-//
-// }]);
