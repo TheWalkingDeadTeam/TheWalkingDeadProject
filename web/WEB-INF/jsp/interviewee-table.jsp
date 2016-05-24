@@ -46,24 +46,17 @@
     <link rel="stylesheet" href="/resources/css/styles.css">
     <link rel="stylesheet" href="/resources/css/checkbox.css">
 
-    <style>
-        #view-source {
-            position: fixed;
-            display: block;
-            right: 0;
-            bottom: 0;
-            margin-right: 40px;
-            margin-bottom: 40px;
-            z-index: 900;
-        }
-    </style>
+
 </head>
 <body>
+
+
 <main ng-controller="IntervieweeCtrl as data"
       class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
 
+    <jsp:include page="header.jsp"/>
 
-    <main class="mdl-layout__content mdl-color--grey-100">
+    <main class="mdl-color--grey-100">
         <div>
             <%--<button ng-click="activateUser()"--%>
             <%--class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">--%>
@@ -158,7 +151,9 @@
             </dir-pagination-controls></div>
 
     </main>
+    <jsp:include page="footer.jsp"/>
 </main>
+
 
 <script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
