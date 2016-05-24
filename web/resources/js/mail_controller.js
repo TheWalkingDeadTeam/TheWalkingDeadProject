@@ -22,8 +22,10 @@ mailer.controller('MailController', ['$scope', 'MailService','$http','Notificati
 
         var response = $http.post('/admin/scheduler', formData);
         response.success(function (data, status, headers, config) {
-            Notification.success({message: 'Scheduler  successfully started ', delay: 1000});
+            console.
             $scope.list.push(data);
+            Notification.success({message: 'Scheduler  successfully started ', delay: 1000});
+
         });
         response.error(function (data, status, headers, config) {
             alert("Exception details: " + JSON.stringify({data: data}));
@@ -81,7 +83,7 @@ mailer.controller('MailController', ['$scope', 'MailService','$http','Notificati
                     console.error('Error while deleting Mail.');
                 }
             );
-        
+
     };
 
     self.fetchAllMails();
