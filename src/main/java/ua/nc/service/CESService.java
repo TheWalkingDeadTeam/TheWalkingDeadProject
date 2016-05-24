@@ -34,4 +34,6 @@ public interface CESService {
      */
     List<Date> planSchedule(Date startDate) throws DAOException;
 
+    void updateInterViewingDate(Date start, Date end);
+    CES getPendingCES();
 }

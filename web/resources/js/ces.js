@@ -74,7 +74,7 @@ app.controller('FormController', ['$scope', '$http', function ($scope, $http) {
     getReq();
 
     this.save = function () {
-        if ( isNaN( new Date(this.ces.startRegistrationDate).getTime() ) ) {  // d.valueOf() could also work
+        if ( isNaN( new Date(this.ces.startRegistrationDate).getTime() ) ) {
             var errors_out = "Start registration date is not valid";
             $('#errorsDiv')
                 .removeClass()
@@ -83,7 +83,7 @@ app.controller('FormController', ['$scope', '$http', function ($scope, $http) {
                 .html(errors_out);
             return;
         }
-        if ( isNaN( new Date(this.ces.endRegistrationDate).getTime() ) ) {  // d.valueOf() could also work
+        if ( isNaN( new Date(this.ces.endRegistrationDate).getTime() ) ) {
             var errors_out = "Start registration date is not valid";
             $('#errorsDiv')
                 .removeClass()
@@ -125,7 +125,7 @@ app.controller('FormController', ['$scope', '$http', function ($scope, $http) {
             method : "POST",
             url : '/admin/cesclose'
         }).then(function mySucces(response) {
-            if (confirm("Session will be removed") == true) {
+            if (confirm("Session will be closed") == true) {
                 getReq();
             }
 
