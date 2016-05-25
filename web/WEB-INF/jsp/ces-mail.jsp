@@ -20,8 +20,9 @@
 
     <style>
         .generic-container {
-            width: 65%;
-            margin-left: 5%;
+            /*width: 97%;*/
+            /*margin-left: 6%;*/
+            padding-right: 30px;
         }
     </style>
 
@@ -29,9 +30,9 @@
 
 </head>
 <body>
-<div class="generic-container">
+<div class="generic-container col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <div class="row">
-        <div class="col-md-8">
+        <div >
             <div class="card hoverable">
                 <div class="view overlay hm-white-slight z-depth-1">
                     <div class="mask waves-effect"></div>

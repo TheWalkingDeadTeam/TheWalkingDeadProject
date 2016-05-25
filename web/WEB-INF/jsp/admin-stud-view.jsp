@@ -67,6 +67,10 @@
                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white"
                data-toggle="collapse">Mail With Template</a>
 
+            <a href="#FooThree"
+               class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white"
+               data-toggle="collapse">Settings</a>
+
 
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
                 <label class="mdl-button mdl-js-button mdl-button--icon" for="search">
@@ -96,6 +100,48 @@
                 <jsp:include page="custom-mail-template-interviewers.jsp"/>
             </div>
 
+            <div id="FooThree" class="collapse">
+                <%--<jsp:include page="custom-mail.jsp"/>--%>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="card hoverable">
+                                <div class="view overlay hm-white-slight z-depth-1">
+                                    <div class="mask waves-effect"></div>
+                                </div>
+
+                                <div class="card-content">
+                                    <div class="panel panel-default">
+                                        <form ng-submit="setSize(count)" id="settingsForm">
+                                            <select name="selectUsersCount" ng-model="count">
+                                                <option disabled value="">Choose count of rows</option>
+                                                <option selected value="10">10</option>
+                                                <option value="25">25</option>
+                                                <option value="50">50</option>
+                                            </select>
+                                            <div>
+                                                <div ng-repeat="head in data.users.header">
+                                                    <input type="checkbox" checklist-model="headerStud.head"
+                                                           checklist-value="head">
+                                                    <p>{{head.name}}</p>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-actions floatRight">
+                                                <input type="submit" id="mail" value="Save"
+                                                       class="btn btn-default waves-effect waves-light">
+                                            </div>
+
+                                        </form>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
         <table id="tableUsers" class="table table-striped table-hover">
             <thead>
@@ -113,13 +159,13 @@
                         Full Name
                     </a>
                 </td>
-                <td ng-repeat="head in data.users.header">
+                <td ng-repeat="head in headerStud.head">
                     <a ng-click="sortReverse = !sortReverse; sortType(head.id,sortReverse)">
                         {{head.name}}
                     </a>
                 </td>
                 <td>
-                    <a ng-click="sortTyprara='rejected'; sortReverse = !sortReverse">
+                    <a ng-click="sortType('rejected',sortReverse); sortReverse = !sortReverse">
                         Rejected
                     </a>
                 </td>
@@ -132,8 +178,8 @@
             <tr dir-paginate="user in data.users.rows|itemsPerPage:data.itemsPerPage" total-items="data.total_count">
                 <td><input type="checkbox" checklist-model="dataStudents.studId" checklist-value="user.userId"></td>
                 <%--<td ng-init="index=$index + 1">{{index}}</td>--%>
-                <td><a href="/admin/students/{{user.userId}}" target="_blanks">{{user.name}}</a></td>
-                <td ng-repeat="head in data.users.header">
+                <td><a href="/profile?{{user.userId}}" target="_blanks">{{user.name}}</a></td>
+                <td ng-repeat="head in headerStud.head">
                     {{user.fields[head.id]}}
                 </td>
                 <td ng-style="{opacity:0.5,'background-color':'{{user.rejected ? 'red' : 'green'}}'}">
@@ -165,34 +211,6 @@
 <script src="/resources/js/dirPagination.js"></script>
 <script src="http://vitalets.github.io/checklist-model/checklist-model.js"></script>
 <script src="/resources/js/adminmenu.js"></script>
-
-<script>
-    // Get the modal
-    var modal = document.getElementById('myModal');
-
-    // Get the button that opens the modal
-    var btn = document.getElementById("myBtn");
-
-    // Get the <span> element that closes the modal
-    var span = document.getElementsByClassName("close")[0];
-
-    // When the user clicks the button, open the modal
-    btn.onclick = function() {
-        modal.style.display = "block";
-    }
-
-    // When the user clicks on <span> (x), close the modal
-    span.onclick = function() {
-        modal.style.display = "none";
-    }
-
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
-</script>
 
 </body>
 

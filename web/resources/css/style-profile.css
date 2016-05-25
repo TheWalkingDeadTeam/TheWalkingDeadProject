@@ -144,7 +144,7 @@ button:active {
     text-align: center;
     text-decoration: none;
     font-size: 14px;
-    width: 6em;
+    /*width: 6em;*/
     height: 3em;
 }
 

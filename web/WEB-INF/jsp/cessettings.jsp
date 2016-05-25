@@ -64,7 +64,7 @@
                             </div>
                         </div>
                         <div name="myForm" id="CESfields" ng-submit="ctrl.save()"
-                             class="col-lg-11 col-md-8 col-sm-9 col-xs-9">
+                             class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                             <div><span class="myTextInfo">Year</span><input type="number" name="year"
                                                                             id="1" class="form-control"
                                                                             ng-model="ctrl.ces.year"
@@ -128,12 +128,12 @@
                             <%--class="form-control"--%>
                             <%--ng-model="ctrl.ces.status"--%>
                             <%--ng-readonly=true required/></div>--%>
-                            <input type="submit" ng-click="ctrl.save()" value="Save" style="margin-top: 5px;"
-                                   class="btn btn-lg btn-primary btn-block mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white formControllingButt">
+                            <input type="submit" ng-click="ctrl.save()" value="Save" style="margin-top: 5px; width: 100%;"
+                                   class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white formControllingButt">
                             <%--<button ng-click="backButton()" class="btn btn-lg btn-primary btn-block"> Back </button>--%>
 
-                            <a href="#slideDown"
-                               class="btn btn-lg btn-primary btn-block mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white formControllingButt"
+                            <a href="#slideDown" style="margin-top: 10px; width: 100%;"
+                               class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white formControllingButt"
                                data-toggle="collapse">Close Session</a>
 
                             <div id="errorsDiv" style="margin-top: 10px;"></div>
@@ -146,7 +146,7 @@
             <%--class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">Exit</a>--%>
         </div>
 
-        <div id="slideDown" class="collapse">
+        <div id="slideDown" class="collapse col-lg-6 col-md-8 col-sm-12 col-xs-12" style="    margin-left: 30px;">
             <jsp:include page="ces-mail.jsp"/>
         </div>
     </main>

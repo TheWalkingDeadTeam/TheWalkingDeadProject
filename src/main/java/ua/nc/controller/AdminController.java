@@ -188,11 +188,6 @@ public class AdminController {
         }
     }
 
-    @RequestMapping(value = "/students/{id}", method = RequestMethod.GET, produces = "application/json")
-    public String getStudentById(@PathVariable("id") Integer id) {
-        return "redirect:/profile?" + id;
-    }
-
     /**
      * Method for view interview list from admin controller panel
      *
@@ -475,10 +470,11 @@ public class AdminController {
     @ResponseBody
     CES ces() {
         try {
-            LOGGER.info(cesService.getCES());
+            cesService.checkRegistrationDate();
+            cesService.checkInterviewDate();
             return cesService.getCES();
         } catch (DAOException e) {
-            LOGGER.error("DAO error");
+            LOGGER.error("Can`t get CES");
             return null;
         }
     }
@@ -514,6 +510,9 @@ public class AdminController {
 
     @RequestMapping(value = {"/edit-form"}, method = RequestMethod.GET)
     public String editFormView() {
+        if (cesService.getPendingCES() == null){
+            return "error-ces-ongoing";
+        }
         return "edit-form";
     }
 
@@ -521,6 +520,9 @@ public class AdminController {
     public
     @ResponseBody
     List<Field> editFormGet(Integer ces_id) {
+        if (cesService.getPendingCES() == null) {
+            return null;
+        }
         EditFormService efs = new EditFormServiceImpl();
         List<Field> fields = new LinkedList<>();
         fields.addAll(efs.getAllFields(efs.getCES_ID()));

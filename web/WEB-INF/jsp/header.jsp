@@ -38,7 +38,7 @@
                         </sec:authorize>
                     </a></li>
                     <sec:authorize access="hasAnyRole('ROLE_HR','ROLE_DEV','ROLE_BA')">
-                    <li><a href="/interviewee">Interviewees</a></li>
+                    <li><a href="/interviewee"><spring:message code="locale.interviewee"/></a></li>
                     </sec:authorize>
                     <li><a href="/information"><spring:message code="locale.info"/></a></li>
                     <li><a href="/contacts"><spring:message code="locale.contacts"/></a></li>
