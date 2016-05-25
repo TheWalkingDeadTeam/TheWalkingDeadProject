@@ -115,9 +115,7 @@ public class SchedulerController {
         interviewerParameters.put(CONTACT_INTERVIEWERS, scheduler.getContactStaff());
         studentParameters.put(CONTACT_STUDENTS, scheduler.getContactStudent());
         Date startDate = convertDate(scheduler.getInterviewTime());
-        System.out.println(scheduler.getInterviewTime());
         try {
-            System.out.println(startDate);
             List<Date> interviewDates = cesService.planSchedule(startDate);
             mailService.sendInterviewReminders(interviewDates, interviewerMail, interviewerParameters,
                     studentMail, studentParameters);

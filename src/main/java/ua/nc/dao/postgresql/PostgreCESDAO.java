@@ -228,7 +228,7 @@ public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements C
 
     @Override
     public void addInterviewerForCurrentCES(int cesId, int interviewerId) throws DAOException {
-        doSmthWithCESFieldOrInterviewerParticipation(addInterviewerForCurrentCES, cesId, interviewerId);
+        doSmthWithCESFieldOrInterviewerParticipation(ADD_INTERVIEWER_FOR_CURRENT_CES, cesId, interviewerId);
     }
 
     @Override
