@@ -1,3 +1,4 @@
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%--
   Created by IntelliJ IDEA.
   User: Pavel
@@ -10,9 +11,9 @@
     <div class="" role="alert">
 
         <form>
-            <input id="changePassword" name="password" style="margin-bottom: 5px;" class="form-control login-field  login-field-password" placeholder="Password" type="password"
+            <input id="changePassword" name="password" style="margin-bottom: 5px;" class="form-control login-field  login-field-password" placeholder=<spring:message code="locale.password"/> type="password"
                    value="">
-            <button id="buttonChangePassword" class="btn btn-lg btn-primary btn-block changebtn mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">Change password</button>
+            <button id="buttonChangePassword" class="btn btn-lg btn-primary btn-block changebtn mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white"> <spring:message code="locale.changePassword"/></button>
         </form>
         <div id="messageCheckPassword"></div>
     </div>

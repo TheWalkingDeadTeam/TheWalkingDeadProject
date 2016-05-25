@@ -296,5 +296,4 @@ public class PostgreMailDAO extends AbstractPostgreDAO<Mail, Integer> implements
         }
         return mails;
     }
-
 }

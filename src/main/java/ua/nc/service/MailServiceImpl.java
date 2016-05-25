@@ -340,7 +340,8 @@ public class MailServiceImpl implements MailService {
 
 
     @Override
-    public void sendFinalNotification() {
+    public void sendFinalNotification(Integer rejectId, Integer jobId, Integer courseId) {
+        System.out.println("reject:" + rejectId + ",jobId:" + jobId);
         Integer cesId = cesService.getCurrentCES().getId();
         Connection connection = daoFactory.getConnection();
         UserDAO userDAO = new PostgreUserDAO(connection);
@@ -367,26 +368,29 @@ public class MailServiceImpl implements MailService {
             daoFactory.putConnection(connection);
         }
 
-        final Mail mailRejectedTemplate = getByHeaderMailTemplate(REJECTED).get(0);
-        final Mail mailWorkOffer = getByHeaderMailTemplate(ACCEPTED_WORK).get(0);
-        final Mail mailCourseOffer = getByHeaderMailTemplate(ACCEPTED_COURSE).get(0);
+         Mail mailRejectedTemplate = getMail(rejectId);
+         Mail mailWorkOffer = getMail(jobId);
+         Mail mailCourseOffer = getMail(courseId);
 
         if ((!mailRejectedTemplate.getBodyTemplate().isEmpty()) && (!mailWorkOffer.getBodyTemplate().isEmpty()) &&
                 (!mailCourseOffer.getBodyTemplate().isEmpty())) {
+//            Async send
+//            final Set<User> finalJobOfferUsers = jobOfferUsers;
+//            final Set<User> finalCourseRejectedUsers = courseRejectedUsers;
+//            final Set<User> finalCourseAcceptedUsers = courseAcceptedUsers;
+//            schedulerMassDeliveryService.schedule(new Runnable() {
+//                public void run() {
+//                    massDelivery(finalJobOfferUsers, mailWorkOffer);
+//
+//                    massDelivery(finalCourseRejectedUsers, mailRejectedTemplate);
+//
+//                    massDelivery(finalCourseAcceptedUsers, mailCourseOffer);
+//                }
+//            }, new Date());
 
-            final Set<User> finalJobOfferUsers = jobOfferUsers;
-            final Set<User> finalCourseRejectedUsers = courseRejectedUsers;
-            final Set<User> finalCourseAcceptedUsers = courseAcceptedUsers;
-            schedulerMassDeliveryService.schedule(new Runnable() {
-                public void run() {
-                    massDelivery(finalJobOfferUsers, mailWorkOffer);
-
-                    massDelivery(finalCourseRejectedUsers, mailRejectedTemplate);
-
-                    massDelivery(finalCourseAcceptedUsers, mailCourseOffer);
-                }
-            }, new Date());
+            massDelivery(jobOfferUsers,mailWorkOffer);
+            massDelivery(courseRejectedUsers,mailRejectedTemplate);
+            massDelivery(courseAcceptedUsers,mailCourseOffer);
         }
     }
-
 }

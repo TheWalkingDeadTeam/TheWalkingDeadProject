@@ -154,9 +154,8 @@
     <jsp:include page="footer.jsp"/>
 </main>
 
-
-<script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
 <script src="/resources/js/admin-create-user.js"></script>
 <script src="/resources/bootstrap/js/bootstrap.js"></script>
 <script src="/resources/js/checkboxScript.js"></script>

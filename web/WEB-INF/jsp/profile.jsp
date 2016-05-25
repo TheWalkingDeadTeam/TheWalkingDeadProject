@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
     <title>Profile</title>
@@ -17,31 +18,10 @@
 
 </head>
 <body>
-<header>
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed button-header" data-toggle='collapse'
-                        data-target='#collapsed-menu' aria-expanded="false">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand brand-img" href="">
-                    <img src='resources/images/logo.png' alt="Brand" class="header-img">
-                </a>
-            </div>
-            <div id='collapsed-menu' class='navbar-collapse collapse'>
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="/login">Home</a></li>
-                    <li><a href="/information">Information</a></li>
-                    <li><a href="/contacts">Contacts</a></li>
-                    <li><a href="/logout">Logout</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-</header>
+
+
+
+<jsp:include page="header.jsp"/>
 
 <sec:authentication var="principal" property="principal"/>
 <sec:authorize access="isAuthenticated()">
@@ -60,12 +40,12 @@
                     <%--<button id="photo_button" type="submit">Upload</button>--%>
                 <%--</form>--%>
             <%--</div>--%>
-            <div class=" col-lg-3 col-md-3 col-sm-3 col-xs-3 mainf">
-                <h4>Name:</h4>
-                <h4>Surname:</h4>
-                <h4>E-mail:</h4>
+            <div class=" col-lg-4 col-md-5 col-sm-5 col-xs-5 mainf">
+                <h4><spring:message code="locale.name"/>:</h4>
+                <h4><spring:message code="locale.surname"/>:</h4>
+                <h4><spring:message code="locale.email"/>:</h4>
             </div>
-            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 userDetails">
+            <div class="col-lg-5 col-md-4 col-sm-4 col-xs-4" style="margin-top: 7px;">
                 <span id="userName"></span>
                 <span id="userSurname"></span>
                 <span id="userEmail"></span>
@@ -79,12 +59,12 @@
     </form>
     <sec:authorize access="hasRole('ROLE_STUDENT')">
         <div id="agreement">
-            <label for="agree">I agree to have my personal information been proceeded</label>
+            <label for="agree"><spring:message code="locale.agreement"/></label>
             <input id="agree" type="checkbox"/>
         </div>
         <div id="fieldsCheck"></div>
         <div id="profileButtons">
-            <button id="save" type="submit" form="fields" value="Submit" disabled="disabled">Save</button>
+            <button id="save" type="submit" form="fields" value="Submit" disabled="disabled"><spring:message code="locale.save"/></button>
                 <%--<button id="buttonEnroll" type="submit" value="Enroll" href="/enroll">Enroll</button>--%>
         </div>
     </sec:authorize>
