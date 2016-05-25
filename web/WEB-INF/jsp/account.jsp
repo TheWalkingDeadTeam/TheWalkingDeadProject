@@ -44,13 +44,14 @@
                     <img src="/resources/images/background-2.jpg"/>
                 </div>
                 <div class="user">
-                    <img id="photo_img" src="/getPhoto" alt="User's photo" width="100" height="120"
+                    <img id="photo_img" src="" alt="User's photo" width="100" height="120"
                          onError="this.src='/resources/images/user-photo.png'" class="img-circle">
                 </div>
                 <div class="content">
                     <div class="main">
                         <h3 id="userName" class="name"></h3>
                         <p id="userSurname" class="profession"></p>
+                        <h5 id="userRoles" class="profession"></h5>
                         <p id="userEmail" class="profession"></p>
                     </div>
                     <div class="footer" style="margin-bottom: 20px">
@@ -77,8 +78,10 @@
                             <div class="stats class="col-lg-4 col-md-4 col-sm-2 col-xs-2">
                                 <sec:authorize access="!hasRole('ROLE_STUDENT')">
                                     <h5>Enrollment</h5>
+                                    <sec:authentication var="principal" property="principal"/>
+                                    <input id="userid" type="hidden" value=" ${principal.id}"/>
                                     <div id="enrollMessages"></div>
-                                    <button id="enroll_button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white" type="submit">Enroll</button>
+                                    <button id="enroll_button" href="/interviewer/enroll-ces-interviewer" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white" type="submit">Enroll</button>
                                 </sec:authorize>
                             </div>
                             <div class="stats class="col-lg-4 col-md-4 col-sm-5 col-xs-5">

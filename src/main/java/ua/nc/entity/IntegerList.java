@@ -6,18 +6,16 @@ import java.util.List;
  * Created by Pavel on 17.05.2016.
  */
 public class IntegerList {
-    private List<Integer> interviewersId;
+    private List<Integer> values;
 
     public IntegerList() {
     }
 
-
-    public List<Integer> getInterviewersId() {
-        return interviewersId;
+    public List<Integer> getValues() {
+        return values;
     }
 
-    public void setInterviewersId(List<Integer> interviewersId) {
-        this.interviewersId = interviewersId;
+    public void setValues(List<Integer> values) {
+        this.values = values;
     }
-
 }

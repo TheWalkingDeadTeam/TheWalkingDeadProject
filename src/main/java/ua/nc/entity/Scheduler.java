@@ -10,14 +10,8 @@ public class Scheduler {
     private String contactStaff;
     private String courseType;
     private String interviewTime;
+    private String contactStudent;
 
-    public String getInterviewTime() {
-        return interviewTime;
-    }
-
-    public void setInterviewTime(String interviewTime) {
-        this.interviewTime = interviewTime;
-    }
 
     @Override
     public String toString() {
@@ -30,6 +24,15 @@ public class Scheduler {
                 ", interviewTime='" + interviewTime + '\'' +
                 ", contactStudent='" + contactStudent + '\'' +
                 '}';
+    }
+
+
+    public String getInterviewTime() {
+        return interviewTime;
+    }
+
+    public void setInterviewTime(String interviewTime) {
+        this.interviewTime = interviewTime;
     }
 
     public String getContactStudent() {
@@ -47,9 +50,6 @@ public class Scheduler {
     public void setContactStaff(String contactStaff) {
         this.contactStaff = contactStaff;
     }
-
-    private String contactStudent;
-
 
     public Integer getMailIdUser() {
         return mailIdUser;
@@ -74,7 +74,6 @@ public class Scheduler {
     public void setMailIdStaff(Integer mailIdStaff) {
         this.mailIdStaff = mailIdStaff;
     }
-
 
     public String getCourseType() {
         return courseType;

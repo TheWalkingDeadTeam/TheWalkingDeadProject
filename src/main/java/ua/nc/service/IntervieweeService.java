@@ -30,6 +30,5 @@ public interface IntervieweeService {
 
     public Integer getIntervieweeSize(String pattern);
 
-    void createInteviewees(List<User> studentGroup, Map<Integer, Integer> applicationList, Date interviewDate,
-                           int startMillis);
+    void createInteviewees(List<User> studentGroup, Map<Integer, Integer> applicationList, Date interviewDate);
 }

@@ -1,12 +1,12 @@
 $(document).ready(function () {
-    
+
     $("#buttonRegistration").click(function (event) {
         event.preventDefault();
         var checkroles = [];
-        $("#checkbox_admin").each(function () {
-            checkroles.push({name: $(this).val()});
-        });
-        if ($("#role").val() != '-') {
+        if ($("#checkboxAdmin").prop('checked')) {
+            checkroles.push({name: $("#checkboxAdmin").val()});
+        }
+        if ($("#role").val() != '') {
             checkroles.push({name: $("#role").val()});
         }
         $.ajax({
@@ -32,18 +32,23 @@ $(document).ready(function () {
                         .empty();
                     $('#messageRegistration')
                         .addClass('alert alert-danger')
-                        .html(errors_out);
+                        .html(errors_out)
+                        .fadeIn();
                     $('#j_password').val("");
                 } else {
                     $('#messageRegistration')
                         .removeClass()
                         .empty()
                         .addClass('alert alert-success')
-                        .html('Registered successfully');
+                        .html('Registered successfully')
+                        .fadeIn();
                     $('#regform input')
                         .val("");
                     $("#check").prop("checked", false);
                     $("input").filter(".roles").prop("checked", false);
+                    setTimeout(function() {
+                        $("#messageRegistration").fadeOut().empty();
+                    }, 3000);
                 }
             },
             error: function (jqXHR, exception) {

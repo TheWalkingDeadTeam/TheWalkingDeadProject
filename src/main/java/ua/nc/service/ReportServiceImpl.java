@@ -7,11 +7,14 @@ import ua.nc.dao.exception.DAOException;
 import ua.nc.dao.factory.DAOFactory;
 import ua.nc.dao.postgresql.PostgreReportTemplateDAO;
 import ua.nc.entity.ReportTemplate;
+import ua.nc.validator.ReportExecuteValidator;
+import ua.nc.validator.ValidationError;
 
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by Pavel on 11.05.2016.
@@ -93,15 +96,25 @@ public class ReportServiceImpl implements ReportService {
     public List<Map<String, Object>> getReportRows(ReportTemplate report) throws DAOException {
         Connection connection = daoFactory.getConnection();
         ReportTemplateDAO reportTemplateDAO = new PostgreReportTemplateDAO(connection);
+        ReportExecuteValidator validator = new ReportExecuteValidator();
         List<Map<String, Object>> reportRows = null;
-        try {
-            reportRows = reportTemplateDAO.execute(report);
-            LOGGER.info("Report " + report.getName() + " successfully execute");
-        } catch (DAOException e) {
-            LOGGER.warn("Can't execute report query " + report.getId());
-            throw new DAOException(e);
-        } finally {
-            daoFactory.putConnection(connection);
+        Set<ValidationError> errors = validator.validate(report.getQuery());
+        if (errors.isEmpty()) {
+            try {
+                reportRows = reportTemplateDAO.execute(report);
+                LOGGER.info("Report " + report.getName() + " successfully execute");
+                if (reportRows.isEmpty()) {
+                    LOGGER.info("Report " + report.getName() + " is empty");
+                    throw new DAOException("Empty report");
+                }
+            } catch (DAOException e) {
+                LOGGER.warn("Can't execute report query " + report.getId());
+                throw new DAOException(e);
+            } finally {
+                daoFactory.putConnection(connection);
+            }
+        } else {
+            throw new DAOException("Report query has errors");
         }
         return  reportRows;
     }

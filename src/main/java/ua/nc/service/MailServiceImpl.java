@@ -52,8 +52,9 @@ public class MailServiceImpl implements MailService {
 
     private static final int POOL_SIZE = 5;
     private static final int POOL_SIZE_SCHEDULER = 10;
-    private static final int MILLIS_PER_HOUR = 1000 * 60 * 60;
     private static final int MILLIS_PER_MINUTE = 1000 * 60;
+    private static final int MILLIS_PER_HOUR = MILLIS_PER_MINUTE * 60;
+    private static final int MILLIS_PER_DAY = MILLIS_PER_HOUR * 24;
     private static ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
     private static ThreadPoolTaskScheduler schedulerMassDeliveryService = new ThreadPoolTaskScheduler();
     private CESService cesService = new CESServiceImpl();
@@ -265,26 +266,41 @@ public class MailServiceImpl implements MailService {
                                        Map<String, String> studentParameters) {
         Connection connection = daoFactory.getConnection();
         UserDAO userDAO = daoFactory.getUserDAO(connection);
-        CES ces = cesService.getCurrentCES();
+        ApplicationDAO appDAO = daoFactory.getApplicationDAO(connection);
+        IntervieweeService intService = new IntervieweeServiceImpl();
         try {
+            CES ces = cesService.getCurrentCES();
             int reminderTime = ces.getReminders();
-            Set<User> interviewersSet = userDAO.getInterviewersForCurrentCES();
-            ApplicationDAO appDAO = daoFactory.getApplicationDAO(connection);
             Map<Integer, Integer> applicationList = appDAO.getAllAcceptedApplications(ces.getId());
-            Set<User> studentsSet = userDAO.getAllAcceptedStudents(ces.getId());
             int reminderMillis = reminderTime * MILLIS_PER_HOUR;
             Mail customizedInterviewerMail = customizeMail(interviewerMail, studentParameters);
             Mail customizedStudentMail = customizeMail(studentMail, studentParameters);
-            String startHours = studentParameters.get(START_HOURS_PATTERN);
-            String startMins = studentParameters.get(START_MINS_PATTERN);
+            int studentsPerGroup = Math.min(userDAO.getDEVCount(ces.getId()), userDAO.getHRBACount(ces.getId()));
+            int firstStudent = 0;
+            int lastStudent = studentsPerGroup;
+            List<User> interviewersList = new ArrayList<>(userDAO.getInterviewersForCurrentCES());
+            List<User> studentsList = new ArrayList<>(userDAO.getAllAcceptedStudents(ces.getId()));
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyy HH:mm");
             Map<String, String> dateTimeParameters = new HashMap<>();
-            dateTimeParameters.put(START_HOURS_PATTERN, startHours);
-            dateTimeParameters.put(START_MINS_PATTERN, startMins);
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyy");
-            everydaySend(interviewDates, interviewersSet, studentsSet, reminderMillis, customizedInterviewerMail,
-                    customizedStudentMail, dateTimeParameters, dateFormat, applicationList);
+            Date previousDate = new Date(interviewDates.get(0).getTime() - reminderMillis - 24 * MILLIS_PER_DAY);
+            for (Date interviewDate : interviewDates) {
+                long preciseTime = interviewDate.getTime();
+                Date estimatedTime = new Date(preciseTime - (preciseTime % (MILLIS_PER_MINUTE * 30)));
+                dateTimeParameters.put(DATE_PATTERN, dateFormat.format(estimatedTime));
+                List<User> studentGroup = studentsList.subList(firstStudent, Math.min(lastStudent, studentsList.size()));
+                Date reminderDate = new Date(interviewDate.getTime() - reminderMillis);
+                if (previousDate.getDate() != reminderDate.getDate()) {
+                    massDelivery(reminderDate, interviewersList, customizeMail(customizedInterviewerMail, dateTimeParameters));
+                    previousDate = reminderDate;
+                }
+                massDelivery(reminderDate, studentGroup, customizeMail(customizedStudentMail, dateTimeParameters));
+                intService.createInteviewees(studentGroup, applicationList, interviewDate);
+                firstStudent = lastStudent;
+                lastStudent += studentsPerGroup;
+            }
+            cesService.switchToInterviewingOngoing();
         } catch (DAOException e) {
-            LOGGER.error("Unable to access DB.");
+            LOGGER.error(e.getCause());
         } finally {
             daoFactory.putConnection(connection);
         }
@@ -369,97 +385,5 @@ public class MailServiceImpl implements MailService {
             }, new Date());
         }
     }
-
-    /**
-     * Divide list of students to parts and send emails to each part in special day.
-     *
-     * @param interviewDates     all the dates when the interviews are performed.
-     * @param interviewersSet    all the interviewers that take part in the CES.
-     * @param studentsSet        all the students invited to interview.
-     * @param reminderMillis     amount of milliseconds during that the reminder on a special date will be sent.
-     * @param interviewerMail    email template to send to all the interviewers.
-     * @param studentMail        email template to send to all the students.
-     * @param dateTimeParameters interview start hours and minutes.
-     * @param dateFormat         date formatter that transforms interview date to regional standard.
-     */
-    private void everydaySend(List<Date> interviewDates, Set<User> interviewersSet, Set<User> studentsSet,
-                              int reminderMillis, Mail interviewerMail, Mail studentMail,
-                              Map<String, String> dateTimeParameters, SimpleDateFormat dateFormat,
-                              Map<Integer, Integer> applicationList) {
-        String startHours = dateTimeParameters.get(START_HOURS_PATTERN);
-        String startMins = dateTimeParameters.get(START_MINS_PATTERN);
-        List<User> interviewersList = new ArrayList<>(interviewersSet);
-        List<User> studentsList = new ArrayList<>(studentsSet);
-        int studentsPerDay = (int) Math.ceil(studentsList.size() / interviewDates.size());
-        int todaysLastStudent = studentsPerDay;
-        CESServiceImpl cesService = new CESServiceImpl();
-        for (Date interviewDate : interviewDates) {
-            dateTimeParameters.put(DATE_PATTERN, dateFormat.format(interviewDate));
-            calculateGroupTime(todaysLastStudent, studentsList, applicationList, interviewersList,
-                    dateTimeParameters, interviewDate, reminderMillis, interviewerMail, studentMail);
-            dateTimeParameters.put(START_HOURS_PATTERN, startHours);
-            dateTimeParameters.put(START_MINS_PATTERN, startMins);
-            todaysLastStudent += studentsPerDay;
-        }
-        try {
-            cesService.switchToInterviewingOngoing();
-        } catch (DAOException e) {
-            LOGGER.error("Current CES is absent.");
-        }
-    }
-
-    private void calculateGroupTime(int todaysLastStudent, List<User> studentsList, Map<Integer, Integer> applicationList,
-                                    List<User> interviewersList, Map<String, String> dateTimeParameters,
-                                    Date interviewDate, int reminderMillis, Mail interviewerMail, Mail studentMail) {
-        Connection connection = daoFactory.getConnection();
-        UserDAO userDAO = daoFactory.getUserDAO(connection);
-        CESDAO cesDAO = daoFactory.getCESDAO(connection);
-        try {
-            IntervieweeService intService = new IntervieweeServiceImpl();
-            CES ces = cesDAO.getCurrentCES();
-            int studentsPerGroup = Math.min(userDAO.getDEVCount(ces.getId()), userDAO.getHRBACount(ces.getId()));
-            int firstStudent = 0;
-            int lastStudent = studentsPerGroup;
-            while (lastStudent < todaysLastStudent) {
-                List<User> studentGroup = studentsList.subList(firstStudent, Math.min(lastStudent, studentsList.size()));
-                int startMillis = Integer.parseInt(dateTimeParameters.get(START_HOURS_PATTERN)) * MILLIS_PER_HOUR +
-                        Integer.parseInt(dateTimeParameters.get(START_MINS_PATTERN)) / MIN_DELIMITER * MILLIS_PER_MINUTE;
-                Date reminderDate = new Date(interviewDate.getTime() + startMillis - reminderMillis);
-                massDelivery(reminderDate, interviewersList, customizeMail(interviewerMail, dateTimeParameters));
-                massDelivery(reminderDate, studentGroup, customizeMail(studentMail, dateTimeParameters));
-                firstStudent = lastStudent;
-                lastStudent += studentsPerGroup;
-                dateTimeParameters = increaseGroupTime(dateTimeParameters);
-                intService.createInteviewees(studentGroup, applicationList, interviewDate, startMillis);
-            }
-        } catch (DAOException e) {
-            LOGGER.error("Current CES is absent.");
-        } finally {
-            daoFactory.putConnection(connection);
-        }
-    }
-
-    private Map<String, String> increaseGroupTime(Map<String, String> dateTimeParameters) {
-        Connection connection = daoFactory.getConnection();
-        CESDAO cesDAO = daoFactory.getCESDAO(connection);
-        try {
-            CES ces = cesDAO.getCurrentCES();
-            int minutesPerStudent = ces.getInterviewTimeForPerson();
-            int hours = Integer.parseInt(dateTimeParameters.get(START_HOURS_PATTERN));
-            int minutes = Integer.parseInt(dateTimeParameters.get(START_MINS_PATTERN));
-            minutes += minutesPerStudent;
-            hours += minutes / 60;
-            hours %= 24;
-            minutes %= 60;
-            dateTimeParameters.put(START_HOURS_PATTERN, Integer.toString(hours));
-            dateTimeParameters.put(START_MINS_PATTERN, Integer.toString(minutes));
-        } catch (DAOException e) {
-            LOGGER.error("Current CES is absent.");
-        } finally {
-            daoFactory.putConnection(connection);
-        }
-        return dateTimeParameters;
-    }
-
 
 }

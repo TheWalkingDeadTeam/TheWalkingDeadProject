@@ -161,6 +161,7 @@
 <script src="/resources/js/studentListAngular.js"></script>
 <script src="/resources/js/dirPagination.js"></script>
 <script src="http://vitalets.github.io/checklist-model/checklist-model.js"></script>
+<script src="/resources/js/adminmenu.js"></script>
 
 </body>
 

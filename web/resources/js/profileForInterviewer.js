@@ -191,7 +191,7 @@ id="hr_score" class="label label-info label-as-badge pull-left">75</span></a></l
                 case 'text':
                 case 'textarea':
                 case 'tel':
-                    $('<label>').text(item.values[0].value+'').appendTo($('#block' + i));
+                    $('<span>').text(item.values[0].value+'').appendTo($('#block' + i));
                     break;
                 case 'select':
                 case 'checkbox':
@@ -202,7 +202,7 @@ id="hr_score" class="label label-info label-as-badge pull-left">75</span></a></l
                                 text.push(item_value.fieldValueName);
                             }
                         })
-                        $('<label>').text(text.toString()).appendTo($('#block' + i));
+                        $('<span>').text(text.toString()).appendTo($('#block' + i));
                         break;
             }
     }

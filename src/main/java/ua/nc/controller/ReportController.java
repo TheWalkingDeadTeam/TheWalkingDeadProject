@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.entity.ReportTemplate;
+import ua.nc.entity.ReportWrapper;
 import ua.nc.service.ReportService;
 import ua.nc.service.ReportServiceImpl;
 
@@ -113,8 +114,6 @@ public class ReportController {
         try {
             List<Map<String, Object>> reportRows = reportService.getReportRows(report);
             modelAndView.setViewName("excelView");
-            System.out.println(report.getId());
-            System.out.println(reportRows.size());
             modelAndView.addObject("report", report);
             modelAndView.addObject("reportRows", reportRows);
         } catch (DAOException e) {
@@ -130,24 +129,36 @@ public class ReportController {
      */
     @RequestMapping(value = "/reports/view/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity<List<Map<String, Object>>> showReport(@PathVariable Integer id) {
+    public ResponseEntity<ReportWrapper> showReport(@PathVariable Integer id) {
         ReportTemplate report = reportService.getReportById(id);
         List<Map<String, Object>> reportRows = null;
         try {
             reportRows = reportService.getReportRows(report);
-            return new ResponseEntity<List<Map<String, Object>>>(reportRows, HttpStatus.OK);
+            return new ResponseEntity<ReportWrapper>(new ReportWrapper(report, reportRows), HttpStatus.OK);
 
         } catch (DAOException e) {
-            return new ResponseEntity<List<Map<String, Object>>>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<ReportWrapper>(HttpStatus.NOT_FOUND);
         }
     }
 
-    /**
-     * @return The jsp page of the report view
-     */
+
+    @RequestMapping(value = "/report/error", method = RequestMethod.GET)
+    public ModelAndView error() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("error");
+        modelAndView.addObject("error", "Wrong query");
+        return modelAndView;
+    }
+
+
+
+
+        /**
+         * @return The jsp page of the report view
+         */
     @RequestMapping(value = "/report/view", method = RequestMethod.GET)
     public String reportid() {
-        return "report-id";
+        return "report";
     }
 
     /**
@@ -155,6 +166,6 @@ public class ReportController {
      */
     @RequestMapping(value = "/report", method = RequestMethod.GET)
     public String report() {
-        return "report-statistic";
+        return "report-template";
     }
 }

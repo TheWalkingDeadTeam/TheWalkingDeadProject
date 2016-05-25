@@ -3,26 +3,25 @@ package ua.nc.service.user;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
-import org.springframework.security.access.method.P;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import ua.nc.dao.CESDAO;
 import ua.nc.dao.RoleDAO;
 import ua.nc.dao.UserDAO;
 import ua.nc.dao.enums.DataBaseType;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.dao.factory.DAOFactory;
-import ua.nc.dao.postgresql.PostgreApplicationTableDAO;
-import ua.nc.dao.postgresql.PostgreDAOFactory;
 import ua.nc.dao.postgresql.PostgreUserDAO;
 import ua.nc.dao.postgresql.PostgreUserTableDAO;
-import ua.nc.entity.*;
-import ua.nc.entity.profile.StudentData;
-import ua.nc.service.CESServiceImpl;
+import ua.nc.entity.Role;
+import ua.nc.entity.User;
+import ua.nc.entity.UserRow;
 import ua.nc.service.MailService;
 import ua.nc.service.MailServiceImpl;
 
 import java.sql.Connection;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * Created by Pavel on 18.04.2016.
@@ -79,7 +78,7 @@ public class UserServiceImpl implements UserService {
         Connection connection = daoFactory.getConnection();
         PostgreUserTableDAO postgreUserTableDAO = new PostgreUserTableDAO(connection);
         try {
-            return postgreUserTableDAO.getUsersTable(itemPerPage, pageNumber,pattern);
+            return postgreUserTableDAO.getUsersTable(itemPerPage, pageNumber, pattern);
         } catch (DAOException e) {
             LOGGER.warn("Can't get students", e.getCause());
         } finally {
@@ -113,6 +112,7 @@ public class UserServiceImpl implements UserService {
         }
         return null;
     }
+
     @Override
     public Integer getSize(String pattern) {
         Connection connection = daoFactory.getConnection();
@@ -250,15 +250,15 @@ public class UserServiceImpl implements UserService {
         DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
         Connection connection = daoFactory.getConnection();
         PostgreUserDAO userDAO = (PostgreUserDAO) daoFactory.getUserDAO(connection);
-        for (Integer id : userIds) {
-            try {
+        try {
+            for (Integer id : userIds) {
                 userDAO.activateUser(id);
                 userDAO.updateUser(getUser(id));
-            } catch (DAOException e) {
-                LOGGER.warn("Cannot activate user with id " + id);
-            } finally {
-                daoFactory.putConnection(connection);
             }
+        } catch (DAOException e) {
+            LOGGER.warn("Cannot activate users");
+        } finally {
+            daoFactory.putConnection(connection);
         }
         LOGGER.info("activation users - OK");
     }
@@ -269,17 +269,17 @@ public class UserServiceImpl implements UserService {
         DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
         Connection connection = daoFactory.getConnection();
         PostgreUserDAO userDAO = (PostgreUserDAO) daoFactory.getUserDAO(connection);
-        for (Integer id : userIds) {
-            try {
+        try {
+            for (Integer id : userIds) {
+
                 userDAO.deactivateUser(id);
                 userDAO.updateUser(getUser(id));
-            } catch (DAOException e) {
-                LOGGER.warn("Cannot deactivate user with id " + id);
-            } finally {
-                daoFactory.putConnection(connection);
             }
+        } catch (DAOException e) {
+            LOGGER.warn("Cannot deactivate users");
+        } finally {
+            daoFactory.putConnection(connection);
         }
-
         LOGGER.info("deactivation users - OK");
     }
 

@@ -79,14 +79,15 @@
                 </div>
             </div>
 
-            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                <img class="map-location" src="http://www.netcracker.com/assets/img/map-office-location.png" alt="">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" style="margin-bottom: 10px;">
+                <div id="map-container" class="z-depth-1" style="height: 300px; width: 550px; display: block; margin-top: 5px; margin-left: auto; margin-right: auto;"></div>
             </div>
         </div>
     </div>
 </div>
 
 <jsp:include page="footer.jsp"/>
-
+<script src="http://maps.google.com/maps/api/js"></script>
+<script src="/resources/js/google-maps/google-maps.js"></script>
 </body>
 </html>

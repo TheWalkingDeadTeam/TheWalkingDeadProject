@@ -5,6 +5,7 @@ import ua.nc.dao.AbstractPostgreDAO;
 import ua.nc.dao.RoleDAO;
 import ua.nc.dao.UserDAO;
 import ua.nc.dao.enums.DataBaseType;
+import ua.nc.dao.enums.UserStatus;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.dao.factory.DAOFactory;
 import ua.nc.entity.Role;
@@ -27,13 +28,14 @@ public class PostgreUserDAO extends AbstractPostgreDAO<User, Integer> implements
             " FROM public.system_user users " +
             " JOIN public.interviewer_participation ip ON ip.system_user_id = users.system_user_id " +
             " WHERE ces_id = (SELECT ces.ces_id FROM public.course_enrollment_session ces JOIN public.ces_status stat " +
-            " ON ces.ces_status_id = stat.ces_status_id AND stat.name = 'Active')";
+            " ON ces.ces_status_id = stat.ces_status_id AND stat.name != 'Closed')";
     private final String GET_STUDENTS_FOR_CURRENT_CES = "SELECT users.system_user_id, users.email, users.name, users.surname " +
             " FROM public.system_user users" +
             " JOIN public.application app ON app.system_user_id = users.system_user_id" +
             " WHERE ces_id = (SELECT ces.ces_id FROM public.course_enrollment_session ces JOIN public.ces_status stat" +
             " ON ces.ces_status_id = stat.ces_status_id AND stat.name = 'Active') AND app.rejected IS FALSE";
-    private final String FIND_BY_EMAIL = "SELECT * FROM public.system_user u WHERE u.email = ?";
+    private final String FIND_BY_EMAIL = "SELECT u.*, sus.name as status FROM public.system_user u" +
+            " JOIN public.system_user_status sus ON u.system_user_status_id = sus.system_user_status_id WHERE u.email = ?";
     private final String CREATE_USER = "INSERT INTO public.system_user(name, surname, email, password, system_user_status_id) VALUES (?, ?, ?, ?, ?)";
     private final String SET_ROLE_TO_USER = "INSERT INTO public.system_user_role(role_id, system_user_id) SELECT ?, system_user_id FROM public.system_user u WHERE u.email = ?";
     private final String GET_BY_ROLE = "SELECT u.system_user_id, u.name, u.surname, u.email FROM public.system_user u " +
@@ -65,6 +67,7 @@ public class PostgreUserDAO extends AbstractPostgreDAO<User, Integer> implements
             user.setSurname(resultSet.getString("surname"));
             user.setEmail(resultSet.getString("email"));
             user.setPassword(resultSet.getString("password"));
+            user.setStatus(UserStatus.valueOf(resultSet.getString("status")));
             LOGGER.debug("Find user " + user.getName() + " byEmail");
         } catch (SQLException e) {
             LOGGER.info("User with " + email + " not found in DB" + e.getMessage());
@@ -234,7 +237,6 @@ public class PostgreUserDAO extends AbstractPostgreDAO<User, Integer> implements
                 user.setEmail(rs.getString("email"));
                 user.setName(rs.getString("name"));
                 user.setSurname(rs.getString("surname"));
-                user.setPassword(rs.getString("password"));
                 Set<Role> roles = roleDAO.findByEmail(user.getEmail());
                 user.setRoles(roles);
                 users.add(user);

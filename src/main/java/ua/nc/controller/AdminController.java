@@ -57,14 +57,14 @@ public class AdminController {
 
                 User registeredUser = userService.createUser(user);
                 if (registeredUser == null) {
-                    LOGGER.warn("Register failed " + user.getEmail());
+                    LOGGER.warn("Register failed " + user.getEmail().toString());
                     errors.add(new ValidationError("register", "Register failed"));
                 } else {
                     LOGGER.info(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
-                            .getPrincipal()).getUsername() + " create user " + user.getEmail());
+                            .getPrincipal()).getUsername().toString() + " create user " + user.getEmail().toString());
                 }
             } else {
-                LOGGER.warn("User " + user.getEmail() + " already exists");
+                LOGGER.warn("User " + user.getEmail().toString() + " already exists");
                 errors.add(new ValidationError("user", "Such user already exists"));
             }
         }
@@ -86,7 +86,7 @@ public class AdminController {
         CES currentCES = cesService.getCurrentCES();
         if (currentCES != null) {
             int cesId = currentCES.getId();
-            Iterator<Integer> iterator = integerList.getInterviewersId().iterator();
+            Iterator<Integer> iterator = integerList.getValues().iterator();
             while (iterator.hasNext()) {
                 try {
                     cesService.removeInterviewer(iterator.next(), cesId);
@@ -134,7 +134,7 @@ public class AdminController {
     StudentData studentsSearch(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("pattern") String pattern) {
         StudentData studentData;
         StudentService studentService = new StudentServiceImpl();
-        studentData = studentService.getStudents(itemsPerPage, (pageNumber * itemsPerPage - 10), pattern);
+        studentData = studentService.getStudents(itemsPerPage, (pageNumber * itemsPerPage - itemsPerPage), pattern);
         if (studentData == null) {
             LOGGER.warn("studData == null");
         }
@@ -148,7 +148,7 @@ public class AdminController {
     public StudentData getStudents(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber) {
         StudentData studentData;
         StudentService studentService = new StudentServiceImpl();
-        studentData = studentService.getStudents(itemsPerPage, (pageNumber * itemsPerPage - 10));
+        studentData = studentService.getStudents(itemsPerPage, (pageNumber * itemsPerPage - itemsPerPage));
         if (studentData == null) {
             LOGGER.warn("studData == null");
         }
@@ -161,7 +161,7 @@ public class AdminController {
     public StudentData getStudentsBySort(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("sortType") Integer sortType, @PathVariable("type") Boolean asc) {
         StudentData studentData;
         StudentService studentService = new StudentServiceImpl();
-        studentData = studentService.getStudents(itemsPerPage, (pageNumber * itemsPerPage - 10), sortType, asc);
+        studentData = studentService.getStudents(itemsPerPage, (pageNumber * itemsPerPage - itemsPerPage), sortType, asc);
         if (studentData == null) {
             LOGGER.warn("studData == null");
         }
@@ -216,7 +216,7 @@ public class AdminController {
 //        return studentData;
         List<Interviewer> interviewers;
         InterviewerService interviewerService = new InterviewerServiceImpl();
-        interviewers = interviewerService.getInterviewer(itemsPerPage, (pageNumber * itemsPerPage - 10));
+        interviewers = interviewerService.getInterviewer(itemsPerPage, (pageNumber * itemsPerPage - itemsPerPage));
         if (interviewers == null) {
             LOGGER.warn("interviewers == null");
         }
@@ -229,7 +229,7 @@ public class AdminController {
     public List<Interviewer> interviewGetJSONSort(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("sortType") String sortType, @PathVariable("type") Boolean asc) {
         List<Interviewer> interviewers;
         InterviewerService interviewerService = new InterviewerServiceImpl();
-        interviewers = interviewerService.getInterviewer(itemsPerPage, (pageNumber * itemsPerPage - 10), sortType, asc);
+        interviewers = interviewerService.getInterviewer(itemsPerPage, (pageNumber * itemsPerPage - itemsPerPage), sortType, asc);
         if (interviewers == null) {
             LOGGER.warn("interviewers == null");
         }
@@ -261,7 +261,7 @@ public class AdminController {
         List<Interviewer> interviewers;
         System.out.println(pattern);
         InterviewerService interviewerService = new InterviewerServiceImpl();
-        interviewers = interviewerService.getInterviewer(itemsPerPage, (pageNumber * itemsPerPage - 10), sortType, pattern);
+        interviewers = interviewerService.getInterviewer(itemsPerPage, (pageNumber * itemsPerPage - itemsPerPage), sortType, pattern);
         if (interviewers == null) {
             LOGGER.warn("interviewers == null");
         }
@@ -310,7 +310,7 @@ public class AdminController {
     List<UserRow> usersSearch(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("pattern") String pattern) {
         List<UserRow> userRows;
         UserService userService = new UserServiceImpl();
-        userRows = userService.getUser(itemsPerPage, (pageNumber * itemsPerPage - 10), pattern);
+        userRows = userService.getUser(itemsPerPage, (pageNumber * itemsPerPage - itemsPerPage), pattern);
         if (userRows == null) {
             LOGGER.warn("users == null");
         }
@@ -323,7 +323,7 @@ public class AdminController {
     List<UserRow> usersSearch(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("sortType") String sortType, @PathVariable("pattern") String pattern) {
         List<UserRow> userRows;
         UserService userService = new UserServiceImpl();
-        userRows = userService.getUser(itemsPerPage, (pageNumber * itemsPerPage - 10), sortType, pattern);
+        userRows = userService.getUser(itemsPerPage, (pageNumber * itemsPerPage - itemsPerPage), sortType, pattern);
         if (userRows == null) {
             LOGGER.warn("users == null");
         }
@@ -336,7 +336,7 @@ public class AdminController {
     public List<UserRow> getUsers(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber) {
         List<UserRow> userRows;
         UserService userService = new UserServiceImpl();
-        userRows = userService.getUser(itemsPerPage, (pageNumber * itemsPerPage - 10));
+        userRows = userService.getUser(itemsPerPage, (pageNumber * itemsPerPage - itemsPerPage));
         if (userRows == null) {
             LOGGER.warn("users == null");
         }
@@ -349,7 +349,7 @@ public class AdminController {
     public List<UserRow> getUsersBySort(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("sortType") String sortType, @PathVariable("type") Boolean asc) {
         List<UserRow> userRows;
         UserService userService = new UserServiceImpl();
-        userRows = userService.getUser(itemsPerPage, (pageNumber * itemsPerPage - 10), sortType, asc);
+        userRows = userService.getUser(itemsPerPage, (pageNumber * itemsPerPage - itemsPerPage), sortType, asc);
         if (userRows == null) {
             LOGGER.warn("users == null");
         }
@@ -387,7 +387,7 @@ public class AdminController {
     public List<IntervieweeRow> intervieweeGetJSON(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber) {
         List<IntervieweeRow> interviewees;
         IntervieweeService intervieweeService = new IntervieweeServiceImpl();
-        interviewees = intervieweeService.getInterviewee(itemsPerPage, (pageNumber * itemsPerPage - 10));
+        interviewees = intervieweeService.getInterviewee(itemsPerPage, (pageNumber * itemsPerPage - itemsPerPage));
         if (interviewees == null) {
             LOGGER.warn("interviewee == null");
         }
@@ -399,7 +399,7 @@ public class AdminController {
     public List<IntervieweeRow> intervieweeGetJSONSort(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("sortType") String sortType, @PathVariable("type") Boolean asc) {
         List<IntervieweeRow> interviewee;
         IntervieweeService intervieweeService = new IntervieweeServiceImpl();
-        interviewee = intervieweeService.getInterviewee(itemsPerPage, (pageNumber * itemsPerPage - 10), sortType, asc);
+        interviewee = intervieweeService.getInterviewee(itemsPerPage, (pageNumber * itemsPerPage - itemsPerPage), sortType, asc);
         if (interviewee == null) {
             LOGGER.warn("interviewee == null");
         }
@@ -430,7 +430,7 @@ public class AdminController {
     List<IntervieweeRow> intervieweeSearch(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("sortType") String sortType, @PathVariable("pattern") String pattern) {
         List<IntervieweeRow> interviewee;
         IntervieweeService intervieweeService = new IntervieweeServiceImpl();
-        interviewee = intervieweeService.getInterviewee(itemsPerPage, (pageNumber * itemsPerPage - 10), sortType, pattern);
+        interviewee = intervieweeService.getInterviewee(itemsPerPage, (pageNumber * itemsPerPage - itemsPerPage), sortType, pattern);
         if (interviewee == null) {
             LOGGER.warn("interviewers == null");
         }

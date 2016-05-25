@@ -38,16 +38,16 @@ public class InterviewerController {
     public
     @ResponseBody
     HttpStatus enroll(@RequestBody IntegerList integerList) {
-        LOGGER.info(integerList.getInterviewersId().size());
         CES currentCES = cesService.getCurrentCES();
         if (currentCES != null) {
             int cesId = cesService.getCurrentCES().getId();
-            Iterator<Integer> iterator = integerList.getInterviewersId().iterator();
+            Iterator<Integer> iterator = integerList.getValues().iterator();
             while (iterator.hasNext()) {
                 try {
                     cesService.enrollAsInterviewer(iterator.next(), cesId);
+                    LOGGER.info("Successfully enrolled on current CES");
                 } catch (DAOException e) {
-                    LOGGER.info(e);
+                    LOGGER.info("Cant enroll on current CES", e);
                 }
             }
         } else {
