@@ -2,10 +2,9 @@
  * Created by Hlib on 09.05.2016.
  */
 const div_form = '\
-    <div class="container">\
-    <div class="col-lg-6 col-md-8 col-sm-12 col-xs-12">\
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">\
     <div id="save_message"></div>\
-    <div <%--id="feedback"--%>>\
+    <div>\
     <div class="row container-fluid reg-head">\
     <div>\
     <h4 class="form-signin-heading">Feedback :</h4>\
@@ -16,18 +15,22 @@ const div_form = '\
     <textarea rows="10" cols="10" id="feedback_text" style="margin-bottom: 3px;" class="form-control"\
 placeholder="Feedback" required></textarea>\
 </div>\
-<div  class="col-lg-4 col-md-8 col-sm-12 col-xs-12">\
-    <label>Mark: </label>\
-<input id="feedback_score" style="margin-bottom: 3px;" class="form-control"\
+<div  class="col-lg-4 col-md-4 col-sm-12 col-xs-12">\
+<div class="form-group">\
+    <label for="feedback_score">Mark: </label>\
+<input id="feedback_score" style="margin: 0px;" class="form-control"\
 placeholder="1 .. 100" type="number"\
-max="100" min="1" align="centre" required>\
-<label>Special mark: </label>\
+max="100" min="1" required>\
+</div>\
+<div class="form-group">\
+<label for="special_mark">Special mark: </label>\
 <select id="special_mark" style="margin-bottom: 3px;" class="form-control">\
     <option value="none" id="none">None</option>\
     <option value="reject" id="reject">Reject</option>\
     <option value="take on courses" id="take_on_courses">Take on courses</option>\
 <option value="job offer" id="job_offer">Job offer</option>\
 </select>\
+</div>\
 </div>\
 <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">\
     <button id="submitFeedback" style="border-radius: 4px;    margin-top: 4px ;"\
@@ -38,7 +41,7 @@ class="btn btn-lg btn-primary btn-block mdl-button mdl-js-button mdl-button--rai
     </form>\
     </div>\
     </div>\
-    </div>';
+ ';
 
 const div_view = '    <div id="all_feedbacks">\
     <div class="widget">\
