@@ -24,8 +24,7 @@
                 </a>
             </div>
             <div id='collapsed-menu' class='navbar-collapse collapse'>
-                <a href="?lang=en">English</a>                |
-                <a href="?lang=uk">Українська</a>
+                <a href="?lang=en"><img src="/resources/images/en.png"></a> | <a href="?lang=uk"><img src="/resources/images/ua.png"></a>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="/login">
                         <sec:authorize access="hasRole('ROLE_STUDENT') or !isAuthenticated()">
