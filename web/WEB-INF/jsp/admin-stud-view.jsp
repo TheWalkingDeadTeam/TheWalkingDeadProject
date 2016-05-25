@@ -109,6 +109,7 @@
                                 <div class="view overlay hm-white-slight z-depth-1">
                                     <div class="mask waves-effect"></div>
                                 </div>
+
                                 <div class="card-content">
                                     <div class="panel panel-default">
                                         <form ng-submit="setSize(count)" name="myForm" class="form-inline"
@@ -126,7 +127,7 @@
                                                     <p>{{head.name}}</p>
                                                 </div>
                                             </div>
-                                            <div class="row">
+                                            <div>
                                                 <div class="form-actions floatRight">
                                                     <input type="submit" id="mail" value="Save"
                                                            class="btn btn-default waves-effect waves-light">
@@ -135,6 +136,7 @@
                                         </form>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -160,11 +162,11 @@
                 </td>
                 <td ng-repeat="head in headerStud.head">
                     <a ng-click="sortReverse = !sortReverse; sortType(head.id,sortReverse)">
-                        {{head.name}}
+                        {{head}}
                     </a>
                 </td>
                 <td>
-                    <a ng-click="sortTyprara='rejected'; sortReverse = !sortReverse">
+                    <a ng-click="sortType('rejected',sortReverse); sortReverse = !sortReverse">
                         Rejected
                     </a>
                 </td>
