@@ -192,11 +192,6 @@ public class AdminController {
 
     }
 
-    @RequestMapping(value = "/students/{id}", method = RequestMethod.GET, produces = "application/json")
-    public String getStudentById(@PathVariable("id") Integer id) {
-        return "redirect:/profile?" + id;
-    }
-
     /**
      * Method for view interview list from admin controller panel
      *

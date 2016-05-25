@@ -60,8 +60,9 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h4 class="panel-title">
-                    <a data-toggle="collapse" href="#collapse1">
-                        Profile <i class="material-icons">keyboard_arrow_down</i>
+                    <a data-toggle="collapse" href="#collapse1" style="display: inline-block;">
+                        <p style="float: left; margin: 3 0 0 0px;">Profile </p>
+                        <i class="material-icons">keyboard_arrow_down</i>
                     </a>
                 </h4>
             </div>
