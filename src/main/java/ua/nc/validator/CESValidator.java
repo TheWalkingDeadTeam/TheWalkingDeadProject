@@ -24,19 +24,19 @@ public class CESValidator implements Validator {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(ces.getStartRegistrationDate());
         cal.setTime(new Date());
-        if ((ces.getYear() >= 9999) || (ces.getYear() != calendar.get(Calendar.YEAR))) {
+        if ((ces.getYear() >= 9999) || (ces.getYear() != calendar.get(Calendar.YEAR))){
             errors.add(new ValidationError("CESYear", "Incorrect year"));
         }
-        if (((ces.getStartRegistrationDate() == null) || (ces.getEndRegistrationDate() == null))) {
+        if ((ces.getStartRegistrationDate() == null) || (ces.getEndRegistrationDate() == null)){
             errors.add(new ValidationError("CESRegistrationDate", "Incorrect registration date"));
         }
-        if (((ces.getStatusId() == 1) || (ces.getStatusId() == null)) && (ces.getStartRegistrationDate().compareTo(new Date()) == -1)) {
+        if ((ces.getStartRegistrationDate().compareTo(new Date()) == -1)){
             errors.add(new ValidationError("CESStartRegistrationDate", "Start registration date is incorrect!"));
         }
-        if ((ces.getStartRegistrationDate().compareTo(ces.getEndRegistrationDate())) != -1) {
+        if ((ces.getStartRegistrationDate().compareTo(ces.getEndRegistrationDate())) != -1){
             errors.add(new ValidationError("CESEndRegistrationDate", "End registration date is incorrect!"));
         }
-        if (ces.getStartInterviewingDate() != null) {
+        if (ces.getStartInterviewingDate() != null){
             if ((ces.getStartInterviewingDate().compareTo(ces.getEndRegistrationDate()) != 1)) {
                 errors.add(new ValidationError("CESInterviewingDate", "Incorrect start interviewing date"));
             }
@@ -44,20 +44,20 @@ public class CESValidator implements Validator {
                 errors.add(new ValidationError("CESInterviewingDate", "Incorrect start interviewing date"));
             }
         }
-        if (ces.getReminders() < 1) {
+        if (ces.getReminders() < 1){
             errors.add(new ValidationError("CESReminders", "Incorrect remind time"));
         }
-        if (ces.getQuota() < 1) {
+        if (ces.getQuota() < 1){
             errors.add(new ValidationError("CESQuota", "Incorrect quota"));
         }
-        if (ces.getInterviewTimeForDay() < 1) {
+        if (ces.getInterviewTimeForDay() < 1){
             errors.add(new ValidationError("CESTimeForDay", "Time for day error"));
         }
-        if (ces.getInterviewTimeForPerson() < 1) {
+        if (ces.getInterviewTimeForPerson() < 1){
             errors.add(new ValidationError("CESTimeForPerson", "Time for person error"));
         }
         if ((ces.getEndInterviewingDate() != null) && (ces.getStartInterviewingDate().compareTo(ces.getEndInterviewingDate())) != -1) {
-            errors.add(new ValidationError("CESEndInterviewingDate", "End interviewing date is incorrect!"));
+                errors.add(new ValidationError("CESEndInterviewingDate", "End interviewing date is incorrect!"));
         }
         return errors;
     }

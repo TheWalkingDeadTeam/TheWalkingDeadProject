@@ -29,14 +29,19 @@ public class AccountController {
     }
 
     @RequestMapping(value = "/account/{id}", method = RequestMethod.GET)
-    public User account(@PathVariable("id") Integer id) {
+    public User account(@PathVariable("id") Integer id, HttpServletRequest request) {
+        if (request.isUserInRole(UserRoles.ROLE_STUDENT.name())){
+            Integer userId = userService.getUser(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+                    .getPrincipal()).getUsername()).getId();
+            if (!id.equals(userId)) return null;
+        }
         User user = userService.getUser(id);
         return user;
     }
 
     @RequestMapping(value = "/account/profile", method = RequestMethod.GET)
     public String profileTest(HttpServletRequest request) {
-        if (request.isUserInRole("ROLE_STUDENT")) {
+        if (request.isUserInRole(UserRoles.ROLE_STUDENT.name())) {
             Integer id = ((UserDetailsImpl) SecurityContextHolder
                     .getContext()
                     .getAuthentication()

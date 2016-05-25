@@ -223,7 +223,12 @@ public class LoginController implements HandlerExceptionResolver {
 
     @ResponseBody
     @RequestMapping(value = "/getPhoto/{id}")
-    public byte[] getPhoto(@PathVariable("id") Integer id) {
+    public byte[] getPhoto(@PathVariable("id") Integer id, HttpServletRequest request) {
+        if (request.isUserInRole(UserRoles.ROLE_STUDENT.name())){
+            Integer userId = userService.getUser(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+                    .getPrincipal()).getUsername()).getId();
+            if (!id.equals(userId)) return null;
+        }
         return photoService.getPhotoById(id);
     }
 }
