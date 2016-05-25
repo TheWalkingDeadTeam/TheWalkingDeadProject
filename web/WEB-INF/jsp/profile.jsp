@@ -40,12 +40,12 @@
                     <%--<button id="photo_button" type="submit">Upload</button>--%>
                 <%--</form>--%>
             <%--</div>--%>
-            <div class=" col-lg-2 col-md-2 col-sm-2 col-xs-4 mainf">
+            <div class=" col-lg-4 col-md-5 col-sm-5 col-xs-5 mainf">
                 <h4><spring:message code="locale.name"/>:</h4>
                 <h4><spring:message code="locale.surname"/>:</h4>
                 <h4><spring:message code="locale.email"/>:</h4>
             </div>
-            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4">
+            <div class="col-lg-5 col-md-4 col-sm-4 col-xs-4" style="margin-top: 7px;">
                 <span id="userName"></span>
                 <span id="userSurname"></span>
                 <span id="userEmail"></span>
