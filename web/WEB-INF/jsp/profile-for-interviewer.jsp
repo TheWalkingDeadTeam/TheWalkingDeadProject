@@ -77,16 +77,14 @@
     </div>
 
 <div id="restrict_message"></div>
-    <div id="feedbacks">
-    </div>
-    <br>
+    <div id="feedbacks"></div>
 
   
 
 
 
 
-
+</div>
 <jsp:include page="footer.jsp"/>
 
 <script src="http://code.jquery.com/jquery-latest.js"></script>
