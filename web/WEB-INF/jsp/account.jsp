@@ -78,7 +78,7 @@
                             </div>
                             <div class="stats class="col-lg-4 col-md-4 col-sm-2 col-xs-2">
                                 <sec:authorize access="!hasRole('ROLE_STUDENT')">
-                                    <h5>Enrollment</h5>
+                                    <h5><spring:message code="locale.enrollment"/></h5>
                                     <sec:authentication var="principal" property="principal"/>
                                     <input id="userid" type="hidden" value=" ${principal.id}"/>
                                     <div id="enrollMessages"></div>
