@@ -41,7 +41,7 @@ public class ProfileServiceImpl implements ProfileService {
         Role roleStudent = roleDAO.findByName(ROLE_STUDENT);
         boolean contains = roles.contains(roleStudent);
         if (!contains){
-            return null;
+            throw new DAOException("Wrong role");
         }
         FieldDAO fieldDAO = daoFactory.getFieldDAO(connection);
         FieldTypeDAO fieldTypeDAO = daoFactory.getFieldTypeDAO(connection);

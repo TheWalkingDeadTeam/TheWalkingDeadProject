@@ -43,6 +43,8 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.cyan-light_blue.min.css">
     <link rel="stylesheet" href="/resources/css/styles.css">
+    <link rel="stylesheet" href="/resources/css/notification/angular-ui-notification.min.css">
+
 
 </head>
 <body>
@@ -61,17 +63,25 @@
                                 <h4 class="form-signin-heading">Session settings</h4>
                             </div>
                         </div>
-                        <div name="myForm" id="CESfields" ng-submit="ctrl.save()" class="col-lg-11 col-md-8 col-sm-12 col-xs-12">
-                            <div>
-                                <span class="myTextInfo">Year</span>
-                                <input type="number" name="year" id="1" class="form-control" ng-model="ctrl.ces.year" ng-readonly="current" required/></div>
+                        <div name="myForm" id="CESfields" ng-submit="ctrl.save()"
+                             class="col-lg-11 col-md-8 col-sm-9 col-xs-9">
+                            <div><span class="myTextInfo">Year</span><input type="number" name="year"
+                                                                            id="1" class="form-control"
+                                                                            ng-model="ctrl.ces.year"
+                                                                            ng-readonly="current" required/></div>
                             <div class="correct-year"></div>
-                            <div><span class="myTextInfo">Quota</span><input type="number" name="quota" id="quota" class="form-control"
-                                                                             ng-model="ctrl.ces.quota" required/></div>
+                            <div><span class="myTextInfo">Quota</span><input type="number" name="quota" id="quota"
+                                                                             class="form-control"
+                                                                             ng-model="ctrl.ces.quota"
+                                                                             required/></div>
                             <div class="correct-quota"></div>
-                            <div><span class="myTextInfo">Start registration date</span><input type="date" name="startRegistrationDate"
-                                                                                               class="form-control" ng-model="ctrl.ces.startRegistrationDate"
-                                                                                               ng-readonly="current" placeholder="yyyy-MM-dd" id="3" required></div>
+                            <div><span class="myTextInfo">Start registration date</span><input type="date"
+                                                                                               name="startRegistrationDate"
+                                                                                               class="form-control"
+                                                                                               ng-model="ctrl.ces.startRegistrationDate"
+                                                                                               ng-readonly="current"
+                                                                                               placeholder="yyyy-MM-dd"
+                                                                                               id="3" required></div>
                             <div class="correct-date"></div>
                             <div><span class="myTextInfo">End registration date</span><input type="date"
                                                                                              name="endRegistrationDate"
@@ -115,16 +125,17 @@
                                                                ng-readonly="interviewBegan" required/></div>
                             <div class="correct-int"></div>
                             <%--<div>Status: <input type="text" name="interviewTimeForDay" id="10"--%>
-                                                               <%--class="form-control"--%>
-                                                               <%--ng-model="ctrl.ces.status"--%>
-                                                               <%--ng-readonly=true required/></div>--%>
+                            <%--class="form-control"--%>
+                            <%--ng-model="ctrl.ces.status"--%>
+                            <%--ng-readonly=true required/></div>--%>
                             <input type="submit" ng-click="ctrl.save()" value="Save" style="margin-top: 5px;"
                                    class="btn btn-lg btn-primary btn-block mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white formControllingButt">
                             <%--<button ng-click="backButton()" class="btn btn-lg btn-primary btn-block"> Back </button>--%>
-                            <button ng-click="ctrl.closeButton()"
-                                    class="btn btn-lg btn-primary btn-block mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white formControllingButt">
-                                Close session
-                            </button>
+
+                            <a href="#slideDown"
+                               class="btn btn-lg btn-primary btn-block mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white formControllingButt"
+                               data-toggle="collapse">Close Session</a>
+
                             <div id="errorsDiv" style="margin-top: 10px;"></div>
                         </div>
                         </form>
@@ -134,9 +145,13 @@
             <%--<a href="/logout" target="_blank" id="view-source"--%>
             <%--class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">Exit</a>--%>
         </div>
-    </main>
 
+        <div id="slideDown" class="collapse">
+            <jsp:include page="ces-mail.jsp"/>
+        </div>
+    </main>
 </div>
+
 </body>
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
@@ -159,6 +174,5 @@
 <script src="/resources/js/ces.js"></script>
 <script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
 <script src="/resources/bootstrap/js/bootstrap.js"></script>
-<script src="/resources/js/adminmenu.js"></script>
-
+<script src="/resources/js/notification/angular-ui-notification.min.js"></script>
 </html>

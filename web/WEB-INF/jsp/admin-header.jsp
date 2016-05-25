@@ -13,6 +13,7 @@
         <a class="navbar-brand brand-img" href="">
             <img src='/resources/images/logo.png' alt="Logo" class="header-img">
         </a>
+            <a href="?lang=en"><img src="/resources/images/en.png"></a> | <a href="?lang=uk"><img src="/resources/images/ua.png"></a>
         <div class="mdl-layout-spacer"></div>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
             <%--            <label class="mdl-button mdl-js-button mdl-button--icon" for="search">
@@ -116,7 +117,7 @@
                 role="presentation">mail</i>Edit Letter Templates</a>
         <a class="mdl-navigation__link" href="/admin/enroll-session"><i
                 class="mdl-color-text--blue-grey-400 material-icons"
-                role="presentation">contact_mail</i> Enrollment History</a>
+                role="presentation">history</i> Enrollment History</a>
         <a class="mdl-navigation__link" href="/admin/report"><i
                 class="mdl-color-text--blue-grey-400 material-icons"
                 role="presentation">show_chart</i>Statistic & Reports</a>
