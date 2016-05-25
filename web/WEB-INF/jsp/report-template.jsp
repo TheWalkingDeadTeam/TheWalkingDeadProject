@@ -46,7 +46,7 @@
                                     <div class="has-error" ng-show="myForm.$dirty">
                                         <span ng-show="myForm.rname.$error.required">This is a required field</span>
                                         <span ng-show="myForm.rname.$error.minlength">Minimum length required is 3</span>
-                                        <span ng-show="myForm.rname.$invalid">This field is invalid </span>
+                                        <span ng-show="myForm.rname.$invalid">This field is invalid</span>
                                     </div>
                                 </div>
                             </div>

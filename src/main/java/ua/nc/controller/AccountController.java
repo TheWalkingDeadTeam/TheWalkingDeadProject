@@ -78,9 +78,9 @@ public class AccountController {
     @RequestMapping(value = "/getUser/{id}", method = RequestMethod.GET)
     public User getUser(@PathVariable("id") Integer id, SecurityContextHolderAwareRequestWrapper request) {
         User user = null;
-        if (request.isUserInRole(UserRoles.ROLE_ADMIN.name())) {
+/*        if (request.isUserInRole(UserRoles.ROLE_ADMIN.name())) {*/
             user = userService.getUser(id);
-        }
+/*        }*/
         return user;
     }
 }
