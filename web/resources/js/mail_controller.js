@@ -55,16 +55,7 @@ mailer.controller('MailController', ['$scope', 'MailService', '$http', 'Notifica
             );
     };
 
-    self.createMail = function (mail) {
-        MailService.createMail(mail)
-            .then(
-                self.fetchAllMails,
-                function (errResponse) {
-                    console.error('Error while creating Mail.');
-                }
-            );
-        Notification.success({message: 'Mail successfully added', delay: 1000});
-    };
+
 
     self.updateMail = function (mail, id) {
         MailService.updateMail(mail, id)
@@ -75,7 +66,16 @@ mailer.controller('MailController', ['$scope', 'MailService', '$http', 'Notifica
                 }
             );
         Notification.success({message: 'Mail successfully updated', delay: 1000});
-
+        self.createMail = function (mail) {
+            MailService.createMail(mail)
+                .then(
+                    self.fetchAllMails,
+                    function (errResponse) {
+                        console.error('Error while creating Mail.');
+                    }
+                );
+            Notification.success({message: 'Mail successfully added', delay: 1000});
+        };
     };
 
     self.deleteMail = function (id) {

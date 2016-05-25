@@ -25,15 +25,10 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public StudentData getStudents(Integer itemPerPage, Integer pageNumber) {
-        log.info("GET STUDENTS START");
         Connection connection = daoFactory.getConnection();
-        log.info("GET STUDENTS CONNECTION");
         PostgreApplicationTableDAO applicationTableDAO = new PostgreApplicationTableDAO(connection);
-        log.info("GET STUDENTS POSTGRETABLEDAO");
         CESServiceImpl cesService = new CESServiceImpl();
-        log.info("GET STUDENTS CESSERVICE");
-        CES ces = cesService.getCurrentCES();      ///!!!!!!!!!
-        log.info("TRACE STUDENT SERVIСE" + ces.toString());
+        CES ces = cesService.getCurrentCES();
         try {
             StudentData studentData = applicationTableDAO.getApplicationsTable(ces.getId(), itemPerPage, pageNumber);
             log.info("TRACE STUDENT SERVIСE" + studentData.toString());
@@ -53,7 +48,6 @@ public class StudentServiceImpl implements StudentService {
         CESServiceImpl cesService = new CESServiceImpl();
         CES ces = cesService.getCurrentCES();
         try {
-            //ORDER BY
             return applicationTableDAO.getApplicationsTable(ces.getId(), itemPerPage, pageNumber, orderBy);
         } catch (DAOException e) {
             log.warn("Can't get students", e.getCause());
@@ -70,7 +64,6 @@ public class StudentServiceImpl implements StudentService {
         CESServiceImpl cesService = new CESServiceImpl();
         CES ces = cesService.getCurrentCES();
         try {
-            //ORDER BY
             return applicationTableDAO.getApplicationsTable(ces.getId(), itemPerPage, pageNumber, pattern);
         } catch (DAOException e) {
             log.warn("Can't get students", e.getCause());
@@ -87,7 +80,6 @@ public class StudentServiceImpl implements StudentService {
         CESServiceImpl cesService = new CESServiceImpl();
         CES ces = cesService.getCurrentCES();
         try {
-            //ORDER BY
             return applicationTableDAO.getApplicationsTable(ces.getId(), itemPerPage, pageNumber, sortType, asc);
         } catch (DAOException e) {
             log.warn("Can't get students", e.getCause());
@@ -104,7 +96,7 @@ public class StudentServiceImpl implements StudentService {
         CESServiceImpl cesService = new CESServiceImpl();
         CES ces = cesService.getCurrentCES();
         try {
-            return applicationTableDAO.getApplicationsCount(ces.getId(),pattern);
+            return applicationTableDAO.getApplicationsCount(ces.getId(), pattern);
         } catch (DAOException e) {
             log.warn("Can't get students", e.getCause());
         } finally {
@@ -113,10 +105,6 @@ public class StudentServiceImpl implements StudentService {
         return null;
     }
 
-    /**
-     * @param action
-     * @param studentsId list of Integer
-     */
     @Override
     public void changeStatus(String action, List<Integer> studentsId) {
         if (Objects.equals(action, "reject")) {
@@ -127,11 +115,7 @@ public class StudentServiceImpl implements StudentService {
             log.error(action + " action not supported");
         }
     }
-
-    /**
-     * @param studentsId list of Integer
-     */
-    @Override
+     @Override
     public void rejectStudents(List<Integer> studentsId) {
         changeApplicationStatus(studentsId, true);
         log.info("List of applications was rejected " + studentsId);
@@ -155,17 +139,10 @@ public class StudentServiceImpl implements StudentService {
                 applicationDAO.update(application);
             }
         } catch (DAOException e) {
-            e.printStackTrace();
+            log.error(e);
         } finally {
             daoFactory.putConnection(connection);
         }
     }
 
-    @Override  // WTF ????
-    public Integer getStudentsSize() {
-        Connection connection = daoFactory.getConnection();
-        ApplicationDAO applicationDAO = daoFactory.getApplicationDAO(connection);
-        daoFactory.putConnection(connection);
-        return null;
-    }
 }

@@ -89,16 +89,12 @@ public class InterviewerServiceImpl implements InterviewerService {
         return null;
     }
 
-    /**
-     * @param action
-     * @param studentsId list of Integer
-     */
     @Override
     public void changeStatus(String action, List<Integer> studentsId) {
         if (Objects.equals(action, "subscribe")) {
             subscribeInterviewer(studentsId);
             log.info("Interviewer list subscribe" + studentsId.toString());
-        }else if (Objects.equals(action, "unsubscribe")) {
+        } else if (Objects.equals(action, "unsubscribe")) {
             unsubscribeInterviewer(studentsId);
             log.info("Interviewer list unsubscribe" + studentsId.toString());
         } else {
@@ -106,30 +102,8 @@ public class InterviewerServiceImpl implements InterviewerService {
         }
     }
 
-//    /**
-//     * @param studentsId list of Integer
-//     */
-//    @Override
-//    public void activateInterviewer(List<Integer> studentsId) {
-//        // StudentListDAO
-//        //метод, который активирует список студентов
-//    }
-//
-//    /**
-//     * @param studentsId list of Integer
-//     */
-//    @Override
-//    public void deactivateInterviewer(List<Integer> studentsId) {
-//        // StudentListDAO
-//        //метод, которые деактивирует список студентов
-//    }
-
-    /**
-     * @param studentsId list of Integer
-     */
     @Override
     public void subscribeInterviewer(List<Integer> studentsId) {
-        System.out.println("subscribe");
 //        Connection connection = daoFactory.getConnection();
 //        ApplicationDAO applicationDAO = daoFactory.getApplicationDAO(connection);
 //        CESDAO cesDAO = daoFactory.getCESDAO(connection);
@@ -148,8 +122,7 @@ public class InterviewerServiceImpl implements InterviewerService {
 
     @Override
     public void unsubscribeInterviewer(List<Integer> studentsId) {
-        System.out.println("unsubscribe");
-//        Connection connection = daoFactory.getConnection();
+        //        Connection connection = daoFactory.getConnection();
 //        ApplicationDAO applicationDAO = daoFactory.getApplicationDAO(connection);
 //        CESDAO cesDAO = daoFactory.getCESDAO(connection);
 //        try {

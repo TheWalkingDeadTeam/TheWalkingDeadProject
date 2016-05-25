@@ -141,7 +141,6 @@ public class AdminController {
         if (studentData == null) {
             LOGGER.warn("studData == null");
         }
-        LOGGER.info("studData == " + studentData.toString());
         return studentData;
     }
 
@@ -155,7 +154,6 @@ public class AdminController {
         if (studentData == null) {
             LOGGER.warn("studData == null");
         }
-        LOGGER.info("studData == " + studentData.toString());
         return studentData;
     }
 
@@ -188,8 +186,6 @@ public class AdminController {
             LOGGER.warn("Request type is not supported");
             return HttpStatus.BAD_REQUEST;
         }
-
-
     }
 
     @RequestMapping(value = "/students/{id}", method = RequestMethod.GET, produces = "application/json")
@@ -210,13 +206,6 @@ public class AdminController {
     @RequestMapping(value = {"/interviewers/list/{itemsPerPage}/{pageNumber}"}, method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<Interviewer> interviewGetJSON(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber) {
-//        StudentData studentData;
-//        StudentService studentService = new StudentServiceImpl();
-//        studentData = studentService.getStudents(itemsPerPage, pageNumber);
-//        if (studentData == null) {
-//            LOGGER.warn("studData == null");
-//        }
-//        return studentData;
         List<Interviewer> interviewers;
         InterviewerService interviewerService = new InterviewerServiceImpl();
         interviewers = interviewerService.getInterviewer(itemsPerPage, (pageNumber * itemsPerPage - itemsPerPage));
@@ -236,7 +225,6 @@ public class AdminController {
         if (interviewers == null) {
             LOGGER.warn("interviewers == null");
         }
-        LOGGER.info("interviewers.get - successful");
         return interviewers;
 
     }
@@ -343,7 +331,6 @@ public class AdminController {
         if (userRows == null) {
             LOGGER.warn("users == null");
         }
-        LOGGER.warn("users != null");
         return userRows;
     }
 

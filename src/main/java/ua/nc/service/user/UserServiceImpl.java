@@ -127,10 +127,6 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
-    /**
-     * @param email
-     * @return
-     */
     @Override
     public User getUser(String email) {
         Connection connection = daoFactory.getConnection();
@@ -148,10 +144,6 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-    /**
-     * @param id
-     * @return
-     */
     @Override
     public User getUser(Integer id) {
         Connection connection = daoFactory.getConnection();
@@ -169,10 +161,6 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-    /**
-     * @param user
-     * @return
-     */
     @Override
     public User createUser(User user) {
         Connection connection = daoFactory.getConnection();
@@ -260,7 +248,6 @@ public class UserServiceImpl implements UserService {
         } finally {
             daoFactory.putConnection(connection);
         }
-        LOGGER.info("activation users - OK");
     }
 
 
@@ -280,7 +267,6 @@ public class UserServiceImpl implements UserService {
         } finally {
             daoFactory.putConnection(connection);
         }
-        LOGGER.info("deactivation users - OK");
     }
 
     @Override
@@ -288,7 +274,6 @@ public class UserServiceImpl implements UserService {
         DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
         Connection connection = daoFactory.getConnection();
         PostgreUserDAO userDAO = (PostgreUserDAO) daoFactory.getUserDAO(connection);
-        System.out.println("???");
         try {
             User user = userDAO.findByEmail(email);
             System.out.println(user.getName());
@@ -298,12 +283,10 @@ public class UserServiceImpl implements UserService {
             for (Role role : roles) {
                 newRoles.add(roleDAO.findByName(role.getName()));
             }
-            System.out.println("$$$$");
             roleDAO.removeRolesFromUser(user);
             roleDAO.setRolesToUser(newRoles, user);
-            System.out.println("***");
+
         } catch (DAOException e) {
-            System.out.println("@@@");
             daoFactory.putConnection(connection);
             LOGGER.warn("Cannot find user with email " + email + " in DB.");
         }
