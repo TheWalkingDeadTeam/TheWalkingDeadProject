@@ -112,27 +112,26 @@
 
                                 <div class="card-content">
                                     <div class="panel panel-default">
-                                        <form ng-submit="setSize(count)" name="myForm" class="form-inline"
-                                              autocomplete="on">
+                                        <form ng-submit="setSize(count)" id="settingsForm">
                                             <select name="selectUsersCount" ng-model="count">
                                                 <option disabled value="">Choose count of rows</option>
                                                 <option selected value="10">10</option>
                                                 <option value="25">25</option>
                                                 <option value="50">50</option>
                                             </select>
-                                            <div class="col-md-3 col-lg-3">
+                                            <div>
                                                 <div ng-repeat="head in data.users.header">
                                                     <input type="checkbox" checklist-model="headerStud.head"
                                                            checklist-value="head">
                                                     <p>{{head.name}}</p>
                                                 </div>
                                             </div>
-                                            <div>
-                                                <div class="form-actions floatRight">
-                                                    <input type="submit" id="mail" value="Save"
-                                                           class="btn btn-default waves-effect waves-light">
-                                                </div>
+
+                                            <div class="form-actions floatRight">
+                                                <input type="submit" id="mail" value="Save"
+                                                       class="btn btn-default waves-effect waves-light">
                                             </div>
+
                                         </form>
                                     </div>
                                 </div>
