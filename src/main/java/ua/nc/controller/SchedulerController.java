@@ -6,24 +6,24 @@ import com.google.maps.model.GeocodingResult;
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import ua.nc.dao.ApplicationDAO;
-import ua.nc.dao.UserDAO;
-import ua.nc.dao.enums.DataBaseType;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import ua.nc.dao.exception.DAOException;
-import ua.nc.dao.factory.DAOFactory;
-import ua.nc.dao.postgresql.PostgreApplicationDAO;
-import ua.nc.dao.postgresql.PostgreUserDAO;
-import ua.nc.entity.*;
+import ua.nc.entity.Mail;
+import ua.nc.entity.Scheduler;
 import ua.nc.service.CESService;
 import ua.nc.service.CESServiceImpl;
 import ua.nc.service.MailService;
 import ua.nc.service.MailServiceImpl;
 
-import java.sql.Connection;
-import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Alexander on 05.05.2016.
@@ -40,9 +40,7 @@ public class SchedulerController {
     private final static String CONTACT_INTERVIEWERS = "$contactInterviewers";
     private final static String CONTACT_STUDENTS = "$contactStudent";
 
-    private final DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
-    private final Connection connection = daoFactory.getConnection();
-    private final UserDAO userDAO = new PostgreUserDAO(connection);
+
     private final CESService cesService = new CESServiceImpl();
     private final MailService mailService = new MailServiceImpl();
 
@@ -81,6 +79,23 @@ public class SchedulerController {
 
 
     /**
+     * Converts string time to data object
+     * @param time
+     * @return
+     */
+/*    private Date convertDate (String time){
+        SimpleDateFormat formatter = new SimpleDateFormat(DATA_FORMAT);
+        Date date = new Date();
+        try {
+            date = formatter.parse(time);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
+    }*/
+
+
+    /**
      * Scheduler Controller is responsible for student distribution between interview date
      * after distribution the system is automatically sending notification to all students
      * which were not rejected during current CES. The notifications  will be send after
@@ -99,20 +114,13 @@ public class SchedulerController {
         Map<String, String> studentParameters = param(scheduler);
         interviewerParameters.put(CONTACT_INTERVIEWERS, scheduler.getContactStaff());
         studentParameters.put(CONTACT_STUDENTS, scheduler.getContactStudent());
-
+        Date startDate = new Date(scheduler.getInterviewTime());
         try {
-            List<Date> interviewDates = cesService.planSchedule();
-            CES ces = cesService.getCurrentCES();
-            int reminderTime = ces.getReminders();
-            Set<User> interviewersList = userDAO.getInterviewersForCurrentCES();
-            ApplicationDAO appDAO = new PostgreApplicationDAO(connection);
-            Map<Integer, Integer> applicationList = appDAO.getAllAcceptedApplications(ces.getId());
-            Set<User> studentsList = userDAO.getAllAcceptedStudents(ces.getId());
-            System.out.println("!!!");
-            mailService.sendInterviewReminders(interviewDates, reminderTime, interviewerMail, interviewerParameters,
-                    studentMail, studentParameters, interviewersList, studentsList, applicationList);
+            List<Date> interviewDates = cesService.planSchedule(startDate);
+            mailService.sendInterviewReminders(interviewDates, interviewerMail, interviewerParameters,
+                    studentMail, studentParameters);
         } catch (DAOException e) {
-            log.warn("Check Scheduler paramters", e);
+            log.error("Check Scheduler paramters", e);
         }
 
     }

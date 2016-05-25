@@ -5,15 +5,18 @@ import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
+import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
@@ -22,10 +25,11 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import ua.nc.dao.enums.UserRoles;
-import ua.nc.dao.exception.DAOException;
-import ua.nc.entity.CES;
+import ua.nc.dao.enums.UserStatus;
 import ua.nc.entity.User;
-import ua.nc.service.*;
+import ua.nc.service.PhotoService;
+import ua.nc.service.PhotoServiceImpl;
+import ua.nc.service.UserDetailsImpl;
 import ua.nc.service.user.UserDetailsServiceImpl;
 import ua.nc.service.user.UserService;
 import ua.nc.service.user.UserServiceImpl;
@@ -45,7 +49,6 @@ public class LoginController implements HandlerExceptionResolver {
     private static final Logger LOGGER = Logger.getLogger(LoginController.class);
     private final UserService userService = new UserServiceImpl();
     private final PhotoService photoService = new PhotoServiceImpl();
-    private final CESService cesService = new CESServiceImpl();
 
 
     @Autowired
@@ -53,7 +56,8 @@ public class LoginController implements HandlerExceptionResolver {
     protected AuthenticationManager authenticationManager;
 
     @Override
-    public ModelAndView resolveException(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) {
+    public ModelAndView resolveException(HttpServletRequest httpServletRequest,
+                                         HttpServletResponse httpServletResponse, Object o, Exception e) {
         if (e instanceof MaxUploadSizeExceededException) {
             ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
             Set<ValidationError> errors = new LinkedHashSet<>();
@@ -64,6 +68,13 @@ public class LoginController implements HandlerExceptionResolver {
         return new ModelAndView("redirect:/login");
     }
 
+    /**
+     * Depending on the Role return home page
+     *
+     * @param request
+     * @param response
+     * @return page view
+     */
     @RequestMapping(value = {"/", "/login"}, method = RequestMethod.GET)
     public String login(HttpServletRequest request, HttpServletResponse response) {
         SavedRequest savedRequest =
@@ -79,32 +90,43 @@ public class LoginController implements HandlerExceptionResolver {
             if (request.isUserInRole(UserRoles.ROLE_ADMIN.name()) || request.isUserInRole(UserRoles.ROLE_HR.name())) {
                 LOGGER.info("Login and redirect to Admin page");
                 return "admin";
+
             } else {
                 if (request.isUserInRole(UserRoles.ROLE_BA.name())
                         || request.isUserInRole(UserRoles.ROLE_DEV.name())
                         || request.isUserInRole(UserRoles.ROLE_STUDENT.name())) {
                     LOGGER.info("Login and redirect to Account page");
                     return "account";
-                } else {
-                    LOGGER.info("Login and redirect to Login page");
-                    return "login";
                 }
             }
         }
+        return "login";
     }
 
-    @RequestMapping(value = "/security_check ", method = RequestMethod.POST, produces = "application/json")
-    public
+
+    /**
+     * Method authorize user with Spring Security
+     *
+     * @param user the user that want to authorize
+     * @return json of errors that were created during authorization
+     */
     @ResponseBody
-    Set<ValidationError> authentication(@RequestBody User user) {
+    @RequestMapping(value = "/security_check ", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Set<ValidationError> authentication(@RequestBody User user) {
         Set<ValidationError> errors = new LinkedHashSet<>();
         UserDetailsService userDetailsService = new UserDetailsServiceImpl();
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
         try {
-            token.setDetails(userDetailsService.loadUserByUsername(user.getEmail()));
-            Authentication auth = authenticationManager.authenticate(token);
-            SecurityContextHolder.getContext().setAuthentication(auth);
-            LOGGER.info("Sign in successful with email " + user.getEmail());
+            UserDetailsImpl userDetails = (UserDetailsImpl) userDetailsService.loadUserByUsername(user.getEmail());
+            if (userDetails.getStatus() == UserStatus.Active) {
+                token.setDetails(userDetails);
+                Authentication auth = authenticationManager.authenticate(token);
+                SecurityContextHolder.getContext().setAuthentication(auth);
+                LOGGER.info("Sign in successful with email " + user.getEmail());
+            } else {
+                errors.add(new ValidationError("signin", "Authorization deny. Account is not active"));
+                LOGGER.warn("Authorization deny email " + user.getEmail() + " . Account status is not Active");
+            }
         } catch (BadCredentialsException e) {
             LOGGER.warn("Authorization deny " + user.getEmail() + " has another password");
             errors.add(new ValidationError("signin", "Invalid username or password"));
@@ -115,7 +137,14 @@ public class LoginController implements HandlerExceptionResolver {
         return errors;
     }
 
-    @RequestMapping(value = {"/register"}, method = RequestMethod.POST, produces = "application/json")
+    /**
+     * This method create new user of the system and validate his information
+     * If user with user.email not exist, create new user.
+     *
+     * @param user the user that want to register
+     * @return json of errors that were created during registration
+     */
+    @RequestMapping(value = {"/register"}, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public
     @ResponseBody
     Set<ValidationError> registerUser(@RequestBody User user) {
@@ -183,24 +212,6 @@ public class LoginController implements HandlerExceptionResolver {
     }
 
 
-
-
-//    @RequestMapping(value = "/stuff/{stuffId}", method = RequestMethod.GET)
-//    public ResponseEntity<InputStreamResource> downloadStuff(@PathVariable int stuffId)
-//            throws IOException {
-//        String fullPath = stuffService.figureOutFileNameFor(stuffId);
-//        File file = new File(fullPath);
-//
-//        HttpHeaders respHeaders = new HttpHeaders();
-//        respHeaders.setContentType("application/pdf");
-//        respHeaders.setContentLength(12345678);
-//        respHeaders.setContentDispositionFormData("attachment", "fileNameIwant.pdf");
-//
-//        InputStreamResource isr = new InputStreamResource(new FileInputStream(file));
-//        return new ResponseEntity<InputStreamResource>(isr, respHeaders, HttpStatus.OK);
-//    }
-
-
     @ResponseBody
     @RequestMapping(value = "/getPhoto")
     public byte[] getPhoto() {
@@ -208,34 +219,7 @@ public class LoginController implements HandlerExceptionResolver {
                 .getPrincipal()).getUsername());
         return photoService.getPhotoById(user.getId());
     }
-    @RequestMapping(value = {"/cesPost"}, method = RequestMethod.POST)
-    public @ResponseBody
-    CES getCES(@RequestBody CES ces) {
-        try {
-            cesService.setCES(ces);
-        } catch (DAOException e) {
-            e.printStackTrace();
-        }
-        return ces;
-    }
 
-
-    @RequestMapping(value = {"/cessettings"}, method = RequestMethod.GET)
-    public String cesPage() {
-        return "cessettings";
-    }
-
-    @RequestMapping(value = "/cessettings", method = RequestMethod.GET, produces = "application/json")
-    public
-    @ResponseBody
-    CES ces() {
-        try {
-            return cesService.getCES();
-        } catch (DAOException e) {
-            LOGGER.error("DAO error");
-            return null;
-        }
-    }
 
     @ResponseBody
     @RequestMapping(value = "/getPhoto/{id}")

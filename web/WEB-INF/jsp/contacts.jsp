@@ -19,69 +19,75 @@
     <link rel="stylesheet" type="text/css" href="resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="resources/css/style-profile.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="resources/css/media-profile.css" rel="stylesheet">
-    <script src="resources/bootstrap/js/jquery-2.2.2.min.js" defer></script>
+    <link rel="stylesheet" type="text/css" href="/resources/css/style-contacts.css">
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
     <script src="resources/bootstrap/js/bootstrap.min.js" defer></script>
 </head>
 <body>
 
 <jsp:include page="header.jsp"/>
 
-<div class="headquarters-container bord-bottom">
-    <div class="container headquarters-info">
+<div>
+    <div>
         <div class="row">
-            <div class="col-xs-6 col-sm-6 col-md-6">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                 <div class="row">
-                    <div class="col-md-12">
-                        <div class="headline-one"><h1>Headquarters</h1></div>
-                        <div class="standard-copy">University Office Park III</div>
-                        <div class="standard-copy">95 Sawyer Road Waltham, MA 02453</div>
-                        <div class="standard-copy">United States of America</div>
+                    <div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <h4 style="margin-left: 15px;">Headquarters</h4>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">University Office Park III</div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">95 Sawyer Road Waltham, MA 02453</div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">United States of America</div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <h4>Courses</h4>
+                            <div>Patrice Lumumba Street, 4/6B, Kyiv</div>
+                            <div>Ukraine</div>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-12">
-                        <div class="standard-copy"><h1>Phone numbers</h1></div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-4 col-sm-4 col-md-6">
-                        <div class="standard-copy">Phone</div>
-                    </div>
-                    <div class="col-xs-8 col-sm-8 col-md-6">
-                        <div class="standard-copy text-right">1-781-419-3300</div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-4 col-sm-4 col-md-6">
-                        <div class="standard-copy">Toll Free</div>
-                    </div>
-                    <div class="col-xs-8 col-sm-8 col-md-6">
-                        <div class="standard-copy text-right">1-800-477-5785</div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-4 col-sm-4 col-md-6">
-                        <div class="standard-copy">Fax</div>
-                    </div>
-                    <div class="col-xs-8 col-sm-8 col-md-6">
-                        <div class="standard-copy text-right">1-781-419-3301</div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-4 col-sm-4 col-md-4">
-                        <div class="standard-copy">Customer Support</div>
-                    </div>
-                    <div class="col-xs-8 col-sm-8 col-md-8">
-                        <div class="standard-copy text-right">1-781-419-3388, 1-844-855-3355</div>
+                    <div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <div>
+                                <h4 style="margin-left: 15px;">Phone numbers</h4>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="names">Phone</div>
+                                    <div class="num">1-781-419-3300</div>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="names">Toll Free</div>
+                                    <div class="num">1-800-477-5785</div>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="names">Fax</div>
+                                    <div class="num">1-781-419-3301</div>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="names">Customer Support</div>
+                                    <div class="num">1-844-855-3355</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <div>
+                                <h4>Courses numbers</h4>
+                                <div><a href="tel:+380442388727">044 238 8727</a></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-xs-6 col-sm-6 col-md-6"><img class="map-location" src="http://www.netcracker.com/assets/img/map-office-location.png" alt=""></div>
+
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" style="margin-bottom: 10px;">
+                <div id="map-container" class="z-depth-1" style="height: 300px; width: 550px; display: block; margin-top: 5px; margin-left: auto; margin-right: auto;"></div>
+            </div>
         </div>
     </div>
 </div>
 
 <jsp:include page="footer.jsp"/>
-
+<script src="http://maps.google.com/maps/api/js"></script>
+<script src="/resources/js/google-maps/google-maps.js"></script>
 </body>
 </html>

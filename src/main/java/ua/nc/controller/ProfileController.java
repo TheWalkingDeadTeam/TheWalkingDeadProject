@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.*;
 import ua.nc.dao.enums.UserRoles;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.entity.CES;
+import ua.nc.entity.profile.Field;
 import ua.nc.entity.profile.Profile;
+import ua.nc.entity.profile.ProfileField;
 import ua.nc.service.*;
 import ua.nc.validator.ProfileValidator;
 import ua.nc.validator.ValidationError;
@@ -39,9 +41,10 @@ public class ProfileController {
                 || ((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal()).getId().equals(id)) {
             try {
+                LOGGER.info("Try to get profile " + id);
                 profile = profileService.getProfile(id, efs.getCES_ID());
             } catch (DAOException e) {
-                LOGGER.error(e);
+                LOGGER.error("Cant get profile " ,e);
             }
         }
         return profile;
@@ -65,7 +68,7 @@ public class ProfileController {
                         .getAuthentication()
                         .getPrincipal()).getId(), profile);
             } catch (DAOException e) {
-                LOGGER.equals(e);
+                LOGGER.error(e);
             }
         }
         return errors;

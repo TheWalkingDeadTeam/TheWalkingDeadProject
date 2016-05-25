@@ -82,13 +82,17 @@
                         }
                         $('#save_message')
                             .addClass('alert alert-danger')
-                            .html(errors_out);
+                            .html(errors_out)
+                            .fadeIn();
                     }
                     else {
                         $('#save_message')
                             .removeClass()
                             .addClass('alert alert-success')
                             .html('Successfully saved');
+                        setTimeout(function() {
+                            $("#save_message").fadeOut().empty();
+                        }, 3000);
                     }
                 },
                 error: function (jqXHR, exception) {
@@ -107,7 +111,7 @@
                 case 'text':
                 case 'textarea':
                 case 'tel':
-                    $('<label>').text(item.values[0].value+'').appendTo($('#block' + i));
+                    $('<span>').text(item.values[0].value+'').appendTo($('#block' + i));
                     break;
                 case 'select':
                 case 'checkbox':
@@ -118,7 +122,7 @@
                                 text.push(item_value.fieldValueName);
                             }
                         })
-                        $('<label>').text(text.toString()).appendTo($('#block' + i));
+                        $('<span>').text(text.toString()).appendTo($('#block' + i));
                         break;
             }
     }

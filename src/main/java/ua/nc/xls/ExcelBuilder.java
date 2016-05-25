@@ -32,9 +32,6 @@ public class ExcelBuilder extends AbstractXlsView {
         printSetup.setLandscape(true);
         sheet.setFitToPage(true);
         sheet.setHorizontallyCenter(true);
-/*        InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("/images/excel.png");*/
-/*
-        InputStream inputStream = httpServletRequest.getSession().getServletContext().getResourceAsStream("/images/excel.png");*/
         InputStream inputStream = new FileInputStream(httpServletRequest.getSession().getServletContext().getRealPath("/resources/images/logo.png"));
         //Get the contents of an InputStream as a byte[].
         byte[] bytes = IOUtils.toByteArray(inputStream);
@@ -65,7 +62,7 @@ public class ExcelBuilder extends AbstractXlsView {
         headerRow.setHeightInPoints(40);
         Cell headerCell;
         int column = 0;
-        for (Map.Entry<String, Object> entry : reportRows.get(1).entrySet()) {
+        for (Map.Entry<String, Object> entry : reportRows.get(0).entrySet()) {
             headerCell = headerRow.createCell(column++);
             headerCell.setCellValue(entry.getKey());
             headerCell.setCellStyle(styles.get("header"));

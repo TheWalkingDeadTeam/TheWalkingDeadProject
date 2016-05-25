@@ -1,16 +1,11 @@
 package ua.nc.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.core.type.*;
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.log4j.Logger;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.entity.*;
 import ua.nc.entity.profile.Field;
@@ -21,8 +16,6 @@ import ua.nc.service.user.UserService;
 import ua.nc.service.user.UserServiceImpl;
 import ua.nc.validator.*;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -48,7 +41,11 @@ public class AdminController {
         return "admin";
     }
 
-    @RequestMapping(value = {"/register"}, method = RequestMethod.POST, produces = "application/json")
+    /**
+     * @param user
+     * @return json of errors that were created during registration
+     */
+    @RequestMapping(value = {"/register"}, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public
     @ResponseBody
     Set<ValidationError> registerUser(@RequestBody User user) {
@@ -60,45 +57,47 @@ public class AdminController {
 
                 User registeredUser = userService.createUser(user);
                 if (registeredUser == null) {
-                    LOGGER.warn("Register failed " + user.getEmail());
+                    LOGGER.warn("Register failed " + user.getEmail().toString());
                     errors.add(new ValidationError("register", "Register failed"));
                 } else {
                     LOGGER.info(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
-                            .getPrincipal()).getUsername() + " create user " + user.getEmail());
+                            .getPrincipal()).getUsername().toString() + " create user " + user.getEmail().toString());
                 }
             } else {
-                LOGGER.warn("User " + user.getEmail() + " already exists");
+                LOGGER.warn("User " + user.getEmail().toString() + " already exists");
                 errors.add(new ValidationError("user", "Such user already exists"));
             }
         }
         return errors;
     }
 
+    /**
+     * @return view of the page that register new Admin, HR, DEV, BA
+     */
     @RequestMapping(value = {"/create"})
     public String createUser() {
         return "admin-create-user";
     }
 
-
     @RequestMapping(value = {"/remove-ces-interviewer"}, method = RequestMethod.POST)
-    public void removeInterviewers(@RequestBody String json) throws IOException {
-        CESService cesService = new CESServiceImpl();
-        if (cesService != null) {
-            int cesId = cesService.getCurrentCES().getId();
-            ObjectMapper objectMapper = new ObjectMapper();
-            List<Integer> integerList = objectMapper.readValue(json, new TypeReference<List<Integer>>() {});
-            Iterator<Integer> iterator = integerList.iterator();
+    public
+    @ResponseBody
+    HttpStatus removeInterviewers(@RequestBody IntegerList integerList) {
+        CES currentCES = cesService.getCurrentCES();
+        if (currentCES != null) {
+            int cesId = currentCES.getId();
+            Iterator<Integer> iterator = integerList.getValues().iterator();
             while (iterator.hasNext()) {
                 try {
-                    System.out.println(iterator.next());
                     cesService.removeInterviewer(iterator.next(), cesId);
                 } catch (DAOException e) {
                     LOGGER.error("Can't Sign out interviewer", e);
+                    return HttpStatus.FOUND;
                 }
             }
         }
+        return HttpStatus.OK;
     }
-
 
     /**
      * Method for view student list from admin controle panale UC 7
@@ -118,6 +117,8 @@ public class AdminController {
         StudentService studentService = new StudentServiceImpl();
         return studentService.getSize("");
     }
+
+
     @RequestMapping(value = {"/students/size/{pattern}"}, method = RequestMethod.GET, produces = "application/json")
     public
     @ResponseBody
@@ -133,11 +134,11 @@ public class AdminController {
     StudentData studentsSearch(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("pattern") String pattern) {
         StudentData studentData;
         StudentService studentService = new StudentServiceImpl();
-        studentData = studentService.getStudents(itemsPerPage, (pageNumber * itemsPerPage - 10), pattern);
+        studentData = studentService.getStudents(itemsPerPage, (pageNumber * itemsPerPage - itemsPerPage), pattern);
         if (studentData == null) {
             LOGGER.warn("studData == null");
         }
-        LOGGER.info("studData == "+studentData.toString());
+        LOGGER.info("studData == " + studentData.toString());
         return studentData;
     }
 
@@ -147,11 +148,11 @@ public class AdminController {
     public StudentData getStudents(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber) {
         StudentData studentData;
         StudentService studentService = new StudentServiceImpl();
-        studentData = studentService.getStudents(itemsPerPage, (pageNumber * itemsPerPage - 10));
+        studentData = studentService.getStudents(itemsPerPage, (pageNumber * itemsPerPage - itemsPerPage));
         if (studentData == null) {
             LOGGER.warn("studData == null");
         }
-        LOGGER.info("studData == "+studentData.toString());
+        LOGGER.info("studData == " + studentData.toString());
         return studentData;
     }
 
@@ -160,7 +161,7 @@ public class AdminController {
     public StudentData getStudentsBySort(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("sortType") Integer sortType, @PathVariable("type") Boolean asc) {
         StudentData studentData;
         StudentService studentService = new StudentServiceImpl();
-        studentData = studentService.getStudents(itemsPerPage, (pageNumber * itemsPerPage - 10), sortType, asc);
+        studentData = studentService.getStudents(itemsPerPage, (pageNumber * itemsPerPage - itemsPerPage), sortType, asc);
         if (studentData == null) {
             LOGGER.warn("studData == null");
         }
@@ -194,7 +195,7 @@ public class AdminController {
     }
 
     /**
-     * Method for view interview list from admin controlle panel
+     * Method for view interview list from admin controller panel
      *
      * @return page with interviewer data
      */
@@ -215,7 +216,7 @@ public class AdminController {
 //        return studentData;
         List<Interviewer> interviewers;
         InterviewerService interviewerService = new InterviewerServiceImpl();
-        interviewers = interviewerService.getInterviewer(itemsPerPage, (pageNumber * itemsPerPage - 10));
+        interviewers = interviewerService.getInterviewer(itemsPerPage, (pageNumber * itemsPerPage - itemsPerPage));
         if (interviewers == null) {
             LOGGER.warn("interviewers == null");
         }
@@ -228,7 +229,7 @@ public class AdminController {
     public List<Interviewer> interviewGetJSONSort(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("sortType") String sortType, @PathVariable("type") Boolean asc) {
         List<Interviewer> interviewers;
         InterviewerService interviewerService = new InterviewerServiceImpl();
-        interviewers = interviewerService.getInterviewer(itemsPerPage, (pageNumber * itemsPerPage - 10), sortType, asc);
+        interviewers = interviewerService.getInterviewer(itemsPerPage, (pageNumber * itemsPerPage - itemsPerPage), sortType, asc);
         if (interviewers == null) {
             LOGGER.warn("interviewers == null");
         }
@@ -244,6 +245,7 @@ public class AdminController {
         InterviewerService interviewerService = new InterviewerServiceImpl();
         return interviewerService.getInterviewerSize("");
     }
+
     @RequestMapping(value = {"/interviewers/size/{pattern}"}, method = RequestMethod.GET, produces = "application/json")
     public
     @ResponseBody
@@ -259,7 +261,7 @@ public class AdminController {
         List<Interviewer> interviewers;
         System.out.println(pattern);
         InterviewerService interviewerService = new InterviewerServiceImpl();
-        interviewers = interviewerService.getInterviewer(itemsPerPage, (pageNumber * itemsPerPage - 10), sortType, pattern);
+        interviewers = interviewerService.getInterviewer(itemsPerPage, (pageNumber * itemsPerPage - itemsPerPage), sortType, pattern);
         if (interviewers == null) {
             LOGGER.warn("interviewers == null");
         }
@@ -308,7 +310,7 @@ public class AdminController {
     List<UserRow> usersSearch(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("pattern") String pattern) {
         List<UserRow> userRows;
         UserService userService = new UserServiceImpl();
-        userRows = userService.getUser(itemsPerPage, (pageNumber * itemsPerPage - 10), pattern);
+        userRows = userService.getUser(itemsPerPage, (pageNumber * itemsPerPage - itemsPerPage), pattern);
         if (userRows == null) {
             LOGGER.warn("users == null");
         }
@@ -321,7 +323,7 @@ public class AdminController {
     List<UserRow> usersSearch(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("sortType") String sortType, @PathVariable("pattern") String pattern) {
         List<UserRow> userRows;
         UserService userService = new UserServiceImpl();
-        userRows = userService.getUser(itemsPerPage, (pageNumber * itemsPerPage - 10), sortType, pattern);
+        userRows = userService.getUser(itemsPerPage, (pageNumber * itemsPerPage - itemsPerPage), sortType, pattern);
         if (userRows == null) {
             LOGGER.warn("users == null");
         }
@@ -334,7 +336,7 @@ public class AdminController {
     public List<UserRow> getUsers(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber) {
         List<UserRow> userRows;
         UserService userService = new UserServiceImpl();
-        userRows = userService.getUser(itemsPerPage, (pageNumber * itemsPerPage - 10));
+        userRows = userService.getUser(itemsPerPage, (pageNumber * itemsPerPage - itemsPerPage));
         if (userRows == null) {
             LOGGER.warn("users == null");
         }
@@ -347,11 +349,32 @@ public class AdminController {
     public List<UserRow> getUsersBySort(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("sortType") String sortType, @PathVariable("type") Boolean asc) {
         List<UserRow> userRows;
         UserService userService = new UserServiceImpl();
-        userRows = userService.getUser(itemsPerPage, (pageNumber * itemsPerPage - 10), sortType, asc);
+        userRows = userService.getUser(itemsPerPage, (pageNumber * itemsPerPage - itemsPerPage), sortType, asc);
         if (userRows == null) {
             LOGGER.warn("users == null");
         }
         return userRows;
+    }
+
+
+    /**
+     * Takes a json file with students status changes
+     *
+     * @param status
+     */
+    @RequestMapping(value = {"/users"}, method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    public HttpStatus userStatus(@RequestBody Status status) {
+        Status userStatus = status;
+        if (!status.getType().isEmpty() && (status.getValues().size() > 0)) {
+            userService.changeStatus(userStatus.getType(), userStatus.getValues());
+            return HttpStatus.OK;
+        } else {
+            LOGGER.warn("Request type is not supported");
+            return HttpStatus.BAD_REQUEST;
+        }
+
+
     }
 
     @RequestMapping(value = {"/interviewee"}, method = RequestMethod.GET)
@@ -364,7 +387,7 @@ public class AdminController {
     public List<IntervieweeRow> intervieweeGetJSON(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber) {
         List<IntervieweeRow> interviewees;
         IntervieweeService intervieweeService = new IntervieweeServiceImpl();
-        interviewees = intervieweeService.getInterviewee(itemsPerPage, (pageNumber * itemsPerPage - 10));
+        interviewees = intervieweeService.getInterviewee(itemsPerPage, (pageNumber * itemsPerPage - itemsPerPage));
         if (interviewees == null) {
             LOGGER.warn("interviewee == null");
         }
@@ -376,7 +399,7 @@ public class AdminController {
     public List<IntervieweeRow> intervieweeGetJSONSort(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("sortType") String sortType, @PathVariable("type") Boolean asc) {
         List<IntervieweeRow> interviewee;
         IntervieweeService intervieweeService = new IntervieweeServiceImpl();
-        interviewee = intervieweeService.getInterviewee(itemsPerPage, (pageNumber * itemsPerPage - 10), sortType, asc);
+        interviewee = intervieweeService.getInterviewee(itemsPerPage, (pageNumber * itemsPerPage - itemsPerPage), sortType, asc);
         if (interviewee == null) {
             LOGGER.warn("interviewee == null");
         }
@@ -407,7 +430,7 @@ public class AdminController {
     List<IntervieweeRow> intervieweeSearch(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("sortType") String sortType, @PathVariable("pattern") String pattern) {
         List<IntervieweeRow> interviewee;
         IntervieweeService intervieweeService = new IntervieweeServiceImpl();
-        interviewee = intervieweeService.getInterviewee(itemsPerPage, (pageNumber * itemsPerPage - 10), sortType, pattern);
+        interviewee = intervieweeService.getInterviewee(itemsPerPage, (pageNumber * itemsPerPage - itemsPerPage), sortType, pattern);
         if (interviewee == null) {
             LOGGER.warn("interviewers == null");
         }
@@ -428,25 +451,6 @@ public class AdminController {
         }
     }
 
-    /**
-     * Takes a json file with students status changes
-     *
-     * @param status
-     */
-    @RequestMapping(value = {"/users"}, method = RequestMethod.POST, produces = "application/json")
-    @ResponseBody
-    public HttpStatus userStatus(@RequestBody Status status) {
-        Status userStatus = status;
-        if (!status.getType().isEmpty() && (status.getValues().size() > 0)) {
-            userService.changeStatus(userStatus.getType(), userStatus.getValues());
-            return HttpStatus.OK;
-        } else {
-            LOGGER.warn("Request type is not supported");
-            return HttpStatus.BAD_REQUEST;
-        }
-
-
-    }
 
     @RequestMapping(value = {"/mail-template"}, method = RequestMethod.GET)
     public String mail() {
@@ -454,16 +458,20 @@ public class AdminController {
     }
 
 
-    @RequestMapping(value = {"/cesPost"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/cesPost"}, method = RequestMethod.POST, produces = "application/json")
     public
     @ResponseBody
-    CES getCES(@RequestBody CES ces) {
-        try {
-            cesService.setCES(ces);
-        } catch (DAOException e) {
-            e.printStackTrace();
+    Set<ValidationError> getCES(@RequestBody CES ces) {
+        CESValidator cesValidator = new CESValidator();
+        Set<ValidationError> errors = cesValidator.validate(ces);
+        if (errors.isEmpty()) {
+            try {
+                cesService.setCES(ces);
+            } catch (DAOException e) {
+                e.printStackTrace();
+            }
         }
-        return ces;
+        return errors;
     }
 
 
@@ -477,7 +485,7 @@ public class AdminController {
     @ResponseBody
     CES ces() {
         try {
-            System.out.println(cesService.getCES());
+            LOGGER.info(cesService.getCES());
             return cesService.getCES();
         } catch (DAOException e) {
             LOGGER.error("DAO error");
@@ -594,6 +602,9 @@ public class AdminController {
         return "admin-es-view";
     }
 
+    /**
+     * @return view of the reports with admin header
+     */
     @RequestMapping(value = {"/report"}, method = RequestMethod.GET)
     public String report() {
         return "admin-report-template";

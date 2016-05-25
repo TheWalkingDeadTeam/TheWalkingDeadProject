@@ -86,7 +86,7 @@
                         <option value="5">Checkbox</option>
                         <option value="6">Radio</option>
                         <option value="7">Tel</option>
-                        <option value="8">Date</option>
+                        <%--<option value="8">Date</option>--%>
                     </select>
 
                     <div class="form-group" ng-show="sef.isShown">

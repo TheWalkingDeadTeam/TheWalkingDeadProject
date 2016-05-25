@@ -8,10 +8,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import ua.nc.entity.Mail;
+import ua.nc.entity.User;
 import ua.nc.service.MailService;
 import ua.nc.service.MailServiceImpl;
+import ua.nc.service.user.UserService;
+import ua.nc.service.user.UserServiceImpl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Alexander on 30.04.2016.
@@ -21,6 +26,7 @@ import java.util.List;
 public class MailController {
     private static final Logger LOGGER = Logger.getLogger(MailController.class);
     MailService mailService = new MailServiceImpl();
+    UserService userService = new UserServiceImpl();
 
     /**
      * Retrieve all mail
@@ -119,6 +125,52 @@ public class MailController {
             mailService.deleteMail(i);
         }
         return new ResponseEntity<Mail>(HttpStatus.NO_CONTENT);
+    }
+
+
+    /**
+     * Customization email body template. The email template will be modified according
+     * to parameters from Map
+     *
+     * @param mail       template to be modified
+     * @param parameters to be changed in template
+     * @return modified email template
+     */
+    private Mail customization(Mail mail, Map<String, String> parameters) {
+        Mail mailRes = new Mail();
+        String body = mail.getBodyTemplate();
+        for (Map.Entry<String, String> param : parameters.entrySet()) {
+            body = body.replace(param.getKey(), param.getValue());
+        }
+        mailRes.setBodyTemplate(body);
+        mailRes.setHeadTemplate(mail.getHeadTemplate());
+        return mailRes;
+    }
+
+    /**
+     * Controller to handle custom/template mail from admin
+     *
+     * @param mail
+     */
+    @RequestMapping(value = "/admin/users-mail-id", method = RequestMethod.POST, produces = "application/json")
+    public void sendMail(@RequestBody Mail mail) {
+        List<Integer> userId = mail.getUsersId();
+        if (mail.getMailIdUser() != null) {
+            Mail studentMail = mailService.getMail(mail.getMailIdUser());
+            for (Integer i : userId) {
+                User user = userService.getUser(i);
+                Map<String, String> customizeMail = new HashMap<>();
+                customizeMail.put("$name", user.getName());
+                customizeMail.put("$surname", user.getSurname());
+                Mail mailUpdate = customization(studentMail, customizeMail);
+                mailService.sendMail(user.getEmail(), mailUpdate);
+            }
+        } else {
+            for (Integer i : userId) {
+                User user = userService.getUser(i);
+                mailService.sendMail(user.getEmail(), mail.getHeadTemplate(), mail.getBodyTemplate());
+            }
+        }
     }
 
 }

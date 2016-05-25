@@ -62,14 +62,17 @@ sendFormModule.controller('sendFr', ["$scope", "$http", function ($scope, $http)
                     .removeClass()
                     .empty()
                     .addClass('alert alert-danger')
-                    .html(errors_out);
+                    .html(errors_out).fadeIn();
             } else {
                 $scope.postSuccess = true;
                 $('#messageDiv')
                     .removeClass()
                     .empty()
                     .addClass('alert alert-success')
-                    .html('Saved successfully');
+                    .html('Saved successfully').fadeIn();
+                setTimeout(function() {
+                    $("#messageDiv").fadeOut().empty();
+                }, 3000);
             }
         }).error(function () {
             $scope.postError = true;

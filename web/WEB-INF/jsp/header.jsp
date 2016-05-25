@@ -1,5 +1,4 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%--
   Created by IntelliJ IDEA.
   User: Alexnader
@@ -21,21 +20,34 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand brand-img" href="">
-                    <img src='resources/images/logo.png' alt="Brand" class="header-img">
+                    <img src='/resources/images/logo.png' alt="Brand" class="header-img">
                 </a>
             </div>
             <div id='collapsed-menu' class='navbar-collapse collapse'>
-                <a href="?lang=en">English</a>                |
-                <a href="?lang=uk">Українська</a>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="/login"><spring:message code="locale.home"/></a></li>
-                    <li><a href="/information"><spring:message code="locale.info"/></a></li>
-                    <li><a href="/contacts"><spring:message code="locale.contacts"/></a></li>
+
+                    <li><a href="/login">
+                        <sec:authorize access="hasRole('ROLE_STUDENT') or !isAuthenticated()">
+                        Home
+                        </sec:authorize>
+                        <sec:authorize access="hasRole('ROLE_ADMIN')">
+                            Admin Panel
+                        </sec:authorize>
+                        <sec:authorize access="hasRole('ROLE_HR')">
+                            Hr Panel
+                        </sec:authorize>
+                    </a></li>
+                    <sec:authorize access="hasAnyRole('ROLE_HR','ROLE_DEV','ROLE_BA')">
+                    <li><a href="/interviewee">Interviewees</a></li>
+                    </sec:authorize>
+                    <li><a href="/information">Information</a></li>
+                    <li><a href="/contacts">Contacts</a></li>
                     <sec:authorize access="hasRole('ROLE_STUDENT')">
-                        <li><a href="/profile/{id}"><spring:message code="locale.profile"/></a></li>
+                        <sec:authentication var="principal" property="principal"/>
+                        <li><a href="/profile?${principal.id}">Profile</a></li>
                     </sec:authorize>
                     <sec:authorize access="isAuthenticated()">
-                    <li><a href="/logout"><spring:message code="locale.logout"/></a></li>
+                    <li><a href="/logout">Logout</a></li>
                     </sec:authorize>
                 </ul>
             </div>

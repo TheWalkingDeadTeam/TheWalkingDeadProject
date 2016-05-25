@@ -14,22 +14,19 @@
     <meta name="description" content="A front-end template that helps you build fast, modern mobile web apps.">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <title>Statistic & Reports</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/resources/images/ico.png"/>
 
     <!-- Add to homescreen for Chrome on Android -->
     <meta name="mobile-web-app-capable" content="yes">
-    <link rel="icon" sizes="192x192" href="images/android-desktop.png">
 
     <!-- Add to homescreen for Safari on iOS -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-title" content="Material Design Lite">
-    <link rel="apple-touch-icon-precomposed" href="images/ios-desktop.png">
 
     <!-- Tile icon for Win8 (144x144 + tile color) -->
     <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
     <meta name="msapplication-TileColor" content="#3372DF">
-
-    <link rel="shortcut icon" href="images/favicon.png">
 
     <!-- SEO: If your mobile URL is different from the desktop URL, add a canonical link to the desktop page https://developers.google.com/webmasters/smartphone-sites/feature-phones -->
     <!--
@@ -65,7 +62,7 @@
     <jsp:include page="admin-header.jsp"/>
     <main class="mdl-layout__content mdl-color--grey-100">
         <div class="mdl-grid demo-content">
-            <jsp:include page="report-statistic.jsp"/>
+            <jsp:include page="report-template.jsp"/>
         </div>
     </main>
 
@@ -144,4 +141,6 @@
 <script src="/resources/js/logout.js"></script>
 <script src="http://code.jquery.com/jquery-1.9.0.js"></script>
 <script type="text/javascript" src="/resources/js/pnotify.custom.min.js"></script>
+<script src="/resources/js/adminmenu.js"></script>
+
 </html>

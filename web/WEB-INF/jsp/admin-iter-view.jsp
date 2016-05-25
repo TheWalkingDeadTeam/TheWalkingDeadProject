@@ -26,6 +26,7 @@
     <meta name="apple-mobile-web-app-title" content="Material Design Lite">
     <link rel="apple-touch-icon-precomposed" href="images/ios-desktop.png">
     <link rel="stylesheet" type="text/css" href="/resources/bootstrap/css/bootstrap.css"/>
+    <link rel="stylesheet" href="/resources/css/notification/angular-ui-notification.min.css">
 
 
     <!-- Tile icon for Win8 (144x144 + tile color) -->
@@ -44,6 +45,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.cyan-light_blue.min.css">
     <link rel="stylesheet" href="/resources/css/styles.css">
+    <link rel="stylesheet" href="/resources/css/notification/angular-ui-notification.min.css">
 
     <style>
         #view-source {
@@ -58,7 +60,7 @@
     </style>
 </head>
 <body>
-<main ng-controller="interCtrl as data"
+<main ng-controller="InterCtrl as data"
       class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
     <jsp:include page="admin-header.jsp"/>
 
@@ -73,6 +75,25 @@
                     class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
                 Unsubscribe from CES
             </button>
+
+            <a href="#FooOne"
+               class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white"
+               data-toggle="collapse">Mail</a>
+
+            <a href="#FooTwo"
+               class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white"
+               data-toggle="collapse">Mail With Template</a>
+
+            <div id="FooOne" class="collapse">
+                <jsp:include page="custom-mail.jsp"/>
+            </div>
+
+
+            <div id="FooTwo" class="collapse">
+                <jsp:include page="custom-mail-template-interviewers.jsp"/>
+            </div>
+
+
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
                 <label class="mdl-button mdl-js-button mdl-button--icon" for="search">
                     <i class="material-icons">search</i>
@@ -97,32 +118,32 @@
                     <input type="checkbox" ng-model="selectedAll" ng-click="checkAll()">
                 </td>
                 <td>
-                    <a ng-click="order_by = 'id'; sortReverse = !sortReverse; sortType(order_by,sortReverse)">
+                    <a ng-click="sortType('system_user_id',sortReverse); sortReverse = !sortReverse; ">
                         id
                     </a>
                 </td>
                 <td>
-                    <a ng-click="order_by = 'name'; sortReverse = !sortReverse; sortType(order_by,sortReverse)">
+                    <a ng-click="sortType('name',sortReverse); sortReverse = !sortReverse; ">
                         Name
                     </a>
                 </td>
                 <td>
-                    <a ng-click="order_by = 'surname'; sortReverse = !sortReverse; sortType(order_by,sortReverse)">
+                    <a ng-click="sortType('surname',sortReverse); sortReverse = !sortReverse; ">
                         Surname
                     </a>
                 </td>
                 <td>
-                    <a ng-click="order_by = 'email'; sortReverse = !sortReverse; sortType(order_by,sortReverse)">
+                    <a ng-click="sortType('email',sortReverse); sortReverse = !sortReverse; ">
                         Email
                     </a>
                 </td>
                 <td>
-                    <a ng-click="order_by = 'role'; sortReverse = !sortReverse; sortType(order_by,sortReverse)">
+                    <a ng-click="sortType('role',sortReverse); sortReverse = !sortReverse; ">
                         Role
                     </a>
                 </td>
                 <td>
-                    <a ng-click="order_by = 'participation'; sortReverse = !sortReverse; sortType(order_by,sortReverse)">
+                    <a>
                         Participation
                     </a>
                 </td>
@@ -136,11 +157,11 @@
                 <td><input type="checkbox" checklist-model="dataStudents.studId" checklist-value="user.id">
                 </td>
                 <%--<td ng-init="index=$index + 1">{{index}}</td>--%>
-                <td><a href="/account/{{user.id}}" target="_blanks">{{user.id}}</a></td>
+                <td><a href="/account?{{user.id}}" target="_blanks">{{user.id}}</a></td>
                 <td>{{user.name}}</td>
                 <td>{{user.surname}}</td>
                 <td>{{user.email}}</td>
-                <td>{{user.role}}</td>
+                     <td>{{user.role}}</td>
                 <td ng-style="{opacity:0.5,'background-color':'{{user.participation ? 'green' : 'red'}}'}">{{user.participation}}</td>
             </tr>
             </tbody>
@@ -158,15 +179,18 @@
 </main>
 
 
-<script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
-<script src="http://code.jquery.com/jquery-latest.js"></script>
-<script src="/resources/js/admin-create-user.js"></script>
-<script src="/resources/bootstrap/js/bootstrap.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-route.js"></script>
-<script src="../../resources/js/interviewListAngular.js"></script>
-<script src="../../resources/js/dirPagination.js"></script>
+<script src="/resources/js/notification/angular-ui-notification.min.js"></script>
+<script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="/resources/js/notification/angular-ui-notification.min.js"></script>
+<script src="/resources/bootstrap/js/bootstrap.js"></script>
+<script src="/resources/js/interviewListAngular.js"></script>
+<script src="/resources/js/dirPagination.js"></script>
 <script src="http://vitalets.github.io/checklist-model/checklist-model.js"></script>
+<script src="/resources/js/adminmenu.js"></script>
+
 </body>
 
 </html>

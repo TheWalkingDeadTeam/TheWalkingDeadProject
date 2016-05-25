@@ -137,7 +137,7 @@
             </tr>
             <tr dir-paginate="interviewee in data.users|itemsPerPage:data.itemsPerPage" total-items="data.total_count">
                 <%--<td><input type="checkbox" checklist-model="dataStudents.studId" checklist-value="interviewee.id"></td>--%>
-                <td><a href="/interviewee/feedback?{{interviewee.id}}" target="_blanks">{{interviewee.id}}</a></td>
+                <td><a href="/interviewer/feedback?{{interviewee.id}}" target="_blanks">{{interviewee.id}}</a></td>
                 <td>{{interviewee.name}}</td>
                 <td>{{interviewee.surname}}</td>
                 <td>{{interviewee.special_mark}}</td>
@@ -170,9 +170,10 @@
 <script src="/resources/js/checkboxScript.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-route.js"></script>
-<script src="../../resources/js/intervieweeListAngular.js"></script>
-<script src="../../resources/js/dirPagination.js"></script>
+<script src="/resources/js/intervieweeListAngular.js"></script>
+<script src="/resources/js/dirPagination.js"></script>
 <script src="http://vitalets.github.io/checklist-model/checklist-model.js"></script>
+<script src="/resources/js/adminmenu.js"></script>
 
 </body>
 

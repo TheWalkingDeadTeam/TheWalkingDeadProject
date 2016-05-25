@@ -1,5 +1,5 @@
 body {
-	margin-top: 60px;
+	/*margin-top: 60px;*/ /*don't do this anymore, please :)*/
 	font-size: 14px;
 	font-family: "Helvetica Nueue",Arial,Verdana,sans-serif;
 	background-color: #E5E9ED;
@@ -183,7 +183,7 @@ body {
 }
 
 .card .stats:first-child{
-	border-right: 1px solid #EEEEEE;
+	/*border-right: 1px solid #EEEEEE;*/
 }
 .card .stats:last-child{
 	border-left: 1px solid #EEEEEE;

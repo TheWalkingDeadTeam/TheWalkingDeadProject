@@ -1,5 +1,7 @@
 package ua.nc.entity;
 
+import ua.nc.dao.enums.UserStatus;
+
 import java.util.Set;
 
 /**
@@ -11,6 +13,7 @@ public class User implements Identified<Integer> {
     private String surname;
     private String email;
     private String password;
+    private UserStatus status;
     private Set<Role> roles;
 
     public User() {
@@ -23,6 +26,14 @@ public class User implements Identified<Integer> {
         this.email = email;
         this.password = password;
         this.roles = roles;
+    }
+
+    public UserStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(UserStatus status) {
+        this.status = status;
     }
 
     public Integer getId() {

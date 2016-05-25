@@ -5,7 +5,7 @@
     outline: none;
 }
 
-[for='recpass'] {
+[for='recpass']{
     margin-top: 10px;
     color: rgb(110, 150, 190);
     border-bottom: solid 1px rgb(110, 150, 190);
@@ -31,11 +31,11 @@
 }
 
 /* HEADER */
-.header-img {
+.header-img{
     max-width: 205px;
 }
 
-.brand-img {
+.brand-img{
     padding: 0 !important;
 }
 
@@ -141,7 +141,7 @@
 
 .inputBox button p {
     margin: auto;
-    text-trans: uppercase;
+    text-transform: uppercase;
     font-size: 1.3em;
     font-weight: 500;
 }
@@ -166,6 +166,28 @@
     width: 100%;
 }
 
+.as-sortable-item,
+.as-sortable-placeholder {
+    display: table-row !important;
+}
+
+#sessionSettings {
+    margin-left: 30px;
+}
+
+.formControllingButt {
+    border-radius: 4px;
+}
+
+.myTextInfo {
+    width: 10%;
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+.wrapField {
+    width: 100%;
+}
 .cssload-thecube {
     width: 73px;
     height: 73px;
@@ -386,4 +408,13 @@
 
 .wrapField {
     width: 100%;
+}
+
+.mdl-textfield__input{
+    autocompleate: off;
+}
+
+
+.active {
+    background-color: #e0e0e0;;
 }

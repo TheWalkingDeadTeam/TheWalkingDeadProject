@@ -1,6 +1,7 @@
 (function () {
     var requestData;
     var id = location.search.substr(1);
+    $('#photo_img').attr('src', '/getPhoto/' + id);
     var isAgree = false;
 
     $(document).ready(function () {
@@ -27,25 +28,41 @@
 
             },
             error: function (jqXHR, exception) {
+                console.log(jqXHR);
+                console.log(exception);
+                alert(jqXHR);
+                alert(exception);
                 window.location.href = "/error"
             }
         });
 
-        $('#fields').submit(function () {
+        $('#fields').submit(function (event) {
             event.preventDefault();
             $.ajax({
                 method: 'POST',
                 contentType: "application/json",
                 url: '/profile',
                 data: JSON.stringify(requestData),
-                success: function () {
-                    $('#fieldsCheck').removeClass().empty();
-                    $('#fieldsCheck').addClass('alert alert-success').html('Profile saved successfully');
+                success: function (response) {
+                    if (response.length) {
+                        $('#fieldsCheck').removeClass().empty();
+                        var errorMsg = '';
+                        for (var i in response) {
+                            errorMsg += response[i].field + " " + response[i].errorMessage + "</br>";
+                        }
+                        $('#fieldsCheck').addClass('alert alert-danger').html(errorMsg).fadeIn();
+                    } else {
+                        $('#fieldsCheck').removeClass().empty();
+                        $('#fieldsCheck').addClass('alert alert-success').html('Profile saved successfully').fadeIn();
+                        setTimeout(function () {
+                            $("#fieldsCheck").fadeOut().empty();
+                        }, 3000);
+                    }
                 }
             })
         });
 
-        $('#buttonEnroll').bind('click', function () {
+        $('#buttonEnroll').bind('click', function (event) {
             event.preventDefault();
             $.ajax({
                 method: 'GET',
@@ -58,10 +75,13 @@
                         for (var i in response) {
                             errorMsg += response[i].errorMessage + "</br>";
                         }
-                        $('#fieldsCheck').addClass('alert alert-danger').html(errorMsg);
+                        $('#fieldsCheck').addClass('alert alert-danger').html(errorMsg).fadeIn();
                     } else {
                         $('#fieldsCheck').removeClass().empty();
-                        $('#fieldsCheck').addClass('alert alert-success').html('You have successfully enrolled on current courses!');
+                        $('#fieldsCheck').addClass('alert alert-success').html('You have successfully enrolled on current courses!').fadeIn();
+                        setTimeout(function () {
+                            $("#fieldsCheck").fadeOut().empty();
+                        }, 3000);
                     }
                 }
             })
@@ -87,7 +107,7 @@
         });
 
         if (empty || !$('#agree').is(':checked') || !checkCheckboxes() || !checkRadio()) {
-            $('#fieldsCheck').addClass('alert alert-danger').html('Please, fill each field and check Agree button');
+            $('#fieldsCheck').addClass('alert alert-danger').html('Please, fill each field and check Agree button').fadeIn();
             $('#save').attr('disabled', 'disabled');
         } else if (!empty && $('#agree').is(':checked') && checkCheckboxes() && checkRadio()) {
             $('#fieldsCheck').removeClass().empty();
@@ -143,19 +163,19 @@
                     $('<span>').text(item.fieldName + ': ').appendTo($('#radioBlock' + i));
                     item.values.forEach(function (item_value, j) {
                         var isChecked = (item_value.value == "true") ? 'checked' : '',
-                            attributes = {type: 'radio', id: item_value.id, name: item.id};
+                            attributes = {type: 'radio', id: 'radioOption' + i + item_value.id, name: item.id};
                         attributes.required = "required";
                         if (isChecked) {
                             attributes.checked = isChecked;
                         }
-                        $('<label>').attr({for: item_value.id}).text(' ' + item_value.fieldValueName).appendTo($('#radioBlock' + i));
+                        $('<label>').attr({for: 'radioOption' + i + item_value.id}).text(' ' + item_value.fieldValueName).appendTo($('#radioBlock' + i));
                         $('<input>')
                             .attr(attributes)
                             .attr('ng-model', i)
                             .appendTo($('#radioBlock' + i))
                             .on('change', function () {
                                 var updatedRadios = requestData.fields[$(this).attr('ng-model')].values.map(function (item) {
-                                    if (item.id == this.id) {
+                                    if (('radioOption' + i + item.id) == this.id) {
                                         item.value = true;
                                         return item;
                                     } else {
@@ -167,7 +187,7 @@
                                 requestData.fields[$(this).attr('ng-model')].values = updatedRadios;
 
                             });
-                    })
+                    });
                     break;
 
                 case 'text':
@@ -191,7 +211,7 @@
                         max: 13,
                         min: 10,
                         pattern: pattern,
-                        placeholder: "+380662281488",
+                        placeholder: "+380501234567",
                         value: item.values[0].value
                     };
                     attributes.required = "required";
@@ -215,9 +235,10 @@
                     $('<select>').attr(attributes).attr('ng-model', i).appendTo($('#block' + i));
                     $('#select' + item.id).append('<option ' + 'disabled' + '>' + 'University' + '</option>');
                     item.values.forEach(function (item_value, j) {
+                        var rand = _getRandomInt();
                         var isSelected = item_value.value == "true";
                         $('#select' + item.id)
-                            .append('<option id="' + item_value.id + '" value="' + item_value.fieldValueName + '">' + item_value.fieldValueName + '</option>');
+                            .append('<option id="' + item_value.id + rand + '" value="' + item_value.fieldValueName + '">' + item_value.fieldValueName + '</option>');
                         if (isSelected) {
                             $("#select" + item.id + " option[value='" + item_value.fieldValueName + "']").prop('selected', true);
                         }
@@ -260,24 +281,29 @@
                     $('<div id=\"checkBlock' + i + '\">').appendTo($(divname));
                     $('<span>').text(item.fieldName + ': ').appendTo($('#checkBlock' + i));
                     item.values.forEach(function (item_value, j) {
+                        var rand = _getRandomInt();
                         var isChecked = (item_value.value == "true") ? 'checked' : '',
-                            attributes = {type: 'checkbox', id: item_value.id, value: item_value.value};
+                            attributes = {type: 'checkbox', id: item_value.id + rand, value: item_value.value};
                         if (isChecked) {
                             attributes.checked = isChecked;
                         }
-                        $('<label>').attr({for: item_value.id}).text(' ' + item_value.fieldValueName).appendTo($('#checkBlock' + i));
+                        $('<label>').attr({for: item_value.id + rand}).text(' ' + item_value.fieldValueName).appendTo($('#checkBlock' + i));
                         $('<input>')
                             .attr(attributes)
                             .attr('ng-model', i)
                             .appendTo($('#checkBlock' + i))
                             .on('change', function () {
-                                enableSave()
+                                enableSave();
                                 requestData.fields[$(this).attr('ng-model')].values[j].value = this.checked;
                             });
                     });
                     break;
             }
         }
+    }
+
+    function _getRandomInt() {
+        return Math.round(1 + Math.random() * (998)) + Math.round(1 + Math.random() * (998));
     }
 })();
 

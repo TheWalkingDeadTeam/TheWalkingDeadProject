@@ -142,7 +142,7 @@
     // ------------------------------------------validation
 
 
-    $("#buttonRegistration").click(function () {
+    $("#buttonRegistration").click(function (event) {
         event.preventDefault();
         $.ajax({
             type: 'post',
@@ -168,7 +168,7 @@
                         .empty();
                     $('#messageRegistration')
                         .addClass('alert alert-danger')
-                        .html(errors_out);
+                        .html(errors_out).fadeIn();
                     $('#j_password').val("");
                 } else {
                     $('#messageRegistration')
@@ -180,10 +180,14 @@
                     $('.registration')
                         .fadeOut(300);
                     $('#messageSignIn')
+                        .show()
                         .addClass('alert alert-success')
-                        .html('Registered successfully');
+                        .html('Registered successfully').fadeIn();
                     $('.registration input')
                         .val("");
+                    setTimeout(function() {
+                        $("#messageSignIn").fadeOut().empty();
+                    }, 3000);
                 }
             },
             error: function (jqXHR, exception) {
