@@ -38,68 +38,74 @@ public class ProfileServiceImpl implements ProfileService {
         UserService userService = new UserServiceImpl();
         User user = userService.getUser(userId);
         Set<Role> roles = user.getRoles();
-        Role roleStudent = roleDAO.findByName(ROLE_STUDENT);
-        boolean contains = roles.contains(roleStudent);
-        if (!contains){
-            throw new DAOException("Wrong role");
-        }
-        FieldDAO fieldDAO = daoFactory.getFieldDAO(connection);
-        FieldTypeDAO fieldTypeDAO = daoFactory.getFieldTypeDAO(connection);
-        FieldValueDAO fieldValueDAO = daoFactory.getFieldValueDAO(connection);
-        ListValueDAO listValueDAO = daoFactory.getListValueDAO(connection);
-        boolean flagApplied = isApplied(userId, cesId);
         Profile result = new Profile();
-        List<ProfileField> profileFields = new ArrayList<>();
-        List<Field> fields = fieldDAO.getFieldsForCES(cesId);
-        for (Field field : fields) {
-            ProfileField profileField = new ProfileField();
-            profileField.setId(field.getId());
-            profileField.setFieldName(field.getName());
-            profileField.setOrderNum(field.getOrderNum());
-            profileField.setMultipleChoice(field.getMultipleChoice());
-            profileField.setFieldType(fieldTypeDAO.read(field.getFieldTypeID()).getName());
-            List<ProfileFieldValue> profileFieldValues = new ArrayList<>();
-            if (field.getListTypeID() == null) {
-                if (!flagApplied) {
-                    profileFieldValues.add(new ProfileFieldValue());
-                    profileField.setValues(profileFieldValues);
+        try {
+            Role roleStudent = roleDAO.findByName(ROLE_STUDENT);
+            boolean contains = roles.contains(roleStudent);
+            if (!contains) {
+                throw new DAOException("Wrong role");
+            }
+            FieldDAO fieldDAO = daoFactory.getFieldDAO(connection);
+            FieldTypeDAO fieldTypeDAO = daoFactory.getFieldTypeDAO(connection);
+            FieldValueDAO fieldValueDAO = daoFactory.getFieldValueDAO(connection);
+            ListValueDAO listValueDAO = daoFactory.getListValueDAO(connection);
+            boolean flagApplied = isApplied(userId, cesId);
+            List<ProfileField> profileFields = new ArrayList<>();
+            List<Field> fields = fieldDAO.getFieldsForCES(cesId);
+            for (Field field : fields) {
+                ProfileField profileField = new ProfileField();
+                profileField.setId(field.getId());
+                profileField.setFieldName(field.getName());
+                profileField.setOrderNum(field.getOrderNum());
+                profileField.setMultipleChoice(field.getMultipleChoice());
+                profileField.setFieldType(fieldTypeDAO.read(field.getFieldTypeID()).getName());
+                List<ProfileFieldValue> profileFieldValues = new ArrayList<>();
+                if (field.getListTypeID() == null) {
+                    if (!flagApplied) {
+                        profileFieldValues.add(new ProfileFieldValue());
+                        profileField.setValues(profileFieldValues);
+                    } else {
+                        FieldValue fieldValue = fieldValueDAO.getFieldValueByUserCESField(
+                                userId, cesId, field.getId()).iterator().next();
+                        ProfileFieldValue pfValue = setProfileFieldValue(fieldValue);
+                        profileFieldValues.add(pfValue);
+                        profileField.setValues(profileFieldValues);
+                    }
                 } else {
-                    FieldValue fieldValue = fieldValueDAO.getFieldValueByUserCESField(
-                            userId, cesId, field.getId()).iterator().next();
-                    ProfileFieldValue pfValue = setProfileFieldValue(fieldValue);
-                    profileFieldValues.add(pfValue);
-                    profileField.setValues(profileFieldValues);
-                }
-            } else {
-                List<ListValue> listValues = listValueDAO.getAllListListValue(field.getListTypeID());
-                List<FieldValue> fieldValues = fieldValueDAO.getFieldValueByUserCESField(
-                        userId, cesId, field.getId());
-                for (ListValue listValue : listValues) {
-                    ProfileFieldValue pfValue = new ProfileFieldValue();
-                    pfValue.setId(listValue.getId().toString());
-                    pfValue.setFieldValueName(listValue.getValueText());
-                    if (flagApplied) {
-                        boolean matched = false;
-                        for (FieldValue fieldValue : fieldValues) {
-                            if (listValue.getId().equals(fieldValue.getListValueID())) {
-                                pfValue.setValue(Boolean.TRUE.toString());
-                                matched = true;
+                    List<ListValue> listValues = listValueDAO.getAllListListValue(field.getListTypeID());
+                    List<FieldValue> fieldValues = fieldValueDAO.getFieldValueByUserCESField(
+                            userId, cesId, field.getId());
+                    for (ListValue listValue : listValues) {
+                        ProfileFieldValue pfValue = new ProfileFieldValue();
+                        pfValue.setId(listValue.getId().toString());
+                        pfValue.setFieldValueName(listValue.getValueText());
+                        if (flagApplied) {
+                            boolean matched = false;
+                            for (FieldValue fieldValue : fieldValues) {
+                                if (listValue.getId().equals(fieldValue.getListValueID())) {
+                                    pfValue.setValue(Boolean.TRUE.toString());
+                                    matched = true;
+                                }
                             }
-                        }
-                        if (!matched) {
+                            if (!matched) {
+                                pfValue.setValue(Boolean.FALSE.toString());
+                            }
+                        } else {
                             pfValue.setValue(Boolean.FALSE.toString());
                         }
-                    } else {
-                        pfValue.setValue(Boolean.FALSE.toString());
+                        profileFieldValues.add(pfValue);
                     }
-                    profileFieldValues.add(pfValue);
+                    profileField.setValues(profileFieldValues); ///
                 }
-                profileField.setValues(profileFieldValues); ///
+                profileFields.add(profileField);
             }
-            profileFields.add(profileField);
+            result.setFields(profileFields);
+        } catch (DAOException e) {
+            LOGGER.error(e.getCause());
+            throw new DAOException(e);
+        } finally {
+            daoFactory.putConnection(connection);
         }
-        result.setFields(profileFields);
-        daoFactory.putConnection(connection);
         return result;
     }
 
@@ -211,8 +217,14 @@ public class ProfileServiceImpl implements ProfileService {
     private boolean isApplied(int userId, int cesId) throws DAOException {
         Connection connection = daoFactory.getConnection();
         ApplicationDAO applicationDAO = daoFactory.getApplicationDAO(connection);
-        Application resultSet = applicationDAO.getApplicationByUserCES(userId, cesId);
-        daoFactory.putConnection(connection);
+        Application resultSet = null;
+        try {
+            resultSet = applicationDAO.getApplicationByUserCES(userId, cesId);
+        } catch (DAOException e) {
+            throw new DAOException(e);
+        } finally {
+            daoFactory.putConnection(connection);
+        }
         if (resultSet == null) {
             return false;
         } else {
@@ -281,15 +293,20 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public void setProfile(int userId, Profile profile) throws DAOException {
+    public void setProfile(int userId, Profile profile)  {
         Connection connection = daoFactory.getConnection();
         CESDAO cesDAO = daoFactory.getCESDAO(connection);
-        CES ces = cesDAO.getCurrentCES();
-        if (isApplied(userId, ces.getId())) {
-            updateProfile(profile, userId, ces.getId());
-        } else {
-            createProfile(profile, userId, ces.getId());
+        try {
+            CES ces = cesDAO.getCurrentCES();
+            if (isApplied(userId, ces.getId())) {
+                updateProfile(profile, userId, ces.getId());
+            } else {
+                createProfile(profile, userId, ces.getId());
+            }
+        } catch (DAOException e) {
+            e.printStackTrace();
+        } finally {
+            daoFactory.putConnection(connection);
         }
-        daoFactory.putConnection(connection);
     }
 }
