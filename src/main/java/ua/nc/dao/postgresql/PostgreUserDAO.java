@@ -237,7 +237,6 @@ public class PostgreUserDAO extends AbstractPostgreDAO<User, Integer> implements
                 user.setEmail(rs.getString("email"));
                 user.setName(rs.getString("name"));
                 user.setSurname(rs.getString("surname"));
-                user.setPassword(rs.getString("password"));
                 Set<Role> roles = roleDAO.findByEmail(user.getEmail());
                 user.setRoles(roles);
                 users.add(user);

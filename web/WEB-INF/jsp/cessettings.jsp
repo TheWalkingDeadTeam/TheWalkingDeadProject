@@ -61,25 +61,17 @@
                                 <h4 class="form-signin-heading">Session settings</h4>
                             </div>
                         </div>
-                        <div name="myForm" id="CESfields" ng-submit="ctrl.save()"
-                             class="col-lg-11 col-md-8 col-sm-9 col-xs-9">
-                            <div><span class="myTextInfo">Year</span><input type="number" name="year"
-                                                                            id="1" class="form-control"
-                                                                            ng-model="ctrl.ces.year"
-                                                                            ng-readonly="current" required/></div>
+                        <div name="myForm" id="CESfields" ng-submit="ctrl.save()" class="col-lg-11 col-md-8 col-sm-12 col-xs-12">
+                            <div>
+                                <span class="myTextInfo">Year</span>
+                                <input type="number" name="year" id="1" class="form-control" ng-model="ctrl.ces.year" ng-readonly="current" required/></div>
                             <div class="correct-year"></div>
-                            <div><span class="myTextInfo">Quota</span><input type="number" name="quota" id="quota"
-                                                                             class="form-control"
-                                                                             ng-model="ctrl.ces.quota"
-                                                                             required/></div>
+                            <div><span class="myTextInfo">Quota</span><input type="number" name="quota" id="quota" class="form-control"
+                                                                             ng-model="ctrl.ces.quota" required/></div>
                             <div class="correct-quota"></div>
-                            <div><span class="myTextInfo">Start registration date</span><input type="date"
-                                                                                               name="startRegistrationDate"
-                                                                                               class="form-control"
-                                                                                               ng-model="ctrl.ces.startRegistrationDate"
-                                                                                               ng-readonly="current"
-                                                                                               placeholder="yyyy-MM-dd"
-                                                                                               id="3" required></div>
+                            <div><span class="myTextInfo">Start registration date</span><input type="date" name="startRegistrationDate"
+                                                                                               class="form-control" ng-model="ctrl.ces.startRegistrationDate"
+                                                                                               ng-readonly="current" placeholder="yyyy-MM-dd" id="3" required></div>
                             <div class="correct-date"></div>
                             <div><span class="myTextInfo">End registration date</span><input type="date"
                                                                                              name="endRegistrationDate"
@@ -167,4 +159,6 @@
 <script src="/resources/js/ces.js"></script>
 <script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
 <script src="/resources/bootstrap/js/bootstrap.js"></script>
+<script src="/resources/js/adminmenu.js"></script>
+
 </html>

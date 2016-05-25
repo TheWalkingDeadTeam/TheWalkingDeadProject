@@ -111,6 +111,8 @@
 <script src="/resources/js/edit-form.js"></script>
 <script src="/resources/js/ng-sortable.min.js"></script>
 <script src="http://vitalets.github.io/checklist-model/checklist-model.js"></script>
+<script src="/resources/js/adminmenu.js"></script>
+
 </body>
 
 </html>

@@ -173,14 +173,14 @@
             <div class="demo-cards mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet mdl-cell--4-col-phone mdl-grid mdl-grid--no-spacing">
                     <div class="demo-updates mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--4-col-phone mdl-cell--12-col-desktop">
                         <div class="mdl-card__title mdl-card--expand mdl-color--teal-300">
-                            <h2 class="mdl-card__title-text"><i class="material-icons">portrait</i> Create Interviewer</h2>
+                            <h2 class="mdl-card__title-text"><i class="material-icons">portrait</i> Create User</h2>
                         </div>
                         <div class="mdl-card__supporting-text mdl-color-text--grey-600">
-                            You are able to create Interviewer
+                            You are able to create new Admin or Interviewer
                         </div>
                         <div class="mdl-card__actions mdl-card--border">
                             <a href="/admin/create" class="mdl-button mdl-js-button mdl-js-ripple-effect">Create
-                                Interviewer</a>
+                                User</a>
                         </div>
                     </div>
                     <div class="demo-separator mdl-cell--1-col"></div>
@@ -309,5 +309,7 @@
 <script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
 </body>
 <script src="/resources/js/logout.js"></script>
+<script src="/resources/js/adminmenu.js"></script>
+
 </html>
 

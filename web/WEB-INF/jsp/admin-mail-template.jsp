@@ -160,6 +160,8 @@
 <script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
 </body>
 <script src="/resources/js/logout.js"></script>
+<script src="/resources/js/adminmenu.js"></script>
+
 <%--<script src="http://code.jquery.com/jquery-1.9.0.js"></script>--%>
 <%--<script type="text/javascript" src="/resources/js/pnotify.custom.min.js"></script>--%>
 </html>
