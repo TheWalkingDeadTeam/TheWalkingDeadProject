@@ -79,8 +79,8 @@
                 </div>
             </div>
 
-            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" style="margin-bottom: 20px;">
-                <div id="map-container" class="z-depth-1" style="height: 250px;width: 440px;"></div>
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12" style="margin-bottom: 10px;">
+                <div id="map-container" class="z-depth-1" style="height: 300px; width: 550px; display: block; margin-top: 5px; margin-left: auto; margin-right: auto;"></div>
             </div>
         </div>
     </div>

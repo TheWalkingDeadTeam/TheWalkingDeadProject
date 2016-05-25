@@ -44,10 +44,10 @@
             <div class="user-panel">
                 <div>
                     <p style="margin-right: 7px; float: right; margin-top: 0px; margin-bottom: 0px; margin-left: 0px;">
-                    <sec:authorize access="isAuthenticated()">
-                        ${principal.username}
-                    </sec:authorize>
-                </p>
+                        <sec:authorize access="isAuthenticated()">
+                            ${principal.username}
+                        </sec:authorize>
+                    </p>
                 </div>
                 <div class=" image" style="display: inline-block;">
                     <%--                    <img width="100" height="100" src="/resources/images/rainbow.jpg" class="img-circle"
@@ -79,7 +79,7 @@
     </header>
     <nav class="demo-navigation mdl-navigation mdl-color--blue-grey-800">
         <div class="mdl-layout-spacer">
-            <a class="mdl-navigation__link" href="/admin"><i class="mdl-color-text--blue-grey-400 material-icons"
+            <a id="menu" class="mdl-navigation__link" href="/admin"><i class="mdl-color-text--blue-grey-400 material-icons"
                                                              role="presentation">view_module</i>Menu</a>
         </div>
         <a class="mdl-navigation__link" href="/admin/scheduler"><i class="mdl-color-text--blue-grey-400 material-icons"
@@ -107,7 +107,7 @@
                 role="presentation">supervisor_account</i>Interviewer List</a>
         <sec:authorize access="hasRole('ROLE_ADMIN')">
             <a class="mdl-navigation__link" href="/admin/create"><i class="mdl-color-text--blue-grey-400 material-icons"
-                                                                    role="presentation">portrait</i>Create Interviewer</a>
+                                                                    role="presentation">portrait</i>Create User</a>
         </sec:authorize>
         <a class="mdl-navigation__link" href="/admin/mail-template"><i
                 class="mdl-color-text--blue-grey-400 material-icons"
