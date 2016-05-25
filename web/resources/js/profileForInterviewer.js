@@ -2,7 +2,7 @@
  * Created by Hlib on 09.05.2016.
  */
 const div_form = '\
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">\
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 5px;">\
     <div id="save_message"></div>\
     <div>\
     <div class="row container-fluid reg-head">\

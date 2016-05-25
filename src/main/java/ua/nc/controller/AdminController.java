@@ -483,10 +483,11 @@ public class AdminController {
     @ResponseBody
     CES ces() {
         try {
-            LOGGER.info(cesService.getCES());
+            cesService.checkRegistrationDate();
+            cesService.checkInterviewDate();
             return cesService.getCES();
         } catch (DAOException e) {
-            LOGGER.error("DAO error");
+            LOGGER.error("Can`t get CES");
             return null;
         }
     }
