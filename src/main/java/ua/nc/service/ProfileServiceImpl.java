@@ -293,7 +293,7 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public void setProfile(int userId, Profile profile)  {
+    public void setProfile(int userId, Profile profile) throws DAOException {
         Connection connection = daoFactory.getConnection();
         CESDAO cesDAO = daoFactory.getCESDAO(connection);
         try {
@@ -304,7 +304,8 @@ public class ProfileServiceImpl implements ProfileService {
                 createProfile(profile, userId, ces.getId());
             }
         } catch (DAOException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getCause());
+            throw new DAOException(e);
         } finally {
             daoFactory.putConnection(connection);
         }
