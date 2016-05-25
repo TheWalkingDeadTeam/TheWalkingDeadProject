@@ -1,5 +1,7 @@
 package ua.nc.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,6 +18,7 @@ import ua.nc.service.user.UserService;
 import ua.nc.service.user.UserServiceImpl;
 import ua.nc.validator.*;
 
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -494,14 +497,28 @@ public class AdminController {
         }
     }
 
-    @RequestMapping(value = {"/cesclose"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/cesclose"}, method = RequestMethod.POST, produces = "application/json")
     public
     @ResponseBody
-    String closeCES() {
- //       System.out.println("admin");
-//        mailService.sendFinalNotification();
+    void closeCES(@RequestBody String params) {
+        System.out.println(params);
+        ObjectMapper objectMapper = new ObjectMapper();
+        Integer rejectionId = null;
+        Integer workId = null;
+        Integer courseId = null;
+        try {
+            JsonNode node = objectMapper.readValue(params, JsonNode.class);
+            JsonNode rejectionNode = node.get("rejection");
+            JsonNode workNode = node.get("work");
+            JsonNode courseNode = node.get("course");
+            rejectionId = rejectionNode.asInt();
+            workId = workNode.asInt();
+            courseId = courseNode.asInt();
+        } catch (IOException e) {
+            LOGGER.error("Failed to parse", e);
+        }
+        mailService.sendFinalNotification(rejectionId,workId,courseId);
         cesService.closeCES();
-        return null;
     }
 
     @RequestMapping(value = {"/scheduler"}, method = RequestMethod.GET)

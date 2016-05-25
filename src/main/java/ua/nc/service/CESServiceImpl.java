@@ -145,18 +145,16 @@ public class CESServiceImpl implements CESService {
     @Override
     public List<Date> planSchedule(Date startDate) throws DAOException {
         Connection connection = daoFactory.getConnection();
-        CESDAO cesDAO = new PostgreCESDAO(connection);
+        CESService cesService = new CESServiceImpl();
         UserDAO userDAO = daoFactory.getUserDAO(connection);
-        CES ces = cesDAO.getCurrentCES();
+        CES ces = cesService.getCurrentCES();
         int hoursPerDay = ces.getInterviewTimeForDay();
         int timePerStudent = ces.getInterviewTimeForPerson();
-        ces.setStartRegistrationDate(startDate);
         Set<User> studentsList = userDAO.getAllAcceptedStudents(ces.getId());
         int studentsAmount = studentsList.size();
         int studentsTogether = Math.min(userDAO.getDEVCount(ces.getId()), userDAO.getHRBACount(ces.getId()));
         List<Date> interviewDates = getInterviewDates(startDate, studentsAmount, studentsTogether, timePerStudent, hoursPerDay);
-        ces.setEndInterviewingDate(interviewDates.get(interviewDates.size() - 1));
-        cesDAO.update(ces);
+        updateInterViewingDate(startDate, interviewDates.get(interviewDates.size() - 1));
         daoFactory.putConnection(connection);
         return interviewDates;
     }

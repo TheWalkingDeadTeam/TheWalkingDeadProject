@@ -13,6 +13,7 @@
         <a class="navbar-brand brand-img" href="">
             <img src='/resources/images/logo.png' alt="Logo" class="header-img">
         </a>
+            <a href="?lang=en"><img src="/resources/images/en.png"></a> | <a href="?lang=uk"><img src="/resources/images/ua.png"></a>
         <div class="mdl-layout-spacer"></div>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
             <%--            <label class="mdl-button mdl-js-button mdl-button--icon" for="search">
@@ -42,24 +43,26 @@
         <div class="demo-avatar-dropdown">
             <sec:authentication var="principal" property="principal"/>
             <div class="user-panel">
-                <div>
-                    <p style="margin-right: 7px; float: right; margin-top: 0px; margin-bottom: 0px; margin-left: 0px;">
-                    <sec:authorize access="isAuthenticated()">
-                        ${principal.username}
-                    </sec:authorize>
-                </p>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-left: 0px; padding-right: 0px;">
+                    <p style="margin-right: 7px; float: right; margin-top: 0px; margin-bottom: 0px; margin-left: 0px; padding-left: 0px; padding-right: 0px;">
+                        <sec:authorize access="isAuthenticated()">
+                            ${principal.username}
+                        </sec:authorize>
+                    </p>
                 </div>
-                <div class=" image" style="display: inline-block;">
-                    <%--                    <img width="100" height="100" src="/resources/images/rainbow.jpg" class="img-circle"
-                                             alt="User Image">--%>
-                    <img id="photo_img" src="/getPhoto" alt="User's photo" width="100" height="100"
-                         onError="this.src='/resources/images/rainbow.jpg'" class="profile-photo img-circle"">
-                </div>
-                <div style="float: right; margin-right: 5px; margin-top: 5px;">
-                    <a href="/account" style="">
-                        <i class="material-icons" role="presentation" style="font-size: 40px;">account_circle</i></a>
-                    <a href="/logout">
-                        <i class="material-icons" role="presentation" style="font-size: 40px;">power_settings_new</i></a>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-left: 0px; padding-right: 0px;">
+                    <div class=" image col-lg-6 col-md-6 col-sm-6 col-xs-6" style="display: inline-block; padding-left: 0px; padding-right: 0px;">
+                        <%--                    <img width="100" height="100" src="/resources/images/rainbow.jpg" class="img-circle"
+                                                 alt="User Image">--%>
+                        <img id="photo_img" src="/getPhoto" alt="User's photo" width="100" height="100"
+                             onError="this.src='/resources/images/rainbow.jpg'" class="profile-photo img-circle">
+                    </div>
+                    <div style="float: right; margin-top: 5px; padding-left: 0px; padding-right: 0px;" class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <a href="/account" style="">
+                            <i class="material-icons" role="presentation" style="font-size: 40px;">account_circle</i></a>
+                        <a href="/logout">
+                            <i class="material-icons" role="presentation" style="font-size: 40px;">power_settings_new</i></a>
+                    </div>
                 </div>
 
             </div>
@@ -79,42 +82,42 @@
     </header>
     <nav class="demo-navigation mdl-navigation mdl-color--blue-grey-800">
         <div class="mdl-layout-spacer">
-            <a class="mdl-navigation__link" href="/admin"><i class="mdl-color-text--blue-grey-400 material-icons"
-                                                             role="presentation">help_outline</i>Menu</a>
+            <a id="menu" class="mdl-navigation__link" href="/admin"><i class="mdl-color-text--blue-grey-400 material-icons"
+                                                             role="presentation">view_module</i>Menu</a>
         </div>
         <a class="mdl-navigation__link" href="/admin/scheduler"><i class="mdl-color-text--blue-grey-400 material-icons"
-                                                                   role="presentation">schedule</i>Schedule Planning</a>
+                                                                   role="presentation">date_range</i>Schedule Planning</a>
 
         <sec:authorize access="hasRole('ROLE_ADMIN')">
             <a class="mdl-navigation__link" href="/admin/edit-form"><i
                     class="mdl-color-text--blue-grey-400 material-icons"
-                    role="presentation">inbox</i>Form Template</a>
+                    role="presentation">assignment_ind</i>Form Template</a>
         </sec:authorize>
         <a class="mdl-navigation__link" href="/admin/cessettings"><i
                 class="mdl-color-text--blue-grey-400 material-icons"
-                role="presentation">local_offer</i>Registration Period</a>
+                role="presentation">alarm</i>Registration Period</a>
         <a class="mdl-navigation__link" href="/admin/students"><i class="mdl-color-text--blue-grey-400 material-icons"
-                                                                  role="presentation">people</i>Student List</a>
+                                                                  role="presentation">supervisor_account</i>Student List</a>
         <sec:authorize access="hasRole('ROLE_ADMIN')">
             <a class="mdl-navigation__link" href="/admin/users"><i class="mdl-color-text--blue-grey-400 material-icons"
-                                                                   role="presentation">people</i>Users List</a>
+                                                                   role="presentation">supervisor_account</i>Users List</a>
         </sec:authorize>
         <a class="mdl-navigation__link" href="/admin/interviewee"><i
                 class="mdl-color-text--blue-grey-400 material-icons"
-                role="presentation">people</i>Interviewee List</a>
+                role="presentation">supervisor_account</i>Interviewee List</a>
         <a class="mdl-navigation__link" href="/admin/interviewers"><i
                 class="mdl-color-text--blue-grey-400 material-icons"
-                role="presentation">people</i>Interviewer List</a>
+                role="presentation">supervisor_account</i>Interviewer List</a>
         <sec:authorize access="hasRole('ROLE_ADMIN')">
             <a class="mdl-navigation__link" href="/admin/create"><i class="mdl-color-text--blue-grey-400 material-icons"
-                                                                    role="presentation">people</i>Create Interviewer</a>
+                                                                    role="presentation">portrait</i>Create User</a>
         </sec:authorize>
         <a class="mdl-navigation__link" href="/admin/mail-template"><i
                 class="mdl-color-text--blue-grey-400 material-icons"
                 role="presentation">mail</i>Edit Letter Templates</a>
         <a class="mdl-navigation__link" href="/admin/enroll-session"><i
                 class="mdl-color-text--blue-grey-400 material-icons"
-                role="presentation">schedule</i>Enrollment History</a>
+                role="presentation">history</i> Enrollment History</a>
         <a class="mdl-navigation__link" href="/admin/report"><i
                 class="mdl-color-text--blue-grey-400 material-icons"
                 role="presentation">show_chart</i>Statistic & Reports</a>

@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
+import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
@@ -222,7 +223,12 @@ public class LoginController implements HandlerExceptionResolver {
 
     @ResponseBody
     @RequestMapping(value = "/getPhoto/{id}")
-    public byte[] getPhoto(@PathVariable("id") Integer id) {
+    public byte[] getPhoto(@PathVariable("id") Integer id, HttpServletRequest request) {
+        if (request.isUserInRole(UserRoles.ROLE_STUDENT.name())){
+            Integer userId = userService.getUser(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+                    .getPrincipal()).getUsername()).getId();
+            if (!id.equals(userId)) return null;
+        }
         return photoService.getPhotoById(id);
     }
 }

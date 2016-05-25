@@ -413,3 +413,8 @@
 .mdl-textfield__input{
     autocompleate: off;
 }
+
+
+.active {
+    background-color: #e0e0e0;;
+}

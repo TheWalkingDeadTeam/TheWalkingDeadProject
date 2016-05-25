@@ -1,4 +1,5 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%--
   Created by IntelliJ IDEA.
   User: Neltarion
@@ -56,7 +57,7 @@
                     </div>
                     <div class="footer" style="margin-bottom: 20px">
                         <button class="btn btn-simple" onclick="rotateCard(this)">
-                            <i class="fa fa-mail-forward"></i> Options
+                            <i class="fa fa-mail-forward"></i> <spring:message code="locale.options"/>
                         </button>
                     </div>
                 </div>
@@ -72,7 +73,7 @@
 
                         <div>
                             <div class="stats class="col-lg-4 col-md-4 col-sm-5 col-xs-5">
-                                <h5 style="float: right;">Change Password</h5>
+                            <h5><spring:message code="locale.changePassword"/></h5>
                                 <jsp:include page="change-password.jsp"/>
                             </div>
                             <div class="stats class="col-lg-4 col-md-4 col-sm-2 col-xs-2">
@@ -81,7 +82,9 @@
                                     <sec:authentication var="principal" property="principal"/>
                                     <input id="userid" type="hidden" value=" ${principal.id}"/>
                                     <div id="enrollMessages"></div>
-                                    <button id="enroll_button" href="/interviewer/enroll-ces-interviewer" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white" type="submit">Enroll</button>
+                                    <button id="enroll_button" href="/interviewer/enroll-ces-interviewer"
+                                            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white"
+                                            type="submit"><spring:message code="locale.enroll"/></button>
                                 </sec:authorize>
                             </div>
                             <div class="stats class="col-lg-4 col-md-4 col-sm-5 col-xs-5">
@@ -92,7 +95,7 @@
                     </div>
                 </div>
                 <button class="btn btn-simple" rel="tooltip" title="Flip Card" onclick="rotateCard(this)">
-                    <i class="fa fa-reply"></i> Back
+                    <i class="fa fa-reply"></i> <spring:message code="locale.back"/>
                 </button>
             </div> <!-- end back panel -->
         </div> <!-- end card -->

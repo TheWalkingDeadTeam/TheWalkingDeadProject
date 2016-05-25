@@ -75,6 +75,8 @@
                     class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
                 Deactivate
             </button>
+            <%--<button ng-click="setSize(100);">setSize</button>--%>
+            <%--<button ng-click="setSize(25)">setSize</button>--%>
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
                 <label class="mdl-button mdl-js-button mdl-button--icon" for="search">
                     <i class="material-icons">search</i>
@@ -141,7 +143,6 @@
                 <td>{{user.email}}</td>
                 <td>{{user.role}}</td>
                 <td ng-style="{opacity:0.5,'background-color':'{{user.status == 'Active' ? 'green' : 'red'}}'}" >{{user.status}}</td>
-
             </tr>
             </tbody>
         </table><div id="pagination">
@@ -151,12 +152,13 @@
                 boundary-links="true"
                 on-page-change="data.setPageno(newPageNumber)">
         </dir-pagination-controls>
-        <select>
-            <option>10</option>
-            <option>25</option>
-            <option>50</option>
-            <option>100</option>
+        <select name="selectUsersCount" ng-model="count">
+            <option disabled value="">Choose count of rows</option>
+            <option selected value="10">10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
         </select>
+        <button ng-click="setSize(count)">SEND</button>
     </div>
 
 
@@ -173,6 +175,7 @@
 <script src="/resources/js/dirPagination.js"></script>
 <script src="http://vitalets.github.io/checklist-model/checklist-model.js"></script>
 <script type="text/javascript" src="/resources/js/mdb.js"></script>
+<script src="/resources/js/adminmenu.js"></script>
 
 
 </body>

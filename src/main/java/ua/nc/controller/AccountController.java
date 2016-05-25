@@ -2,6 +2,7 @@ package ua.nc.controller;
 
 import org.apache.log4j.Logger;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ua.nc.dao.enums.UserRoles;
@@ -28,14 +29,19 @@ public class AccountController {
     }
 
     @RequestMapping(value = "/account/{id}", method = RequestMethod.GET)
-    public User account(@PathVariable("id") Integer id) {
+    public User account(@PathVariable("id") Integer id, HttpServletRequest request) {
+        if (request.isUserInRole(UserRoles.ROLE_STUDENT.name())){
+            Integer userId = userService.getUser(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+                    .getPrincipal()).getUsername()).getId();
+            if (!id.equals(userId)) return null;
+        }
         User user = userService.getUser(id);
         return user;
     }
 
     @RequestMapping(value = "/account/profile", method = RequestMethod.GET)
     public String profileTest(HttpServletRequest request) {
-        if (request.isUserInRole("ROLE_STUDENT")) {
+        if (request.isUserInRole(UserRoles.ROLE_STUDENT.name())) {
             Integer id = ((UserDetailsImpl) SecurityContextHolder
                     .getContext()
                     .getAuthentication()
@@ -60,16 +66,26 @@ public class AccountController {
 
     @ResponseBody
     @RequestMapping(value = "/getUser", method = RequestMethod.GET)
-    public User getUser() {
-        User user = userService.getUser(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
-                .getPrincipal()).getUsername());
+    public User getUser(SecurityContextHolderAwareRequestWrapper request) {
+        User user = null;
+        if (request.isUserInRole(UserRoles.ROLE_ADMIN.name())
+                || request.isUserInRole(UserRoles.ROLE_HR.name())
+                || request.isUserInRole(UserRoles.ROLE_BA.name())
+                || request.isUserInRole(UserRoles.ROLE_DEV.name())
+                || request.isUserInRole(UserRoles.ROLE_STUDENT.name())) {
+            user = userService.getUser(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+                    .getPrincipal()).getUsername());
+        }
         return user;
     }
 
     @ResponseBody
     @RequestMapping(value = "/getUser/{id}", method = RequestMethod.GET)
-    public User getUser(@PathVariable("id") Integer id) {
-        User user = userService.getUser(id);
+    public User getUser(@PathVariable("id") Integer id, SecurityContextHolderAwareRequestWrapper request) {
+        User user = null;
+/*        if (request.isUserInRole(UserRoles.ROLE_ADMIN.name())) {*/
+            user = userService.getUser(id);
+/*        }*/
         return user;
     }
 }

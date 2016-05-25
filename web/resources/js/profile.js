@@ -28,6 +28,10 @@
 
             },
             error: function (jqXHR, exception) {
+                console.log(jqXHR);
+                console.log(exception);
+                alert(jqXHR);
+                alert(exception);
                 window.location.href = "/error"
             }
         });
@@ -143,7 +147,7 @@
                 case 'number':
                     $('<div id=\"block' + i + '\">').appendTo($(divname));
                     $('<label>').attr({for: item.id}).text(item.fieldName + ' ').appendTo($('#block' + i));
-                    var attributes = {type: 'number', id: item.id, min: '0', max: '10', value: item.values[0].value};
+                    var attributes = {type: 'number', id: item.id, min: '0', max: '5', value: item.values[0].value};
                     attributes.required = "required";
                     $('<input>')
                         .attr(attributes)
@@ -229,7 +233,7 @@
                     $('<div id=\"block' + i + '\">').appendTo($(divname));
                     $('<span>').attr({for: item.id}).text(item.fieldName + ' ').appendTo($('#block' + i));
                     $('<select>').attr(attributes).attr('ng-model', i).appendTo($('#block' + i));
-                    $('#select' + item.id).append('<option ' + 'disabled' + '>' + 'University' + '</option>');
+                    $('#select' + item.id).append('<option ' + 'disabled' + '>' + '-' + '</option>');
                     item.values.forEach(function (item_value, j) {
                         var rand = _getRandomInt();
                         var isSelected = item_value.value == "true";

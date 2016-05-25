@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: Alexander
@@ -46,7 +47,6 @@
 
     <jsp:include page="admin-header.jsp"/>
 
-
     <main class="mdl-layout__content mdl-color--grey-100">
         <div>
 
@@ -77,6 +77,9 @@
                                                                 name="field" ng-model="field"></form>
                     <label class="mdl-textfield__label" for="search">Enter your query...</label>
                 </div>
+            </div>
+            <div>
+
             </div>
             <div id="FooOne" class="collapse">
                 <jsp:include page="custom-mail.jsp"/>
@@ -161,6 +164,35 @@
 <script src="/resources/js/studentListAngular.js"></script>
 <script src="/resources/js/dirPagination.js"></script>
 <script src="http://vitalets.github.io/checklist-model/checklist-model.js"></script>
+<script src="/resources/js/adminmenu.js"></script>
+
+<script>
+    // Get the modal
+    var modal = document.getElementById('myModal');
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks the button, open the modal
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
 
 </body>
 
