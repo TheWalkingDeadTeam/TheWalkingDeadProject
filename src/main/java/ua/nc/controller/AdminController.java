@@ -522,6 +522,9 @@ public class AdminController {
 
     @RequestMapping(value = {"/edit-form"}, method = RequestMethod.GET)
     public String editFormView() {
+        if (cesService.getPendingCES() == null){
+            return "error-ces-ongoing";
+        }
         return "edit-form";
     }
 
@@ -529,6 +532,9 @@ public class AdminController {
     public
     @ResponseBody
     List<Field> editFormGet(Integer ces_id) {
+        if (cesService.getPendingCES() == null) {
+            return null;
+        }
         EditFormService efs = new EditFormServiceImpl();
         List<Field> fields = new LinkedList<>();
         fields.addAll(efs.getAllFields(efs.getCES_ID()));

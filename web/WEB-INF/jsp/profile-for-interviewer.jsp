@@ -76,7 +76,7 @@
         </div>
     </div>
 
-<div id="restrict_message"></div>
+<div id="restrict_message" style="margin-top: 7px;"></div>
     <div id="feedbacks"></div>
 
   

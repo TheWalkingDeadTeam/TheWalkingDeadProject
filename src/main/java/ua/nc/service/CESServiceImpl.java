@@ -74,7 +74,6 @@ public class CESServiceImpl implements CESService {
         try {
             ces = cesdao.getCurrentCES();
             LOGGER.info("Successfully get current CES");
-            System.out.println(ces);
         } catch (DAOException e) {
             LOGGER.warn("Can't get current CES", e.getCause());
         } finally {
@@ -137,20 +136,65 @@ public class CESServiceImpl implements CESService {
     @Override
     public List<Date> planSchedule(Date startDate) throws DAOException {
         Connection connection = daoFactory.getConnection();
-        CESDAO cesDAO = new PostgreCESDAO(connection);
+        CESService cesService = new CESServiceImpl();
         UserDAO userDAO = daoFactory.getUserDAO(connection);
-        CES ces = cesDAO.getCurrentCES();
+        CES ces = cesService.getCurrentCES();
         int hoursPerDay = ces.getInterviewTimeForDay();
         int timePerStudent = ces.getInterviewTimeForPerson();
-        ces.setStartRegistrationDate(startDate);
         Set<User> studentsList = userDAO.getAllAcceptedStudents(ces.getId());
         int studentsAmount = studentsList.size();
         int studentsTogether = Math.min(userDAO.getDEVCount(ces.getId()), userDAO.getHRBACount(ces.getId()));
         List<Date> interviewDates = getInterviewDates(startDate, studentsAmount, studentsTogether, timePerStudent, hoursPerDay);
-        ces.setEndInterviewingDate(interviewDates.get(interviewDates.size() - 1));
-        cesDAO.update(ces);
+        updateInterViewingDate(startDate, interviewDates.get(interviewDates.size() - 1));
         daoFactory.putConnection(connection);
         return interviewDates;
+    }
+
+    @Override
+    public void updateInterViewingDate(Date start, Date end) {
+        Connection connection = daoFactory.getConnection();
+        CESDAO cesDAO = daoFactory.getCESDAO(connection);
+        CES cesFromDb = null;
+        try {
+            if (cesDAO.getCurrentCES() != null) {
+                cesFromDb = cesDAO.getCurrentCES();
+                if (cesDAO.getCurrentCES().getStatusId() < 4) {
+                    cesFromDb.setStartInterviewingDate(start);
+                    cesFromDb.setEndInterviewingDate(end);
+                    cesDAO.update(cesFromDb);
+                    checkInterviewDate();
+                } else {
+                    LOGGER.warn("Can't change interviewing date");
+                }
+                LOGGER.info("CES was updated");
+            } else {
+                LOGGER.info("No current CES");
+            }
+        } catch (DAOException e) {
+            LOGGER.warn("Can't change interviewing date", e);
+        } finally {
+            daoFactory.putConnection(connection);
+        }
+    }
+
+    @Override
+    public CES getPendingCES() {
+        Connection connection = daoFactory.getConnection();
+        CESDAO cesdao = new PostgreCESDAO(connection);
+        CES ces = null;
+        try {
+            if (cesdao.getPendingCES() != null) {
+                ces = cesdao.getPendingCES();
+                LOGGER.info("Successfully get pending CES");
+            } else {
+                LOGGER.info("No pending CES now");
+            }
+        } catch (DAOException e) {
+            LOGGER.warn("Can't get pending CES", e.getCause());
+        } finally {
+            daoFactory.putConnection(connection);
+        }
+        return ces;
     }
 
     private List<Date> getInterviewDates(Date startDate, int studentsAmount, int studentsTogether,

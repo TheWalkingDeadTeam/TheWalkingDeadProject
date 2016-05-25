@@ -110,7 +110,7 @@ public class InterviewerController {
         }
         Date today = new Date();
         CES currentCES = cesService.getCurrentCES();
-        if (true){//today.after(currentCES.getStartInterviewingDate())&&today.before(currentCES.getEndInterviewingDate())) {
+        if (today.after(currentCES.getStartInterviewingDate())&&today.before(currentCES.getEndInterviewingDate())) {
             feedbackDTO.setInterviewingPeriod();
             if (application == null) {
                 feedbackDTO.setApplicationExists(false);
