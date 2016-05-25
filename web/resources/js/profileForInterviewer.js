@@ -102,9 +102,11 @@ id="hr_score" class="label label-info label-as-badge pull-left">75</span></a></l
                                         } else {
                                             feedback = response.hrFeedback;
                                         }
-                                        $('#feedback_score').val(feedback.score);
-                                        $('#feedback_text').val(feedback.comment);
-                                        $('#special_mark').val(response.specialMark);
+                                        if (feedback != null){
+                                            $('#feedback_score').val(feedback.score);
+                                            $('#feedback_text').val(feedback.comment);
+                                            $('#special_mark').val(response.specialMark);
+                                        }
                                         $('#feedback_form').submit(function (event) {
                                                 event.preventDefault();
                                                 $.ajax({
