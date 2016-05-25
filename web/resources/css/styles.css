@@ -418,3 +418,9 @@
 .active {
     background-color: #e0e0e0;;
 }
+#settingsForm{
+    padding:10px;
+}
+.form-actions{
+    margin: 10px;
+}
