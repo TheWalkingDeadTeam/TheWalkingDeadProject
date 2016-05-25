@@ -31,6 +31,14 @@ app.controller('UserCtrl', ["$http", "$scope", function ($http, $scope) {
 
         hideSpin();
     };
+    $scope.setSize = function (size) {
+        if(size == undefined){
+            return
+        }
+        vm.itemsPerPage = size;
+        vm.getData();
+        vm.getSize();
+    };
     vm.getSize = function () {
         if(vm.pattern == null) {
             $http.get("users/size").success(function (response) {
