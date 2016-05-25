@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <head>
     <title>Profile For Interviewer</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -21,33 +22,7 @@
     <%--/*<img src='images/error.gif' class="img-responsive profile-photo">*/--%>
     <%--/*<img class='img-responsive' src="images/logo-gray.png">*/--%>
 </head>
-<header>
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed button-header" data-toggle='collapse'
-                        data-target='#collapsed-menu' aria-expanded="false">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand brand-img" href="">
-                    <img src='/resources/images/logo.png' alt="Brand" class="header-img">
-                </a>
-            </div>
-            <div id='collapsed-menu' class='navbar-collapse collapse'>
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="/login">Home</a></li>
-                    <li><a href="/information">Information</a></li>
-                    <li><a href="/contacts">Contacts</a></li>
-                    <li><a href="/logout">Logout</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-</header>
+<jsp:include page="header.jsp"/>
 
     <div class="container smprofile">
         <div class="row">
@@ -60,18 +35,18 @@
                     <div id="photoMessages"></div>
                     <label for='photo_input' class='file_upload'/>
                     <input type="file" id="photo_input" name=" photo_input" accept="image/*">
-                    <button id="photo_button" type="submit">Upload</button>
+                    <button id="photo_button" type="submit"><spring:message code="locale.upload"/></button>
                 </form>
             </div>
             <div class=" col-lg-2 col-md-2 col-sm-2 col-xs-4 mainf">
-                <h4>Name:</h4>
-                <h4>Surname:</h4>
-                <h4>E-mail:</h4>
+                <h4><spring:message code="locale.name"/>:</h4>
+                <h4><spring:message code="locale.surname"/>:</h4>
+                <h4><spring:message code="locale.email"/>:</h4>
             </div>
             <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4">
-                <span id="userName">Ivan</span>
-                <span id="userSurname">Ivanovich</span>
-                <span id="userEmail">ivanovivanovich@gmail.com</span>
+                <span id="userName"></span>
+                <span id="userSurname"></span>
+                <span id="userEmail"></span>
             </div>
         </div>
     </div>
@@ -90,21 +65,21 @@
                 <input type="number" id="feedback_score" max="100" min="1" align="centre" required/>
 
             </div>
-            <div><textarea id="feedback_text" placeholder="Put your feedback here" cols="40" rows="10"
+            <div><textarea id="feedback_text" placeholder=<spring:message code="locale.putFeedback"/> cols="40" rows="10"
                            required></textarea>
             </div>
             <div>
                 <select id = "special_mark">
-                    <option disabled>Special mark</option>
-                    <option value="none" id = "none">None</option>
-                    <option value="reject" id = "reject">Reject</option>
-                    <option value="take on courses" id="take_on_courses">Take on courses</option>
-                    <option value="job offer" id="job_offer">Job offer</option>
+                    <option disabled><spring:message code="locale.specmark"/></option>
+                    <option value="none" id = "none"><spring:message code="locale.none"/></option>
+                    <option value="reject" id = "reject"><spring:message code="locale.reject"/></option>
+                    <option value="take on courses" id="take_on_courses"><spring:message code="locale.takeOnCourses"/></option>
+                    <option value="job offer" id="job_offer"><spring:message code="locale.jobOffer"/></option>
                 </select>
             </div>
             <div id="save_message"></div>
             <div>
-                <button id="submitFeedback" type="submit" title="Submit">Submit</button>
+                <button id="submitFeedback" type="submit" title="Submit"><spring:message code="locale.submit"/></button>
             </div>
         </form>
     </div>
@@ -113,66 +88,17 @@
     <sec:authorize access="@feedbackPermissions.isInterviewingPeriod()">
         <div id="getall_message"></div>
         <div id = "all_feedbacks">
-            <p id = "dev_feedback">Dev's feedback<br></p>
-            <p id = "dev_score">Dev's score: <br></p>
-            <p id = "hr_feedback">HR's feedback<br></p>
-            <p id = "hr_score">HR's score: <br></p>
-            <p id = "special_mark_display">Special mark: </p>
+            <p id = "dev_feedback">Dev's <spring:message code="locale.feedback"/><br></p>
+            <p id = "dev_score">Dev's <spring:message code="locale.score"/>: <br></p>
+            <p id = "hr_feedback">HR's <spring:message code="locale.feedback"/><br></p>
+            <p id = "hr_score">HR's <spring:message code="locale.score"/>: <br></p>
+            <p id = "special_mark_display"><spring:message code="locale.specmark"/>: </p>
         </div>
 
     </sec:authorize>
 
 
-
-<footer class="footer container-fluid">
-    <div class="footerLg container visible-md visible-lg">
-        <div class="col-lg-3 col-lg-3 col-sm-3"><img class='img-responsive' src="/resources/images/logo-gray.png"></div>
-
-        <div class="col-lg-8 col-md-8 col-lg-offset-1 col-lg-offset-1 col-md-offset-1">
-            <div class="footerLgText col-lg-3 col-md-3 col-lg-offset-1 col-md-offset-1">
-                <p>Univercity Office Park III</p>
-
-                <p>95 Sawyer Road</p>
-
-                <p>Waltham, MA 02453 USA</p>
-
-                <p>1-781-419-3300</p>
-            </div>
-            <div class="footerLgText col-lg-3 col-md-3 col-lg-offset-1 col-md-offset-1">
-                <p>Facebook /NetcrackerTech</p>
-
-                <p>Twitter @NetcrackerTech</p>
-
-                <p>LikedIn /netcracker</p>
-            </div>
-            <div class="footerLgText col-lg-3 col-md-3 col-lg-offset-1 col-md-offset-1">
-                <p>Privacy Policy</p>
-
-                <p>Terms of Use</p>
-
-                <p>Sitemap</p>
-            </div>
-        </div>
-    </div>
-    <div class="footerSm row visible-sm visible-xs">
-        <div class="col-sm-5 visible-sm">
-            <img src="/resources/images/logo-gray.png">
-        </div>
-        <div class="footerSmText col-sm-7 col-xs-12">
-            <div class="col-sm-8 col-xs-6">
-                <a class="col-sm-6 col-xs-7" href="http://localhost:8080/profile#"><p>Courses Info</p></a>
-                <a class="col-sm-6 col-xs-7" href="http://localhost:8080/profile#"><p>Contacts</p></a>
-            </div>
-            <div class="col-sm-4 col-xs-3 pull-right">
-                <p>Privacy Policy</p>
-
-                <p>Terms of Use</p>
-
-                <p>Sitemap</p>
-            </div>
-        </div>
-    </div>
-</footer>
+<jsp:include page="footer.jsp"/>
 
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="/resources/js/profileForInterviewer.js"></script>
