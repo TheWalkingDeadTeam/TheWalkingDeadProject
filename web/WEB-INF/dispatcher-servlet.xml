@@ -9,10 +9,10 @@
     <mvc:annotation-driven/>
     <context:component-scan base-package="ua.nc.controller"/>
 
-    <!--<bean  class="org.springframework.web.servlet.view.XmlViewResolver">-->
-        <!--<property name="order" value="1"/>-->
-        <!--<property name="location" value="/WEB-INF/spring-excel-view.xml"/>-->
-    <!--</bean>-->
+    <bean  class="org.springframework.web.servlet.view.XmlViewResolver">
+        <property name="order" value="1"/>
+        <property name="location" value="/WEB-INF/spring-excel-view.xml"/>
+    </bean>
 
     <bean
             class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -30,7 +30,7 @@
         </property>
 
     </bean>
-    <!--<bean name="excelView" class="ua.nc.xls.ExcelBuilder"/>-->
+    <bean name="excelView" class="ua.nc.xls.ExcelBuilder"/>
 
 
     <bean id="jsonMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
