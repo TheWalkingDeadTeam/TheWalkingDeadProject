@@ -10,9 +10,9 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <link rel="icon" type="image/png" sizes="32x32" href="/images/ico.png">
-    <link rel="stylesheet" type="text/css" href="resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="resources/css/style-profile.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="resources/css/media-profile.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/resources/css/style-profile.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/resources/css/media-profile.css" rel="stylesheet">
     <script src="resources/bootstrap/js/jquery-2.2.2.min.js" defer></script>
     <script src="resources/bootstrap/js/bootstrap.min.js" defer></script>
 
