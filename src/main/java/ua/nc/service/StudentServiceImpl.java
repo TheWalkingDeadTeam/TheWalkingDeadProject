@@ -15,10 +15,6 @@ import java.sql.Connection;
 import java.util.List;
 import java.util.Objects;
 
-
-/**
- * Created by creed on 06.05.16.
- */
 public class StudentServiceImpl implements StudentService {
     private final static Logger log = Logger.getLogger(StudentServiceImpl.class);
     private final DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
@@ -26,29 +22,12 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public StudentData getStudents(Integer itemPerPage, Integer pageNumber) {
         Connection connection = daoFactory.getConnection();
-        PostgreApplicationTableDAO applicationTableDAO = new PostgreApplicationTableDAO(connection);
-        CESServiceImpl cesService = new CESServiceImpl();
-        CES ces = cesService.getCurrentCES();
         try {
+            PostgreApplicationTableDAO applicationTableDAO = new PostgreApplicationTableDAO(connection);
+            CESServiceImpl cesService = new CESServiceImpl();
+            CES ces = cesService.getCurrentCES();
             StudentData studentData = applicationTableDAO.getApplicationsTable(ces.getId(), itemPerPage, pageNumber);
-            log.info("TRACE STUDENT SERVIСE" + studentData.toString());
             return studentData;
-        } catch (DAOException e) {
-            log.warn("Can't get students", e.getCause());
-        } finally {
-            daoFactory.putConnection(connection);
-        }
-        return null;
-    }
-
-    @Override
-    public StudentData getStudents(Integer itemPerPage, Integer pageNumber, Integer orderBy) {
-        Connection connection = daoFactory.getConnection();
-        PostgreApplicationTableDAO applicationTableDAO = new PostgreApplicationTableDAO(connection);
-        CESServiceImpl cesService = new CESServiceImpl();
-        CES ces = cesService.getCurrentCES();
-        try {
-            return applicationTableDAO.getApplicationsTable(ces.getId(), itemPerPage, pageNumber, orderBy);
         } catch (DAOException e) {
             log.warn("Can't get students", e.getCause());
         } finally {
@@ -60,10 +39,10 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public StudentData getStudents(Integer itemPerPage, Integer pageNumber, String pattern) {
         Connection connection = daoFactory.getConnection();
-        PostgreApplicationTableDAO applicationTableDAO = new PostgreApplicationTableDAO(connection);
-        CESServiceImpl cesService = new CESServiceImpl();
-        CES ces = cesService.getCurrentCES();
         try {
+            PostgreApplicationTableDAO applicationTableDAO = new PostgreApplicationTableDAO(connection);
+            CESServiceImpl cesService = new CESServiceImpl();
+            CES ces = cesService.getCurrentCES();
             return applicationTableDAO.getApplicationsTable(ces.getId(), itemPerPage, pageNumber, pattern);
         } catch (DAOException e) {
             log.warn("Can't get students", e.getCause());
@@ -76,10 +55,10 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public StudentData getStudents(Integer itemPerPage, Integer pageNumber, Integer sortType, Boolean asc) {
         Connection connection = daoFactory.getConnection();
-        PostgreApplicationTableDAO applicationTableDAO = new PostgreApplicationTableDAO(connection);
-        CESServiceImpl cesService = new CESServiceImpl();
-        CES ces = cesService.getCurrentCES();
         try {
+            PostgreApplicationTableDAO applicationTableDAO = new PostgreApplicationTableDAO(connection);
+            CESServiceImpl cesService = new CESServiceImpl();
+            CES ces = cesService.getCurrentCES();
             return applicationTableDAO.getApplicationsTable(ces.getId(), itemPerPage, pageNumber, sortType, asc);
         } catch (DAOException e) {
             log.warn("Can't get students", e.getCause());
@@ -92,10 +71,10 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Integer getSize(String pattern) {
         Connection connection = daoFactory.getConnection();
-        PostgreApplicationTableDAO applicationTableDAO = new PostgreApplicationTableDAO(connection);
-        CESServiceImpl cesService = new CESServiceImpl();
-        CES ces = cesService.getCurrentCES();
         try {
+            PostgreApplicationTableDAO applicationTableDAO = new PostgreApplicationTableDAO(connection);
+            CESServiceImpl cesService = new CESServiceImpl();
+            CES ces = cesService.getCurrentCES();
             return applicationTableDAO.getApplicationsCount(ces.getId(), pattern);
         } catch (DAOException e) {
             log.warn("Can't get students", e.getCause());

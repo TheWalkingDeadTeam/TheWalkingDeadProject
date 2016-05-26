@@ -237,8 +237,9 @@ public class UserServiceImpl implements UserService {
     public void activateUsers(List<Integer> userIds) {
         DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
         Connection connection = daoFactory.getConnection();
-        PostgreUserDAO userDAO = (PostgreUserDAO) daoFactory.getUserDAO(connection);
+
         try {
+            PostgreUserDAO userDAO = (PostgreUserDAO) daoFactory.getUserDAO(connection);
             for (Integer id : userIds) {
                 userDAO.activateUser(id);
                 userDAO.updateUser(getUser(id));
@@ -255,10 +256,9 @@ public class UserServiceImpl implements UserService {
     public void deactivateUsers(List<Integer> userIds) {
         DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
         Connection connection = daoFactory.getConnection();
-        PostgreUserDAO userDAO = (PostgreUserDAO) daoFactory.getUserDAO(connection);
         try {
+            PostgreUserDAO userDAO = (PostgreUserDAO) daoFactory.getUserDAO(connection);
             for (Integer id : userIds) {
-
                 userDAO.deactivateUser(id);
                 userDAO.updateUser(getUser(id));
             }

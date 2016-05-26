@@ -186,7 +186,7 @@
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="/resources/js/notification/angular-ui-notification.min.js"></script>
 <script src="/resources/bootstrap/js/bootstrap.js"></script>
-<script src="/resources/js/interviewListAngular.js"></script>
+<script src="/resources/js/interview-list.js"></script>
 <script src="/resources/js/dirPagination.js"></script>
 <script src="http://vitalets.github.io/checklist-model/checklist-model.js"></script>
 <script src="/resources/js/adminmenu.js"></script>

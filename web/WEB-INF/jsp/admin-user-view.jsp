@@ -171,7 +171,7 @@
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="/resources/bootstrap/js/bootstrap.js"></script>
 <script src="/resources/js/checkboxScript.js"></script>
-<script src="/resources/js/userListAngular.js"></script>
+<script src="/resources/js/user-list.js"></script>
 <script src="/resources/js/dirPagination.js"></script>
 <script src="http://vitalets.github.io/checklist-model/checklist-model.js"></script>
 <script type="text/javascript" src="/resources/js/mdb.js"></script>

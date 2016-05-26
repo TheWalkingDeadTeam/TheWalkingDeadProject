@@ -28,10 +28,10 @@ public class InterviewerServiceImpl implements InterviewerService {
     @Override
     public List<Interviewer> getInterviewer(Integer itemPerPage, Integer pageNumber) {
         Connection connection = daoFactory.getConnection();
-        PostgreInterviewerTableDAO userInterviewerTableDAO = new PostgreInterviewerTableDAO(connection);
-        CESServiceImpl cesService = new CESServiceImpl();
-        CES ces = cesService.getCurrentCES();
         try {
+            PostgreInterviewerTableDAO userInterviewerTableDAO = new PostgreInterviewerTableDAO(connection);
+            CESServiceImpl cesService = new CESServiceImpl();
+            CES ces = cesService.getCurrentCES();
             return userInterviewerTableDAO.getInterviewersTable(ces.getId(), itemPerPage, pageNumber);
         } catch (DAOException e) {
             log.warn("Can't get interviews", e.getCause());
@@ -44,10 +44,11 @@ public class InterviewerServiceImpl implements InterviewerService {
     @Override
     public List<Interviewer> getInterviewer(Integer itemPerPage, Integer pageNumber, String orderBy) {
         Connection connection = daoFactory.getConnection();
-        PostgreInterviewerTableDAO userInterviewerTableDAO = new PostgreInterviewerTableDAO(connection);
-        CESServiceImpl cesService = new CESServiceImpl();
-        CES ces = cesService.getCurrentCES();
+
         try {
+            PostgreInterviewerTableDAO userInterviewerTableDAO = new PostgreInterviewerTableDAO(connection);
+            CESServiceImpl cesService = new CESServiceImpl();
+            CES ces = cesService.getCurrentCES();
             return userInterviewerTableDAO.getInterviewersTable(ces.getId(), itemPerPage, pageNumber, orderBy);
         } catch (DAOException e) {
             log.warn("Can't get interviews", e.getCause());
@@ -60,10 +61,11 @@ public class InterviewerServiceImpl implements InterviewerService {
     @Override
     public List<Interviewer> getInterviewer(Integer itemPerPage, Integer pageNumber, String orderBy, Boolean asc) {
         Connection connection = daoFactory.getConnection();
-        PostgreInterviewerTableDAO userInterviewerTableDAO = new PostgreInterviewerTableDAO(connection);
-        CESServiceImpl cesService = new CESServiceImpl();
-        CES ces = cesService.getCurrentCES();
+
         try {
+            PostgreInterviewerTableDAO userInterviewerTableDAO = new PostgreInterviewerTableDAO(connection);
+            CESServiceImpl cesService = new CESServiceImpl();
+            CES ces = cesService.getCurrentCES();
             return userInterviewerTableDAO.getInterviewersTable(ces.getId(), itemPerPage, pageNumber, orderBy, asc);
         } catch (DAOException e) {
             log.warn("Can't get interviews", e.getCause());
@@ -76,10 +78,11 @@ public class InterviewerServiceImpl implements InterviewerService {
     @Override
     public List<Interviewer> getInterviewer(Integer itemPerPage, Integer pageNumber, String orderBy, String pattern) {
         Connection connection = daoFactory.getConnection();
-        PostgreInterviewerTableDAO userInterviewerTableDAO = new PostgreInterviewerTableDAO(connection);
-        CESServiceImpl cesService = new CESServiceImpl();
-        CES ces = cesService.getCurrentCES();
+
         try {
+            PostgreInterviewerTableDAO userInterviewerTableDAO = new PostgreInterviewerTableDAO(connection);
+            CESServiceImpl cesService = new CESServiceImpl();
+            CES ces = cesService.getCurrentCES();
             return userInterviewerTableDAO.getInterviewersTable(ces.getId(), itemPerPage, pageNumber, orderBy, pattern);
         } catch (DAOException e) {
             log.warn("Can't get interviews", e.getCause());

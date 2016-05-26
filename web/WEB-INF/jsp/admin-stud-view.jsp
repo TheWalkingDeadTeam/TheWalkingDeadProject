@@ -207,7 +207,7 @@
 <script src="/resources/js/admin-create-user.js"></script>
 <script src="/resources/bootstrap/js/bootstrap.js"></script>
 <script src="/resources/js/checkboxScript.js"></script>
-<script src="/resources/js/studentListAngular.js"></script>
+<script src="/resources/js/student-list.js"></script>
 <script src="/resources/js/dirPagination.js"></script>
 <script src="http://vitalets.github.io/checklist-model/checklist-model.js"></script>
 <script src="/resources/js/adminmenu.js"></script>
