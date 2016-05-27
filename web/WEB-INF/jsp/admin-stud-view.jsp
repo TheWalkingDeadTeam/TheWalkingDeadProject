@@ -152,14 +152,12 @@
                     </a>
                 </td>
                 <td ng-repeat="head in headerStud.head">
-                    <input type="checkbox" checklist-model="headerStud.head"
-                           checklist-value="head">
                     <a ng-click="sortReverse = !sortReverse; sortType(head.id,sortReverse)">
                         {{head.name}}
                     </a>
                 </td>
                 <td>
-                    <a ng-click="sortType('rejected',sortReverse); sortReverse = !sortReverse">
+                    <a ng-click="sortReverse = !sortReverse; sortType('rejected',sortReverse);">
                         Rejected
                     </a>
                 </td>

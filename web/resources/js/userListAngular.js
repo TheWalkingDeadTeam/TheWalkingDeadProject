@@ -9,7 +9,7 @@ app.controller('UserCtrl', ["$http", "$scope", function ($http, $scope) {
     vm.selectUrl = "users/list/" + vm.itemsPerPage + "/" + vm.pageno;
     vm.order_by = null;
     vm.pattern = null;
-    $scope.sortReverse = false;
+    vm.sortType = false;
     
     showSpin = function () {
         angular.element($(".cssload-thecube")).css('display','block');
@@ -61,7 +61,7 @@ app.controller('UserCtrl', ["$http", "$scope", function ($http, $scope) {
         if (vm.order_by === null) {
             vm.selectUrl = "users/list/" + vm.itemsPerPage + "/" + vm.pageno;
         } else {
-            vm.selectUrl = "users/list/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by + "/" + $scope.sortReverse;
+            vm.selectUrl = "users/list/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by + "/" + vm.sortType;
         }
         vm.getData();
         vm.getSize();
@@ -81,9 +81,10 @@ app.controller('UserCtrl', ["$http", "$scope", function ($http, $scope) {
 
     };
 
-    $scope.sortType = function (type) {
+    $scope.sortType = function (type,sort) {
         vm.order_by = type;
-        vm.selectUrl = "users/list/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by + "/" + $scope.sortReverse;
+        vm.sortType = sort;
+        vm.selectUrl = "users/list/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by + "/" + vm.sortType;
         vm.getData();
         vm.getSize();
     };
