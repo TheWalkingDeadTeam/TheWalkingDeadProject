@@ -123,7 +123,7 @@
                 <td>{{interviewee.name}}</td>
                 <td>{{interviewee.surname}}</td>
                 <td>{{interviewee.special_mark}}</td>
-                <td>{{interviewee.dev_scope}}</td>
+                <td>{{interviewee.dev_score}}</td>
                 <td>{{interviewee.hr_score}}</td>
                 <td ng-style="{opacity:0.5,'background-color':'{{interviewee.color == '1' ? 'blue' :
                                 interviewee.color == '2' ? 'green' :

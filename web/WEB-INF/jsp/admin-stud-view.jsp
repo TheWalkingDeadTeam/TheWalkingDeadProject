@@ -149,17 +149,14 @@
                 <td>
                     <input type="checkbox" ng-model="selectedAll" ng-click="checkAll()">
                 </td>
-                <%--<td>--%>
-                <%--<a ng-click="sortType = 'id'; sortReverse = !sortReverse; n">--%>
-                <%--#--%>
-                <%--</a>--%>
-                <%--</td>--%>
                 <td>
                     <a ng-click="sortReverse = !sortReverse; sortType(0,sortReverse)">
                         Full Name
                     </a>
                 </td>
                 <td ng-repeat="head in headerStud.head">
+                    <input type="checkbox" checklist-model="headerStud.head"
+                           checklist-value="head">
                     <a ng-click="sortReverse = !sortReverse; sortType(head.id,sortReverse)">
                         {{head.name}}
                     </a>
@@ -177,7 +174,6 @@
             </tr>
             <tr dir-paginate="user in data.users.rows|itemsPerPage:data.itemsPerPage" total-items="data.total_count">
                 <td><input type="checkbox" checklist-model="dataStudents.studId" checklist-value="user.userId"></td>
-                <%--<td ng-init="index=$index + 1">{{index}}</td>--%>
                 <td><a href="/profile?{{user.userId}}" target="_blanks">{{user.name}}</a></td>
                 <td ng-repeat="head in headerStud.head">
                     {{user.fields[head.id]}}

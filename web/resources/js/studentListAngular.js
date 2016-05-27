@@ -183,6 +183,7 @@ studentView.controller('StudentCtrl', ["$http", "$scope", 'MailService', 'Notifi
         angular.element($("#tableUsers")).css('display', 'table');
         angular.element($("#pagination")).css('display', 'block');
     };
+    
     vm.getData = function () {
         vm.showSpin();
 
@@ -208,6 +209,7 @@ studentView.controller('StudentCtrl', ["$http", "$scope", 'MailService', 'Notifi
         vm.getData();
         vm.getSize();
     };
+    
     vm.getSize = function () {
         if (vm.pattern == null) {
             $http.get("students/size").success(function (response) {
