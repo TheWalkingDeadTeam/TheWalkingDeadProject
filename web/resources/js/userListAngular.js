@@ -10,6 +10,7 @@ app.controller('UserCtrl', ["$http", "$scope", function ($http, $scope) {
     vm.order_by = null;
     vm.pattern = null;
     $scope.sortReverse = false;
+    
     showSpin = function () {
         angular.element($(".cssload-thecube")).css('display','block');
         angular.element($("#tableUsers")).css('display','none');
@@ -30,14 +31,6 @@ app.controller('UserCtrl', ["$http", "$scope", function ($http, $scope) {
         });
 
         hideSpin();
-    };
-    $scope.setSize = function (size) {
-        if(size == undefined){
-            return
-        }
-        vm.itemsPerPage = size;
-        vm.getData();
-        vm.getSize();
     };
     vm.getSize = function () {
         if(vm.pattern == null) {
