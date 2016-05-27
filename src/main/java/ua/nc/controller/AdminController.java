@@ -1,5 +1,7 @@
 package ua.nc.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,6 +18,7 @@ import ua.nc.service.user.UserService;
 import ua.nc.service.user.UserServiceImpl;
 import ua.nc.validator.*;
 
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -187,11 +190,6 @@ public class AdminController {
         }
 
 
-    }
-
-    @RequestMapping(value = "/students/{id}", method = RequestMethod.GET, produces = "application/json")
-    public String getStudentById(@PathVariable("id") Integer id) {
-        return "redirect:/profile?" + id;
     }
 
     /**
@@ -485,22 +483,37 @@ public class AdminController {
     @ResponseBody
     CES ces() {
         try {
-            LOGGER.info(cesService.getCES());
+            cesService.checkRegistrationDate();
+            cesService.checkInterviewDate();
             return cesService.getCES();
         } catch (DAOException e) {
-            LOGGER.error("DAO error");
+            LOGGER.error("Can`t get CES");
             return null;
         }
     }
 
-    @RequestMapping(value = {"/cesclose"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/cesclose"}, method = RequestMethod.POST, produces = "application/json")
     public
     @ResponseBody
-    String closeCES() {
-        System.out.println("admin");
-        mailService.sendFinalNotification();
+    void closeCES(@RequestBody String params) {
+        System.out.println(params);
+        ObjectMapper objectMapper = new ObjectMapper();
+        Integer rejectionId = null;
+        Integer workId = null;
+        Integer courseId = null;
+        try {
+            JsonNode node = objectMapper.readValue(params, JsonNode.class);
+            JsonNode rejectionNode = node.get("rejection");
+            JsonNode workNode = node.get("work");
+            JsonNode courseNode = node.get("course");
+            rejectionId = rejectionNode.asInt();
+            workId = workNode.asInt();
+            courseId = courseNode.asInt();
+        } catch (IOException e) {
+            LOGGER.error("Failed to parse", e);
+        }
+        mailService.sendFinalNotification(rejectionId,workId,courseId);
         cesService.closeCES();
-        return null;
     }
 
     @RequestMapping(value = {"/scheduler"}, method = RequestMethod.GET)
@@ -510,6 +523,9 @@ public class AdminController {
 
     @RequestMapping(value = {"/edit-form"}, method = RequestMethod.GET)
     public String editFormView() {
+        if (cesService.getPendingCES() == null){
+            return "error-ces-ongoing";
+        }
         return "edit-form";
     }
 
@@ -517,6 +533,9 @@ public class AdminController {
     public
     @ResponseBody
     List<Field> editFormGet(Integer ces_id) {
+        if (cesService.getPendingCES() == null) {
+            return null;
+        }
         EditFormService efs = new EditFormServiceImpl();
         List<Field> fields = new LinkedList<>();
         fields.addAll(efs.getAllFields(efs.getCES_ID()));

@@ -1,11 +1,13 @@
-var app = angular.module('myApp', []);
-app.controller('FormController', ['$scope', '$http', function ($scope, $http) {
+var app = angular.module('myApp', ['ui-notification']);
+app.controller('FormController', ['$scope', 'MailService', '$http', 'Notification', function ($scope, MailService, $http, Notification) {
 
 
-
-    $scope.backButton = function() {
+    $scope.backButton = function () {
         window.location = '/admin';
     };
+    var self = this;
+    self.mail = {id: null, bodyTemplate: '', headTemplate: ''};
+    self.mails = [];
 
     this.ces = {
         "id": '',
@@ -23,7 +25,22 @@ app.controller('FormController', ['$scope', '$http', function ($scope, $http) {
     $scope.current = false;
     $scope.interviewBegan = false;
 
-    var getReq = function() {
+    self.fetchAllMails = function () {
+        MailService.fetchAllMails()
+            .then(
+                function (d) {
+                    self.mails = d;
+                },
+                function (errResponse) {
+                    console.error('Error while fetching Currencies');
+                }
+            );
+    };
+
+    self.fetchAllMails();
+
+
+    var getReq = function () {
         $http.get('/admin/cessettings').success(function (response) {
             // console.log(response)
             if (response == '') {
@@ -60,7 +77,7 @@ app.controller('FormController', ['$scope', '$http', function ($scope, $http) {
             if (response.startInterviewingDate != null) {
                 $scope.ctrl.ces.startInterviewingDate = new Date(response.startInterviewingDate);
             }
-            if (response.endInterviewingDate != null){
+            if (response.endInterviewingDate != null) {
                 $scope.ctrl.ces.endInterviewingDate = new Date(response.endInterviewingDate);
             }
             $scope.ctrl.ces.quota = response.quota;
@@ -74,7 +91,7 @@ app.controller('FormController', ['$scope', '$http', function ($scope, $http) {
     getReq();
 
     this.save = function () {
-        if ( isNaN( new Date(this.ces.startRegistrationDate).getTime() ) ) {  // d.valueOf() could also work
+        if (isNaN(new Date(this.ces.startRegistrationDate).getTime())) {  // d.valueOf() could also work
             var errors_out = "Start registration date is not valid";
             $('#errorsDiv')
                 .removeClass()
@@ -83,7 +100,7 @@ app.controller('FormController', ['$scope', '$http', function ($scope, $http) {
                 .html(errors_out);
             return;
         }
-        if ( isNaN( new Date(this.ces.endRegistrationDate).getTime() ) ) {  // d.valueOf() could also work
+        if (isNaN(new Date(this.ces.endRegistrationDate).getTime())) {  // d.valueOf() could also work
             var errors_out = "Start registration date is not valid";
             $('#errorsDiv')
                 .removeClass()
@@ -94,44 +111,92 @@ app.controller('FormController', ['$scope', '$http', function ($scope, $http) {
         }
 
         $http.post('/admin/cesPost', this.ces).success(function (responseData) {
-                if (responseData.length) {
-                    var errors_out = "";
-                    for (var i in responseData) {
-                        errors_out += responseData[i].errorMessage + "</br>"
-                    }
-                    $('#errorsDiv')
-                        .removeClass()
-                        .empty()
-                        .addClass('alert alert-danger')
-                        .html(errors_out).fadeIn();
-                } else {
-                    $scope.postSuccess = true;
-                    $('#errorsDiv')
-                        .removeClass()
-                        .empty()
-                        .addClass('alert alert-success')
-                        .html('Session saved').fadeIn();
-                    setTimeout(function() {
-                        $('#errorsDiv').fadeOut().empty();
-                    }, 3000);
+            if (responseData.length) {
+                var errors_out = "";
+                for (var i in responseData) {
+                    errors_out += responseData[i].errorMessage + "</br>"
                 }
-                $scope.message = responseData;
-            }).error(function () {
+                $('#errorsDiv')
+                    .removeClass()
+                    .empty()
+                    .addClass('alert alert-danger')
+                    .html(errors_out).fadeIn();
+            } else {
+                $scope.postSuccess = true;
+                $('#errorsDiv')
+                    .removeClass()
+                    .empty()
+                    .addClass('alert alert-success')
+                    .html('Session saved').fadeIn();
+                setTimeout(function () {
+                    $('#errorsDiv').fadeOut().empty();
+                }, 3000);
+            }
+            $scope.message = responseData;
+        }).error(function () {
             window.location.href = "/error"
         });
     };
-    this.closeButton = function(){
-        $http({
-            method : "POST",
-            url : '/admin/cesclose'
-        }).then(function mySucces(response) {
-            if (confirm("Session will be removed") == true) {
-                getReq();
-            }
 
-        }, function myError(response) {
-            $scope.postError = true;
-        });
+    $scope.list = [];
+    this.closeButton = function () {
+        var formData = {
+                "rejection": $scope.rejection,
+                "work": $scope.work,
+                "course": $scope.course
+            };
+
+        if ($scope.rejection && $scope.work && $scope.course != null) {
+            // var response = $http.post('/admin/cesclose', formData);
+            // response.success(function (data, status, headers, config) {
+            //     $scope.list.push(data);
+            //     Notification.success({message: 'CES was successfully closed ', delay: 1000});
+            // });
+            // response.error(function (data, status, headers, config) {
+            //     alert("Exception details: " + JSON.stringify({data: data}));
+            //     Notification.error({message: 'CES wasn\'t closed', delay: 2000});
+            // });
+            
+            
+            $http({
+                method: "POST",
+                url: '/admin/cesclose',
+                data: formData
+            }).then(function mySucces(response) {
+                if (confirm("Session will be removed") == true) {
+                    Notification.success({message: 'CES was successfully closed ', delay: 1000});
+                    getReq();
+                }
+            
+            }, function myError(response) {
+                $scope.postError = true;
+            });
+        } else {
+            Notification.error({message: 'All Radio buttons should be specified', delay: 1000});
+        }
     }
+
+
+}]);
+
+/**
+ * Fetching avaible mail template
+ */
+app.factory('MailService', ['$http', '$q', function ($http, $q) {
+    return {
+        fetchAllMails: function () {
+            return $http.get('/mails/')
+                .then(
+                    function (response) {
+                        return response.data;
+                    },
+                    function (errResponse) {
+                        console.error('Error while fetching mail');
+                        return $q.reject(errResponse);
+                    }
+                );
+        }
+
+    };
 }]);
 
