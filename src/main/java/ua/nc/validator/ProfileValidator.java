@@ -26,12 +26,10 @@ public class ProfileValidator implements Validator {
         errors = new LinkedHashSet<>();
         Profile profile = (Profile) obj;
         List<ProfileField> fields = profile.getFields();
-        ProfileField profileField = null;
         Iterator<ProfileField> profileFieldIterator = fields.iterator();
         while (profileFieldIterator.hasNext()) {
             ValidationError validationError = null;
-            profileField = profileFieldIterator.next();
-
+            ProfileField profileField = profileFieldIterator.next();
             if (profileField.getMultipleChoice()) {
                 validationError = validateMultipleChoiceField(profileField, 1, 3, profileField.getFieldType());// TODO dafuck are this numbers??
             } else {
