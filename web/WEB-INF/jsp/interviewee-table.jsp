@@ -58,14 +58,6 @@
 
     <main class="mdl-color--grey-100">
         <div>
-            <%--<button ng-click="activateUser()"--%>
-            <%--class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">--%>
-            <%--Activate--%>
-            <%--</button>--%>
-            <%--<button ng-click="deactivateUser()"--%>
-            <%--class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">--%>
-            <%--Deactivate--%>
-            <%--</button>--%>
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
                 <label class="mdl-button mdl-js-button mdl-button--icon" for="search">
                     <i class="material-icons">search</i>
