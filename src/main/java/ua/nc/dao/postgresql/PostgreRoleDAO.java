@@ -31,7 +31,10 @@ public class PostgreRoleDAO extends AbstractPostgreDAO<Role, Integer> implements
     private static final String FIND_BY_EMAIL = "SELECT  r.role_id, r.name FROM public.system_user u " +
             "JOIN public.system_user_role ur on u.system_user_id = ur.system_user_id " +
             "JOIN public.role r ON ur.role_id = r.role_id WHERE u.email = ?";
-
+    //////////////////////// vdanchul
+    private static String ADD_ROLES = "INSERT INTO system_user_role(role_id, system_user_id) VALUES (?, ?);";
+    private static String REMOVE_ROLES = "DELETE FROM system_user_role WHERE system_user_id = ?;";
+    private static String GET_ROLES_COUNT = "SELECT COUNT(1) FROM system_user_role WHERE system_user_id = ?";
 
     public PostgreRoleDAO(Connection connection) {
         super(connection);
@@ -97,21 +100,16 @@ public class PostgreRoleDAO extends AbstractPostgreDAO<Role, Integer> implements
         return roles;
     }
 
-    //////////////////////// vdanchul
-    private static String ADD_ROLES = "INSERT INTO system_user_role(role_id, system_user_id) VALUES (?, ?);";
-    private static String REMOVE_ROLES = "DELETE FROM system_user_role WHERE system_user_id = ?;";
-    private static String GET_ROLES_COUNT = "SELECT COUNT(1) FROM system_user_role WHERE system_user_id = ?";
-
     @Override
     public void setRolesToUser(Set<Role> roles, User user) throws DAOException {
-        try (PreparedStatement statement = connection.prepareStatement(ADD_ROLES)){
+        try (PreparedStatement statement = connection.prepareStatement(ADD_ROLES)) {
             for (Role role : roles) {
                 statement.setInt(1, role.getId());
                 statement.setInt(2, user.getId());
                 statement.addBatch();
             }
             int[] count = statement.executeBatch();
-            for (int i : count){
+            for (int i : count) {
                 if (i != 1) throw new DAOException("Affected more than one row: " + count);
             }
         } catch (SQLException e) {
@@ -120,7 +118,7 @@ public class PostgreRoleDAO extends AbstractPostgreDAO<Role, Integer> implements
     }
 
     private Integer getRolesCount(Integer userId) throws DAOException {
-        try (PreparedStatement statement = connection.prepareStatement(GET_ROLES_COUNT)){
+        try (PreparedStatement statement = connection.prepareStatement(GET_ROLES_COUNT)) {
             statement.setInt(1, userId);
             ResultSet rs = statement.executeQuery();
             rs.next();
@@ -131,11 +129,11 @@ public class PostgreRoleDAO extends AbstractPostgreDAO<Role, Integer> implements
     }
 
     public void removeRolesFromUser(User user) throws DAOException {
-        try (PreparedStatement statement = connection.prepareStatement(REMOVE_ROLES)){
+        try (PreparedStatement statement = connection.prepareStatement(REMOVE_ROLES)) {
             statement.setInt(1, user.getId());
             int count = statement.executeUpdate();
             int needed = getRolesCount(user.getId());
-            if (count != needed){
+            if (count != needed) {
                 throw new DAOException("Only " + count + " rows where affected. Needed: " + needed);
             }
         } catch (SQLException e) {
@@ -202,7 +200,6 @@ public class PostgreRoleDAO extends AbstractPostgreDAO<Role, Integer> implements
 
         }
     }
-
 
 
     @Override
