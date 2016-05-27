@@ -152,13 +152,6 @@
                 boundary-links="true"
                 on-page-change="data.setPageno(newPageNumber)">
         </dir-pagination-controls>
-        <select name="selectUsersCount" ng-model="count">
-            <option disabled value="">Choose count of rows</option>
-            <option selected value="10">10</option>
-            <option value="25">25</option>
-            <option value="50">50</option>
-        </select>
-        <button ng-click="setSize(count)">SEND</button>
     </div>
 
 

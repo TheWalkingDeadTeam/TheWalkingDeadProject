@@ -10,7 +10,6 @@
 <!doctype html>
 <html lang="en" ng-app="studentView">
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="A front-end template that helps you build fast, modern mobile web apps.">
@@ -131,11 +130,9 @@
                                                 <input type="submit" id="mail" value="Save"
                                                        class="btn btn-default waves-effect waves-light">
                                             </div>
-
                                         </form>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -155,8 +152,6 @@
                     </a>
                 </td>
                 <td ng-repeat="head in headerStud.head">
-                    <input type="checkbox" checklist-model="headerStud.head"
-                           checklist-value="head">
                     <a ng-click="sortReverse = !sortReverse; sortType(head.id,sortReverse)">
                         {{head.name}}
                     </a>
@@ -192,7 +187,6 @@
                     on-page-change="data.setPageno(newPageNumber)">
             </dir-pagination-controls>
         </div>
-
     </main>
 </main>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.js"></script>
@@ -207,7 +201,6 @@
 <script src="/resources/js/dirPagination.js"></script>
 <script src="http://vitalets.github.io/checklist-model/checklist-model.js"></script>
 <script src="/resources/js/adminmenu.js"></script>
-
 </body>
 
 
