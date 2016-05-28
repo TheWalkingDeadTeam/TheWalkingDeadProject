@@ -161,11 +161,4 @@ public class StudentServiceImpl implements StudentService {
         }
     }
 
-    @Override  // WTF ????
-    public Integer getStudentsSize() {
-        Connection connection = daoFactory.getConnection();
-        ApplicationDAO applicationDAO = daoFactory.getApplicationDAO(connection);
-        daoFactory.putConnection(connection);
-        return null;
-    }
 }

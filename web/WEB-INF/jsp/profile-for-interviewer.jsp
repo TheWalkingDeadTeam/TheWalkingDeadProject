@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <head>
     <title>Profile For Interviewer</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -46,9 +47,9 @@
                  onError="this.src='/resources/images/user-photo.png'" class="profile-photo">
         </div>
         <div class=" col-lg-3 col-md-3 col-sm-3 col-xs-3 mainf">
-            <h4>Name:</h4>
-            <h4>Surname:</h4>
-            <h4>E-mail:</h4>
+            <h4><spring:message code="locale.name"/>:</h4>
+            <h4><spring:message code="locale.surname"/>:</h4>
+            <h4><spring:message code="locale.email"/>:</h4>
         </div>
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 userDetails">
             <span id="userName"></span>
@@ -61,7 +62,7 @@
             <div class="panel-heading">
                 <h4 class="panel-title">
                     <a data-toggle="collapse" href="#collapse1">
-                        Profile <i class="material-icons">keyboard_arrow_down</i>
+                        <spring:message code="locale.profile"/> <i class="material-icons">keyboard_arrow_down</i>
                     </a>
                 </h4>
             </div>
