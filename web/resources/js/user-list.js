@@ -9,7 +9,8 @@ app.controller('UserCtrl', ["$http", "$scope", function ($http, $scope) {
     vm.selectUrl = "users/list/" + vm.itemsPerPage + "/" + vm.pageno;
     vm.order_by = null;
     vm.pattern = null;
-    $scope.sortReverse = false;
+    vm.sortType = false;
+    
     showSpin = function () {
         angular.element($(".cssload-thecube")).css('display','block');
         angular.element($("#tableUsers")).css('display','none');
@@ -31,14 +32,6 @@ app.controller('UserCtrl', ["$http", "$scope", function ($http, $scope) {
 
         hideSpin();
     };
-    $scope.setSize = function (size) {
-        if(size == undefined){
-            return
-        }
-        vm.itemsPerPage = size;
-        vm.getData();
-        vm.getSize();
-    };
     vm.getSize = function () {
         if(vm.pattern == null) {
             $http.get("users/size").success(function (response) {
@@ -49,7 +42,6 @@ app.controller('UserCtrl', ["$http", "$scope", function ($http, $scope) {
                 vm.total_count = response;
             });
         }
-        // elem.find('.modal-content').style.display = "none";
 
     };
     
@@ -63,12 +55,13 @@ app.controller('UserCtrl', ["$http", "$scope", function ($http, $scope) {
 
     vm.getData(); // Call the function to fetch initial data on page load.
     vm.getSize();
+    
     vm.setPageno = function (pageno) {
         vm.pageno = pageno;
         if (vm.order_by === null) {
             vm.selectUrl = "users/list/" + vm.itemsPerPage + "/" + vm.pageno;
         } else {
-            vm.selectUrl = "users/list/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by + "/" + vm.sortAsc;
+            vm.selectUrl = "users/list/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by + "/" + vm.sortType;
         }
         vm.getData();
         vm.getSize();
@@ -88,9 +81,10 @@ app.controller('UserCtrl', ["$http", "$scope", function ($http, $scope) {
 
     };
 
-    $scope.sortType = function (type) {
+    $scope.sortType = function (type,sort) {
         vm.order_by = type;
-        vm.selectUrl = "users/list/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by + "/" + $scope.sortReverse;
+        vm.sortType = sort;
+        vm.selectUrl = "users/list/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by + "/" + vm.sortType;
         vm.getData();
         vm.getSize();
     };

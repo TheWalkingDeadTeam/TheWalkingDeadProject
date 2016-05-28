@@ -72,13 +72,13 @@
                         </div>
 
                         <div>
-                            <div class="stats class="col-lg-4 col-md-4 col-sm-5 col-xs-5">
+                            <div class="stats col-lg-4 col-md-4 col-sm-5 col-xs-5">
                             <h5><spring:message code="locale.changePassword"/></h5>
                                 <jsp:include page="change-password.jsp"/>
                             </div>
-                            <div class="stats class="col-lg-4 col-md-4 col-sm-2 col-xs-2">
+                            <div class="stats col-lg-4 col-md-4 col-sm-2 col-xs-2">
                                 <sec:authorize access="!hasRole('ROLE_STUDENT')">
-                                    <h5>Enrollment</h5>
+                                    <h5><spring:message code="locale.enrollment"/></h5>
                                     <sec:authentication var="principal" property="principal"/>
                                     <input id="userid" type="hidden" value=" ${principal.id}"/>
                                     <div id="enrollMessages"></div>
@@ -87,7 +87,7 @@
                                             type="submit"><spring:message code="locale.enroll"/></button>
                                 </sec:authorize>
                             </div>
-                            <div class="stats class="col-lg-4 col-md-4 col-sm-5 col-xs-5">
+                            <div class="stats col-lg-4 col-md-4 col-sm-5 col-xs-5">
 
                                 <jsp:include page="change-roles.jsp"/>
                             </div>
@@ -114,7 +114,7 @@
 <script src="/resources/js/photo.js"></script>
 <script src="/resources/js/account.js"></script>
 <script src="/resources/js/hideShowPassword.min.js"></script>
-<script src="/resources/js/changeRoles.js"></script>
+<%--<script src="/resources/js/changeRoles.js"></script>--%>
 
 
 <script type="text/javascript">

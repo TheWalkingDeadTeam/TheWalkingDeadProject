@@ -11,7 +11,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
@@ -49,45 +48,24 @@ public class LoginController implements HandlerExceptionResolver {
     private static final Logger LOGGER = Logger.getLogger(LoginController.class);
     private final UserService userService = new UserServiceImpl();
     private final PhotoService photoService = new PhotoServiceImpl();
+    private final UserDetailsService userDetailsService = new UserDetailsServiceImpl();
+
 
 
     @Autowired
     @Qualifier("authenticationManager")
     protected AuthenticationManager authenticationManager;
 
-    @Override
-    public ModelAndView resolveException(HttpServletRequest httpServletRequest,
-                                         HttpServletResponse httpServletResponse, Object o, Exception e) {
-        if (e instanceof MaxUploadSizeExceededException) {
-            ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
-            Set<ValidationError> errors = new LinkedHashSet<>();
-            errors.add(new ValidationError("photo", "File is too big"));
-            modelAndView.addObject("errors", errors);
-            return modelAndView;
-        }
-        return new ModelAndView("redirect:/login");
-    }
-
-    /**
-     * Depending on the Role return home page
-     *
-     * @param request
-     * @param response
-     * @return page view
-     */
     @RequestMapping(value = {"/", "/login"}, method = RequestMethod.GET)
-    public String login(HttpServletRequest request, HttpServletResponse response) {
+    public String login(SecurityContextHolderAwareRequestWrapper request, HttpServletResponse response) {
         SavedRequest savedRequest =
                 new HttpSessionRequestCache().getRequest(request, response);
-        if (savedRequest != null && (request.isUserInRole(UserRoles.ROLE_ADMIN.name())
-                || request.isUserInRole(UserRoles.ROLE_HR.name())
-                || request.isUserInRole(UserRoles.ROLE_BA.name())
-                || request.isUserInRole(UserRoles.ROLE_DEV.name())
-                || request.isUserInRole(UserRoles.ROLE_STUDENT.name()))) {
-            LOGGER.info("Login and redirect to" + savedRequest.getRedirectUrl());
+        if (savedRequest != null && (request.getRemoteUser() != null)) {
+            LOGGER.info("Login and redirect to " + savedRequest.getRedirectUrl());
             return "redirect:" + savedRequest.getRedirectUrl();
         } else {
-            if (request.isUserInRole(UserRoles.ROLE_ADMIN.name()) || request.isUserInRole(UserRoles.ROLE_HR.name())) {
+            if (request.isUserInRole(UserRoles.ROLE_ADMIN.name())
+                    || request.isUserInRole(UserRoles.ROLE_HR.name())) {
                 LOGGER.info("Login and redirect to Admin page");
                 return "admin";
 
@@ -100,7 +78,7 @@ public class LoginController implements HandlerExceptionResolver {
                 }
             }
         }
-        return "login";
+        return "test";
     }
 
 
@@ -114,7 +92,6 @@ public class LoginController implements HandlerExceptionResolver {
     @RequestMapping(value = "/security_check ", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Set<ValidationError> authentication(@RequestBody User user) {
         Set<ValidationError> errors = new LinkedHashSet<>();
-        UserDetailsService userDetailsService = new UserDetailsServiceImpl();
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
         try {
             UserDetailsImpl userDetails = (UserDetailsImpl) userDetailsService.loadUserByUsername(user.getEmail());
@@ -151,37 +128,16 @@ public class LoginController implements HandlerExceptionResolver {
         Validator validator = new RegistrationValidator();
         Set<ValidationError> errors = validator.validate(user);
         if (errors.isEmpty()) {
-            if (userService.getUser(user.getEmail()) == null) {
                 User registeredUser = userService.createUser(user);
                 if (registeredUser == null) {
                     LOGGER.warn("Register failed " + user.getEmail());
                     errors.add(new ValidationError("register", "Register failed"));
                 }
-            } else {
-                LOGGER.warn("User " + user.getEmail() + " already exists");
-                errors.add(new ValidationError("user", "Such user already exists"));
-            }
+
         }
         return errors;
     }
 
-    @RequestMapping(value = {"/uploadPhoto"}, method = RequestMethod.POST, produces = "application/json")
-    public
-    @ResponseBody
-    Set<ValidationError> uploadPhoto(@RequestParam("photo") MultipartFile photo) {
-        Validator validator = new PhotoValidator();
-        Set<ValidationError> errors = validator.validate(photo);
-        if (errors.isEmpty()) {
-            try {
-                User user = userService.getUser(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
-                        .getPrincipal()).getUsername());
-                photoService.uploadPhoto(photo, user.getId());
-            } catch (IOException e) {
-                errors.add(new ValidationError("photo", "Something went wrong"));
-            }
-        }
-        return errors;
-    }
 
     @RequestMapping(value = {"/passwordRecovery"}, method = RequestMethod.POST, produces = "application/json")
     public
@@ -211,6 +167,24 @@ public class LoginController implements HandlerExceptionResolver {
         return errors;
     }
 
+    @RequestMapping(value = {"/uploadPhoto"}, method = RequestMethod.POST, produces = "application/json")
+    public
+    @ResponseBody
+    Set<ValidationError> uploadPhoto(@RequestParam("photo") MultipartFile photo) {
+        Validator validator = new PhotoValidator();
+        Set<ValidationError> errors = validator.validate(photo);
+        if (errors.isEmpty()) {
+            try {
+                User user = userService.getUser(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+                        .getPrincipal()).getUsername());
+                photoService.uploadPhoto(photo, user.getId());
+            } catch (IOException e) {
+                errors.add(new ValidationError("photo", "Something went wrong"));
+            }
+        }
+        return errors;
+    }
+
 
     @ResponseBody
     @RequestMapping(value = "/getPhoto")
@@ -224,11 +198,25 @@ public class LoginController implements HandlerExceptionResolver {
     @ResponseBody
     @RequestMapping(value = "/getPhoto/{id}")
     public byte[] getPhoto(@PathVariable("id") Integer id, HttpServletRequest request) {
-        if (request.isUserInRole(UserRoles.ROLE_STUDENT.name())){
+        if (request.isUserInRole(UserRoles.ROLE_STUDENT.name())) {
             Integer userId = userService.getUser(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                     .getPrincipal()).getUsername()).getId();
             if (!id.equals(userId)) return null;
         }
         return photoService.getPhotoById(id);
     }
+
+    @Override
+    public ModelAndView resolveException(HttpServletRequest httpServletRequest,
+                                         HttpServletResponse httpServletResponse, Object o, Exception e) {
+        if (e instanceof MaxUploadSizeExceededException) {
+            ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
+            Set<ValidationError> errors = new LinkedHashSet<>();
+            errors.add(new ValidationError("photo", "File is too big"));
+            modelAndView.addObject("errors", errors);
+            return modelAndView;
+        }
+        return new ModelAndView("redirect:/login");
+    }
+
 }

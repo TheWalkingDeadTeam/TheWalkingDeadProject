@@ -1,4 +1,4 @@
-var studentView = angular.module('studentView',['checklist-model', 'angularUtils.directives.dirPagination','ui-notification']);
+var studentView = angular.module('studentView', ['checklist-model', 'angularUtils.directives.dirPagination', 'ui-notification']);
 studentView.factory('MailService', ['$http', '$q', function ($http, $q) {
 
     return {
@@ -60,17 +60,16 @@ studentView.factory('MailService', ['$http', '$q', function ($http, $q) {
 }]);
 
 
-studentView.controller('StudentCtrl', ["$http", "$scope", 'MailService','Notification', function ($http, $scope, MailService, Notification) {
+studentView.controller('StudentCtrl', ["$http", "$scope", 'MailService', 'Notification', function ($http, $scope, MailService, Notification) {
     var vm = this;
-    vm.users = []; //declare an empty array
-    vm.pageno = 1; // initialize page no to 1
+    vm.users = [];
+    vm.pageno = 1;
     vm.total_count = 0;
-    vm.itemsPerPage = 10; //this could be a dynamic value from a drop down
+    vm.itemsPerPage = 10;
     vm.selectUrl = "students/list/" + vm.itemsPerPage + "/" + vm.pageno;
     vm.order_by = null;
-    $scope.sortReverse = false;
-
-
+    vm.sortReverse = false;
+    vm.flagReload = true;
 
     /////////////Alexander///////////////////////////////////////////////
     vm.mails = [];
@@ -108,7 +107,7 @@ studentView.controller('StudentCtrl', ["$http", "$scope", 'MailService','Notific
             values: $scope.dataStudents.studId
         };
 
-        if(dataObj.values.length != 0){
+        if (dataObj.values.length != 0) {
             var formData = {
                 "usersId": dataObj.values,
                 "mailIdUser": $scope.mailIdUser,
@@ -184,16 +183,33 @@ studentView.controller('StudentCtrl', ["$http", "$scope", 'MailService','Notific
         angular.element($("#tableUsers")).css('display', 'table');
         angular.element($("#pagination")).css('display', 'block');
     };
+    
     vm.getData = function () {
         vm.showSpin();
 
         vm.users = [];
         $http.get(vm.selectUrl).success(function (response) {
             vm.users = response;
+            if (vm.flagReload) {
+                $scope.headerStud.head = vm.users.header.map(function (item) {
+                    return item;
+                });
+                vm.flagReload = false
+            }
         });
+
 
         vm.hideSpin();
     };
+    $scope.setSize = function (size) {
+        if (size == undefined) {
+            return
+        }
+        vm.itemsPerPage = size;
+        vm.getData();
+        vm.getSize();
+    };
+    
     vm.getSize = function () {
         if (vm.pattern == null) {
             $http.get("students/size").success(function (response) {
@@ -212,12 +228,18 @@ studentView.controller('StudentCtrl', ["$http", "$scope", 'MailService','Notific
         studId: []
     };
 
+    $scope.headerStud = {
+        head: []
+    };
+
     $scope.columnsType = {
         columns: []
     };
 
     vm.getData(); // Call the function to fetch initial data on page load.
     vm.getSize();
+
+
     vm.setPageno = function (pageno) {
         vm.pageno = pageno;
         if (vm.order_by === null) {
@@ -242,16 +264,17 @@ studentView.controller('StudentCtrl', ["$http", "$scope", 'MailService','Notific
 
     };
 
-    $scope.sortType = function (type) {
+    $scope.sortType = function (type,revers) {
         vm.showSpin();
         vm.order_by = type;
-        vm.selectUrl = "students/list/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by + "/" + $scope.sortReverse;
+        vm.sortReverse = revers;
+        vm.selectUrl = "students/list/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by + "/" + vm.sortReverse;
         vm.getData();
         vm.getSize();
     };
 
     $scope.rejectStud = function () {
-        
+
         var dataObj = {
             type: 'reject',
             values: $scope.dataStudents.studId
@@ -271,7 +294,7 @@ studentView.controller('StudentCtrl', ["$http", "$scope", 'MailService','Notific
     };
 
     $scope.unrejectStud = function () {
-        
+
         var dataObj = {
             type: 'unreject',
             values: $scope.dataStudents.studId
