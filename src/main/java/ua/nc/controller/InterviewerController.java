@@ -16,9 +16,8 @@ import ua.nc.validator.ValidationError;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.Writer;
-import java.util.*;
+import java.util.Date;
+import java.util.Set;
 
 /**
  * Created by Hlib on 09.05.2016.
@@ -41,10 +40,9 @@ public class InterviewerController {
         CES currentCES = cesService.getCurrentCES();
         if (currentCES != null) {
             int cesId = cesService.getCurrentCES().getId();
-            Iterator<Integer> iterator = integerList.getValues().iterator();
-            while (iterator.hasNext()) {
+            for (Integer userId :integerList.getValues() ) {
                 try {
-                    cesService.enrollAsInterviewer(iterator.next(), cesId);
+                    cesService.enrollAsInterviewer(userId, cesId);
                     LOGGER.info("Successfully enrolled on current CES");
                 } catch (DAOException e) {
                     LOGGER.info("Cant enroll on current CES", e);
