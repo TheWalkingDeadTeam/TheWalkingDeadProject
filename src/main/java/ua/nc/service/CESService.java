@@ -37,4 +37,5 @@ public interface CESService {
     void switchToRegistrationOngoing() throws DAOException;
     void updateInterViewingDate(Date start, Date end);
     CES getPendingCES();
+    boolean checkParticipation (Integer interviewerId);
 }

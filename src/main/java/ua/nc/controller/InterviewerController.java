@@ -119,6 +119,10 @@ public class InterviewerController {
             }
             User user = userService.getUser(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                     .getPrincipal()).getUsername());
+            if (!cesService.checkParticipation(user.getId())){
+                feedbackDTO.setRestricted(true);
+                return feedbackDTO;
+            }
             Feedback feedback = null;
             Integer feedbackId = null;
             if (feedbackDTO.getInterviewerRole().equals(UserRoles.ROLE_DEV)) {
