@@ -100,22 +100,22 @@
                     <input type="checkbox" ng-model="selectedAll" ng-click="checkAll()">
                 </td>
                 <td>
-                    <a ng-click="sortType('system_user_id',sortReverse); sortReverse = !sortReverse">
+                    <a ng-click="sortReverse = !sortReverse; sortType('system_user_id',sortReverse);">
                         Id
                     </a>
                 </td>
                 <td>
-                    <a ng-click="sortType('name',sortReverse); sortReverse = !sortReverse">
+                    <a ng-click="sortReverse = !sortReverse; sortType('name',sortReverse);">
                         Name
                     </a>
                 </td>
                 <td>
-                    <a ng-click="sortType('surname',sortReverse); sortReverse = !sortReverse">
+                    <a ng-click="sortReverse = !sortReverse; sortType('surname',sortReverse);">
                         Surname
                     </a>
                 </td>
                 <td>
-                    <a ng-click="sortType('email',sortReverse); sortReverse = !sortReverse">
+                    <a ng-click="sortReverse = !sortReverse; sortType('email',sortReverse);">
                         Email
                     </a>
                 </td>
@@ -125,7 +125,7 @@
                     </a>
                 </td>
                 <td>
-                    <a ng-click="sortType('status',sortReverse); sortReverse = !sortReverse">
+                    <a ng-click=" sortReverse = !sortReverse; sortType('status',sortReverse);">
                         Status
                     </a>
                 </td>
@@ -152,13 +152,6 @@
                 boundary-links="true"
                 on-page-change="data.setPageno(newPageNumber)">
         </dir-pagination-controls>
-        <select name="selectUsersCount" ng-model="count">
-            <option disabled value="">Choose count of rows</option>
-            <option selected value="10">10</option>
-            <option value="25">25</option>
-            <option value="50">50</option>
-        </select>
-        <button ng-click="setSize(count)">SEND</button>
     </div>
 
 

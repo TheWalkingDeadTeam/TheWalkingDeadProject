@@ -1,5 +1,6 @@
 package ua.nc.dao.postgresql;
 
+import ua.nc.dao.InterviewerTableDAO;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.entity.Interviewer;
 
@@ -13,7 +14,7 @@ import java.util.*;
 /**
  * Created by Rangar on 11.05.2016.
  */
-public class PostgreInterviewerTableDAO {
+public class PostgreInterviewerTableDAO implements InterviewerTableDAO {
 
     private static final String[] SET_VALUES = new String[] { "system_user_id", "name", "surname", "email", "role"};
     private static final Set<String> FIELDS = new HashSet<>(Arrays.asList(SET_VALUES));

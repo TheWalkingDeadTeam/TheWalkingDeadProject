@@ -3,6 +3,7 @@
 <head>
     <title>Mail Page</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="/resources/css/notification/angular-ui-notification.min.css">
     <link href="/resources/css/app.css" rel="stylesheet"/>
     <link href="/resources/css/mdb.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="/resources/css/roboto-font/roboto.css">

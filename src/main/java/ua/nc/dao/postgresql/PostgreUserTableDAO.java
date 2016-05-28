@@ -1,5 +1,6 @@
 package ua.nc.dao.postgresql;
 
+import ua.nc.dao.UserTableDAO;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.entity.UserRow;
 
@@ -13,7 +14,7 @@ import java.util.*;
 /**
  * Created by Rangar on 12.05.2016.
  */
-public class PostgreUserTableDAO {
+public class PostgreUserTableDAO implements UserTableDAO {
     private Connection connection;
 
     public PostgreUserTableDAO(Connection connection) {

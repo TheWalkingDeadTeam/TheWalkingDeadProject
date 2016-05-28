@@ -10,7 +10,6 @@
 <!doctype html>
 <html lang="en" ng-app="studentView">
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="A front-end template that helps you build fast, modern mobile web apps.">
@@ -131,11 +130,9 @@
                                                 <input type="submit" id="mail" value="Save"
                                                        class="btn btn-default waves-effect waves-light">
                                             </div>
-
                                         </form>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -149,11 +146,6 @@
                 <td>
                     <input type="checkbox" ng-model="selectedAll" ng-click="checkAll()">
                 </td>
-                <%--<td>--%>
-                <%--<a ng-click="sortType = 'id'; sortReverse = !sortReverse; n">--%>
-                <%--#--%>
-                <%--</a>--%>
-                <%--</td>--%>
                 <td>
                     <a ng-click="sortReverse = !sortReverse; sortType(0,sortReverse)">
                         Full Name
@@ -165,7 +157,7 @@
                     </a>
                 </td>
                 <td>
-                    <a ng-click="sortType('rejected',sortReverse); sortReverse = !sortReverse">
+                    <a ng-click="sortReverse = !sortReverse; sortType('rejected',sortReverse);">
                         Rejected
                     </a>
                 </td>
@@ -177,7 +169,6 @@
             </tr>
             <tr dir-paginate="user in data.users.rows|itemsPerPage:data.itemsPerPage" total-items="data.total_count">
                 <td><input type="checkbox" checklist-model="dataStudents.studId" checklist-value="user.userId"></td>
-                <%--<td ng-init="index=$index + 1">{{index}}</td>--%>
                 <td><a href="/profile?{{user.userId}}" target="_blanks">{{user.name}}</a></td>
                 <td ng-repeat="head in headerStud.head">
                     {{user.fields[head.id]}}
@@ -196,7 +187,6 @@
                     on-page-change="data.setPageno(newPageNumber)">
             </dir-pagination-controls>
         </div>
-
     </main>
 </main>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.js"></script>
@@ -211,7 +201,6 @@
 <script src="/resources/js/dirPagination.js"></script>
 <script src="http://vitalets.github.io/checklist-model/checklist-model.js"></script>
 <script src="/resources/js/adminmenu.js"></script>
-
 </body>
 
 

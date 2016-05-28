@@ -15,5 +15,6 @@ public interface RoleDAO extends GenericDAO<Role, Integer> {
     Set<Role> findByEmail(String email) throws DAOException;
 
     void setRolesToUser(Set<Role> roles, User user) throws DAOException;
+
     void removeRolesFromUser(User user) throws DAOException;
 }
