@@ -18,7 +18,7 @@ import java.util.Map;
 /**
  * Created by Pavel on 15.05.2016.
  */
-public class ExcelBuilder extends AbstractXlsView {
+public class ReportXlsView extends AbstractXlsView {
 
 
     @Override

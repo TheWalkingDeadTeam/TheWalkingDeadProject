@@ -1,3 +1,5 @@
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%--
   Created by IntelliJ IDEA.
   User: Alexander
@@ -9,11 +11,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <title>Index Page</title>
+    <title>Netcracker</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/resources/images/ico.png"/>
+    <link rel="stylesheet" type="text/css" href="/resources/css/reset.css"/>
+    <link rel="stylesheet" type="text/css" href="/resources/css/styles.css"/>
+    <link rel="stylesheet" type="text/css" href="/resources/css/registration.css"/>
+    <link rel="stylesheet" type="text/css" href="/resources/bootstrap/css/bootstrap.css"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
     <!-- core CSS -->
     <link href="/resources/fonts" rel="stylesheet">
     <link href="/resources/css/test/bootstrap.min.css" rel="stylesheet">
@@ -37,25 +44,9 @@
           href="/resources/images/test/ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="/resources/images/test/ico/apple-touch-icon-57-precomposed.png">
 
-    <style>
-        #img {
-            display: block;
-            position: relative;
-            top: -540px;
-            left: 45%;
-            z-index: 105;
-        }
-
-        img {
-            vertical-align: middle;
-        }
-
-        img {
-            border: 0;
-        }
-    </style>
 
 </head><!--/head-->
+
 
 <body id="home" class="homepage">
 
@@ -69,15 +60,26 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html"><img src="/resources/images/logo.png"
-                                                               style="width: 210px;height: 58px;" alt="logo"></a>
+                <a class="navbar-brand" href="/"><img src="/resources/images/logo.png"
+                                                               style="width: 256p   x;height: 64px;" alt="logo"></a>
             </div>
 
             <div class="collapse navbar-collapse navbar-right">
                 <ul class="nav navbar-nav">
                     <li class="scroll active"><a href="#home">Home</a></li>
+                    <li class="scroll"><a href="#cta">Login</a></li>
                     <li class="scroll"><a href="#about">About</a></li>
                     <li class="scroll"><a href="#get-in-touch">Contact</a></li>
+                    <sec:authorize access="hasAnyRole('ROLE_HR','ROLE_DEV','ROLE_BA')">
+                        <li><a href="/interviewee"><spring:message code="locale.interviewee"/></a></li>
+                    </sec:authorize>
+                    <sec:authorize access="hasRole('ROLE_STUDENT')">
+                        <sec:authentication var="principal" property="principal"/>
+                        <li><a href="/profile?${principal.id}"><spring:message code="locale.profile"/></a></li>
+                    </sec:authorize>
+                    <sec:authorize access="isAuthenticated()">
+                        <li><a href="/logout"><spring:message code="locale.logout"/></a></li>
+                    </sec:authorize>
                 </ul>
             </div>
         </div><!--/.container-->
@@ -98,8 +100,6 @@
                                 <p>
                                     The mission of our Training Center is effective education of young specialists for
                                     future employment in Netcracker Systems. </p>
-
-                                <a class="btn btn-primary btn-lg" href="#">Registration</a>
                             </div>
                         </div>
                     </div>
@@ -116,7 +116,7 @@
                                 <h2><span>Netcracker</span> focused on your most important step... the next one</h2>
                                 <p>Компания NetCracker Technology является мировым лидером в области создания и
                                     внедрения комплексных решений для провайдеров услуг связи</p>
-                                <a class="btn btn-primary btn-lg" href="#">Read More</a>
+                                <a class="btn btn-primary btn-lg" href="#about">Read More</a>
 
                             </div>
                         </div>
@@ -128,6 +128,99 @@
     </div><!--/.owl-carousel-->
 </section><!--/#main-slider-->
 
+<section id="cta" class="wow fadeIn">
+    <div class="container">
+        <div class="reg registration">
+            <div class="layout"></div>
+            <sec:authorize access="!isAuthenticated()">
+                <form id="user">
+                    <div id="messageRegistration"></div>
+                    <div class="row container-fluid reg-head">
+                        <div class="col-lg-6 col-md-8 col-sm-9 col-xs-9">
+                            <h2 class="form-signin-heading"><spring:message code="locale.registration"/></h2>
+                        </div>
+                        <div class="col-lg-6 col-md-4 col-sm-3 col-xs-3 ">
+                            <i class="material-icons closeico"><span class="closebtn">highlight_off</span></i>
+                        </div>
+                    </div>
+                    <input id="name" name="name" class="form-control" placeholder=<spring:message code="locale.name"/> type="text" value="">
+                    <div class="correct-name"></div>
+                    <input id="surname" name="surname" class="form-control" placeholder=<spring:message code="locale.surname"/> type="text" value="">
+                    <div class="correct-surname"></div>
+                    <input id="email" name="email" class="form-control" placeholder=<spring:message code="locale.email"/> type="text" value="">
+                    <div class="correct-email"></div>
+                    <input id="password" name="password" class="form-control login-field  login-field-password" placeholder=<spring:message code="locale.password"/> type="password"
+                           value="">
+                    <div class="correct-password"></div>
+                    <div class="g-recaptcha" data-sitekey="6LdZ1R8TAAAAAMwVjN-N-oTtZR51Li8QmKoSYEiF"></div>
+                    <button id="buttonRegistration" class="btn btn-lg btn-primary btn-block"><spring:message code="locale.register"/></button>
+
+                </form>
+            </sec:authorize>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <sec:authorize access="!isAuthenticated()">
+                    <form>
+                        <div id="messageSignIn"></div>
+                        <h2 class="form-signin-heading"><spring:message code="locale.pleaseSignIn"/></h2>
+                        <input id="j_username" type="text" class="form-control" name="j_username"
+                               placeholder=<spring:message code="locale.email"/> required>
+                        <input id="j_password" type="password" class="form-control login-field  login-field-password" name="j_password" placeholder=<spring:message code="locale.password"/>
+                                required>
+                        <button id="buttonSignIn" style="margin-top: 3px;" class="btn btn-lg btn-primary btn-block signbtn" type="submit"><spring:message code="locale.signin"/>
+                        </button>
+                        <button type="button" style="margin-top: 3px;" class="btn btn-lg btn-primary btn-block regbut"><spring:message code="locale.registration"/></button>
+                        <button style="display: none;" type="button" id="recpass"
+                                class="btn btn-lg btn-primary btn-block recoverybtn"><spring:message code="locale.forgotPassword"/>
+                        </button>
+                        <label for="recpass"><spring:message code="locale.forgotPassword"/></label>
+                    </form>
+                </sec:authorize>
+
+
+            </div>
+        </div>
+        <div class="recovery registration">
+            <div class="layout"></div>
+            <sec:authorize access="!isAuthenticated()">
+                <form id="stupidUser" action="/passwordRecovery">
+                    <div id="passwordRecoveryMessage"></div>
+                    <div class="row container-fluid recovery-head">
+                        <div class="col-lg-6 col-md-8 col-sm-9 col-xs-9">
+                            <h2 class="form-signin-heading"><spring:message code="locale.recoverPassword"/></h2>
+                        </div>
+                        <div class="col-lg-6 col-md-4 col-sm-3 col-xs-3 ">
+                            <i class="material-icons closeico"><span class="closebtn">clear</span></i>
+                        </div>
+                    </div>
+                    <input id="userEmail" name="email" class="form-control" placeholder=<spring:message code="locale.email"/> type="text"
+                           value="">
+                    <div class="correct-email"></div>
+                    <button id="buttonRecoverPassword" class="btn btn-lg btn-primary btn-block"><spring:message code="locale.sendRequest"/></button>
+                </form>
+            </sec:authorize>
+        </div>
+
+        <div class="row">
+            <div class="inputBox col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                <sec:authorize access="isAuthenticated()">
+                    <div class="alert alert-info" role="alert">
+                        <div id="messageCheckPassword"></div>
+                        <form>
+                            <input id="changePassword" name="password" class="form-control" placeholder=<spring:message code="locale.password"/>
+                                    type="password"
+                                   value="">
+                            <button id="buttonChangePassword" class="btn btn-lg btn-primary btn-block changebtn">
+                                <spring:message code="locale.changePassword"/>
+                            </button>
+                        </form>
+                    </div>
+                </sec:authorize>
+            </div>
+        </div>
+    </div>
+</section><!--/#cta-->
 
 <section id="about">
     <div class="container">
@@ -363,5 +456,13 @@
 <script src="/resources/js/test/jquery.inview.min.js"></script>
 <script src="/resources/js/test/wow.min.js"></script>
 <script src="/resources/js/test/main.js"></script>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="/resources/js/changePassword.js"></script>
+<script src="/resources/js/login.js"></script>
+<script src="/resources/js/logout.js"></script>
+<script src="/resources/bootstrap/js/bootstrap.js"></script>
+<script src="/resources/js/registration.js"></script>
+<script src="/resources/js/passwordRecovery.js"></script>
+<script src="/resources/js/hideShowPassword.min.js"></script>
 </body>
 </html>
