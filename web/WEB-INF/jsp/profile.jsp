@@ -68,7 +68,7 @@
                 <%--<button id="buttonEnroll" type="submit" value="Enroll" href="/enroll">Enroll</button>--%>
         </div>
     </sec:authorize>
-
+    <button id="pdf" type="submit" form="fields" value="Submit" onclick="download();">Download PDF</button>
 
 </sec:authorize>
 
@@ -79,6 +79,10 @@
 <script src="/resources/js/profile.js"></script>
 <script src="/resources/js/account.js"></script>
 <script src="/resources/js/photo.js"></script>
+<script src="/resources/js/pdfstructure.js"></script>
+<script src='/resources/js/pdfmake.min.js'></script>
+<script src='/resources/js/vfs_fonts.js'></script>
+
 
 </body>
 </html>
