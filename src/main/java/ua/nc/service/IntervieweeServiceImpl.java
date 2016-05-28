@@ -107,6 +107,21 @@ public class IntervieweeServiceImpl implements IntervieweeService {
     }
 
     @Override
+    public void changeStatus(String action, List<Integer> studentsId) {
+
+    }
+
+    @Override
+    public void subscribeInterviewee(List<Integer> studentsId) {
+
+    }
+
+    @Override
+    public void unsubscribeInterviewee(List<Integer> studentsId) {
+
+    }
+
+    @Override
     public Integer getIntervieweeSize(String pattern) {
         Connection connection = daoFactory.getConnection();
 

@@ -100,7 +100,7 @@ public class LoginController implements HandlerExceptionResolver {
                 }
             }
         }
-        return "login";
+        return "test";
     }
 
 
