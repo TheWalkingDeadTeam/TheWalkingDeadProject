@@ -17,8 +17,10 @@ import java.util.regex.Pattern;
 public class ProfileValidator implements Validator {
     private Pattern pattern;
     private Matcher matcher;
-    private String numbPattern = new String("([0-9]+.?[0-9]+)");
-    private String telPattern = new String("^\\+380\\d{9}$");
+    private int minNumberOfChoice = 1;
+    private int maxNumberOfChoice = 3;
+    private String numbPattern = "([0-9]+.?[0-9]+)";
+    private String telPattern = "^\\+\\d{12}$";
     private Set<ValidationError> errors;
 
     @Override
@@ -28,13 +30,15 @@ public class ProfileValidator implements Validator {
         List<ProfileField> fields = profile.getFields();
         Iterator<ProfileField> profileFieldIterator = fields.iterator();
         while (profileFieldIterator.hasNext()) {
-            ValidationError validationError = null;
+            ValidationError validationError ;
+
             ProfileField profileField = profileFieldIterator.next();
             if (profileField.getMultipleChoice()) {
-                validationError = validateMultipleChoiceField(profileField, 1, 3, profileField.getFieldType());// TODO dafuck are this numbers??
+                validationError = validateMultipleChoiceField(profileField, minNumberOfChoice, maxNumberOfChoice, profileField.getFieldType());// TODO dafuck are this numbers??
             } else {
                 validationError = validateNotMultipleChoiceField(profileField, profileField.getFieldType());
             }
+
             if (validationError != null) {
                 errors.add(validationError);
             }
@@ -43,23 +47,18 @@ public class ProfileValidator implements Validator {
     }
 
     private ValidationError validateNotMultipleChoiceField(ProfileField profileField, String fieldType) {
-        ValidationError validationError = null;
         if (countElement(profileField.getValues(), fieldType) > 0) {
             if (fieldType.equals("number")) {
                 pattern = Pattern.compile(numbPattern);
                 matcher = pattern.matcher(profileField.getValues().get(0).getValue());
                 if (matcher.matches()) {
-                    validationError = new ValidationError(profileField.getFieldName(), "Please, enter number");
-                } else {
-                    double value = Double.parseDouble(profileField.getValues().get(0).getValue());
-                    if (value < 0 || value > 10) {
-                        validationError = new ValidationError(profileField.getFieldName(), "Please, enter number between 0 and 10");
-                    }
+                    return  new ValidationError(profileField.getFieldName(), "Please, enter number");
                 }
             }
+
             if (fieldType.equals("radio") || fieldType.equals("select")) {
                 if (countElement(profileField.getValues(), fieldType) != 1) {
-                    validationError = new ValidationError(profileField.getFieldName(), "You should choose one field ");
+                    return new ValidationError(profileField.getFieldName(), "You should choose one field ");
                 }
             }
 
@@ -67,22 +66,22 @@ public class ProfileValidator implements Validator {
                 pattern = Pattern.compile(telPattern);
                 matcher = pattern.matcher(profileField.getValues().get(0).getValue());
                 if (!matcher.matches()) {
-                    validationError = new ValidationError(profileField.getFieldName(), "Please, enter phone number");
+                    return new ValidationError(profileField.getFieldName(), "Please, enter phone number");
                 }
             }
         } else {
-            validationError = new ValidationError(profileField.getFieldName(), "Field shouldn't be empty");
+            return new ValidationError(profileField.getFieldName(), "Field shouldn't be empty");
         }
-        return validationError;
+        return null;
     }
 
     private ValidationError validateMultipleChoiceField(ProfileField profileField, int min, int max, String fieldType) {
-        ValidationError validationError = null;
         int count = countElement(profileField.getValues(), fieldType);
         if (count < min || count > max) {
-            validationError = new ValidationError(profileField.getFieldName(), "You should choose from " + min + " to " + max + " values");
+            return new ValidationError(profileField.getFieldName(), "You should choose from " + min + " to " + max + " values");
+        }else {
+            return null;
         }
-        return validationError;
     }
 
     private int countElement(List<ProfileFieldValue> values, String fieldType) {
@@ -101,5 +100,21 @@ public class ProfileValidator implements Validator {
             }
         }
         return count;
+    }
+
+    public int getMinNumberOfChoice() {
+        return minNumberOfChoice;
+    }
+
+    public void setMinNumberOfChoice(int minNumberOfChoice) {
+        this.minNumberOfChoice = minNumberOfChoice;
+    }
+
+    public int getMaxNumberOfChoice() {
+        return maxNumberOfChoice;
+    }
+
+    public void setMaxNumberOfChoice(int maxNumberOfChoice) {
+        this.maxNumberOfChoice = maxNumberOfChoice;
     }
 }
