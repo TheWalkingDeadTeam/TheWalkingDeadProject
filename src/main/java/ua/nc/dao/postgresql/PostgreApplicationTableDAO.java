@@ -1,5 +1,6 @@
 package ua.nc.dao.postgresql;
 
+import ua.nc.dao.ApplicationTableDAO;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.entity.profile.FieldData;
 import ua.nc.entity.profile.RowValue;
@@ -16,7 +17,7 @@ import java.util.List;
 /**
  * Created by Rangar on 08.05.2016.
  */
-public class PostgreApplicationTableDAO {
+public class PostgreApplicationTableDAO implements ApplicationTableDAO {
     private Connection connection;
 
     public PostgreApplicationTableDAO(Connection connection) {

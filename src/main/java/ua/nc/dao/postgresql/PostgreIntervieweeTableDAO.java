@@ -1,5 +1,6 @@
 package ua.nc.dao.postgresql;
 
+import ua.nc.dao.IntervieweeTableDAO;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.entity.Interviewee;
 import ua.nc.entity.IntervieweeRow;
@@ -14,7 +15,7 @@ import java.util.*;
 /**
  * Created by Rangar on 13.05.2016.
  */
-public class PostgreIntervieweeTableDAO {
+public class PostgreIntervieweeTableDAO implements IntervieweeTableDAO {
     private Connection connection;
 
     public PostgreIntervieweeTableDAO(Connection connection) {
