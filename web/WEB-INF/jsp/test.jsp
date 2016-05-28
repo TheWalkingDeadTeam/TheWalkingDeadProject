@@ -28,7 +28,7 @@
     <link href="/resources/css/test/animate.min.css" rel="stylesheet">
     <link href="/resources/css/test/owl.carousel.css" rel="stylesheet">
     <link href="/resources/css/test/owl.transitions.css" rel="stylesheet">
-    <link href="/resources/css/test/prettyPhoto.css.css" rel="stylesheet">
+    <link href="/resources/css/test/prettyPhoto.css" rel="stylesheet">
     <link href="/resources/css/test/main.css" rel="stylesheet">
     <link href="/resources/css/test/responsive.css" rel="stylesheet">
     <!--[if lt IE 9]>
@@ -67,7 +67,7 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" href="/"><img src="/resources/images/logo.png"
-                                                               style="width: 256p   x;height: 64px;" alt="logo"></a>
+                                                               style="width: 256px;height: 64px;" alt="logo"></a>
             </div>
 
             <div class="collapse navbar-collapse navbar-right">
@@ -256,6 +256,69 @@
             </p>
         </div>
 
+
+
+
+        <section id="features">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title text-center wow fadeInDown">Awesome Features</h2>
+                    <p class="text-center wow fadeInDown">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut <br> et dolore magna aliqua. Ut enim ad minim veniam</p>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4 wow fadeInLeft">
+                        <img class="img-responsive" src="/resources/images/partnership-stream.png" alt="">
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="media service-box wow fadeInRight">
+                            <div class="pull-left">
+                                <i class="fa fa-line-chart"></i>
+                            </div>
+                            <div class="media-body">
+                                <h4 class="media-heading">UX design</h4>
+                                <p>Backed by some of the biggest names in the industry, Firefox OS is an open platform that fosters greater</p>
+                            </div>
+                        </div>
+
+                        <div class="media service-box wow fadeInRight">
+                            <div class="pull-left">
+                                <i class="fa fa-cubes"></i>
+                            </div>
+                            <div class="media-body">
+                                <h4 class="media-heading">UI design</h4>
+                                <p>Backed by some of the biggest names in the industry, Firefox OS is an open platform that fosters greater</p>
+                            </div>
+                        </div>
+
+                        <div class="media service-box wow fadeInRight">
+                            <div class="pull-left">
+                                <i class="fa fa-pie-chart"></i>
+                            </div>
+                            <div class="media-body">
+                                <h4 class="media-heading">SEO Services</h4>
+                                <p>Backed by some of the biggest names in the industry, Firefox OS is an open platform that fosters greater</p>
+                            </div>
+                        </div>
+
+                        <div class="media service-box wow fadeInRight">
+                            <div class="pull-left">
+                                <i class="fa fa-pie-chart"></i>
+                            </div>
+                            <div class="media-body">
+                                <h4 class="media-heading">SEO Services</h4>
+                                <p>Backed by some of the biggest names in the industry, Firefox OS is an open platform that fosters greater</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+
+
+
         <div class="section-header">
             <h2 class="section-title text-center wow fadeInDown">The training program</h2>
             <p class="text-center wow fadeInDown">
@@ -410,7 +473,7 @@
             <div class="row">
                 <div class="col-sm-4 col-sm-offset-8">
                     <div class="contact-form">
-                        <h3>Contact Info</h3>
+                        <h3>Headquarters</h3>
 
                         <address>
                             <strong>Univercity Office Park III</strong><br>
@@ -420,6 +483,20 @@
                         </address>
 
                     </div>
+
+                    <div class="contact-form">
+                        <h3>Kyiv office</h3>
+
+                        <address>
+                            вулиця Патріса Лумумби,4/6В<br>
+                            Київ,  33848 UA<br>
+                            <abbr title="Phone">P:</abbr> 044 238-8727
+                        </address>
+
+                    </div>
+
+
+
                 </div>
             </div>
         </div>
@@ -431,20 +508,17 @@
         <div class="row">
             <div class="col-sm-6">
                 &copy; 2016 Netcracker. Designed by <a target="_blank" href="http://shapebootstrap.net/"
-                                                       title="Free Twitter Bootstrap WordPress Themes and HTML templates">ShapeBootstrap</a>
+                                                       title="Walking Dead Team">Walking Dead Team</a>
             </div>
             <div class="col-sm-6">
                 <ul class="social-icons">
-                    <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                    <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                    <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-                    <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
-                    <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
-                    <li><a href="#"><i class="fa fa-behance"></i></a></li>
-                    <li><a href="#"><i class="fa fa-flickr"></i></a></li>
-                    <li><a href="#"><i class="fa fa-youtube"></i></a></li>
-                    <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                    <li><a href="#"><i class="fa fa-github"></i></a></li>
+                    <li><a href="https://www.facebook.com/NetCrackerTech/"><i class="fa fa-facebook"></i></a></li>
+                    <li><a href="https://twitter.com/netcrackertech"><i class="fa fa-twitter"></i></a></li>
+                    <li><a href="https://plus.google.com/112244362035655933650/about"><i class="fa fa-google-plus"></i></a></li>
+                    <li><a href="https://www.flickr.com/photos/tags/netcracker/"><i class="fa fa-flickr"></i></a></li>
+                    <li><a href="https://www.youtube.com/user/SmartRevenue"><i class="fa fa-youtube"></i></a></li>
+                    <li><a href="https://ru.linkedin.com/company/netcracker"><i class="fa fa-linkedin"></i></a></li>
+                    <li><a href="https://github.com/TheWalkingDeadTeam/TheWalkingDeadProject"><i class="fa fa-github"></i></a></li>
                 </ul>
             </div>
         </div>
