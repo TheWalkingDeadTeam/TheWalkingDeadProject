@@ -20,7 +20,7 @@
           <label>Special mark: </label>
           <select id="special_mark" style="margin-bottom: 3px;" class="form-control">
             <option value="none" id="none">None</option>
-            <option value="reject" id="reject">Reject</option>
+            <option value="rejected" id="rejected">Reject</option>
             <option value="take on courses" id="take_on_courses">Take on courses</option>
             <option value="job offer" id="job_offer">Job offer</option>
           </select>
