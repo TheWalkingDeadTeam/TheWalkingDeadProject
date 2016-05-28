@@ -159,6 +159,9 @@
                             <span ng-show="sortType == 'interviewTimeForDay' && sortReverse" class="fa fa-caret-up"></span>
                         </a>
                     </td>
+                    <td>
+                        Profile report
+                    </td>
                 </tr>
                 </thead>
                 <tbody valign="center">
@@ -174,6 +177,15 @@
                     <td>{{ch.statusId}}</td>
                     <td>{{ch.interviewTimeForPerson}}</td>
                     <td>{{ch.interviewTimeForDay}}</td>
+                    <td>
+                        <a href="/report/view/ces?{{ch.id}}" target="_blank"><img
+                                src="/resources/images/view.png"
+                                alt="View" width="50" height="50"
+                                title="View"/></a>
+                        <a href="/reports/download/ces/{{ch.id}}"><img src="/resources/images/excel.png"
+                                                                  alt="Excel"
+                                                                  width="50" height="50" title="Excel"/></a>
+                    </td>
                 </tr>
                 </tbody>
             </table>

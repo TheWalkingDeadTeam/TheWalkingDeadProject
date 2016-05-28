@@ -7,7 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import ua.nc.dao.ApplicationDAO;
+import ua.nc.dao.ApplicationTableDAO;
 import ua.nc.dao.exception.DAOException;
+import ua.nc.dao.postgresql.PostgreApplicationTableDAO;
 import ua.nc.entity.ReportTemplate;
 import ua.nc.entity.ReportWrapper;
 import ua.nc.service.ReportService;
@@ -123,11 +126,45 @@ public class ReportController {
         return modelAndView;
     }
 
+    @RequestMapping(value = "/reports/download/ces/{id}", method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public ModelAndView downloadUsersProfileReport(@PathVariable Integer id) {
+        System.out.println("In");
+        ReportTemplate report = reportService.getUserProfileQueryById(id);
+        System.out.println("After");
+        ModelAndView modelAndView = new ModelAndView();
+        try {
+            List<Map<String, Object>> reportRows = reportService.getReportRows(report);
+            modelAndView.setViewName("excelView");
+            modelAndView.addObject("report", report);
+            modelAndView.addObject("reportRows", reportRows);
+        } catch (DAOException e) {
+            modelAndView.setViewName("error");
+            modelAndView.addObject("error", "Wrong query");
+        }
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/reports/view/ces/{id}", method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ReportWrapper> showUsersProfileReport(@PathVariable Integer id) {
+        ReportTemplate report = reportService.getUserProfileQueryById(id);
+        List<Map<String, Object>> reportRows = null;
+        try {
+            reportRows = reportService.getReportRows(report);
+            return new ResponseEntity<ReportWrapper>(new ReportWrapper(report, reportRows), HttpStatus.OK);
+
+        } catch (DAOException e) {
+            return new ResponseEntity<ReportWrapper>(HttpStatus.NOT_FOUND);
+        }
+    }
+
     /**
      * @param id The report id that want to get
      * @return json
      */
-    @RequestMapping(value = "/reports/view/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/reports/view/{id}", method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<ReportWrapper> showReport(@PathVariable Integer id) {
         ReportTemplate report = reportService.getReportById(id);
@@ -156,10 +193,11 @@ public class ReportController {
         /**
          * @return The jsp page of the report view
          */
-    @RequestMapping(value = "/report/view", method = RequestMethod.GET)
+    @RequestMapping(value = {"/report/view", "/report/view/ces"}, method = RequestMethod.GET)
     public String reportid() {
         return "report";
     }
+
 
     /**
      * @return The jsp page of the reports

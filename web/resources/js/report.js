@@ -35,12 +35,16 @@ reporterid.controller('ReportControllerId', ['$scope', 'ReportServiceId', '$http
 
 }]);
 
-reporterid.factory('ReportServiceId', ['$http', '$q', function ($http, $q) {
+reporterid.factory('ReportServiceId', ['$http', '$q' , '$window', function ($http, $q, $window) {
 
     return {
 
         getReport: function (id) {
-            return $http.get('/reports/view/' + id)
+            var reportUrl = '/reports/view/';
+            if ($window.location.pathname == '/report/view/ces') {
+                reportUrl = '/reports/view/ces/';
+            }
+            return $http.get(reportUrl + id)
                 .then(
                     function (response) {
                         console.info(response.data);

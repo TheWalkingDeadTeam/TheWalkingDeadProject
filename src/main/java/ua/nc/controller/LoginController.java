@@ -25,6 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import ua.nc.dao.enums.UserRoles;
 import ua.nc.dao.enums.UserStatus;
+import ua.nc.dao.postgresql.PostgreApplicationTableDAO;
 import ua.nc.entity.User;
 import ua.nc.service.PhotoService;
 import ua.nc.service.PhotoServiceImpl;

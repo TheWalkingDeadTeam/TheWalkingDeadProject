@@ -230,4 +230,5 @@ public class PostgreApplicationTableDAO implements ApplicationTableDAO {
             throw new DAOException(e);
         }
     }
+
 }
