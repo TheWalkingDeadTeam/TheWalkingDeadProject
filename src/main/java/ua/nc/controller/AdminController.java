@@ -19,7 +19,6 @@ import ua.nc.service.user.UserServiceImpl;
 import ua.nc.validator.*;
 
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -89,10 +88,9 @@ public class AdminController {
         CES currentCES = cesService.getCurrentCES();
         if (currentCES != null) {
             int cesId = currentCES.getId();
-            Iterator<Integer> iterator = integerList.getValues().iterator();
-            while (iterator.hasNext()) {
+            for (Integer userId : integerList.getValues()) {
                 try {
-                    cesService.removeInterviewer(iterator.next(), cesId);
+                    cesService.removeInterviewer(userId, cesId);
                 } catch (DAOException e) {
                     LOGGER.error("Can't Sign out interviewer", e);
                     return HttpStatus.FOUND;
