@@ -47,6 +47,12 @@
 
 </head><!--/head-->
 
+<style>
+    .col-centered{
+        float: none;
+        margin: 0 auto;
+    }
+</style>
 
 <body id="home" class="homepage">
 
@@ -158,8 +164,8 @@
                 </form>
             </sec:authorize>
         </div>
-        <div class="row">
-            <div class="col-sm-4">
+        <div class="row ">
+            <div class="col-sm-4 col-centered">
                 <sec:authorize access="!isAuthenticated()">
                     <form>
                         <div id="messageSignIn"></div>
