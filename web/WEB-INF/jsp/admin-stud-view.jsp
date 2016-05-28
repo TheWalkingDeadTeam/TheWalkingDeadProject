@@ -140,6 +140,7 @@
             </div>
 
         </div>
+        <div class="table-responsive">
         <table id="tableUsers" class="table table-striped table-hover">
             <thead>
             <tr>
@@ -179,6 +180,7 @@
             </tr>
             </tbody>
         </table>
+        </div>
         <div id="pagination">
             <dir-pagination-controls
                     max-size="8"

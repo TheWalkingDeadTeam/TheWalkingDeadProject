@@ -454,7 +454,6 @@ public class AdminController {
     public
     @ResponseBody
     void closeCES(@RequestBody String params) {
-        System.out.println(params);
         ObjectMapper objectMapper = new ObjectMapper();
         Integer rejectionId = null;
         Integer workId = null;
