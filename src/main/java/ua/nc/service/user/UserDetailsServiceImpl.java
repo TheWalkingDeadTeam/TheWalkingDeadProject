@@ -1,12 +1,10 @@
 package ua.nc.service.user;
 
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import ua.nc.dao.enums.UserStatus;
 import ua.nc.entity.Role;
 import ua.nc.entity.User;
 import ua.nc.service.UserDetailsImpl;
@@ -31,7 +29,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         for (Role role : user.getRoles()) {
             roles.add(new SimpleGrantedAuthority(role.getName()));
         }
-        UserDetails userDetails = new UserDetailsImpl(user.getId(),user.getEmail(), user.getPassword(), user.getStatus(), roles);
+        UserDetails userDetails = new UserDetailsImpl(user.getId(), user.getEmail(), user.getPassword(), user.getStatus(), roles);
         return userDetails;
     }
 }

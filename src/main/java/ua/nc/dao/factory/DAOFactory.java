@@ -55,5 +55,11 @@ public abstract class DAOFactory {
 
     public abstract ListTypeDAO getListTypeDAO(Connection connection);
 
-    public abstract InterviewerParticipationDAO getInterviewerParticipationDAO(Connection connection);
+    public abstract ApplicationTableDAO getApplicationTableDAO(Connection connection);
+
+    public abstract IntervieweeTableDAO getIntervieweeTableDAO(Connection connection);
+
+    public abstract InterviewerTableDAO getInterviewerTableDAO(Connection connection);
+
+    public abstract UserTableDAO getUserTableDAO(Connection connection);
 }

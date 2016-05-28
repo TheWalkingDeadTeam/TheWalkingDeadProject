@@ -67,7 +67,7 @@ interView.controller('InterCtrl', ["$http", "$scope",'MailService','Notification
     vm.itemsPerPage = 10; //this could be a dynamic value from a drop down
     vm.selectUrl = "interviewers/list/" + vm.itemsPerPage + "/" + vm.pageno;
     vm.order_by = null;
-    $scope.sortReverse = false;
+    vm.sortReverse = false;
     /////////////ALEXANDER///////////////////
     vm.mails = [];
     vm.mail = {id: null, bodyTemplate: ' ', headTemplate: ' '};
@@ -168,10 +168,6 @@ interView.controller('InterCtrl', ["$http", "$scope",'MailService','Notification
     vm.fetchAllMails();
 
 
-    /////////////////////////Alexander////////////
-
-
-
     vm.showSpin = function () {
         angular.element($(".cssload-thecube")).css('display','block');
         angular.element($("#tableUsers")).css('display','none');
@@ -203,7 +199,6 @@ interView.controller('InterCtrl', ["$http", "$scope",'MailService','Notification
                 vm.total_count = response;
             });
         }
-        // elem.find('.modal-content').style.display = "none";
 
     };
 
@@ -217,14 +212,13 @@ interView.controller('InterCtrl', ["$http", "$scope",'MailService','Notification
 
     vm.getData(); // Call the function to fetch initial data on page load.
     vm.getSize();
-
     
     vm.setPageno = function (pageno) {
         vm.pageno = pageno;
         if (vm.order_by === null) {
             vm.selectUrl = "interviewers/list/" + vm.itemsPerPage + "/" + vm.pageno;
         } else {
-            vm.selectUrl = "interviewers/list/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by;
+            vm.selectUrl = "interviewers/list/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by + "/" + vm.sortReverse;
         }
         vm.getData();
         vm.getSize();
@@ -244,10 +238,11 @@ interView.controller('InterCtrl', ["$http", "$scope",'MailService','Notification
 
     };
 
-    $scope.sortType = function (type) {
+    $scope.sortType = function (type,name) {
         vm.showSpin();
         vm.order_by = type;
-        vm.selectUrl = "interviewers/list/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by + "/" + $scope.sortReverse;
+        vm.sortReverse = name;
+        vm.selectUrl = "interviewers/list/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by + "/" + vm.sortReverse;
         vm.getData();
         vm.getSize();
     };

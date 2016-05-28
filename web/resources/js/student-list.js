@@ -62,13 +62,13 @@ studentView.factory('MailService', ['$http', '$q', function ($http, $q) {
 
 studentView.controller('StudentCtrl', ["$http", "$scope", 'MailService', 'Notification', function ($http, $scope, MailService, Notification) {
     var vm = this;
-    vm.users = []; //declare an empty array
-    vm.pageno = 1; // initialize page no to 1
+    vm.users = [];
+    vm.pageno = 1;
     vm.total_count = 0;
-    vm.itemsPerPage = 10; //this could be a dynamic value from a drop down
+    vm.itemsPerPage = 10;
     vm.selectUrl = "students/list/" + vm.itemsPerPage + "/" + vm.pageno;
     vm.order_by = null;
-    $scope.sortReverse = false;
+    vm.sortReverse = false;
     vm.flagReload = true;
 
     /////////////Alexander///////////////////////////////////////////////
@@ -183,6 +183,7 @@ studentView.controller('StudentCtrl', ["$http", "$scope", 'MailService', 'Notifi
         angular.element($("#tableUsers")).css('display', 'table');
         angular.element($("#pagination")).css('display', 'block');
     };
+    
     vm.getData = function () {
         vm.showSpin();
 
@@ -208,6 +209,7 @@ studentView.controller('StudentCtrl', ["$http", "$scope", 'MailService', 'Notifi
         vm.getData();
         vm.getSize();
     };
+    
     vm.getSize = function () {
         if (vm.pattern == null) {
             $http.get("students/size").success(function (response) {
@@ -262,10 +264,11 @@ studentView.controller('StudentCtrl', ["$http", "$scope", 'MailService', 'Notifi
 
     };
 
-    $scope.sortType = function (type) {
+    $scope.sortType = function (type,revers) {
         vm.showSpin();
         vm.order_by = type;
-        vm.selectUrl = "students/list/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by + "/" + $scope.sortReverse;
+        vm.sortReverse = revers;
+        vm.selectUrl = "students/list/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by + "/" + vm.sortReverse;
         vm.getData();
         vm.getSize();
     };

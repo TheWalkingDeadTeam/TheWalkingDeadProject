@@ -141,7 +141,7 @@
                 <td>{{interviewee.name}}</td>
                 <td>{{interviewee.surname}}</td>
                 <td>{{interviewee.special_mark}}</td>
-                <td>{{interviewee.dev_scope}}</td>
+                <td>{{interviewee.dev_score}}</td>
                 <td>{{interviewee.hr_score}}</td>
                <td ng-style="{opacity:0.5,'background-color':'{{interviewee.color == '1' ? 'blue' :
                                 interviewee.color == '2' ? 'green' :
@@ -170,7 +170,7 @@
 <script src="/resources/js/checkboxScript.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-route.js"></script>
-<script src="/resources/js/intervieweeListAngular.js"></script>
+<script src="/resources/js/interviewee-list.js"></script>
 <script src="/resources/js/dirPagination.js"></script>
 <script src="http://vitalets.github.io/checklist-model/checklist-model.js"></script>
 <script src="/resources/js/adminmenu.js"></script>

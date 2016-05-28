@@ -110,7 +110,23 @@ public class PostgreDAOFactory extends DAOFactory {
     }
 
     @Override
-    public InterviewerParticipationDAO getInterviewerParticipationDAO(Connection connection) {
-        return null;
+    public ApplicationTableDAO getApplicationTableDAO(Connection connection) {
+        return new PostgreApplicationTableDAO(connection);
     }
+
+    @Override
+    public IntervieweeTableDAO getIntervieweeTableDAO(Connection connection) {
+        return new PostgreIntervieweeTableDAO(connection);
+    }
+
+    @Override
+    public InterviewerTableDAO getInterviewerTableDAO(Connection connection) {
+        return new PostgreInterviewerTableDAO(connection);
+    }
+
+    @Override
+    public UserTableDAO getUserTableDAO(Connection connection) {
+        return new PostgreUserTableDAO(connection);
+    }
+
 }

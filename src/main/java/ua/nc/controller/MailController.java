@@ -27,9 +27,10 @@ public class MailController {
     private static final Logger LOGGER = Logger.getLogger(MailController.class);
     MailService mailService = new MailServiceImpl();
     UserService userService = new UserServiceImpl();
-
+    private final String NAME = "$name";
+    private final String SURNAME = "$surname";
     /**
-     * Retrieve all mail
+     * Retrieve all mails
      *
      * @return mail list
      */
@@ -160,8 +161,8 @@ public class MailController {
             for (Integer i : userId) {
                 User user = userService.getUser(i);
                 Map<String, String> customizeMail = new HashMap<>();
-                customizeMail.put("$name", user.getName());
-                customizeMail.put("$surname", user.getSurname());
+                customizeMail.put(NAME, user.getName());
+                customizeMail.put(SURNAME, user.getSurname());
                 Mail mailUpdate = customization(studentMail, customizeMail);
                 mailService.sendMail(user.getEmail(), mailUpdate);
             }

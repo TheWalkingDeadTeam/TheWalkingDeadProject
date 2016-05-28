@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import ua.nc.dao.enums.UserRoles;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.entity.*;
@@ -60,15 +61,6 @@ public class InterviewerController {
     public String feedback() {
         return "profile-for-interviewer";
     }
-
-  /*  @RequestMapping(value = "/feedback/{id}", method = RequestMethod.GET, produces = "application/json")
-    public Application specificFeedback(@PathVariable("id") Integer id, HttpServletResponse response) {
-        Application application = applicationService.getApplicationByUserForCurrentCES(id);
-        if (application == null) {
-            fillNullResponse(response);
-        }
-        return application;
-    }*/
 
     @ResponseBody
     @RequestMapping(value = "feedback/{id}/save", method = RequestMethod.POST, produces = "application/json")
@@ -181,41 +173,13 @@ public class InterviewerController {
         }
     }
 
-    /*@ResponseBody
-    @RequestMapping(value = "getallfeedbacks/{id}", method = RequestMethod.GET, produces = "application/json")
-    public List<FeedbackAndSpecialMark> getAllFeedbacks(@PathVariable("id") Integer id, HttpServletResponse response) {
-        Application application = applicationService.getApplicationByUserForCurrentCES(id);
-        if (application == null) {
-            fillNullResponse(response);
-            return null;
-        }
-        Interviewee interviewee = intervieweeService.getInterviewee(application.getId());
-        if (interviewee == null) {
-            fillNullResponse(response);
-            return null;
-        }
-        List<FeedbackAndSpecialMark> feedbackAndSpecialMarks = new LinkedList<>();
-        FeedbackAndSpecialMark feedbackAndSpecialMark = new FeedbackAndSpecialMark();
-        feedbackAndSpecialMark.setSpecialMark(interviewee.getSpecialMark());
-        if (interviewee.getDevFeedbackID() != null) {
-            feedbackAndSpecialMark.setFeedback(feedbackService.getFeedback(interviewee.getDevFeedbackID()));
-        }
-        feedbackAndSpecialMarks.add(feedbackAndSpecialMark);
-        feedbackAndSpecialMark = new FeedbackAndSpecialMark();
-        if (interviewee.getHrFeedbackID() != null) {
-            feedbackAndSpecialMark.setFeedback(feedbackService.getFeedback(interviewee.getHrFeedbackID()));
-        }
-        feedbackAndSpecialMarks.add(feedbackAndSpecialMark);
-        return feedbackAndSpecialMarks;
+    @RequestMapping(value = "/leave-feedback")
+    public ModelAndView leaveFeedback(){
+        return new ModelAndView("leave-feedback");
     }
 
-    private void fillNullResponse(HttpServletResponse response) {
-        try {
-            Writer writer = response.getWriter();
-            writer.write("null");
-            writer.close();
-        } catch (IOException ex) {
-            LOGGER.warn(ex);
-        }
-    }*/
+    @RequestMapping(value = "/view-feedback")
+    public ModelAndView viewFeedback(){
+        return new ModelAndView("view-feedback");
+    }
 }
