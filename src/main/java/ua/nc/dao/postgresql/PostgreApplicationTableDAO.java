@@ -23,18 +23,16 @@ public class PostgreApplicationTableDAO {
         this.connection = connection;
     }
 
-    private static final String GET_FIELD_IDS_QUERY = (
-            "SELECT field.field_id, field.name, field_type.name AS type FROM field " +
+    private static final String GET_FIELD_IDS_QUERY = "SELECT field.field_id, field.name, field_type.name AS type " +
+                    "FROM field " +
                     "JOIN ces_field ON field.field_id = ces_field.field_id " +
                     "JOIN field_type ON field.field_type_id = field_type.field_type_id " +
                     "WHERE ces_id = ? " +
                     "AND field.multiple_choice = FALSE " +
                     "AND field_type.name != 'tel' " +
-                    "AND field_type.name != 'textarea'"
-    );
+                    "AND field_type.name != 'textarea'";
 
-    private static final String BASE_QUERY = (
-            "SELECT " +
+    private static final String BASE_QUERY = "SELECT " +
                     "system_user.system_user_id, " +
                     "application.rejected, " +
                     "system_user.name, " +
@@ -50,11 +48,9 @@ public class PostgreApplicationTableDAO {
                     "WHERE course_enrollment_session.ces_id = ? AND (system_user.surname LIKE ? OR system_user.name LIKE ? )" +
                     "GROUP BY system_user.system_user_id, application.rejected " +
                     "ORDER BY field_{1} {2} " +
-                    "LIMIT ? OFFSET ?"
-    );
+                    "LIMIT ? OFFSET ?";
 
-    private static final String COUNT_QUERY = (
-            "SELECT count (*) " +
+    private static final String COUNT_QUERY = "SELECT count (*) " +
                     "FROM public.application " +
                     "JOIN public.system_user " +
                     "    ON application.system_user_id = system_user.system_user_id " +
@@ -62,12 +58,12 @@ public class PostgreApplicationTableDAO {
                     "    ON course_enrollment_session.ces_id = application.ces_id " +
                     "WHERE course_enrollment_session.ces_id = ? " +
                     "        AND (system_user.surname LIKE ? " +
-                    "        OR system_user.name LIKE ? )"
-    );
+                    "        OR system_user.name LIKE ? )";
+
+    private static final String PIVOT_TEMPLATE = "MAX(CASE WHEN field.field_id={0} THEN {1} ELSE NULL END) as field_{0} ";
 
 
-
-    public List<FieldData> getFieldIds(Integer cesId) throws DAOException {
+    private List<FieldData> getFieldIds(Integer cesId) throws DAOException {
         try (PreparedStatement statement = this.connection.prepareStatement(GET_FIELD_IDS_QUERY)) {
             statement.setInt(1, cesId);
             ResultSet rs = statement.executeQuery();
@@ -103,10 +99,7 @@ public class PostgreApplicationTableDAO {
                 pattern = "list_value.value_text";
                 break;
         }
-        String template = (
-            "MAX(CASE WHEN field.field_id={0} THEN {1} ELSE NULL END) as field_{0} "
-        );
-        return MessageFormat.format(template, fieldId, pattern);
+        return MessageFormat.format(PIVOT_TEMPLATE, fieldId, pattern);
     }
 
 
