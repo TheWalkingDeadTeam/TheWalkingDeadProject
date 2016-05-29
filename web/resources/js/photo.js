@@ -23,11 +23,15 @@ $(document).ready(function () {
                     }
                     $('#photoMessages')
                         .addClass('alert alert-danger')
-                        .html(errors_out);
+                        .html(errors_out).fadeIn();
                 }
                 else {
-                    $('#photoMessages').removeClass();
+                    $('#photoMessages').removeClass().empty();
+                    $('#photoMessages').addClass('alert alert-success').html('Photo changed');
                     $("#photo_img").attr('src', '/getPhoto');
+                    setTimeout(function () {
+                        $("#photoMessages").fadeOut().empty();
+                    }, 3000);
                 }
             },
             /*           error: function(){

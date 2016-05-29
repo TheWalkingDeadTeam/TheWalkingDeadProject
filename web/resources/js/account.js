@@ -40,7 +40,10 @@ $(document).ready(function(){
                 values: arrid
             }),
             success: function (response) {
-
+                $('#enrollMessages').addClass('alert alert-success').html('Enrolled on interview').fadeIn();
+                setTimeout(function () {
+                    $("#enrollMessages").fadeOut().empty();
+                }, 3000);
             },
             error: function (jqXHR, exception) {
                 window.location.href = "/error"

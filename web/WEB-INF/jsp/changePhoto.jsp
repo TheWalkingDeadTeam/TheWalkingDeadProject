@@ -14,7 +14,7 @@
 <body>
 <div>
     <form id="photo_form" type=post enctype="multipart/form-data">
-        <div id="photoMessages"></div>
+        <div id="photoMessages" style="width: 20%;"></div>
         <div class="fileinput fileinput-new" data-provides="fileinput">
             <div class="fileinput-new thumbnail" style="width: 100px; height: 100px;">
             </div>
