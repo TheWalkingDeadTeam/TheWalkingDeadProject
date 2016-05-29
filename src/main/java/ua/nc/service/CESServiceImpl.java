@@ -74,11 +74,8 @@ public class CESServiceImpl implements CESService {
 
     @Override
     public CES getCurrentCES() {
-        LOGGER.info("GET CURCES START");
         Connection connection = daoFactory.getConnection();
-        LOGGER.info("GET CURCES CONNCECTION");
         CESDAO cesdao = new PostgreCESDAO(connection);
-        LOGGER.info("GET CURCES CESDAO");
         CES ces = null;
         try {
             ces = cesdao.getCurrentCES();
@@ -87,7 +84,6 @@ public class CESServiceImpl implements CESService {
             LOGGER.warn("Can't get current CES", e.getCause());
         } finally {
             daoFactory.putConnection(connection);
-            LOGGER.info("GET CURCES DAOLALA");
         }
         return ces;
     }
@@ -288,7 +284,7 @@ public class CESServiceImpl implements CESService {
         try {
             CES ces = cesDAO.getCurrentCES();
             if (ces != null) {
-                ces.setStatusId(cesStatus.read(6).getId()); //id of 'Closed'
+                ces.setStatusId(6); //id of 'Closed'
                 cesDAO.update(ces);
                 LOGGER.info("Status changed to 'Closed'");
             }
@@ -326,7 +322,7 @@ public class CESServiceImpl implements CESService {
             public void run() {
                 try {
                     CES ces = cesDAO.getCurrentCES();
-                    ces.setStatusId(cesStatus.read(3).getId()); //id of
+                    ces.setStatusId(3); //id of
                     cesDAO.update(ces);
                     LOGGER.info("Status changed to 'PostRegistration'");
                 } catch (Exception e) {
@@ -355,7 +351,7 @@ public class CESServiceImpl implements CESService {
             public void run() {
                 try {
                     CES ces = cesDAO.getCurrentCES();
-                    ces.setStatusId(cesStatus.read(5).getId()); //id of
+                    ces.setStatusId(5); //id of
                     cesDAO.update(ces);
                     LOGGER.info("Status changed to 'PostInterviewing'");
                 } catch (Exception e) {
@@ -384,7 +380,7 @@ public class CESServiceImpl implements CESService {
             public void run() {
                 try {
                     CES ces = cesDAO.getPendingCES();
-                    ces.setStatusId(cesStatus.read(2).getId()); //id of current session?
+                    ces.setStatusId(2); //id of current session?
                     cesDAO.update(ces);
                     LOGGER.info("Status changed to 'RegistrationOngoing'");
                 } catch (Exception e) {
