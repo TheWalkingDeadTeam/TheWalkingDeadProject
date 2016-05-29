@@ -56,7 +56,6 @@
                                 <span ng-show="sortType == 'year' && sortReverse" class="fa fa-caret-up"></span>
                             </a>
                         </td>
-
                         <td>
                             <a href="#" ng-click="sortType = 'startRegistrationDate'; sortReverse = !sortReverse">
                                 Start Registration Date
@@ -76,7 +75,6 @@
                                       class="fa fa-caret-up"></span>
                             </a>
                         </td>
-
                         <td>
                             <a href="#" ng-click="sortType = 'startInterviewingDate'; sortReverse = !sortReverse">
                                 Start Interview Date
@@ -171,7 +169,6 @@
                 </table>
             </div>
         </div>
-
     </main>
 </div>
 <script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
@@ -184,8 +181,5 @@
 <script src="http://vitalets.github.io/checklist-model/checklist-model.js"></script>
 <script type="text/javascript" src="/resources/js/mdb.js"></script>
 <script src="/resources/js/adminmenu.js"></script>
-
-
 </body>
-
 </html>
