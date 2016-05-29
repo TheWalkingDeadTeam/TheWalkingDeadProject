@@ -56,7 +56,6 @@ mailer.controller('MailController', ['$scope', 'MailService', '$http', 'Notifica
     };
 
 
-
     self.updateMail = function (mail, id) {
         MailService.updateMail(mail, id)
             .then(
@@ -65,7 +64,7 @@ mailer.controller('MailController', ['$scope', 'MailService', '$http', 'Notifica
                     console.error('Error while updating Mail.');
                 }
             );
-        Notification.success({message: 'Mail successfully updated', delay: 1000});
+        Notification.success({message: 'Mail \t "\ ' + mail.headTemplate + '"\ \t successfully updated', delay: 1000});
 
     };
 
@@ -77,10 +76,10 @@ mailer.controller('MailController', ['$scope', 'MailService', '$http', 'Notifica
                     console.error('Error while creating Mail.');
                 }
             );
-        Notification.success({message: 'Mail successfully added', delay: 1000});
+        Notification.success({message: 'Mail \t "\ ' + mail.headTemplate + '"\ \t successfully created', delay: 1000});
     };
-    
-    
+
+
     self.deleteMail = function (id) {
         MailService.deleteMail(id)
             .then(
@@ -89,7 +88,7 @@ mailer.controller('MailController', ['$scope', 'MailService', '$http', 'Notifica
                     console.error('Error while deleting Mail.');
                 }
             );
-        Notification.error({message: 'Mail successfully deleted', delay: 1000});
+        Notification.error({message: 'Mail with id: \t ' + id + ' \t successfully deleted', delay: 1000});
 
     };
 
@@ -193,5 +192,12 @@ mailer.factory('MailService', ['$http', '$q', function ($http, $q) {
 
 }]);
 
+
+var date = new Date();
+date.setDate(date.getDate());
+$(".form_datetime").datetimepicker({
+    format: "yyyy-mm-dd hh:ii",
+    startDate: date
+});
 
 

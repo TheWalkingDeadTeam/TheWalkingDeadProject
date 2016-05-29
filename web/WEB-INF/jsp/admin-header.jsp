@@ -114,7 +114,7 @@
         </sec:authorize>
         <a class="mdl-navigation__link" href="/admin/mail-template"><i
                 class="mdl-color-text--blue-grey-400 material-icons"
-                role="presentation">mail</i>Edit Letter Templates</a>
+                role="presentation">contact_mail</i> Edit Letter Templates</a>
         <a class="mdl-navigation__link" href="/admin/enroll-session"><i
                 class="mdl-color-text--blue-grey-400 material-icons"
                 role="presentation">history</i> Enrollment History</a>
