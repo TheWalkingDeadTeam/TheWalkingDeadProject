@@ -15,14 +15,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Netcracker</title>
     <link rel="icon" type="image/png" sizes="32x32" href="/resources/images/ico.png"/>
-    <link rel="stylesheet" type="text/css" href="/resources/css/reset.css"/>
-    <link rel="stylesheet" type="text/css" href="/resources/css/styles.css"/>
+    <%--<link rel="stylesheet" type="text/css" href="/resources/css/reset.css"/>--%>
+    <%--<link rel="stylesheet" type="text/css" href="/resources/css/styles.css"/>--%>
     <link rel="stylesheet" type="text/css" href="/resources/css/registration.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/bootstrap/css/bootstrap.css"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
     <script src='https://www.google.com/recaptcha/api.js'></script>
     <!-- core CSS -->
-    <link href="/resources/fonts" rel="stylesheet">
+    <%--<link href="/resources/css/fonts" rel="stylesheet">--%>
     <link href="/resources/css/test/bootstrap.min.css" rel="stylesheet">
     <link href="/resources/css/test/font-awesome.min.css" rel="stylesheet">
     <link href="/resources/css/test/animate.min.css" rel="stylesheet">
@@ -43,12 +43,12 @@
     <link rel="apple-touch-icon-precomposed" sizes="72x72"
           href="/resources/images/test/ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="/resources/images/test/ico/apple-touch-icon-57-precomposed.png">
-
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
 
 </head><!--/head-->
 
 <style>
-    .col-centered{
+    .col-centered {
         float: none;
         margin: 0 auto;
     }
@@ -66,8 +66,9 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/"><img src="/resources/images/logo.png"
-                                                               style="width: 256px;height: 64px;" alt="logo"></a>
+                <a class="navbar-brand" style="padding: 0px;" href="/"><img src="/resources/images/logo.png"
+                                                                            style="width: 256px;height: 55px;"
+                                                                            alt="logo"></a>
             </div>
 
             <div class="collapse navbar-collapse navbar-right">
@@ -136,77 +137,97 @@
 
 <section id="cta" class="wow fadeIn">
     <div class="container">
-        <div class="reg registration">
-            <div class="layout"></div>
-            <sec:authorize access="!isAuthenticated()">
-                <form id="user">
-                    <div id="messageRegistration"></div>
-                    <div class="row container-fluid reg-head">
-                        <div class="col-lg-6 col-md-8 col-sm-9 col-xs-9">
-                            <h2 class="form-signin-heading"><spring:message code="locale.registration"/></h2>
-                        </div>
-                        <div class="col-lg-6 col-md-4 col-sm-3 col-xs-3 ">
-                            <i class="material-icons closeico"><span class="closebtn">highlight_off</span></i>
-                        </div>
-                    </div>
-                    <input id="name" name="name" class="form-control" placeholder=<spring:message code="locale.name"/> type="text" value="">
-                    <div class="correct-name"></div>
-                    <input id="surname" name="surname" class="form-control" placeholder=<spring:message code="locale.surname"/> type="text" value="">
-                    <div class="correct-surname"></div>
-                    <input id="email" name="email" class="form-control" placeholder=<spring:message code="locale.email"/> type="text" value="">
-                    <div class="correct-email"></div>
-                    <input id="password" name="password" class="form-control login-field  login-field-password" placeholder=<spring:message code="locale.password"/> type="password"
-                           value="">
-                    <div class="correct-password"></div>
-                    <div class="g-recaptcha" data-sitekey="6LdZ1R8TAAAAAMwVjN-N-oTtZR51Li8QmKoSYEiF"></div>
-                    <button id="buttonRegistration" class="btn btn-lg btn-primary btn-block"><spring:message code="locale.register"/></button>
+        <%--<div class="reg registration">--%>
+        <%--<div class="layout"></div>--%>
+        <%--<sec:authorize access="!isAuthenticated()">--%>
+        <%--<form id="user">--%>
+        <%--<div id="messageRegistration"></div>--%>
+        <%--<div class="row container-fluid reg-head">--%>
+        <%--<div class="col-lg-6 col-md-8 col-sm-9 col-xs-9">--%>
+        <%--<h2 class="form-signin-heading"><spring:message code="locale.registration"/></h2>--%>
+        <%--</div>--%>
+        <%--<div class="col-lg-6 col-md-4 col-sm-3 col-xs-3 ">--%>
+        <%--<i class="material-icons closeico"><span class="closebtn">highlight_off</span></i>--%>
+        <%--</div>--%>
+        <%--</div>--%>
+        <%--<input id="name" name="name" class="form-control" placeholder=<spring:message code="locale.name"/> type="text" value="">--%>
+        <%--<div class="correct-name"></div>--%>
+        <%--<input id="surname" name="surname" class="form-control" placeholder=<spring:message code="locale.surname"/> type="text" value="">--%>
+        <%--<div class="correct-surname"></div>--%>
+        <%--<input id="email" name="email" class="form-control" placeholder=<spring:message code="locale.email"/> type="text" value="">--%>
+        <%--<div class="correct-email"></div>--%>
+        <%--<input id="password" name="password" class="form-control login-field  login-field-password" placeholder=<spring:message code="locale.password"/> type="password"--%>
+        <%--value="">--%>
+        <%--<div class="correct-password"></div>--%>
+        <%--<div class="g-recaptcha" data-sitekey="6LdZ1R8TAAAAAMwVjN-N-oTtZR51Li8QmKoSYEiF"></div>--%>
+        <%--<button id="buttonRegistration" class="btn btn-lg btn-primary btn-block"><spring:message code="locale.register"/></button>--%>
 
-                </form>
-            </sec:authorize>
-        </div>
+        <%--</form>--%>
+        <%--</sec:authorize>--%>
+        <%--</div>--%>
+
         <div class="row ">
-            <div class="col-sm-4 col-centered">
+            <div class="col-lg-5 col-md-5 col-xs-12 col-sm-12 col-centered">
                 <sec:authorize access="!isAuthenticated()">
                     <form>
                         <div id="messageSignIn"></div>
                         <h2 class="form-signin-heading"><spring:message code="locale.pleaseSignIn"/></h2>
                         <input id="j_username" type="text" class="form-control" name="j_username"
-                               placeholder=<spring:message code="locale.email"/> required>
-                        <input id="j_password" type="password" class="form-control login-field  login-field-password" name="j_password" placeholder=<spring:message code="locale.password"/>
-                                required>
-                        <button id="buttonSignIn" style="margin-top: 3px;" class="btn btn-lg btn-primary btn-block signbtn" type="submit"><spring:message code="locale.signin"/>
+                               placeholder=
+                                   <spring:message code="locale.email"/> required>
+                        <input id="j_password" type="password" class="form-control login-field  login-field-password"
+                               name="j_password" placeholder=
+                                   <spring:message code="locale.password"/>
+                                       required>
+                        <button id="buttonSignIn" style="margin-top: 3px;"
+                                class="btn btn-lg btn-primary btn-block signbtn" type="submit"><spring:message
+                                code="locale.signin"/>
                         </button>
-                        <button type="button" style="margin-top: 3px;" class="btn btn-lg btn-primary btn-block regbut"><spring:message code="locale.registration"/></button>
-                        <button style="display: none;" type="button" id="recpass"
-                                class="btn btn-lg btn-primary btn-block recoverybtn"><spring:message code="locale.forgotPassword"/>
-                        </button>
-                        <label for="recpass"><spring:message code="locale.forgotPassword"/></label>
+                        <a href="#slideDown" type="button" style="margin-top: 3px;"
+                           class="btn btn-lg btn-primary btn-block regbut" >
+                            <spring:message code="locale.registration"/></a>
+                        <%--<a href="#slideForgotPass" type="button" style="display: none;" type="button" id="recpass"--%>
+                           <%--class="btn btn-lg btn-primary btn-block recoverybtn"><spring:message code="locale.forgotPassword"/>--%>
+                        <%--</a>--%>
+                        <%--<label for="recpass"><spring:message code="locale.forgotPassword"/></label>--%>
+                        <a href="#slideForgotPass" class="passRec"><spring:message code="locale.forgotPassword"/></a>
                     </form>
                 </sec:authorize>
 
 
             </div>
         </div>
-        <div class="recovery registration">
-            <div class="layout"></div>
-            <sec:authorize access="!isAuthenticated()">
-                <form id="stupidUser" action="/passwordRecovery">
-                    <div id="passwordRecoveryMessage"></div>
-                    <div class="row container-fluid recovery-head">
-                        <div class="col-lg-6 col-md-8 col-sm-9 col-xs-9">
-                            <h2 class="form-signin-heading"><spring:message code="locale.recoverPassword"/></h2>
-                        </div>
-                        <div class="col-lg-6 col-md-4 col-sm-3 col-xs-3 ">
-                            <i class="material-icons closeico"><span class="closebtn">clear</span></i>
-                        </div>
-                    </div>
-                    <input id="userEmail" name="email" class="form-control" placeholder=<spring:message code="locale.email"/> type="text"
-                           value="">
-                    <div class="correct-email"></div>
-                    <button id="buttonRecoverPassword" class="btn btn-lg btn-primary btn-block"><spring:message code="locale.sendRequest"/></button>
-                </form>
-            </sec:authorize>
+
+        <div id="" class="col-lg-5 col-md-7 col-sm-12 col-xs-12 col-centered">
+            <jsp:include page="registration-slider.jsp"/>
         </div>
+
+        <div id="" class="col-lg-5 col-md-7 col-sm-12 col-xs-12 col-centered"">
+            <jsp:include page="forgot-password-slide.jsp"/>
+        </div>
+
+        <%--<div class="recovery registration">--%>
+            <%--<div class="layout"></div>--%>
+            <%--<sec:authorize access="!isAuthenticated()">--%>
+                <%--<form id="stupidUser" action="/passwordRecovery">--%>
+                    <%--<div id="passwordRecoveryMessage"></div>--%>
+                    <%--<div class="row container-fluid recovery-head">--%>
+                        <%--<div class="col-lg-6 col-md-8 col-sm-9 col-xs-9">--%>
+                            <%--<h2 class="form-signin-heading"><spring:message code="locale.recoverPassword"/></h2>--%>
+                        <%--</div>--%>
+                        <%--<div class="col-lg-6 col-md-4 col-sm-3 col-xs-3 ">--%>
+                            <%--<i class="material-icons closeico"><span class="closebtn">clear</span></i>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
+                    <%--<input id="userEmail" name="email" class="form-control" placeholder=--%>
+                        <%--<spring:message code="locale.email"/> type="text"--%>
+                           <%--value="">--%>
+                    <%--<div class="correct-email"></div>--%>
+                    <%--<button id="buttonRecoverPassword" class="btn btn-lg btn-primary btn-block"><spring:message--%>
+                            <%--code="locale.sendRequest"/></button>--%>
+                <%--</form>--%>
+            <%--</sec:authorize>--%>
+        <%--</div>--%>
 
         <div class="row">
             <div class="inputBox col-lg-4 col-md-4 col-sm-12 col-xs-12">
@@ -214,9 +235,8 @@
                     <div class="alert alert-info" role="alert">
                         <div id="messageCheckPassword"></div>
                         <form>
-                            <input id="changePassword" name="password" class="form-control" placeholder=<spring:message code="locale.password"/>
-                                    type="password"
-                                   value="">
+                            <input id="changePassword" name="password" class="form-control" type="password" value=""
+                                   placeholder=<spring:message code="locale.password"/>>
                             <button id="buttonChangePassword" class="btn btn-lg btn-primary btn-block changebtn">
                                 <spring:message code="locale.changePassword"/>
                             </button>
@@ -257,16 +277,15 @@
         </div>
 
 
-
-
         <section id="features">
             <div class="container">
                 <div class="section-header">
                     <h2 class="section-title text-center wow fadeInDown">Awesome Features</h2>
-                    <p class="text-center wow fadeInDown">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut <br> et dolore magna aliqua. Ut enim ad minim veniam</p>
+                    <p class="text-center wow fadeInDown">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
+                        do eiusmod tempor incididunt ut <br> et dolore magna aliqua. Ut enim ad minim veniam</p>
                 </div>
                 <div class="row">
-                    <div class="col-sm-4 wow fadeInLeft">
+                    <div class="col-lg-4 wow fadeInLeft">
                         <img class="img-responsive" src="/resources/images/partnership-stream.png" alt="">
                     </div>
                     <div class="col-sm-6">
@@ -276,7 +295,8 @@
                             </div>
                             <div class="media-body">
                                 <h4 class="media-heading">UX design</h4>
-                                <p>Backed by some of the biggest names in the industry, Firefox OS is an open platform that fosters greater</p>
+                                <p>Backed by some of the biggest names in the industry, Firefox OS is an open platform
+                                    that fosters greater</p>
                             </div>
                         </div>
 
@@ -286,7 +306,8 @@
                             </div>
                             <div class="media-body">
                                 <h4 class="media-heading">UI design</h4>
-                                <p>Backed by some of the biggest names in the industry, Firefox OS is an open platform that fosters greater</p>
+                                <p>Backed by some of the biggest names in the industry, Firefox OS is an open platform
+                                    that fosters greater</p>
                             </div>
                         </div>
 
@@ -296,7 +317,8 @@
                             </div>
                             <div class="media-body">
                                 <h4 class="media-heading">SEO Services</h4>
-                                <p>Backed by some of the biggest names in the industry, Firefox OS is an open platform that fosters greater</p>
+                                <p>Backed by some of the biggest names in the industry, Firefox OS is an open platform
+                                    that fosters greater</p>
                             </div>
                         </div>
 
@@ -306,17 +328,14 @@
                             </div>
                             <div class="media-body">
                                 <h4 class="media-heading">SEO Services</h4>
-                                <p>Backed by some of the biggest names in the industry, Firefox OS is an open platform that fosters greater</p>
+                                <p>Backed by some of the biggest names in the industry, Firefox OS is an open platform
+                                    that fosters greater</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-
-
-
-
 
 
         <div class="section-header">
@@ -489,12 +508,11 @@
 
                         <address>
                             вулиця Патріса Лумумби,4/6В<br>
-                            Київ,  33848 UA<br>
-                            <abbr title="Phone">P:</abbr> 044 238-8727
+                            Київ, 33848 UA<br>
+                            <abbr title="Phone">P:</abbr> <a href="tel:+380442388727">044 238-8727</a>
                         </address>
 
                     </div>
-
 
 
                 </div>
@@ -514,19 +532,22 @@
                 <ul class="social-icons">
                     <li><a href="https://www.facebook.com/NetCrackerTech/"><i class="fa fa-facebook"></i></a></li>
                     <li><a href="https://twitter.com/netcrackertech"><i class="fa fa-twitter"></i></a></li>
-                    <li><a href="https://plus.google.com/112244362035655933650/about"><i class="fa fa-google-plus"></i></a></li>
+                    <li><a href="https://plus.google.com/112244362035655933650/about"><i class="fa fa-google-plus"></i></a>
+                    </li>
                     <li><a href="https://www.flickr.com/photos/tags/netcracker/"><i class="fa fa-flickr"></i></a></li>
                     <li><a href="https://www.youtube.com/user/SmartRevenue"><i class="fa fa-youtube"></i></a></li>
                     <li><a href="https://ru.linkedin.com/company/netcracker"><i class="fa fa-linkedin"></i></a></li>
-                    <li><a href="https://github.com/TheWalkingDeadTeam/TheWalkingDeadProject"><i class="fa fa-github"></i></a></li>
+                    <li><a href="https://github.com/TheWalkingDeadTeam/TheWalkingDeadProject"><i
+                            class="fa fa-github"></i></a></li>
                 </ul>
             </div>
         </div>
     </div>
 </footer><!--/#footer-->
 
-<script src="/resources/js/test/jquery.js"></script>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="/resources/js/test/bootstrap.min.js"></script>
+<script src="/resources/js/registration-slide.js"></script>
 <script src="http://maps.google.com/maps/api/js?sensor=true"></script>
 <script src="/resources/js/test/owl.carousel.min.js"></script>
 <script src="/resources/js/test/mousescroll.js"></script>
@@ -536,11 +557,11 @@
 <script src="/resources/js/test/jquery.inview.min.js"></script>
 <script src="/resources/js/test/wow.min.js"></script>
 <script src="/resources/js/test/main.js"></script>
-<script src="http://code.jquery.com/jquery-latest.js"></script>
+
 <script src="/resources/js/changePassword.js"></script>
 <script src="/resources/js/login.js"></script>
 <script src="/resources/js/logout.js"></script>
-<script src="/resources/bootstrap/js/bootstrap.js"></script>
+<%--<script src="/resources/bootstrap/js/bootstrap.js"></script>--%>
 <script src="/resources/js/registration.js"></script>
 <script src="/resources/js/passwordRecovery.js"></script>
 <script src="/resources/js/hideShowPassword.min.js"></script>

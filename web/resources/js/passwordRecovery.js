@@ -21,7 +21,7 @@ $(document).ready(function () {
         var elem = $(this);
         var innerText = elem.val();
         var errorMsg = '';
-        if (elem.is('#userEmail')) {
+        if (elem.is('#userMail')) {
             if (!/^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/.test(innerText)) {
                 errorMsg = errorMsg + 'Incorrect email';
             }
@@ -35,7 +35,7 @@ $(document).ready(function () {
     function openValidatePasswordRecovery() {
         var errorMsg = '';
 
-        var elem = $('#userEmail');
+        var elem = $('#userMail');
         var innerText = elem.val();
 
         if (!/^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/.test(innerText)) {
@@ -62,7 +62,7 @@ $(document).ready(function () {
             dataType: 'json',
             contentType: "application/json",
             data: JSON.stringify({
-                email: $('#userEmail').val()
+                email: $('#userMail').val()
             }),
             success: function (response) {
                 if (response.length) {
@@ -76,7 +76,7 @@ $(document).ready(function () {
                     $('#passwordRecoveryMessage')
                         .addClass('alert alert-danger')
                         .html(errors_out);
-                    $('#userEmail').val("");
+                    $('#userMail').val("");
                 } else {
                     $('#passwordRecoveryMessage')
                         .removeClass()
@@ -84,7 +84,7 @@ $(document).ready(function () {
                     $('#passwordRecoveryMessage')
                         .addClass('alert alert-success')
                         .html('Request was sent successfully');
-                    $('#userEmail').hide();
+                    $('#userMail').hide();
                     $('#buttonRecoverPassword').hide();
                 }
             },
