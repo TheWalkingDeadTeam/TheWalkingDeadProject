@@ -175,7 +175,8 @@ public class UserServiceImpl implements UserService {
             }
             user.setRoles(roles);
             userDAO.createUser(user, user.getRoles());
-            mailService.sendMail(user.getEmail(), "Registration", "Welcome " + user.getName() + " ! \n NetCracker[TheWalkingDeadTeam] ");
+            mailService.sendRegistrationNotification(user);
+//            mailService.sendMail(user.getEmail(), "Registration", "Welcome " + user.getName() + " ! \n NetCracker[TheWalkingDeadTeam] ");
             return user;
         } catch (DAOException e) {
             LOGGER.warn("User " + user.getEmail() + " hasn't been created");

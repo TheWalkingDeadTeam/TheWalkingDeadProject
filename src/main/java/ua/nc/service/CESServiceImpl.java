@@ -74,20 +74,15 @@ public class CESServiceImpl implements CESService {
 
     @Override
     public CES getCurrentCES() {
-        LOGGER.info("GET CURCES START");
         Connection connection = daoFactory.getConnection();
-        LOGGER.info("GET CURCES CONNCECTION");
         CESDAO cesdao = new PostgreCESDAO(connection);
-        LOGGER.info("GET CURCES CESDAO");
         CES ces = null;
         try {
             ces = cesdao.getCurrentCES();
-            LOGGER.info("Successfully get current CES");
         } catch (DAOException e) {
             LOGGER.warn("Can't get current CES", e.getCause());
         } finally {
             daoFactory.putConnection(connection);
-            LOGGER.info("GET CURCES DAOLALA");
         }
         return ces;
     }

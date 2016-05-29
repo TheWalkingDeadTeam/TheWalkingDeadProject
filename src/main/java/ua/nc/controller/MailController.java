@@ -69,7 +69,7 @@ public class MailController {
     @RequestMapping(value = "/mails/", method = RequestMethod.POST)
     public ResponseEntity<Void> createMail(@RequestBody Mail mail, UriComponentsBuilder ucBuilder) {
         LOGGER.debug("Creating mail:" + mail.getHeadTemplate() + mail.getBodyTemplate());
-        mailService.createMail(mail.getHeadTemplate(), mail.getBodyTemplate());
+        mailService.createMail(mail.getHeadTemplate().toLowerCase(), mail.getBodyTemplate());
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("/mails/{id}").buildAndExpand(mail.getId()).toUri());
         return new ResponseEntity<Void>(headers, HttpStatus.CREATED);

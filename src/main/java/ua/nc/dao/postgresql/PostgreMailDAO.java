@@ -269,7 +269,7 @@ public class PostgreMailDAO extends AbstractPostgreDAO<Mail, Integer> implements
     public List<Mail> getByHeader(String header) throws DAOException {
         List<Mail> mails = new ArrayList<>();
         try {
-            preparedStatement = connection.prepareStatement("");
+            preparedStatement = connection.prepareStatement(SQL_GET_EMAILS_BY_HEADER);
             preparedStatement.setString(1, header);
             rs = preparedStatement.executeQuery();
             Mail mail;
