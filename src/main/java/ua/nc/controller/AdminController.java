@@ -452,7 +452,6 @@ public class AdminController {
     public
     @ResponseBody
     void closeCES(@RequestBody String params) {
-        System.out.println(params);
         ObjectMapper objectMapper = new ObjectMapper();
         Integer rejectionId = null;
         Integer workId = null;
@@ -469,7 +468,7 @@ public class AdminController {
             LOGGER.error("Failed to parse", e);
         }
         mailService.sendFinalNotification(rejectionId,workId,courseId);
-        //cesService.closeCES();
+        cesService.closeCES();
     }
 
     @RequestMapping(value = {"/scheduler"}, method = RequestMethod.GET)

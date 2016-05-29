@@ -34,7 +34,6 @@ public interface CESService {
      * @throws DAOException missing data about current course enrolment session.
      */
     List<Date> planSchedule(Date startDate) throws DAOException;
-    void switchToRegistrationOngoing() throws DAOException;
     void updateInterViewingDate(Date start, Date end);
     CES getPendingCES();
     boolean checkParticipation (Integer interviewerId);
