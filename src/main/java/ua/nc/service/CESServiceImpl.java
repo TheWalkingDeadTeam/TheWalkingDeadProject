@@ -79,7 +79,6 @@ public class CESServiceImpl implements CESService {
         CES ces = null;
         try {
             ces = cesdao.getCurrentCES();
-            LOGGER.info("Successfully get current CES");
         } catch (DAOException e) {
             LOGGER.warn("Can't get current CES", e.getCause());
         } finally {
@@ -408,4 +407,18 @@ public class CESServiceImpl implements CESService {
         }
     }
 
+    @Override
+    public boolean checkParticipation(Integer interviewerId) {
+        Connection connection = daoFactory.getConnection();
+        CESDAO cesdao = daoFactory.getCESDAO(connection);
+        try {
+            int cesId = getCurrentCES().getId();
+            return cesdao.countInterviewerParticipation(cesId, interviewerId) > 0;
+        } catch (DAOException ex){
+            LOGGER.warn(ex);
+        } finally {
+            daoFactory.putConnection(connection);
+        }
+        return false;
+    }
 }

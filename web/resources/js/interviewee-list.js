@@ -13,6 +13,7 @@ app.controller('IntervieweeCtrl', ["$http", "$scope", function ($http, $scope) {
     vm.order_by = null;
     vm.pattern = null;
     $scope.sortReverse = false;
+    
     vm.showSpin = function () {
         angular.element($(".cssload-thecube")).css('display','block');
         angular.element($("#tableUsers")).css('display','none');

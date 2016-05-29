@@ -1,10 +1,12 @@
 package ua.nc.service;
 
 import org.apache.log4j.Logger;
+import ua.nc.dao.ApplicationTableDAO;
 import ua.nc.dao.ReportTemplateDAO;
 import ua.nc.dao.enums.DataBaseType;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.dao.factory.DAOFactory;
+import ua.nc.dao.postgresql.PostgreApplicationTableDAO;
 import ua.nc.dao.postgresql.PostgreReportTemplateDAO;
 import ua.nc.entity.ReportTemplate;
 import ua.nc.validator.ReportExecuteValidator;
@@ -114,8 +116,28 @@ public class ReportServiceImpl implements ReportService {
                 daoFactory.putConnection(connection);
             }
         } else {
+            LOGGER.warn("Report "+ report.getName() +" query has errors ");
             throw new DAOException("Report query has errors");
         }
         return  reportRows;
+    }
+
+    @Override
+    public ReportTemplate getUserProfileQueryById (Integer id) {
+        Connection connection = daoFactory.getConnection();
+        ReportTemplate reportTemplate = new ReportTemplate();
+        ApplicationTableDAO applicationTableDAO = new PostgreApplicationTableDAO(connection);
+        System.out.println("Problem before try");
+        try {
+            reportTemplate.setName("Profile Report");
+            System.out.println("In before full");
+            reportTemplate.setQuery(applicationTableDAO.getFullQuery(id));
+            System.out.println(reportTemplate.getQuery());
+        } catch (DAOException e) {
+            LOGGER.warn("Cant get applicatio user profile query for ces id " + id, e.getCause());
+        } finally {
+            daoFactory.putConnection(connection);
+        }
+        return reportTemplate;
     }
 }

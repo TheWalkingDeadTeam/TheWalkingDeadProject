@@ -13,7 +13,7 @@ public class UserDetailsImpl extends User {
     private Integer id;
     private UserStatus status;
 
-    public UserDetailsImpl(Integer id, String username, String password, UserStatus status,  Collection<? extends GrantedAuthority> authorities) {
+    public UserDetailsImpl(Integer id, String username, String password, UserStatus status, Collection<? extends GrantedAuthority> authorities) {
         super(username, password, authorities);
         this.id = id;
         this.status = status;
@@ -26,7 +26,7 @@ public class UserDetailsImpl extends User {
     }
 
     public Integer getId() {
-        return id;  
+        return id;
     }
 
     public UserStatus getStatus() {

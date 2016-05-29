@@ -3,7 +3,6 @@
  */
 
 $(document).ready(function () {
-
     $("#save_roles").click(function (event) {
         var checkroles = [];
         $("input:checked").each(function () {

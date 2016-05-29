@@ -50,7 +50,7 @@ public class Mail implements Identified<Integer> {
     }
 
     public void setHeadTemplate(String headTemplate) {
-        this.headTemplate = headTemplate;
+        this.headTemplate = headTemplate.toLowerCase();
     }
 
 

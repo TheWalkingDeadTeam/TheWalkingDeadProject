@@ -110,6 +110,7 @@
                 <div class="cssload-cube cssload-c3"></div>
             </div>
         </div>
+        <div class="table-responsive">
         <table id="tableUsers" class="table table-bordered table-striped" style="{margin-top: 200px}">
 
             <thead>
@@ -118,27 +119,27 @@
                     <input type="checkbox" ng-model="selectedAll" ng-click="checkAll()">
                 </td>
                 <td>
-                    <a ng-click="sortType('system_user_id',sortReverse); sortReverse = !sortReverse; ">
+                    <a ng-click="sortReverse = !sortReverse; sortType('system_user_id',sortReverse); ">
                         id
                     </a>
                 </td>
                 <td>
-                    <a ng-click="sortType('name',sortReverse); sortReverse = !sortReverse; ">
+                    <a ng-click="sortReverse = !sortReverse; sortType('name',sortReverse); ">
                         Name
                     </a>
                 </td>
                 <td>
-                    <a ng-click="sortType('surname',sortReverse); sortReverse = !sortReverse; ">
+                    <a ng-click="sortReverse = !sortReverse; sortType('surname',sortReverse); ">
                         Surname
                     </a>
                 </td>
                 <td>
-                    <a ng-click="sortType('email',sortReverse); sortReverse = !sortReverse; ">
+                    <a ng-click="sortReverse = !sortReverse; sortType('email',sortReverse);">
                         Email
                     </a>
                 </td>
                 <td>
-                    <a ng-click="sortType('role',sortReverse); sortReverse = !sortReverse; ">
+                    <a ng-click="sortReverse = !sortReverse; sortType('role',sortReverse); ">
                         Role
                     </a>
                 </td>
@@ -166,6 +167,7 @@
             </tr>
             </tbody>
         </table>
+            </div>
         <div id="pagination">
         <dir-pagination-controls
                 max-size="8"
@@ -186,7 +188,7 @@
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="/resources/js/notification/angular-ui-notification.min.js"></script>
 <script src="/resources/bootstrap/js/bootstrap.js"></script>
-<script src="/resources/js/interviewListAngular.js"></script>
+<script src="/resources/js/interview-list.js"></script>
 <script src="/resources/js/dirPagination.js"></script>
 <script src="http://vitalets.github.io/checklist-model/checklist-model.js"></script>
 <script src="/resources/js/adminmenu.js"></script>

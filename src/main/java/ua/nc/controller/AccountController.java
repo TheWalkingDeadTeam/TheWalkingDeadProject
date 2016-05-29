@@ -68,11 +68,7 @@ public class AccountController {
     @RequestMapping(value = "/getUser", method = RequestMethod.GET)
     public User getUser(SecurityContextHolderAwareRequestWrapper request) {
         User user = null;
-        if (request.isUserInRole(UserRoles.ROLE_ADMIN.name())
-                || request.isUserInRole(UserRoles.ROLE_HR.name())
-                || request.isUserInRole(UserRoles.ROLE_BA.name())
-                || request.isUserInRole(UserRoles.ROLE_DEV.name())
-                || request.isUserInRole(UserRoles.ROLE_STUDENT.name())) {
+        if (request.getRemoteUser() != null){
             user = userService.getUser(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                     .getPrincipal()).getUsername());
         }
@@ -83,9 +79,11 @@ public class AccountController {
     @RequestMapping(value = "/getUser/{id}", method = RequestMethod.GET)
     public User getUser(@PathVariable("id") Integer id, SecurityContextHolderAwareRequestWrapper request) {
         User user = null;
-/*        if (request.isUserInRole(UserRoles.ROLE_ADMIN.name())) {*/
+        if (request.isUserInRole(UserRoles.ROLE_ADMIN.name())
+                || (((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal()).getId().equals(id))) {
             user = userService.getUser(id);
-/*        }*/
+        }
         return user;
     }
 }

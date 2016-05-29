@@ -27,9 +27,10 @@ public class MailController {
     private static final Logger LOGGER = Logger.getLogger(MailController.class);
     MailService mailService = new MailServiceImpl();
     UserService userService = new UserServiceImpl();
-
+    private final String NAME = "$name";
+    private final String SURNAME = "$surname";
     /**
-     * Retrieve all mail
+     * Retrieve all mails
      *
      * @return mail list
      */
@@ -68,7 +69,7 @@ public class MailController {
     @RequestMapping(value = "/mails/", method = RequestMethod.POST)
     public ResponseEntity<Void> createMail(@RequestBody Mail mail, UriComponentsBuilder ucBuilder) {
         LOGGER.debug("Creating mail:" + mail.getHeadTemplate() + mail.getBodyTemplate());
-        mailService.createMail(mail.getHeadTemplate(), mail.getBodyTemplate());
+        mailService.createMail(mail.getHeadTemplate().toLowerCase(), mail.getBodyTemplate());
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("/mails/{id}").buildAndExpand(mail.getId()).toUri());
         return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
@@ -160,8 +161,8 @@ public class MailController {
             for (Integer i : userId) {
                 User user = userService.getUser(i);
                 Map<String, String> customizeMail = new HashMap<>();
-                customizeMail.put("$name", user.getName());
-                customizeMail.put("$surname", user.getSurname());
+                customizeMail.put(NAME, user.getName());
+                customizeMail.put(SURNAME, user.getSurname());
                 Mail mailUpdate = customization(studentMail, customizeMail);
                 mailService.sendMail(user.getEmail(), mailUpdate);
             }

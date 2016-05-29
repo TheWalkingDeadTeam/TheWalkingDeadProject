@@ -83,8 +83,6 @@
     </div>
 
     <div class="row">
-
-
         <div class="inputBox col-lg-4 col-md-4 col-sm-12 col-xs-12">
             <sec:authorize access="isAuthenticated()">
                 <div class="alert alert-info" role="alert">
@@ -99,41 +97,6 @@
                     </form>
                 </div>
             </sec:authorize>
-
-
-            <sec:authorize access="!isAuthenticated()">
-                <form>
-                    <div id="messageSignIn"></div>
-                    <h2 class="form-signin-heading"><spring:message code="locale.pleaseSignIn"/></h2>
-                    <input id="j_username" type="text" class="form-control" name="j_username"
-                           placeholder=<spring:message code="locale.email"/> required>
-                    <input id="j_password" type="password" class="form-control login-field  login-field-password" name="j_password" placeholder=<spring:message code="locale.password"/>
-                            required>
-                    <button id="buttonSignIn" class="btn btn-lg btn-primary btn-block signbtn" type="submit"><spring:message code="locale.signin"/>
-                    </button>
-                    <button type="button" class="btn btn-lg btn-primary btn-block regbut"><spring:message code="locale.registration"/></button>
-                    <button style="display: none;" type="button" id="recpass"
-                            class="btn btn-lg btn-primary btn-block recoverybtn"><spring:message code="locale.forgotPassword"/>
-                    </button>
-                    <label for="recpass"><spring:message code="locale.forgotPassword"/></label>
-                </form>
-            </sec:authorize>
-            <sec:authorize access="isAuthenticated()">
-                <div class="alert alert-info" role="alert">
-                    <p>Your login: <sec:authentication property="principal.username"/></p>
-                    <p><sec:authentication property="principal.authorities"/></p>
-                    <p><img id="photo_img" src="/getPhoto" alt="User's photo" width="100" height="100"
-                            onError="this.src='/resources/images/user-photo.png'"/></p>
-                </div>
-                &lt;%&ndash;
-                <p><a id="buttonLogout" class="btn btn-lg btn-danger" href="/logout" role="button">
-                    <spring:message code="locale.logout"/></a></p>
-            </sec:authorize>
-        </div>
-        <div id="logoDiv" class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
-            <div id="thisDiv">
-                <img id="mainLogo" class='img-responsive' src='/resources/images/main.jpg'>
-            </div>
         </div>
     </div>
 </div>

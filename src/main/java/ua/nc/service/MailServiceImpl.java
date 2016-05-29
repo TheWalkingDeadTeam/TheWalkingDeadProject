@@ -15,6 +15,7 @@ import ua.nc.dao.UserDAO;
 import ua.nc.dao.enums.DataBaseType;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.dao.factory.DAOFactory;
+import ua.nc.dao.postgresql.PostgreMailDAO;
 import ua.nc.dao.postgresql.PostgreUserDAO;
 import ua.nc.entity.CES;
 import ua.nc.entity.Mail;
@@ -41,12 +42,8 @@ public class MailServiceImpl implements MailService {
     private static final String DATE_PATTERN = "$date";
     private static final String NAME_PATTERN = "$name";
     private static final String SURNAME_PATTERN = "$surname";
-    private static final String START_HOURS_PATTERN = "$hours";
-    private static final String START_MINS_PATTERN = "$minutes";
-    private static final String REJECTED = "rejected";
-    private static final String ACCEPTED_WORK = "work";
-    private static final String ACCEPTED_COURSE = "course";
-    private static final int MIN_DELIMITER = 30;
+    private static final String REGISTRATION = "registration";
+    private static final String DEFAULT_REG_MESSAGE = "We are we are happy to inform you that your have been successfully registered";
     private DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
 
 
@@ -280,7 +277,6 @@ public class MailServiceImpl implements MailService {
                 int firstStudent = 0;
                 int lastStudent = studentsPerGroup;
                 List<User> interviewersList = new ArrayList<>(userDAO.getInterviewersForCurrentCES());
-                System.out.println(interviewersList);
                 List<User> studentsList = new ArrayList<>(userDAO.getAllAcceptedStudents(ces.getId()));
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyy HH:mm");
                 Map<String, String> dateTimeParameters = new HashMap<>();
@@ -319,8 +315,8 @@ public class MailServiceImpl implements MailService {
      */
     private Mail basicSubstituteBody(User user, Mail mail) {
         Map<String, String> substitution = new HashMap<>();
-        substitution.put("$name", user.getName());
-        substitution.put("$surname", user.getSurname());
+        substitution.put(NAME_PATTERN, user.getName());
+        substitution.put(SURNAME_PATTERN, user.getSurname());
         return customizeMail(mail, substitution);
     }
 
@@ -341,7 +337,6 @@ public class MailServiceImpl implements MailService {
 
     @Override
     public void sendFinalNotification(Integer rejectId, Integer jobId, Integer courseId) {
-        System.out.println("reject:" + rejectId + ",jobId:" + jobId);
         Integer cesId = cesService.getCurrentCES().getId();
         Connection connection = daoFactory.getConnection();
         UserDAO userDAO = new PostgreUserDAO(connection);
@@ -368,9 +363,9 @@ public class MailServiceImpl implements MailService {
             daoFactory.putConnection(connection);
         }
 
-         Mail mailRejectedTemplate = getMail(rejectId);
-         Mail mailWorkOffer = getMail(jobId);
-         Mail mailCourseOffer = getMail(courseId);
+        Mail mailRejectedTemplate = getMail(rejectId);
+        Mail mailWorkOffer = getMail(jobId);
+        Mail mailCourseOffer = getMail(courseId);
 
         if ((!mailRejectedTemplate.getBodyTemplate().isEmpty()) && (!mailWorkOffer.getBodyTemplate().isEmpty()) &&
                 (!mailCourseOffer.getBodyTemplate().isEmpty())) {
@@ -388,9 +383,34 @@ public class MailServiceImpl implements MailService {
 //                }
 //            }, new Date());
 
-            massDelivery(jobOfferUsers,mailWorkOffer);
-            massDelivery(courseRejectedUsers,mailRejectedTemplate);
-            massDelivery(courseAcceptedUsers,mailCourseOffer);
+            massDelivery(jobOfferUsers, mailWorkOffer);
+            massDelivery(courseRejectedUsers, mailRejectedTemplate);
+            massDelivery(courseAcceptedUsers, mailCourseOffer);
         }
     }
+
+    @Override
+    public void sendRegistrationNotification(User user) {
+        List<Mail> mails = getByHeaderMailTemplate(REGISTRATION);
+        Mail mail = new Mail();
+        boolean statusExist = false;
+        for (Mail m : mails) {
+            if (!m.getBodyTemplate().isEmpty()) {
+                mail = m;
+                statusExist = true;
+                break;
+            }
+        }
+        if (statusExist) {
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put(NAME_PATTERN, user.getName());
+            parameters.put(SURNAME_PATTERN, user.getSurname());
+            mail = customizeMail(mail, parameters);
+            sendMail(user.getEmail(),mail);
+        } else{
+            sendMail(user.getEmail(), "Registration", "Welcome " + user.getName() + " ! \n " + DEFAULT_REG_MESSAGE);
+        }
+    }
+
+
 }

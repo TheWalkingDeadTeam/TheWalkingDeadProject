@@ -91,6 +91,7 @@
                     <div class="cssload-cube cssload-c3"></div>
                 </div>
         </div>
+        <div class="table-responsive">
         <table  id="tableUsers" class="table table-striped table-hover">
             <thead>
             <tr>
@@ -152,6 +153,7 @@
             </tr>
             </tbody>
         </table>
+            </div>
         <div id="pagination">
         <dir-pagination-controls
                 max-size="8"
@@ -170,7 +172,7 @@
 <script src="/resources/js/checkboxScript.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-route.js"></script>
-<script src="/resources/js/intervieweeListAngular.js"></script>
+<script src="/resources/js/interviewee-list.js"></script>
 <script src="/resources/js/dirPagination.js"></script>
 <script src="http://vitalets.github.io/checklist-model/checklist-model.js"></script>
 <script src="/resources/js/adminmenu.js"></script>
