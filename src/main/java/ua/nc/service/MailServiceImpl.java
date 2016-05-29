@@ -382,10 +382,16 @@ public class MailServiceImpl implements MailService {
 //                    massDelivery(finalCourseAcceptedUsers, mailCourseOffer);
 //                }
 //            }, new Date());
+            if (!jobOfferUsers.isEmpty()) {
+                massDelivery(jobOfferUsers, mailWorkOffer);
+            }
+            if(!courseRejectedUsers.isEmpty()){
+                massDelivery(courseRejectedUsers, mailRejectedTemplate);
+            }
+            if(!courseAcceptedUsers.isEmpty()){
+                massDelivery(courseAcceptedUsers, mailCourseOffer);
+            }
 
-            massDelivery(jobOfferUsers, mailWorkOffer);
-            massDelivery(courseRejectedUsers, mailRejectedTemplate);
-            massDelivery(courseAcceptedUsers, mailCourseOffer);
         }
     }
 
@@ -406,8 +412,8 @@ public class MailServiceImpl implements MailService {
             parameters.put(NAME_PATTERN, user.getName());
             parameters.put(SURNAME_PATTERN, user.getSurname());
             mail = customizeMail(mail, parameters);
-            sendMail(user.getEmail(),mail);
-        } else{
+            sendMail(user.getEmail(), mail);
+        } else {
             sendMail(user.getEmail(), "Registration", "Welcome " + user.getName() + " ! \n " + DEFAULT_REG_MESSAGE);
         }
     }
