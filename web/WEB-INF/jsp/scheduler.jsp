@@ -33,12 +33,6 @@
                                        placeholder="Provide interview time" name="nterviewTime" readonly>
                                 <span class="add-on"><i class="icon-th"></i></span>
                             </div>
-                            <script type="text/javascript">
-                                $(".form_datetime").datetimepicker({
-                                    format: "yyyy-mm-dd hh:ii"
-                                });
-                            </script>
-
                         </div>
                     </div>
                 </div>
@@ -52,8 +46,8 @@
                                    class="contact form-control input-sm" placeholder="Enter contact information"
                                    ng-minlength="3" required/>
                             <div class="has-error" ng-show="myForm.$dirty">
-                                <span ng-show="myForm.contact.$error.required">This is a required field </span>
-                                <span ng-show="myForm.contact.$error.minlength">Contact should be at least 3 symbols</span>
+                                <span ng-show="myForm.contactStaff.$error.required">Required field </span>
+                                <span ng-show="myForm.contactStaff.$error.minlength">Contact should be at least 3 symbols</span>
                             </div>
                         </div>
                     </div>
@@ -71,8 +65,8 @@
                                    ng-minlength="3"
                                    required/>
                             <div class="has-error" ng-show="myForm.$dirty">
-                                <span ng-show="myForm.contact.$error.required">This is a required field </span>
-                                <span ng-show="myForm.contact.$error.minlength">Contact should be at least 3 symbols</span>
+                                <span ng-show="myForm.contactStudent.$error.required"> Required field </span>
+                                <span ng-show="myForm.contactStudent.$error.minlength">Contact should be at least 3 symbols</span>
                             </div>
                         </div>
                     </div>
@@ -88,8 +82,8 @@
                                    ng-minlength="4"
                                    required/>
                             <div class="has-error" ng-show="myForm.$dirty">
-                                <span ng-show="myForm.course.$error.required">This is a required field</span>
-                                <span ng-show="myForm.course.$error.minlength">At least course number should be 4 symbols</span>
+                                <span ng-show="myForm.course.$error.required">Required field</span>
+                                <span ng-show="myForm.course.$error.minlength">Course type should be 4 symbols</span>
                             </div>
                         </div>
                     </div>
@@ -97,14 +91,14 @@
                 <%--Place interview--%>
                 <div class="row">
                     <div class="form-group col-md-12">
-                        <label class="col-md-2 control-lable" for="file">Place</label>
+                        <label class="col-md-2 control-lable" for="file">Location</label>
                         <div class="col-md-7">
                             <input id="searchTextField" name="place" type="text" data-ng-model="location" size="50"
                                    class="location form-control input-sm"
-                                   placeholder="Enter interview place" ng-minlength="3" required/>
+                                   placeholder="Enter interview location" ng-minlength="3" required/>
                             <div class="has-error" ng-show="myForm.$dirty">
-                                <span ng-show="myForm.place.$error.required">This is a required field</span>
-                                <span ng-show="myForm.place.$error.minlength">Chars only allowed</span>
+                                <span ng-show="myForm.place.$error.required">Required field</span>
+                                <span ng-show="myForm.place.$error.minlength">Location should be at least 3 symbols</span>
                             </div>
                         </div>
                     </div>

@@ -193,4 +193,11 @@ mailer.factory('MailService', ['$http', '$q', function ($http, $q) {
 }]);
 
 
+var date = new Date();
+date.setDate(date.getDate());
+$(".form_datetime").datetimepicker({
+    format: "yyyy-mm-dd hh:ii",
+    startDate: date
+});
+
 
