@@ -26,13 +26,11 @@
         }
     </style>
 
-
-
 </head>
 <body>
 <div class="generic-container col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <div class="row">
-        <div >
+        <div>
             <div class="card hoverable">
                 <div class="view overlay hm-white-slight z-depth-1">
                     <div class="mask waves-effect"></div>
@@ -50,9 +48,7 @@
                                     <tr>
                                         <th><img src="/resources/images/checkbox.png" width="15" height="15"></th>
                                         <th>Topic</th>
-                                        <%--<th>Body</th>--%>
                                         <th width="20%"></th>
-
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -64,11 +60,8 @@
                                                 <label></label>
                                             </div>
                                         </td>
-
-                                        <%--<td><input type="radio" data-ng-model="$parent.mailIdUser" ng-value="{{m.id}}"></td>--%>
                                         <td class="vert-align"><span ng-bind="m.headTemplate"></span></td>
                                         <td class="vert-align">
-                                            <%--<span ng-bind="m.bodyTemplate"></span></td>--%>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -100,11 +93,8 @@
                                                 <label></label>
                                             </div>
                                         </td>
-
-                                        <%--<td><input type="radio" data-ng-model="$parent.mailIdUser" ng-value="{{m.id}}"></td>--%>
                                         <td class="vert-align"><span ng-bind="m.headTemplate"></span></td>
                                         <td class="vert-align">
-                                            <%--<span ng-bind="m.bodyTemplate"></span></td>--%>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -121,7 +111,6 @@
                                     <tr>
                                         <th><img src="/resources/images/checkbox.png" width="15" height="15"></th>
                                         <th>Topic</th>
-                                        <%--<th>Body</th>--%>
                                         <th width="20%"></th>
 
                                     </tr>
@@ -135,11 +124,8 @@
                                                 <label></label>
                                             </div>
                                         </td>
-
-                                        <%--<td><input type="radio" data-ng-model="$parent.mailIdUser" ng-value="{{m.id}}"></td>--%>
                                         <td class="vert-align"><span ng-bind="m.headTemplate"></span></td>
                                         <td class="vert-align">
-                                            <%--<span ng-bind="m.bodyTemplate"></span></td>--%>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -151,18 +137,10 @@
                                 Close
                             </button>
 
-                            <%--<div class="form-actions floatRight" style="margin-top: 2%;margin-bottom: 4%">--%>
-                            <%--<input type="submit" id="templateSend" value="Send"--%>
-                            <%--class="btn btn-default waves-effect waves-light">--%>
-                            <%--</div>--%>
-
                         </div>
                     </div>
-
-
                 </form>
             </div>
-
         </div>
     </div>
 </div>
@@ -170,7 +148,6 @@
 
 </div>
 </div>
-
 
 <script type="text/javascript">
     function changeState(el) {
