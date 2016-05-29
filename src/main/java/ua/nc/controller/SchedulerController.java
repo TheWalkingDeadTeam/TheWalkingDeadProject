@@ -38,36 +38,41 @@ public class SchedulerController {
     private final static String GOOGLE_MAPS = "$googleMaps";
     private final static String CONTACT_INTERVIEWERS = "$contactInterviewers";
     private final static String CONTACT_STUDENTS = "$contactStudent";
-
-
+    private final static String DATA_FORMAT = "yyyy-MM-dd HH:mm";
     private final CESService cesService = new CESServiceImpl();
     private final MailService mailService = new MailServiceImpl();
 
     /**
-     * Produces direct google map link to geolocation
+     * Produces direct google map link from geolocation
      *
      * @param location of the interview
      * @return link on google.maps.com
      */
     private String googleMapLink(String location) {
-        String link = null;
         GeoApiContext context = new GeoApiContext().setApiKey(GEO_CODE_GOOGLE);
-
         try {
             GeocodingResult[] results = GeocodingApi.geocode(context,
                     location).await();
             String latitude = String.valueOf(results[0].geometry.location.lat);
             String longitude = String.valueOf(results[0].geometry.location.lng);
-            link = DEFAULT_PLACE_LINK.replaceAll("lat", latitude);
+            String link = DEFAULT_PLACE_LINK.replaceAll("lat", latitude);
             link = link.replaceAll("lng", longitude);
             return link;
         } catch (Exception e) {
             log.warn("Failed to parse coordinates", e);
+            return location;
         }
-            log.debug("Proceeded new place link:" + link);
-        return link;
     }
 
+    /**
+     * Get map with parameters from Scheduler object
+     * The default parameters:
+     * 1)Location
+     * 2)Google_Maps
+     * 3) Course_type
+     * @param scheduler
+     * @return map
+     */
     private Map<String, String> param(Scheduler scheduler) {
         Map<String, String> interviewerParameters = new HashMap<>();
         interviewerParameters.put(LOCATION, scheduler.getLocations());
@@ -75,7 +80,6 @@ public class SchedulerController {
         interviewerParameters.put(COURSE_TYPE, scheduler.getCourseType());
         return interviewerParameters;
     }
-
 
 
     /**
@@ -90,7 +94,6 @@ public class SchedulerController {
     @RequestMapping(value = "/admin/scheduler", method = RequestMethod.POST, produces = "application/json")
     @ResponseStatus(value = HttpStatus.OK)
     public void PostService(@RequestBody Scheduler scheduler) {
-        System.out.println(scheduler);
         Mail interviewerMail = mailService.getMail(scheduler.getMailIdStaff());
         Mail studentMail = mailService.getMail(scheduler.getMailIdUser());
         Map<String, String> interviewerParameters = param(scheduler);
@@ -109,19 +112,20 @@ public class SchedulerController {
 
     /**
      * Converts string time to data object
+     *
      * @param time
      * @return
      */
-    private Date convertDate (String time){
+    private Date convertDate(String time) {
         SimpleDateFormat formatter = new SimpleDateFormat(DATA_FORMAT);
         Date date = new Date();
         try {
             date = formatter.parse(time);
+            return date;
         } catch (ParseException e) {
-            e.printStackTrace();
+            log.error("Failed to parse time", e);
         }
         return date;
     }
 
-    private final static String DATA_FORMAT = "yyyy-MM-dd HH:mm";
 }

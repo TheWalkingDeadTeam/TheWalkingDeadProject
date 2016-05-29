@@ -38,9 +38,9 @@ public class MailController {
     public ResponseEntity<List<Mail>> listAllMails() {
         List<Mail> mails = mailService.getAllMails();
         if (mails.isEmpty()) {
-            return new ResponseEntity<List<Mail>>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<List<Mail>>(mails, HttpStatus.OK);
+        return new ResponseEntity<>(mails, HttpStatus.OK);
     }
 
     /**
@@ -54,9 +54,9 @@ public class MailController {
         Mail mail = mailService.getMail(id);
         if (mail == null) {
             LOGGER.info("Mail with id" + id + "not found");
-            return new ResponseEntity<Mail>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<Mail>(mail, HttpStatus.OK);
+        return new ResponseEntity<>(mail, HttpStatus.OK);
     }
 
     /**
@@ -69,10 +69,10 @@ public class MailController {
     @RequestMapping(value = "/mails/", method = RequestMethod.POST)
     public ResponseEntity<Void> createMail(@RequestBody Mail mail, UriComponentsBuilder ucBuilder) {
         LOGGER.debug("Creating mail:" + mail.getHeadTemplate() + mail.getBodyTemplate());
-        mailService.createMail(mail.getHeadTemplate(), mail.getBodyTemplate());
+        mailService.createMail(mail.getHeadTemplate().toLowerCase(), mail.getBodyTemplate());
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("/mails/{id}").buildAndExpand(mail.getId()).toUri());
-        return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
     /**
@@ -88,12 +88,12 @@ public class MailController {
         Mail mailCurrent = mailService.getMail(id);
         if (mailCurrent == null) {
             LOGGER.info("Mail with id" + id + "not found");
-            return new ResponseEntity<Mail>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         mailCurrent.setBodyTemplate(mail.getBodyTemplate());
         mailCurrent.setHeadTemplate(mail.getHeadTemplate());
         mailService.updateMail(mail);
-        return new ResponseEntity<Mail>(mailCurrent, HttpStatus.OK);
+        return new ResponseEntity<>(mailCurrent, HttpStatus.OK);
     }
 
     /**
@@ -107,10 +107,10 @@ public class MailController {
         Mail mail = mailService.getMail(id);
         if (mail == null) {
             LOGGER.info("Unable to delete mail" + id + "not found");
-            return new ResponseEntity<Mail>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         mailService.deleteMail(mail);
-        return new ResponseEntity<Mail>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     /**
@@ -120,12 +120,12 @@ public class MailController {
      */
     @RequestMapping(value = "/mails/", method = RequestMethod.DELETE)
     public ResponseEntity<Mail> deleteAllMail() {
-        LOGGER.debug("Deleting all mail");
+        LOGGER.debug("Deleting all mails");
         List<Mail> mails = mailService.getAllMails();
         for (Mail i : mails) {
             mailService.deleteMail(i);
         }
-        return new ResponseEntity<Mail>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 

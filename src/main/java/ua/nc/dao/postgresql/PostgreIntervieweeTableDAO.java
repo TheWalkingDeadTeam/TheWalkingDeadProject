@@ -43,7 +43,7 @@ public class PostgreIntervieweeTableDAO implements IntervieweeTableDAO {
             "            JOIN feedback AS hr_feedback ON hr_feedback_id = hr_feedback.feedback_id   " +
             "            JOIN application ON interviewee.application_id = application.application_id  " +
             "            WHERE (application.ces_id = ?)  " +
-            "            ORDER BY score";
+            "            ORDER BY score DESC";
 
     private static final String GET_INTERVIEWEE_TABLE_COUNT_QUERY = "SELECT count(*) " +
             "            FROM interviewee     " +

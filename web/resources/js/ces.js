@@ -163,11 +163,8 @@ app.controller('FormController', ['$scope', 'MailService', '$http', 'Notificatio
                 url: '/admin/cesclose',
                 data: formData
             }).then(function mySucces(response) {
-                if (confirm("Session will be removed") == true) {
-                    Notification.success({message: 'CES was successfully closed ', delay: 1000});
-                    getReq();
-                }
-            
+                Notification.success({message: 'CES was successfully closed ', delay: 1000});
+                getReq();
             }, function myError(response) {
                 $scope.postError = true;
             });

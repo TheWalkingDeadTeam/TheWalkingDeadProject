@@ -65,29 +65,7 @@
     <jsp:include page="admin-header.jsp"/>
     <main class="mdl-layout__content mdl-color--grey-100">
         <div class="mdl-grid demo-content">
-            <script>
-
-                PNotify.prototype.options.styling = "bootstrap3";
-                        $(function(){
-                            new PNotify({
-                                title: 'Before filling templates!!!',
-                                text: 'Place \'$\' before $location, $contact, $coursetype and $place. The ' +
-                                'system will automatically replace $location with corresponding location parameter, ' +
-                                '$contact with contact , $coursetype with coursetype and $place with place. All this ' +
-                                'parameters will be taken from db or from scheduling form.',
-                                hide: false,
-                                addclass: 'custom',
-                                buttons: {
-                                    sticker: false
-                                }
-                            });
-                        });
-            </script>
-
-
-
             <jsp:include page="mail.jsp"/>
-
 
         </div>
     </main>

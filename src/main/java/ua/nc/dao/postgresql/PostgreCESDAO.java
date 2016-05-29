@@ -7,7 +7,6 @@ import ua.nc.entity.CES;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -28,13 +27,13 @@ public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements C
             "JOIN ces_status stat ON ces.ces_status_id = stat.ces_status_id WHERE name = 'PostInterviewing'";
 
     private static final String ADD_INTERVIEWER_FOR_CURRENT_CES = "INSERT INTO interviewer_participation (ces_id, system_user_id) VALUES (?, ?);";
-    private static final String addCESFieldQuery = "INSERT INTO ces_field (ces_id, field_id) VALUES (?, ?);";
+    private static final String ADD_CES_FIELD_QUERY = "INSERT INTO ces_field (ces_id, field_id) VALUES (?, ?);";
 
-    private static final String removeCESFieldQuery = "DELETE FROM ces_field WHERE ces_id = ? AND field_id = ?";
-    private static final String removeInterviewerForCurrentCESQuery = "DELETE FROM interviewer_participation" +
+    private static final String REMOVE_CES_FIELD_QUERY = "DELETE FROM ces_field WHERE ces_id = ? AND field_id = ?";
+    private static final String REMOVE_INTERVIEWER_FOR_CURRENT_CES_QUERY = "DELETE FROM interviewer_participation" +
             " WHERE ces_id = ? AND system_user_id = ?";
 
-    private static final String COUNT_INTERVIEWER_PARTICIPATION = "SELECT COUNT(*) FROM interviewer_participation" +
+    private static final String COUNT_INTERVIEWER_PARTICIPATION = "SELECT COUNT(*) FROM interviewer_participation " +
             "WHERE system_user_id = ? AND ces_id = ?";
 
     public PostgreCESDAO(Connection connection) {
@@ -218,12 +217,12 @@ public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements C
 
     @Override
     public void addCESField(int cesId, int fieldId) throws DAOException {
-        doSmthWithCESFieldOrInterviewerParticipation(addCESFieldQuery, cesId, fieldId);
+        doSmthWithCESFieldOrInterviewerParticipation(ADD_CES_FIELD_QUERY, cesId, fieldId);
     }
 
     @Override
     public void removeCESField(int cesId, int fieldId) throws DAOException {
-        doSmthWithCESFieldOrInterviewerParticipation(removeCESFieldQuery, cesId, fieldId);
+        doSmthWithCESFieldOrInterviewerParticipation(REMOVE_CES_FIELD_QUERY, cesId, fieldId);
     }
 
     @Override
@@ -233,7 +232,7 @@ public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements C
 
     @Override
     public void removeInterviewerForCurrentCES(int cesId, int interviewerId) throws DAOException {
-        doSmthWithCESFieldOrInterviewerParticipation(removeInterviewerForCurrentCESQuery, cesId, interviewerId);
+        doSmthWithCESFieldOrInterviewerParticipation(REMOVE_INTERVIEWER_FOR_CURRENT_CES_QUERY, cesId, interviewerId);
     }
 
     @Override

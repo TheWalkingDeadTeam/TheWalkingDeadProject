@@ -121,4 +121,13 @@ public interface MailService {
      * @param courseId - courseID mail to send
      */
     void sendFinalNotification(Integer rejectId, Integer jobId, Integer courseId);
+
+    /**
+     * Send registration welcome letter to the participant
+     * method will automatically choose letter template 'registration'
+     * and compile letter template with user information
+     * If there is no 'registration' template the system will choose
+     * hardcoded template.
+     */
+    void sendRegistrationNotification(User user);
 }

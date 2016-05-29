@@ -31,7 +31,7 @@ public class CESValidator implements Validator {
             errors.add(new ValidationError("CESRegistrationDate", "Incorrect registration date"));
         }
         Date today = new Date();
-        if ((today.compareTo(ces.getStartRegistrationDate()) >= 0 ) && (ces.getStatusId() == 1)){
+        if ((ces.getStartRegistrationDate().before(new Date())) && ((ces.getStatusId() == null) || (ces.getStatusId() == 1))){
             errors.add(new ValidationError("CESStartRegistrationDate", "Start registration date is incorrect!"));
         }
         if ((ces.getStartRegistrationDate().compareTo(ces.getEndRegistrationDate())) >= 0){
