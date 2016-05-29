@@ -37,12 +37,12 @@
 .registration #user, #stupidUser {
     position: relative;
     z-index: 320;
-    background: white;
+    /*background: white;*/
     margin: 0 auto;
-    margin-top: 10%;
+    /*margin-top: 10%;*/
     padding: 1%;
     min-width: 420px;
-    width: 50%;
+    /*width: 50%;*/
     border-radius: 10px;
 }
 

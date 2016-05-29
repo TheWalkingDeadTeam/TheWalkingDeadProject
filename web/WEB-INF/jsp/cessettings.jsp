@@ -132,7 +132,7 @@
                                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white formControllingButt">
                             <%--<button ng-click="backButton()" class="btn btn-lg btn-primary btn-block"> Back </button>--%>
 
-                            <a href="#slideDown" style="margin-top: 10px; width: 100%;"
+                            <a href="#slideDown" type="button" style="margin-top: 10px; width: 100%;"
                                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white formControllingButt"
                                data-toggle="collapse">Close Session</a>
 
@@ -146,7 +146,7 @@
             <%--class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">Exit</a>--%>
         </div>
 
-        <div id="slideDown" class="collapse col-lg-6 col-md-8 col-sm-12 col-xs-12" style="    margin-left: 30px;">
+        <div id="slideDown" class="collapse col-lg-6 col-md-8 col-sm-12 col-xs-12" style="margin-left: 30px;">
             <jsp:include page="ces-mail.jsp"/>
         </div>
     </main>
