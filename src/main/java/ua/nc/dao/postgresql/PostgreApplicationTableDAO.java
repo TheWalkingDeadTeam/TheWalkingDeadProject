@@ -37,7 +37,7 @@ public class PostgreApplicationTableDAO implements ApplicationTableDAO {
                     "system_user.system_user_id, " +
                     "application.rejected, " +
                     "system_user.name, " +
-                    "system_user.surname as field_0, {0} " +
+                    "system_user.surname AS field_0, {0} " +
                     "FROM public.application " +
                     "JOIN public.system_user ON application.system_user_id = system_user.system_user_id " +
                     "JOIN public.course_enrollment_session ON course_enrollment_session.ces_id = application.ces_id " +
@@ -46,7 +46,7 @@ public class PostgreApplicationTableDAO implements ApplicationTableDAO {
                     "JOIN public.field_type ON field.field_type_id = field_type.field_type_id " +
                     "JOIN public.field_value ON field_value.field_id = field.field_id " +
                     "LEFT JOIN public.list_value ON field_value.list_value_id = list_value.list_value_id " +
-                    "WHERE course_enrollment_session.ces_id = ? AND (system_user.surname LIKE ? OR system_user.name LIKE ? )" +
+                    "WHERE course_enrollment_session.ces_id = ? AND (system_user.surname LIKE ? OR system_user.name LIKE ? ) " +
                     "GROUP BY system_user.system_user_id, application.rejected " +
                     "ORDER BY field_{1} {2} " +
                     "LIMIT ? OFFSET ?";
@@ -62,7 +62,7 @@ public class PostgreApplicationTableDAO implements ApplicationTableDAO {
                     "        OR system_user.name LIKE ? )";
 
     private static final String PIVOT_TEMPLATE = "MAX(CASE WHEN field.field_id={0} THEN {1} ELSE NULL END) as field_{0} ";
-
+    private static final String PIVOT_REPORT_TEMPLATE = "MAX(CASE WHEN field.field_id={0} THEN {1} ELSE NULL END) as {2} ";
 
     private List<FieldData> getFieldIds(Integer cesId) throws DAOException {
         try (PreparedStatement statement = this.connection.prepareStatement(GET_FIELD_IDS_QUERY)) {
@@ -82,9 +82,9 @@ public class PostgreApplicationTableDAO implements ApplicationTableDAO {
         }
     }
 
-    private String subQuery(Integer fieldId, String fieldType) {
+    private String fieldPatternSwitcher(String type){
         String pattern = null;
-        switch (fieldType){
+        switch (type){
             case "number":
                 pattern = "field_value.value_double";
                 break;
@@ -100,9 +100,18 @@ public class PostgreApplicationTableDAO implements ApplicationTableDAO {
                 pattern = "list_value.value_text";
                 break;
         }
-        return MessageFormat.format(PIVOT_TEMPLATE, fieldId, pattern);
+        return pattern;
     }
 
+    private String subQuery(FieldData fieldData) {
+        String pattern = fieldPatternSwitcher(fieldData.type);
+        return MessageFormat.format(PIVOT_TEMPLATE, fieldData.id, pattern);
+    }
+
+    private String subReportQuery(FieldData fieldData){
+        String pattern = fieldPatternSwitcher(fieldData.type);
+        return MessageFormat.format(PIVOT_REPORT_TEMPLATE, fieldData.id, pattern, "\""+fieldData.name+"\"");
+    }
 
     public StudentData getApplicationsTable(Integer cesId) throws DAOException {
         return getApplications(cesId, null, null, 0, "", true);
@@ -148,16 +157,27 @@ public class PostgreApplicationTableDAO implements ApplicationTableDAO {
         }
     }
 
-    private String buildBaseFullQuery(List<FieldData> fieldData, Integer fieldId, Boolean asc) throws DAOException {
+    private String buildBaseFullQuery(List<FieldData> fieldData, Integer orderByFieldId, Boolean asc) throws DAOException {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < fieldData.size() - 1; i++) {
-            builder.append(subQuery(fieldData.get(i).id, fieldData.get(i).type));
+            builder.append(subQuery(fieldData.get(i)));
             builder.append(",");
         }
-        builder.append(subQuery(fieldData.get(fieldData.size() - 1).id, fieldData.get(fieldData.size() - 1).type));
+        builder.append(subQuery(fieldData.get(fieldData.size() - 1)));
         String sub = builder.toString();
         String order = asc ? "ASC" : "DESC";
-        return MessageFormat.format(BASE_QUERY, sub, fieldId, order);
+        return MessageFormat.format(BASE_QUERY, sub, orderByFieldId, order);
+    }
+
+    private String buildReportFullQuery(List<FieldData> fieldData, Integer orderByFieldId) throws DAOException {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < fieldData.size() - 1; i++) {
+            builder.append(subReportQuery(fieldData.get(i)));
+            builder.append(",");
+        }
+        builder.append(subReportQuery(fieldData.get(fieldData.size() - 1)));
+        String sub = builder.toString();
+        return MessageFormat.format(BASE_QUERY, sub, orderByFieldId, "ASC");
     }
 
     private StudentData parseResultSet(ResultSet rs, List<FieldData> fieldData) throws SQLException {
@@ -178,10 +198,10 @@ public class PostgreApplicationTableDAO implements ApplicationTableDAO {
         return result;
     }
 
-    private Object getField(ResultSet rs, FieldData fd) throws SQLException {
+    private Object getField(ResultSet rs, FieldData fieldData) throws SQLException {
         Object result = null;
-        String fieldName = MessageFormat.format("field_{0}", fd.id);
-        switch (fd.type){
+        String fieldName = MessageFormat.format("field_{0}", fieldData.id);
+        switch (fieldData.type){
             case "number":
                 result = rs.getDouble(fieldName);
                 break;
@@ -218,14 +238,15 @@ public class PostgreApplicationTableDAO implements ApplicationTableDAO {
 
     public String getFullQuery(Integer cesId) throws DAOException {
         List<FieldData> fieldData = getFieldIds(cesId);
-        String fullQuery = buildBaseFullQuery(fieldData, 0, true);
+        String fullQuery = buildReportFullQuery(fieldData, 0);
         try (PreparedStatement statement = this.connection.prepareStatement(fullQuery)) {
             statement.setInt(1, cesId);
             statement.setString(2, "%");
             statement.setString(3, "%");
             statement.setObject(4, null);
             statement.setObject(5, null);
-            return statement.toString().substring(45);
+            // 45 subs standard query beginning, replacing "as field_0" removes alias from surname
+            return statement.toString().substring(45).replace("AS field_0", "").replace("ORDER BY field_0 ASC","");
         } catch (Exception e) {
             throw new DAOException(e);
         }
