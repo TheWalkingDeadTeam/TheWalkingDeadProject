@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import ua.nc.dao.enums.UserRoles;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.entity.*;
@@ -16,9 +17,8 @@ import ua.nc.validator.ValidationError;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.Writer;
-import java.util.*;
+import java.util.Date;
+import java.util.Set;
 
 /**
  * Created by Hlib on 09.05.2016.
@@ -41,10 +41,9 @@ public class InterviewerController {
         CES currentCES = cesService.getCurrentCES();
         if (currentCES != null) {
             int cesId = cesService.getCurrentCES().getId();
-            Iterator<Integer> iterator = integerList.getValues().iterator();
-            while (iterator.hasNext()) {
+            for (Integer userId :integerList.getValues() ) {
                 try {
-                    cesService.enrollAsInterviewer(iterator.next(), cesId);
+                    cesService.enrollAsInterviewer(userId, cesId);
                     LOGGER.info("Successfully enrolled on current CES");
                 } catch (DAOException e) {
                     LOGGER.info("Cant enroll on current CES", e);
@@ -62,15 +61,6 @@ public class InterviewerController {
     public String feedback() {
         return "profile-for-interviewer";
     }
-
-  /*  @RequestMapping(value = "/feedback/{id}", method = RequestMethod.GET, produces = "application/json")
-    public Application specificFeedback(@PathVariable("id") Integer id, HttpServletResponse response) {
-        Application application = applicationService.getApplicationByUserForCurrentCES(id);
-        if (application == null) {
-            fillNullResponse(response);
-        }
-        return application;
-    }*/
 
     @ResponseBody
     @RequestMapping(value = "feedback/{id}/save", method = RequestMethod.POST, produces = "application/json")
@@ -127,6 +117,10 @@ public class InterviewerController {
             }
             User user = userService.getUser(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                     .getPrincipal()).getUsername());
+            if (!cesService.checkParticipation(user.getId())){
+                feedbackDTO.setRestricted(true);
+                return feedbackDTO;
+            }
             Feedback feedback = null;
             Integer feedbackId = null;
             if (feedbackDTO.getInterviewerRole().equals(UserRoles.ROLE_DEV)) {
@@ -183,41 +177,13 @@ public class InterviewerController {
         }
     }
 
-    /*@ResponseBody
-    @RequestMapping(value = "getallfeedbacks/{id}", method = RequestMethod.GET, produces = "application/json")
-    public List<FeedbackAndSpecialMark> getAllFeedbacks(@PathVariable("id") Integer id, HttpServletResponse response) {
-        Application application = applicationService.getApplicationByUserForCurrentCES(id);
-        if (application == null) {
-            fillNullResponse(response);
-            return null;
-        }
-        Interviewee interviewee = intervieweeService.getInterviewee(application.getId());
-        if (interviewee == null) {
-            fillNullResponse(response);
-            return null;
-        }
-        List<FeedbackAndSpecialMark> feedbackAndSpecialMarks = new LinkedList<>();
-        FeedbackAndSpecialMark feedbackAndSpecialMark = new FeedbackAndSpecialMark();
-        feedbackAndSpecialMark.setSpecialMark(interviewee.getSpecialMark());
-        if (interviewee.getDevFeedbackID() != null) {
-            feedbackAndSpecialMark.setFeedback(feedbackService.getFeedback(interviewee.getDevFeedbackID()));
-        }
-        feedbackAndSpecialMarks.add(feedbackAndSpecialMark);
-        feedbackAndSpecialMark = new FeedbackAndSpecialMark();
-        if (interviewee.getHrFeedbackID() != null) {
-            feedbackAndSpecialMark.setFeedback(feedbackService.getFeedback(interviewee.getHrFeedbackID()));
-        }
-        feedbackAndSpecialMarks.add(feedbackAndSpecialMark);
-        return feedbackAndSpecialMarks;
+    @RequestMapping(value = "/leave-feedback")
+    public ModelAndView leaveFeedback(){
+        return new ModelAndView("leave-feedback");
     }
 
-    private void fillNullResponse(HttpServletResponse response) {
-        try {
-            Writer writer = response.getWriter();
-            writer.write("null");
-            writer.close();
-        } catch (IOException ex) {
-            LOGGER.warn(ex);
-        }
-    }*/
+    @RequestMapping(value = "/view-feedback")
+    public ModelAndView viewFeedback(){
+        return new ModelAndView("view-feedback");
+    }
 }

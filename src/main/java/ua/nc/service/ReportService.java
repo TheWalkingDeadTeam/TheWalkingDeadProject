@@ -21,4 +21,6 @@ public interface ReportService {
     void deleteReport(ReportTemplate report);
 
     List<Map<String,Object>> getReportRows(ReportTemplate report) throws DAOException;
+
+    ReportTemplate getUserProfileQueryById(Integer id);
 }

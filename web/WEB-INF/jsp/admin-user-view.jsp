@@ -93,6 +93,7 @@
                 <div class="cssload-cube cssload-c3"></div>
             </div>
         </div>
+        <div class="table-responsive">
         <table id="tableUsers" class="table table-striped table-hover">
             <thead>
             <tr>
@@ -145,7 +146,9 @@
                 <td ng-style="{opacity:0.5,'background-color':'{{user.status == 'Active' ? 'green' : 'red'}}'}" >{{user.status}}</td>
             </tr>
             </tbody>
-        </table><div id="pagination">
+        </table>
+            </div>
+            <div id="pagination">
         <dir-pagination-controls
                 max-size="8"
                 direction-links="true"

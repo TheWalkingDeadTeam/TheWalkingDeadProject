@@ -5,10 +5,7 @@ import ua.nc.dao.CESDAO;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.entity.CES;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -36,6 +33,9 @@ public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements C
     private static final String removeCESFieldQuery = "DELETE FROM ces_field WHERE ces_id = ? AND field_id = ?";
     private static final String removeInterviewerForCurrentCESQuery = "DELETE FROM interviewer_participation" +
             " WHERE ces_id = ? AND system_user_id = ?";
+
+    private static final String COUNT_INTERVIEWER_PARTICIPATION = "SELECT COUNT(*) FROM interviewer_participation" +
+            "WHERE system_user_id = ? AND ces_id = ?";
 
     public PostgreCESDAO(Connection connection) {
         super(connection);
@@ -239,5 +239,17 @@ public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements C
     @Override
     public CES create(CES object) throws DAOException {
         return persist(object);
+    }
+
+    @Override
+    public int countInterviewerParticipation(int cesId, int interviewerId) throws DAOException{
+        try (PreparedStatement statement = connection.prepareStatement(COUNT_INTERVIEWER_PARTICIPATION)){
+            statement.setInt(1, interviewerId);
+            statement.setInt(2, cesId);
+            ResultSet rs = statement.executeQuery();
+            return rs.getInt("count");
+        } catch (SQLException ex){
+            throw new DAOException(ex);
+        }
     }
 }

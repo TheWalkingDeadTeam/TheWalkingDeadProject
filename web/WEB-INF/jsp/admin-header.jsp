@@ -97,7 +97,7 @@
                 class="mdl-color-text--blue-grey-400 material-icons"
                 role="presentation">alarm</i>Registration Period</a>
         <a class="mdl-navigation__link" href="/admin/students"><i class="mdl-color-text--blue-grey-400 material-icons"
-                                                                  role="presentation">supervisor_account</i>Student List</a>
+                                                                  role="presentation">supervisor_account</i>Application List</a>
         <sec:authorize access="hasRole('ROLE_ADMIN')">
             <a class="mdl-navigation__link" href="/admin/users"><i class="mdl-color-text--blue-grey-400 material-icons"
                                                                    role="presentation">supervisor_account</i>Users List</a>

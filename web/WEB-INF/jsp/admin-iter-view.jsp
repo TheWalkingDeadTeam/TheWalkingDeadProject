@@ -110,6 +110,7 @@
                 <div class="cssload-cube cssload-c3"></div>
             </div>
         </div>
+        <div class="table-responsive">
         <table id="tableUsers" class="table table-bordered table-striped" style="{margin-top: 200px}">
 
             <thead>
@@ -166,6 +167,7 @@
             </tr>
             </tbody>
         </table>
+            </div>
         <div id="pagination">
         <dir-pagination-controls
                 max-size="8"
