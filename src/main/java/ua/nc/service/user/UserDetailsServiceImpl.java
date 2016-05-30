@@ -21,7 +21,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userService.getUser(email);
+        User user = userService.findUserByEmail(email);
         if (user == null) {
             throw new UsernameNotFoundException("User with email " + email + " not found");
         }
@@ -29,7 +29,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         for (Role role : user.getRoles()) {
             roles.add(new SimpleGrantedAuthority(role.getName()));
         }
-        UserDetails userDetails = new UserDetailsImpl(user.getId(), user.getEmail(), user.getPassword(), user.getStatus(), roles);
+        UserDetailsImpl userDetails = new UserDetailsImpl(user.getId(), user.getEmail(), user.getPassword(), user.getStatus(), roles);
         return userDetails;
     }
+
+
 }

@@ -31,11 +31,11 @@ public class AccountController {
     @RequestMapping(value = "/account/{id}", method = RequestMethod.GET)
     public User account(@PathVariable("id") Integer id, HttpServletRequest request) {
         if (request.isUserInRole(UserRoles.ROLE_STUDENT.name())){
-            Integer userId = userService.getUser(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+            Integer userId = userService.findUserByEmail(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                     .getPrincipal()).getUsername()).getId();
             if (!id.equals(userId)) return null;
         }
-        User user = userService.getUser(id);
+        User user = userService.findUserById(id);
         return user;
     }
 
@@ -52,8 +52,20 @@ public class AccountController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/changeroles", method = RequestMethod.POST)
+    @RequestMapping(value = "/getUser", method = RequestMethod.GET)
+    public User getUser(SecurityContextHolderAwareRequestWrapper request) {
+        User user = null;
+        if (request.getRemoteUser() != null){
+            user = userService.findUserByEmail(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+                    .getPrincipal()).getUsername());
+        }
+        return user;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/account/changeroles", method = RequestMethod.POST)
     public void changeRoles(@RequestBody User user) {
+        System.out.println("Booom !");
         String email = user.getEmail();
         Set<Role> roles = user.getRoles();
         System.out.println(email);
@@ -65,24 +77,13 @@ public class AccountController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getUser", method = RequestMethod.GET)
-    public User getUser(SecurityContextHolderAwareRequestWrapper request) {
-        User user = null;
-        if (request.getRemoteUser() != null){
-            user = userService.getUser(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
-                    .getPrincipal()).getUsername());
-        }
-        return user;
-    }
-
-    @ResponseBody
     @RequestMapping(value = "/getUser/{id}", method = RequestMethod.GET)
     public User getUser(@PathVariable("id") Integer id, SecurityContextHolderAwareRequestWrapper request) {
         User user = null;
         if (request.isUserInRole(UserRoles.ROLE_ADMIN.name())
                 || (((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal()).getId().equals(id))) {
-            user = userService.getUser(id);
+            user = userService.findUserById(id);
         }
         return user;
     }

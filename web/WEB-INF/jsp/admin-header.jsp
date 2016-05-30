@@ -109,7 +109,7 @@
                 class="mdl-color-text--blue-grey-400 material-icons"
                 role="presentation">supervisor_account</i>Interviewer List</a>
         <sec:authorize access="hasRole('ROLE_ADMIN')">
-            <a class="mdl-navigation__link" href="/admin/create"><i class="mdl-color-text--blue-grey-400 material-icons"
+            <a class="mdl-navigation__link" href="/admin/create-user"><i class="mdl-color-text--blue-grey-400 material-icons"
                                                                     role="presentation">portrait</i>Create User</a>
         </sec:authorize>
         <a class="mdl-navigation__link" href="/admin/mail-template"><i

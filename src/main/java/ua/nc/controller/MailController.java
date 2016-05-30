@@ -159,7 +159,7 @@ public class MailController {
         if (mail.getMailIdUser() != null) {
             Mail studentMail = mailService.getMail(mail.getMailIdUser());
             for (Integer i : userId) {
-                User user = userService.getUser(i);
+                User user = userService.findUserById(i);
                 Map<String, String> customizeMail = new HashMap<>();
                 customizeMail.put(NAME, user.getName());
                 customizeMail.put(SURNAME, user.getSurname());
@@ -168,7 +168,7 @@ public class MailController {
             }
         } else {
             for (Integer i : userId) {
-                User user = userService.getUser(i);
+                User user = userService.findUserById(i);
                 mailService.sendMail(user.getEmail(), mail.getHeadTemplate(), mail.getBodyTemplate());
             }
         }

@@ -6,13 +6,10 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
@@ -24,8 +21,6 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import ua.nc.dao.enums.UserRoles;
-import ua.nc.dao.enums.UserStatus;
-import ua.nc.dao.postgresql.PostgreApplicationTableDAO;
 import ua.nc.entity.User;
 import ua.nc.service.PhotoService;
 import ua.nc.service.PhotoServiceImpl;
@@ -52,16 +47,15 @@ public class LoginController implements HandlerExceptionResolver {
     private final UserDetailsService userDetailsService = new UserDetailsServiceImpl();
 
 
-
     @Autowired
     @Qualifier("authenticationManager")
-    protected AuthenticationManager authenticationManager;
+    private AuthenticationManager authenticationManager;
 
     @RequestMapping(value = {"/", "/login"}, method = RequestMethod.GET)
     public String login(SecurityContextHolderAwareRequestWrapper request, HttpServletResponse response) {
         SavedRequest savedRequest =
                 new HttpSessionRequestCache().getRequest(request, response);
-        if (savedRequest != null && (request.getRemoteUser() != null)) {
+        if (savedRequest != null  && request.getUserPrincipal() != null) {
             LOGGER.info("Login and redirect to " + savedRequest.getRedirectUrl());
             return "redirect:" + savedRequest.getRedirectUrl();
         } else {
@@ -79,38 +73,26 @@ public class LoginController implements HandlerExceptionResolver {
                 }
             }
         }
-        return "test";
+        return "login";
     }
 
 
-    /**
-     * Method authorize user with Spring Security
-     *
-     * @param user the user that want to authorize
-     * @return json of errors that were created during authorization
-     */
     @ResponseBody
     @RequestMapping(value = "/security_check ", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Set<ValidationError> authentication(@RequestBody User user) {
-        Set<ValidationError> errors = new LinkedHashSet<>();
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
-        try {
-            UserDetailsImpl userDetails = (UserDetailsImpl) userDetailsService.loadUserByUsername(user.getEmail());
-            if (userDetails.getStatus() == UserStatus.Active) {
-                token.setDetails(userDetails);
+        Set<ValidationError> errors = new AuthenticationValidator().validate(user);
+        if (errors.isEmpty()) {
+            try {
+                AbstractAuthenticationToken token =
+                        new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
+                token.setDetails(userDetailsService.loadUserByUsername(user.getEmail()));
                 Authentication auth = authenticationManager.authenticate(token);
                 SecurityContextHolder.getContext().setAuthentication(auth);
                 LOGGER.info("Sign in successful with email " + user.getEmail());
-            } else {
-                errors.add(new ValidationError("signin", "Authorization deny. Account is not active"));
-                LOGGER.warn("Authorization deny email " + user.getEmail() + " . Account status is not Active");
+            } catch (BadCredentialsException e) {
+                LOGGER.warn("Authorization deny " + user.getEmail() + " has another password ");
+                errors.add(new ValidationError("signin", "Invalid username or password"));
             }
-        } catch (BadCredentialsException e) {
-            LOGGER.warn("Authorization deny " + user.getEmail() + " has another password");
-            errors.add(new ValidationError("signin", "Invalid username or password"));
-        } catch (UsernameNotFoundException e) {
-            LOGGER.warn("Authorization deny email" + user.getEmail() + " not found");
-            errors.add(new ValidationError("signin", "Invalid username or password"));
         }
         return errors;
     }
@@ -129,11 +111,11 @@ public class LoginController implements HandlerExceptionResolver {
         Validator validator = new RegistrationValidator();
         Set<ValidationError> errors = validator.validate(user);
         if (errors.isEmpty()) {
-                User registeredUser = userService.createUser(user);
-                if (registeredUser == null) {
-                    LOGGER.warn("Register failed " + user.getEmail());
-                    errors.add(new ValidationError("register", "Register failed"));
-                }
+            User registeredUser = userService.createUser(user);
+            if (registeredUser == null) {
+                LOGGER.warn("Register failed " + user.getEmail());
+                errors.add(new ValidationError("register", "Register failed"));
+            }
 
         }
         return errors;
@@ -154,7 +136,7 @@ public class LoginController implements HandlerExceptionResolver {
             errors = validator.validate(email);
             if (errors.isEmpty()) {
 
-                User user = userService.getUser(email);
+                User user = userService.findUserByEmail(email);
                 if (user != null) {
                     userService.recoverPass(user);
                 } else {
@@ -176,7 +158,7 @@ public class LoginController implements HandlerExceptionResolver {
         Set<ValidationError> errors = validator.validate(photo);
         if (errors.isEmpty()) {
             try {
-                User user = userService.getUser(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+                User user = userService.findUserByEmail(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                         .getPrincipal()).getUsername());
                 photoService.uploadPhoto(photo, user.getId());
             } catch (IOException e) {
@@ -190,7 +172,7 @@ public class LoginController implements HandlerExceptionResolver {
     @ResponseBody
     @RequestMapping(value = "/getPhoto")
     public byte[] getPhoto() {
-        User user = userService.getUser(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+        User user = userService.findUserByEmail(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal()).getUsername());
         return photoService.getPhotoById(user.getId());
     }
@@ -200,7 +182,7 @@ public class LoginController implements HandlerExceptionResolver {
     @RequestMapping(value = "/getPhoto/{id}")
     public byte[] getPhoto(@PathVariable("id") Integer id, HttpServletRequest request) {
         if (request.isUserInRole(UserRoles.ROLE_STUDENT.name())) {
-            Integer userId = userService.getUser(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+            Integer userId = userService.findUserByEmail(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                     .getPrincipal()).getUsername()).getId();
             if (!id.equals(userId)) return null;
         }

@@ -3,16 +3,17 @@
  */
 
 $(document).ready(function () {
-    $("#save_roles").click(function (event) {
+    
+    $("#buttonSaveRoles").click(function (event) {
+        event.preventDefault();
         var checkroles = [];
         $("input:checked").each(function () {
             checkroles.push({name: $(this).val()});
         });
         checkroles.push({name: $("#role").val()});
-        event.preventDefault();
         $.ajax({
             type: 'post',
-            url: '/changeroles',
+            url: '/account/changeroles',
             dataType: 'json',
             contentType: "application/json",
             data: JSON.stringify({

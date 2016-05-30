@@ -40,8 +40,8 @@
                     <sec:authorize access="hasAnyRole('ROLE_HR','ROLE_DEV','ROLE_BA')">
                     <li><a href="/interviewee"><spring:message code="locale.interviewee"/></a></li>
                     </sec:authorize>
-                    <li><a href="/information"><spring:message code="locale.info"/></a></li>
-                    <li><a href="/contacts"><spring:message code="locale.contacts"/></a></li>
+                    <%--<li><a href="/information"><spring:message code="locale.info"/></a></li>--%>
+                    <%--<li><a href="/contacts"><spring:message code="locale.contacts"/></a></li>--%>
                     <sec:authorize access="hasRole('ROLE_STUDENT')">
                         <sec:authentication var="principal" property="principal"/>
                         <li><a href="/profile?${principal.id}"><spring:message code="locale.profile"/></a></li>

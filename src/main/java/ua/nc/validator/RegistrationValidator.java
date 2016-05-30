@@ -86,7 +86,7 @@ public class RegistrationValidator implements Validator {
             errors.add(new ValidationError("roles", "Choose role"));
         }
 
-        if (userService.getUser(user.getEmail()) != null) {
+        if (userService.findUserByEmail(user.getEmail()) != null) {
             LOGGER.warn("User " + user.getEmail() + " already exists");
             errors.add(new ValidationError("user", "Such user already exists"));
         }

@@ -26,7 +26,6 @@ import java.util.*;
  */
 public class ProfileServiceImpl implements ProfileService {
     private final static Logger LOGGER = Logger.getLogger(FeedbackServiceImpl.class);
-
     private DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
     private static final Set<String> typesToDeny = new HashSet<>(Arrays.asList("textarea", "tel", "checkbox"));
     private static final String ROLE_STUDENT = "ROLE_STUDENT";
@@ -36,7 +35,7 @@ public class ProfileServiceImpl implements ProfileService {
         Connection connection = daoFactory.getConnection();
         RoleDAO roleDAO = daoFactory.getRoleDAO(connection);
         UserService userService = new UserServiceImpl();
-        User user = userService.getUser(userId);
+        User user = userService.findUserById(userId);
         Set<Role> roles = user.getRoles();
         Profile result = new Profile();
         try {
