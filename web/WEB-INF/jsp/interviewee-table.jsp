@@ -47,7 +47,11 @@
     <link rel="stylesheet" href="/resources/css/styles.css">
     <link rel="stylesheet" href="/resources/css/checkbox.css">
 
-
+<style>
+    p {
+        line-height: 15px;
+    }
+</style>
 </head>
 <body>
 
@@ -75,7 +79,7 @@
                 <div class="cssload-cube cssload-c3"></div>
             </div>
         </div>
-        <table  id="tableUsers" class="table table-striped table-hover">
+        <table  id="tableUsers" class="table table-striped table-hover table-bordered">
             <thead>
             <tr>
                 <td>

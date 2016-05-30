@@ -143,7 +143,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="ch in session | orderBy:sortType:sortReverse | filter:searchFilt">
+                    <tr ng-hide="enrollCtrl.cesTable" ng-repeat="ch in session | orderBy:sortType:sortReverse | filter:searchFilt">
                         <td ng-init="index=$index + 1">{{index}}</td>
                         <td>{{ch.year}}</td>
                         <td>{{ch.startRegistrationDate}}</td>
@@ -165,6 +165,11 @@
                                                                            width="50" height="50" title="Excel"/></a>
                         </td>
                     </tr>
+                    <tr ng-hide="enrollCtrl.emptyTemplateTable == true">
+
+                        <td colspan="12" class="vert-align col-xs-12 text-center">Empty table</td>
+                    </tr>
+
                     </tbody>
                 </table>
             </div>

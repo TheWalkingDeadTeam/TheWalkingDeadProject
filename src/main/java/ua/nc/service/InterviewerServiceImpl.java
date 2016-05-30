@@ -23,11 +23,11 @@ import java.util.Objects;
  */
 public class InterviewerServiceImpl implements InterviewerService {
     private final static Logger log = Logger.getLogger(InterviewerServiceImpl.class);
-    private final DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
+    private final DAOFactory DAO_FACTORY = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
 
     @Override
     public List<Interviewer> getInterviewer(Integer itemPerPage, Integer pageNumber) {
-        Connection connection = daoFactory.getConnection();
+        Connection connection = DAO_FACTORY.getConnection();
         try {
             PostgreInterviewerTableDAO userInterviewerTableDAO = new PostgreInterviewerTableDAO(connection);
             CESServiceImpl cesService = new CESServiceImpl();
@@ -36,14 +36,14 @@ public class InterviewerServiceImpl implements InterviewerService {
         } catch (DAOException e) {
             log.warn("Can't get interviews", e.getCause());
         } finally {
-            daoFactory.putConnection(connection);
+            DAO_FACTORY.putConnection(connection);
         }
         return null;
     }
 
     @Override
     public List<Interviewer> getInterviewer(Integer itemPerPage, Integer pageNumber, String orderBy) {
-        Connection connection = daoFactory.getConnection();
+        Connection connection = DAO_FACTORY.getConnection();
 
         try {
             PostgreInterviewerTableDAO userInterviewerTableDAO = new PostgreInterviewerTableDAO(connection);
@@ -53,14 +53,14 @@ public class InterviewerServiceImpl implements InterviewerService {
         } catch (DAOException e) {
             log.warn("Can't get interviews", e.getCause());
         } finally {
-            daoFactory.putConnection(connection);
+            DAO_FACTORY.putConnection(connection);
         }
         return null;
     }
 
     @Override
     public List<Interviewer> getInterviewer(Integer itemPerPage, Integer pageNumber, String orderBy, Boolean asc) {
-        Connection connection = daoFactory.getConnection();
+        Connection connection = DAO_FACTORY.getConnection();
 
         try {
             PostgreInterviewerTableDAO userInterviewerTableDAO = new PostgreInterviewerTableDAO(connection);
@@ -70,14 +70,14 @@ public class InterviewerServiceImpl implements InterviewerService {
         } catch (DAOException e) {
             log.warn("Can't get interviews", e.getCause());
         } finally {
-            daoFactory.putConnection(connection);
+            DAO_FACTORY.putConnection(connection);
         }
         return null;
     }
 
     @Override
     public List<Interviewer> getInterviewer(Integer itemPerPage, Integer pageNumber, String orderBy, String pattern) {
-        Connection connection = daoFactory.getConnection();
+        Connection connection = DAO_FACTORY.getConnection();
 
         try {
             PostgreInterviewerTableDAO userInterviewerTableDAO = new PostgreInterviewerTableDAO(connection);
@@ -87,7 +87,7 @@ public class InterviewerServiceImpl implements InterviewerService {
         } catch (DAOException e) {
             log.warn("Can't get interviews", e.getCause());
         } finally {
-            daoFactory.putConnection(connection);
+            DAO_FACTORY.putConnection(connection);
         }
         return null;
     }
@@ -107,9 +107,9 @@ public class InterviewerServiceImpl implements InterviewerService {
 
     @Override
     public void subscribeInterviewer(List<Integer> studentsId) {
-//        Connection connection = daoFactory.getConnection();
-//        ApplicationDAO applicationDAO = daoFactory.getApplicationDAO(connection);
-//        CESDAO cesDAO = daoFactory.getCESDAO(connection);
+//        Connection connection = DAO_FACTORY.getConnection();
+//        ApplicationDAO applicationDAO = DAO_FACTORY.getApplicationDAO(connection);
+//        CESDAO cesDAO = DAO_FACTORY.getCESDAO(connection);
 //        try {
 //            List<Application> applications = applicationDAO.getAllCESApplications(cesDAO.getCurrentCES().getId());
 //            for (Application application : applications) {
@@ -119,15 +119,15 @@ public class InterviewerServiceImpl implements InterviewerService {
 //        } catch (DAOException e) {
 //            e.printStackTrace();
 //        } finally {
-//            daoFactory.putConnection(connection);
+//            DAO_FACTORY.putConnection(connection);
 //        }
     }
 
     @Override
     public void unsubscribeInterviewer(List<Integer> studentsId) {
-        //        Connection connection = daoFactory.getConnection();
-//        ApplicationDAO applicationDAO = daoFactory.getApplicationDAO(connection);
-//        CESDAO cesDAO = daoFactory.getCESDAO(connection);
+        //        Connection connection = DAO_FACTORY.getConnection();
+//        ApplicationDAO applicationDAO = DAO_FACTORY.getApplicationDAO(connection);
+//        CESDAO cesDAO = DAO_FACTORY.getCESDAO(connection);
 //        try {
 //            List<Application> applications = applicationDAO.getAllCESApplications(cesDAO.getCurrentCES().getId());
 //            for (Application application : applications) {
@@ -137,20 +137,20 @@ public class InterviewerServiceImpl implements InterviewerService {
 //        } catch (DAOException e) {
 //            e.printStackTrace();
 //        } finally {
-//            daoFactory.putConnection(connection);
+//            DAO_FACTORY.putConnection(connection);
 //        }
     }
 
     @Override
     public Integer getInterviewerSize(String pattern) {
-        Connection connection = daoFactory.getConnection();
+        Connection connection = DAO_FACTORY.getConnection();
         PostgreInterviewerTableDAO userInterviewerTableDAO = new PostgreInterviewerTableDAO(connection);
         try {
             return userInterviewerTableDAO.getInterviewersCount(pattern);
         } catch (DAOException e) {
             log.error("Can`t get Interviewers size " + e.getCause());
         } finally {
-            daoFactory.putConnection(connection);
+            DAO_FACTORY.putConnection(connection);
         }
         return null;
     }

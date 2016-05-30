@@ -30,8 +30,6 @@
             error: function (jqXHR, exception) {
                 console.log(jqXHR);
                 console.log(exception);
-                alert(jqXHR);
-                alert(exception);
                 window.location.href = "/error"
             }
         });

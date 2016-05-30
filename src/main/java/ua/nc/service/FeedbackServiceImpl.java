@@ -22,7 +22,7 @@ import java.util.Set;
 public class FeedbackServiceImpl implements FeedbackService {
 
     private final static Logger LOGGER = Logger.getLogger(FeedbackServiceImpl.class);
-    private final static DAOFactory daoFactory  = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
+    private final static DAOFactory DAO_FACTORY  = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
     private final static UserService userService = new UserServiceImpl();
     private final static String ROLE_DEV = "ROLE_DEV";
     private final static String ROLE_BA = "ROLE_BA";
@@ -31,13 +31,13 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     public boolean saveFeedback(FeedbackAndSpecialMark feedbackAndSpecialMark, Application application) {
-        Connection connection = daoFactory.getConnection();
-        FeedbackDAO feedbackDAO = daoFactory.getFeedbackDAO(connection);
-        IntervieweeDAO intervieweeDAO = daoFactory.getIntervieweeDAO(connection);
-        CESDAO cesDAO = daoFactory.getCESDAO(connection);
+        Connection connection = DAO_FACTORY.getConnection();
+        FeedbackDAO feedbackDAO = DAO_FACTORY.getFeedbackDAO(connection);
+        IntervieweeDAO intervieweeDAO = DAO_FACTORY.getIntervieweeDAO(connection);
+        CESDAO cesDAO = DAO_FACTORY.getCESDAO(connection);
         PostgreIntervieweeTableDAO intervieweeTableDAO = new PostgreIntervieweeTableDAO(connection);
-        Connection connection1 = daoFactory.getConnection();
-        RoleDAO roleDAO = daoFactory.getRoleDAO(connection1);
+        Connection connection1 = DAO_FACTORY.getConnection();
+        RoleDAO roleDAO = DAO_FACTORY.getRoleDAO(connection1);
         Feedback feedback = feedbackAndSpecialMark.getFeedback();
         try {
             connection.setAutoCommit(false);
@@ -94,24 +94,24 @@ public class FeedbackServiceImpl implements FeedbackService {
             LOGGER.warn(ex.getMessage());
             return false;
         } finally {
-            daoFactory.putConnection(connection);
-            daoFactory.putConnection(connection1);
+            DAO_FACTORY.putConnection(connection);
+            DAO_FACTORY.putConnection(connection1);
         }
 
     }
 
     @Override
     public Feedback getFeedback(int id) {
-        Connection connection = daoFactory.getConnection();
-        FeedbackDAO feedbackDAO = daoFactory.getFeedbackDAO(connection);
-        RoleDAO roleDAO = daoFactory.getRoleDAO(connection);
+        Connection connection = DAO_FACTORY.getConnection();
+        FeedbackDAO feedbackDAO = DAO_FACTORY.getFeedbackDAO(connection);
+        RoleDAO roleDAO = DAO_FACTORY.getRoleDAO(connection);
         Feedback feedback = null;
         try{
             feedback = feedbackDAO.read(id);
         } catch (DAOException ex){
             LOGGER.warn(ex.getMessage());
         } finally {
-            daoFactory.putConnection(connection);
+            DAO_FACTORY.putConnection(connection);
         }
         return feedback;
     }

@@ -13,7 +13,7 @@ tableController.controller('tableCtrl', ["$scope", "$http", function ($scope, $h
     $http({
         method: 'GET',
         url: '/admin/edit-form',
-        headers: { Accept: 'application/json'}
+        headers: {Accept: 'application/json'}
     }).success(function (response) {
         $scope.fields = response;
     });
@@ -64,7 +64,6 @@ tableController.controller('tableCtrl', ["$scope", "$http", function ($scope, $h
             var res = $http.post('/admin/edit-form/save-position', dataObject);
             res.success(function (responseData) {
                 if (responseData.length) {
-                    console.log(responseData);
                     var errors_out = "";
                     for (var i in responseData) {
                         errors_out += responseData[i].errorMessage + "</br>"
@@ -80,7 +79,9 @@ tableController.controller('tableCtrl', ["$scope", "$http", function ($scope, $h
                         .empty()
                         .addClass('alert alert-success')
                         .html('Position saved successfully');
-                    window.location.href = "/admin/edit-form";
+                    setTimeout(function () {
+                        $("#errorsDiv").fadeOut().empty();
+                    }, 3000);
                 }
             });
         }

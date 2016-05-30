@@ -26,14 +26,14 @@ import java.util.*;
  */
 public class ProfileServiceImpl implements ProfileService {
     private final static Logger LOGGER = Logger.getLogger(FeedbackServiceImpl.class);
-    private DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
+    private DAOFactory DAO_FACTORY = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
     private static final Set<String> typesToDeny = new HashSet<>(Arrays.asList("textarea", "tel", "checkbox"));
     private static final String ROLE_STUDENT = "ROLE_STUDENT";
 
     @Override
     public Profile getProfile(int userId, int cesId) throws DAOException {
-        Connection connection = daoFactory.getConnection();
-        RoleDAO roleDAO = daoFactory.getRoleDAO(connection);
+        Connection connection = DAO_FACTORY.getConnection();
+        RoleDAO roleDAO = DAO_FACTORY.getRoleDAO(connection);
         UserService userService = new UserServiceImpl();
         User user = userService.findUserById(userId);
         Set<Role> roles = user.getRoles();
@@ -44,10 +44,10 @@ public class ProfileServiceImpl implements ProfileService {
             if (!contains) {
                 throw new DAOException("Wrong role");
             }
-            FieldDAO fieldDAO = daoFactory.getFieldDAO(connection);
-            FieldTypeDAO fieldTypeDAO = daoFactory.getFieldTypeDAO(connection);
-            FieldValueDAO fieldValueDAO = daoFactory.getFieldValueDAO(connection);
-            ListValueDAO listValueDAO = daoFactory.getListValueDAO(connection);
+            FieldDAO fieldDAO = DAO_FACTORY.getFieldDAO(connection);
+            FieldTypeDAO fieldTypeDAO = DAO_FACTORY.getFieldTypeDAO(connection);
+            FieldValueDAO fieldValueDAO = DAO_FACTORY.getFieldValueDAO(connection);
+            ListValueDAO listValueDAO = DAO_FACTORY.getListValueDAO(connection);
             boolean flagApplied = isApplied(userId, cesId);
             List<ProfileField> profileFields = new ArrayList<>();
             List<Field> fields = fieldDAO.getFieldsForCES(cesId);
@@ -103,7 +103,7 @@ public class ProfileServiceImpl implements ProfileService {
             LOGGER.error(e.getCause());
             throw new DAOException(e);
         } finally {
-            daoFactory.putConnection(connection);
+            DAO_FACTORY.putConnection(connection);
         }
         return result;
     }
@@ -124,11 +124,11 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public Profile getShortProfile(int userId, int cesId) {
-        Connection connection = daoFactory.getConnection();
-        FieldDAO fieldDAO = daoFactory.getFieldDAO(connection);
-        FieldTypeDAO fieldTypeDAO = daoFactory.getFieldTypeDAO(connection);
-        FieldValueDAO fieldValueDAO = daoFactory.getFieldValueDAO(connection);
-        ListValueDAO listValueDAO = daoFactory.getListValueDAO(connection);
+        Connection connection = DAO_FACTORY.getConnection();
+        FieldDAO fieldDAO = DAO_FACTORY.getFieldDAO(connection);
+        FieldTypeDAO fieldTypeDAO = DAO_FACTORY.getFieldTypeDAO(connection);
+        FieldValueDAO fieldValueDAO = DAO_FACTORY.getFieldValueDAO(connection);
+        ListValueDAO listValueDAO = DAO_FACTORY.getListValueDAO(connection);
         Profile result = new Profile();
         List<ProfileField> profileFields = new ArrayList<>();
         try {
@@ -169,7 +169,7 @@ public class ProfileServiceImpl implements ProfileService {
         } catch (DAOException e) {
             LOGGER.error(e.getCause());
         } finally {
-            daoFactory.putConnection(connection);
+            DAO_FACTORY.putConnection(connection);
         }
         result.setFields(profileFields);
         return result;
@@ -214,15 +214,15 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     private boolean isApplied(int userId, int cesId) throws DAOException {
-        Connection connection = daoFactory.getConnection();
-        ApplicationDAO applicationDAO = daoFactory.getApplicationDAO(connection);
+        Connection connection = DAO_FACTORY.getConnection();
+        ApplicationDAO applicationDAO = DAO_FACTORY.getApplicationDAO(connection);
         Application resultSet = null;
         try {
             resultSet = applicationDAO.getApplicationByUserCES(userId, cesId);
         } catch (DAOException e) {
             throw new DAOException(e);
         } finally {
-            daoFactory.putConnection(connection);
+            DAO_FACTORY.putConnection(connection);
         }
         if (resultSet == null) {
             return false;
@@ -233,11 +233,11 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     private void createProfile(Profile profile, int userId, int cesId) throws DAOException {
-        Connection connection = daoFactory.getConnection();
+        Connection connection = DAO_FACTORY.getConnection();
         try {
             connection.setAutoCommit(false);
-            ApplicationDAO applicationDAO = daoFactory.getApplicationDAO(connection);
-            FieldValueDAO fieldValueDAO = daoFactory.getFieldValueDAO(connection);
+            ApplicationDAO applicationDAO = DAO_FACTORY.getApplicationDAO(connection);
+            FieldValueDAO fieldValueDAO = DAO_FACTORY.getFieldValueDAO(connection);
             Application application = applicationDAO.create(new Application(userId, cesId));
             List<FieldValue> fieldValues = parseProfile(application.getId(), profile);
             for (FieldValue fieldValue : fieldValues) {
@@ -252,16 +252,16 @@ public class ProfileServiceImpl implements ProfileService {
             }
             throw new DAOException(e);
         } finally {
-            daoFactory.putConnection(connection);
+            DAO_FACTORY.putConnection(connection);
         }
     }
 
     private void updateProfile(Profile profile, int userId, int cesId) throws DAOException {
-        Connection connection = daoFactory.getConnection();
+        Connection connection = DAO_FACTORY.getConnection();
         try {
             connection.setAutoCommit(false);
-            ApplicationDAO applicationDAO = daoFactory.getApplicationDAO(connection);
-            FieldValueDAO fieldValueDAO = daoFactory.getFieldValueDAO(connection);
+            ApplicationDAO applicationDAO = DAO_FACTORY.getApplicationDAO(connection);
+            FieldValueDAO fieldValueDAO = DAO_FACTORY.getFieldValueDAO(connection);
             Application application = applicationDAO.getApplicationByUserCES(userId, cesId);
             List<FieldValue> fieldValues = parseProfile(application.getId(), profile);
             List<Integer> multipleFields = new ArrayList<>();
@@ -287,14 +287,14 @@ public class ProfileServiceImpl implements ProfileService {
             }
             throw new DAOException(e);
         } finally {
-            daoFactory.putConnection(connection);
+            DAO_FACTORY.putConnection(connection);
         }
     }
 
     @Override
     public void setProfile(int userId, Profile profile) throws DAOException {
-        Connection connection = daoFactory.getConnection();
-        CESDAO cesDAO = daoFactory.getCESDAO(connection);
+        Connection connection = DAO_FACTORY.getConnection();
+        CESDAO cesDAO = DAO_FACTORY.getCESDAO(connection);
         try {
             CES ces = cesDAO.getCurrentCES();
             if (isApplied(userId, ces.getId())) {
@@ -306,7 +306,7 @@ public class ProfileServiceImpl implements ProfileService {
             LOGGER.error(e.getCause());
             throw new DAOException(e);
         } finally {
-            daoFactory.putConnection(connection);
+            DAO_FACTORY.putConnection(connection);
         }
     }
 }

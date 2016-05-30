@@ -454,7 +454,7 @@ public class AdminController {
             workId = workNode.asInt();
             courseId = courseNode.asInt();
         } catch (IOException e) {
-            LOGGER.error("Failed to parse", e);
+            LOGGER.error("Failed to parse CESclose parameters", e);
         }
         mailService.sendFinalNotification(rejectionId, workId, courseId);
         cesService.closeCES();
