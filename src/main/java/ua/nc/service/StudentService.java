@@ -18,7 +18,5 @@ public interface StudentService {
 
     public void changeStatus(String action, List<Integer> studentsId);
 
-    public void rejectStudents(List<Integer> studentsId);
 
-    void acceptStudents (List<Integer> studentsId);
 }

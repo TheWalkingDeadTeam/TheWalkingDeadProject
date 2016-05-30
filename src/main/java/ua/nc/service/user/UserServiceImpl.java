@@ -4,6 +4,7 @@ package ua.nc.service.user;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ua.nc.dao.RoleDAO;
@@ -19,6 +20,7 @@ import ua.nc.entity.UserRow;
 import ua.nc.security.ApplicationContextProvider;
 import ua.nc.service.MailService;
 import ua.nc.service.MailServiceImpl;
+import ua.nc.service.UserDetailsImpl;
 
 import java.sql.Connection;
 import java.util.HashSet;
@@ -247,7 +249,6 @@ public class UserServiceImpl implements UserService {
     public void activateUsers(List<Integer> userIds) {
         DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
         Connection connection = daoFactory.getConnection();
-
         try {
             PostgreUserDAO userDAO = (PostgreUserDAO) daoFactory.getUserDAO(connection);
             for (Integer id : userIds) {
@@ -265,8 +266,16 @@ public class UserServiceImpl implements UserService {
         Connection connection = daoFactory.getConnection();
         try {
             PostgreUserDAO userDAO = (PostgreUserDAO) daoFactory.getUserDAO(connection);
+            Integer userId = ((UserDetailsImpl) SecurityContextHolder
+                    .getContext()
+                    .getAuthentication()
+                    .getPrincipal()).getId();
+            LOGGER.info(userId);
             for (Integer id : userIds) {
-                userDAO.deactivateUser(id);
+                LOGGER.info(!userId.equals(id));
+                if(!userId.equals(id)) {
+                    userDAO.deactivateUser(id);
+                }
             }
         } catch (DAOException e) {
             LOGGER.warn("Cannot deactivate users");
