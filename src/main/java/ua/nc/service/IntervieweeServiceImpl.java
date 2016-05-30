@@ -21,27 +21,27 @@ import java.util.Map;
  */
 public class IntervieweeServiceImpl implements IntervieweeService {
     private final static Logger LOGGER = Logger.getLogger(IntervieweeServiceImpl.class);
-    private final static DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
+    private final static DAOFactory DAO_FACTORY = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
 
     @Override
     public Interviewee getInterviewee(int id) {
-        Connection connection = daoFactory.getConnection();
+        Connection connection = DAO_FACTORY.getConnection();
         Interviewee interviewee = null;
         try{
-            IntervieweeDAO intervieweeDAO = daoFactory.getIntervieweeDAO(connection);
+            IntervieweeDAO intervieweeDAO = DAO_FACTORY.getIntervieweeDAO(connection);
 
             interviewee = intervieweeDAO.read(id);
         } catch (DAOException ex){
             LOGGER.warn(ex);
         } finally {
-            daoFactory.putConnection(connection);
+            DAO_FACTORY.putConnection(connection);
         }
         return interviewee;
     }
 
     @Override
     public List<IntervieweeRow> getInterviewee(Integer itemPerPage, Integer pageNumber) {
-        Connection connection = daoFactory.getConnection();
+        Connection connection = DAO_FACTORY.getConnection();
 
         try {
             PostgreIntervieweeTableDAO postgreIntervieweeTableDAO = new PostgreIntervieweeTableDAO(connection);
@@ -51,14 +51,14 @@ public class IntervieweeServiceImpl implements IntervieweeService {
         } catch (DAOException e) {
             LOGGER.warn("Can't get interviewee", e.getCause());
         } finally {
-            daoFactory.putConnection(connection);
+            DAO_FACTORY.putConnection(connection);
         }
         return null;
     }
 
     @Override
     public List<IntervieweeRow> getInterviewee(Integer itemPerPage, Integer pageNumber, String orderBy) {
-        Connection connection = daoFactory.getConnection();
+        Connection connection = DAO_FACTORY.getConnection();
         PostgreIntervieweeTableDAO postgreIntervieweeTableDAO = new PostgreIntervieweeTableDAO(connection);
         CESServiceImpl cesService = new CESServiceImpl();
         CES ces = cesService.getCurrentCES();
@@ -67,14 +67,14 @@ public class IntervieweeServiceImpl implements IntervieweeService {
         } catch (DAOException e) {
             LOGGER.warn("Can't get interviewee", e.getCause());
         } finally {
-            daoFactory.putConnection(connection);
+            DAO_FACTORY.putConnection(connection);
         }
         return null;
     }
 
     @Override
     public List<IntervieweeRow> getInterviewee(Integer itemPerPage, Integer pageNumber, String orderBy, Boolean asc) {
-        Connection connection = daoFactory.getConnection();
+        Connection connection = DAO_FACTORY.getConnection();
 
         try {
             PostgreIntervieweeTableDAO postgreIntervieweeTableDAO = new PostgreIntervieweeTableDAO(connection);
@@ -84,14 +84,14 @@ public class IntervieweeServiceImpl implements IntervieweeService {
         } catch (DAOException e) {
             LOGGER.warn("Can't get interviewee", e.getCause());
         } finally {
-            daoFactory.putConnection(connection);
+            DAO_FACTORY.putConnection(connection);
         }
         return null;
     }
 
     @Override
     public List<IntervieweeRow> getInterviewee(Integer itemPerPage, Integer pageNumber, String orderBy, String pattern) {
-        Connection connection = daoFactory.getConnection();
+        Connection connection = DAO_FACTORY.getConnection();
 
         try {
             PostgreIntervieweeTableDAO postgreIntervieweeTableDAO = new PostgreIntervieweeTableDAO(connection);
@@ -101,7 +101,7 @@ public class IntervieweeServiceImpl implements IntervieweeService {
         } catch (DAOException e) {
             LOGGER.warn("Can't get interviewee", e.getCause());
         } finally {
-            daoFactory.putConnection(connection);
+            DAO_FACTORY.putConnection(connection);
         }
         return null;
     }
@@ -123,7 +123,7 @@ public class IntervieweeServiceImpl implements IntervieweeService {
 
     @Override
     public Integer getIntervieweeSize(String pattern) {
-        Connection connection = daoFactory.getConnection();
+        Connection connection = DAO_FACTORY.getConnection();
 
         try {
             PostgreIntervieweeTableDAO userIntervieweeTableDAO = new PostgreIntervieweeTableDAO(connection);
@@ -133,15 +133,15 @@ public class IntervieweeServiceImpl implements IntervieweeService {
         } catch (DAOException e) {
             LOGGER.error("Can`t get Interviewee size " + e.getCause());
         } finally {
-            daoFactory.putConnection(connection);
+            DAO_FACTORY.putConnection(connection);
         }
         return null;
     }
 
     @Override
     public void createInteviewees(List<User> studentGroup, Map<Integer, Integer> applicationList, Date interviewDate) {
-        Connection connection = daoFactory.getConnection();
-        IntervieweeDAO intDAO = daoFactory.getIntervieweeDAO(connection);
+        Connection connection = DAO_FACTORY.getConnection();
+        IntervieweeDAO intDAO = DAO_FACTORY.getIntervieweeDAO(connection);
         for (User user : studentGroup) {
             int appId = applicationList.remove(user.getId());
             try {
@@ -151,12 +151,12 @@ public class IntervieweeServiceImpl implements IntervieweeService {
                     try {
                         intDAO.create(new Interviewee(appId, interviewDate));
                     } catch (DAOException e) {
-                        daoFactory.putConnection(connection);
+                        DAO_FACTORY.putConnection(connection);
                         LOGGER.error(e.getCause());
                     }
                 }
             }
         }
-        daoFactory.putConnection(connection);
+        DAO_FACTORY.putConnection(connection);
     }
 }

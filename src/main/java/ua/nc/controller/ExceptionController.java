@@ -18,15 +18,21 @@ import javax.servlet.http.HttpServletRequest;
 public class ExceptionController {
 
     @RequestMapping(value = {"/error", "/403"}, method = RequestMethod.GET)
-    public String login() {
+    public String error() {
         return "error";
     }
 
+    @RequestMapping(value = {"/empty-table"}, method = RequestMethod.GET)
+    public String emptyTable() {
+        return "error-empty-table";
+    }
 
     @ExceptionHandler(NoHandlerFoundException.class)
     public String handleError404()   {
         return "/error-404";
     }
+
+
 
 
 }

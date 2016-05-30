@@ -35,7 +35,7 @@ public class PostgreApplicationTableDAO implements ApplicationTableDAO {
 
     private static final String BASE_QUERY = "SELECT " +
                     "system_user.system_user_id, " +
-                    "application.rejected, " +
+                    "application.rejected AS field_2147483647, " +
                     "system_user.name, " +
                     "system_user.surname AS field_0, {0} " +
                     "FROM public.application " +
@@ -179,6 +179,8 @@ public class PostgreApplicationTableDAO implements ApplicationTableDAO {
         return MessageFormat.format(BASE_QUERY, sub, orderByFieldId, "ASC");
     }
 
+    private static final String REJECTED = "field_2147483647";
+    private static final String SURNAME = "field_0";
     private StudentData parseResultSet(ResultSet rs, List<FieldData> fieldData) throws SQLException {
         StudentData result = new StudentData();
         result.header = fieldData;
@@ -186,8 +188,8 @@ public class PostgreApplicationTableDAO implements ApplicationTableDAO {
         while (rs.next()){
             RowValue rowValue = new RowValue();
             rowValue.userId = rs.getInt("system_user_id");
-            rowValue.rejected = rs.getBoolean("rejected");
-            rowValue.name = rs.getString("field_0")+ " " + rs.getString("name");
+            rowValue.rejected = rs.getBoolean(REJECTED);
+            rowValue.name = rs.getString(SURNAME)+ " " + rs.getString("name");
             for (FieldData i : fieldData) {
                 rowValue.fields.put(i.id, getField(rs, i));
             }

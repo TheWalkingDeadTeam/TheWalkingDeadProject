@@ -23,32 +23,34 @@ $(document).ready(function () {
             }),
             success: function (response) {
                 if (response.length) {
-                    var errors_out = "";
                     for (var i in response) {
-                        errors_out += response[i].errorMessage + "</br>"
+                         new PNotify({
+                            text: response[i].errorMessage,
+                            type: 'error',
+                            styling: 'fontawesome',
+                            buttons: {
+                                closer: false,
+                                sticker: false
+                            }
+                        }).get().click(function() {
+                             this.remove();
+                         });
                     }
-                    $('#messageRegistration')
-                        .removeClass()
-                        .empty();
-                    $('#messageRegistration')
-                        .addClass('alert alert-danger')
-                        .html(errors_out)
-                        .fadeIn();
+
+
                     $('#j_password').val("");
                 } else {
-                    $('#messageRegistration')
-                        .removeClass()
-                        .empty()
-                        .addClass('alert alert-success')
-                        .html('Registered successfully')
-                        .fadeIn();
+                    new PNotify({
+                        text: 'User ' + $('#email').val() + ' registered successfully ',
+                        type: 'success',
+                        styling: 'fontawesome'
+                    }).get().click(function() {
+                        this.remove();
+                    });;
                     $('#regform input')
                         .val("");
                     $("#check").prop("checked", false);
                     $("input").filter(".roles").prop("checked", false);
-                    setTimeout(function() {
-                        $("#messageRegistration").fadeOut().empty();
-                    }, 3000);
                 }
             },
             error: function (jqXHR, exception) {
@@ -56,4 +58,6 @@ $(document).ready(function () {
             }
         });
     });
+
+
 });

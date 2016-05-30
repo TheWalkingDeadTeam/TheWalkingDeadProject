@@ -48,6 +48,13 @@ mailer.controller('MailController', ['$scope', 'MailService', '$http', 'Notifica
             .then(
                 function (d) {
                     self.mails = d;
+                    if (self.mails.length != 0) {
+                        self.mailsTemplateTable = false;
+                        self.emptyTemplateTable = true;
+                    } else {
+                        self.mailsTemplateTable = true;
+                        self.emptyTemplateTable = false;
+                    }
                 },
                 function (errResponse) {
                     console.error('Error while fetching Currencies');

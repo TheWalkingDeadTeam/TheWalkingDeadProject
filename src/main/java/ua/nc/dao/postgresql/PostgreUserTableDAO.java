@@ -21,7 +21,7 @@ public class PostgreUserTableDAO implements UserTableDAO {
         this.connection = connection;
     }
 
-    private static final String[] SET_VALUES = new String[] { "system_user_id", "name", "surname", "email", "status"};
+    private static final String[] SET_VALUES = new String[] { "system_user_id", "name", "surname", "email", "status", "role"};
     private static final Set<String> FIELDS = new HashSet<>(Arrays.asList(SET_VALUES));
 
     private static final String COUNT_USERS = "SELECT COUNT(1) FROM system_user " +

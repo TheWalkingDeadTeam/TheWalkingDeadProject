@@ -16,7 +16,7 @@ import java.util.*;
  */
 public class PostgreInterviewerTableDAO implements InterviewerTableDAO {
 
-    private static final String[] SET_VALUES = new String[] { "system_user_id", "name", "surname", "email", "role"};
+    private static final String[] SET_VALUES = new String[] { "system_user_id", "name", "surname", "email", "role", "participation"};
     private static final Set<String> FIELDS = new HashSet<>(Arrays.asList(SET_VALUES));
 
     private Connection connection;

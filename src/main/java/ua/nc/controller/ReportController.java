@@ -32,7 +32,7 @@ public class ReportController {
             return new ResponseEntity<List<ReportTemplate>>(reports, HttpStatus.OK);
         } else {
             LOGGER.info("Reports not found");
-            return new ResponseEntity<List<ReportTemplate>>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<List<ReportTemplate>>(HttpStatus.NO_CONTENT);
         }
     }
 

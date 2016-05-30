@@ -111,6 +111,7 @@ button {
     padding: .7em 1.5em; /* отступ от текста */
     outline: none; /* убирать контур в Mozilla */
     border: none;
+    border-radius: 4px;
 }
 
 #labelpasskod {
@@ -148,7 +149,7 @@ button:active {
     height: 3em;
 }
 
-#fieldsCheck {
+#fieldsCheck, #feedbacks{
     display: block;
     margin: 0 auto;
     max-width: 700px;
@@ -218,3 +219,27 @@ body {
 /*#save_roles {*/
     /*width: 100%;*/
 /*}*/
+
+#studForm {
+    display: -webkit-flex; /* Safari */
+    -webkit-align-items: center; /* Safari 7.0+ */
+    display: flex;
+    align-items: center;
+
+}
+
+#studForm:link {
+    text-decoration: none;
+}
+
+#studForm:visited {
+    text-decoration: none;
+}
+
+#studForm:hover {
+    text-decoration: none;
+}
+
+#studForm:active {
+    text-decoration: none;
+}

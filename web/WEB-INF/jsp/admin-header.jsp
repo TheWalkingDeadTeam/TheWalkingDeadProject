@@ -120,7 +120,7 @@
                 role="presentation">history</i> Enrollment History</a>
         <a class="mdl-navigation__link" href="/admin/report"><i
                 class="mdl-color-text--blue-grey-400 material-icons"
-                role="presentation">show_chart</i>Statistic & Reports</a>
+                role="presentation">show_chart</i>Reports</a>
     </nav>
 </div>
 

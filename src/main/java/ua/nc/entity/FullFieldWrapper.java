@@ -12,7 +12,7 @@ public class FullFieldWrapper {
     private Integer ID;
     private String name;
     private int fieldTypeID;
-    private boolean multipleChoice;
+    private Boolean multipleChoice;
     private int orderNum;
     private Integer listTypeID;
     private String listTypeName;
@@ -77,11 +77,11 @@ public class FullFieldWrapper {
         this.fieldTypeID = fieldTypeID;
     }
 
-    public boolean isMultipleChoice() {
+    public Boolean isMultipleChoice() {
         return multipleChoice;
     }
 
-    public void setMultipleChoice(boolean multipleChoice) {
+    public void setMultipleChoice(Boolean multipleChoice) {
         this.multipleChoice = multipleChoice;
     }
 

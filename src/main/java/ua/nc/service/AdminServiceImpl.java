@@ -18,12 +18,12 @@ import java.util.Set;
 public class AdminServiceImpl implements AdminService{
 
     private final static Logger LOGGER = Logger.getLogger(AdminServiceImpl.class);
-    private DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
+    private DAOFactory DAO_FACTORY = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
     @Override
     public Set<User> getAllStudents() {
-        Connection connection = daoFactory.getConnection();
-        UserDAO userDAO = daoFactory.getUserDAO(connection);
-        RoleDAO roleDAO = daoFactory.getRoleDAO(connection);
+        Connection connection = DAO_FACTORY.getConnection();
+        UserDAO userDAO = DAO_FACTORY.getUserDAO(connection);
+        RoleDAO roleDAO = DAO_FACTORY.getRoleDAO(connection);
         Set<User> students = null;
         try {
             Role role = roleDAO.findByName("ROLE_STUDENT");
@@ -31,7 +31,7 @@ public class AdminServiceImpl implements AdminService{
         } catch (DAOException ex){
             LOGGER.info("Couldn't get all students: " + ex.getMessage());
         } finally {
-            daoFactory.putConnection(connection);
+            DAO_FACTORY.putConnection(connection);
         }
         return students;
     }
