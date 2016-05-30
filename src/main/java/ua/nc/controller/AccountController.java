@@ -52,19 +52,6 @@ public class AccountController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/changeroles", method = RequestMethod.POST)
-    public void changeRoles(@RequestBody User user) {
-        String email = user.getEmail();
-        Set<Role> roles = user.getRoles();
-        System.out.println(email);
-        for (Role role : roles) {
-            System.out.println(role.getId());
-        }
-        userService.changeRoles(email, roles);
-        System.out.println("!!!");
-    }
-
-    @ResponseBody
     @RequestMapping(value = "/getUser", method = RequestMethod.GET)
     public User getUser(SecurityContextHolderAwareRequestWrapper request) {
         User user = null;
@@ -73,6 +60,20 @@ public class AccountController {
                     .getPrincipal()).getUsername());
         }
         return user;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/account/changeroles", method = RequestMethod.POST)
+    public void changeRoles(@RequestBody User user) {
+        System.out.println("Booom !");
+        String email = user.getEmail();
+        Set<Role> roles = user.getRoles();
+        System.out.println(email);
+        for (Role role : roles) {
+            System.out.println(role.getId());
+        }
+        userService.changeRoles(email, roles);
+        System.out.println("!!!");
     }
 
     @ResponseBody
