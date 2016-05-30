@@ -337,9 +337,9 @@ public class MailServiceImpl implements MailService {
         Integer cesId = cesService.getCurrentCES().getId();
         Connection connection = DAO_FACTORY.getConnection();
         UserDAO userDAO = new PostgreUserDAO(connection);
-        Set<User> jobOfferUsers = new HashSet<>();
-        Set<User> courseAcceptedUsers = new HashSet<>();
-        Set<User> courseRejectedUsers = new HashSet<>();
+        Set<User> jobOfferUsers = null;
+        Set<User> courseAcceptedUsers = null;
+        Set<User> courseRejectedUsers = null;
         try {
             jobOfferUsers = userDAO.getJobOfferedUsers(cesId);
         } catch (DAOException e) {
@@ -364,32 +364,28 @@ public class MailServiceImpl implements MailService {
         Mail mailWorkOffer = getMail(jobId);
         Mail mailCourseOffer = getMail(courseId);
 
+
         if ((!mailRejectedTemplate.getBodyTemplate().isEmpty()) && (!mailWorkOffer.getBodyTemplate().isEmpty()) &&
                 (!mailCourseOffer.getBodyTemplate().isEmpty())) {
-//            Async send
-//            final Set<User> finalJobOfferUsers = jobOfferUsers;
-//            final Set<User> finalCourseRejectedUsers = courseRejectedUsers;
-//            final Set<User> finalCourseAcceptedUsers = courseAcceptedUsers;
-//            schedulerMassDeliveryService.schedule(new Runnable() {
-//                public void run() {
-//                    massDelivery(finalJobOfferUsers, mailWorkOffer);
-//
-//                    massDelivery(finalCourseRejectedUsers, mailRejectedTemplate);
-//
-//                    massDelivery(finalCourseAcceptedUsers, mailCourseOffer);
-//                }
-//            }, new Date());
-            if (!jobOfferUsers.isEmpty()) {
+            if (jobOfferUsers != null) {
                 massDelivery(jobOfferUsers, mailWorkOffer);
+            } else {
+                LOGGER.warn("JobOffer users not existing or null!");
             }
-            if (!courseRejectedUsers.isEmpty()) {
+
+            if (courseRejectedUsers != null) {
                 massDelivery(courseRejectedUsers, mailRejectedTemplate);
+            } else {
+                LOGGER.warn("CourseRejection users not existing or null");
             }
-            if (!courseAcceptedUsers.isEmpty()) {
+
+            if (courseAcceptedUsers != null) {
                 massDelivery(courseAcceptedUsers, mailCourseOffer);
+            } else {
+                LOGGER.warn("CourseAccepted users not existing or null!");
             }
         } else {
-            LOGGER.warn("Mails is not existing now! Someone could drop them.");
+            LOGGER.warn("Delivery failed, someone have dropped templates!");
         }
     }
 
