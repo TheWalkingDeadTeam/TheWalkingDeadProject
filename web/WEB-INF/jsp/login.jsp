@@ -448,7 +448,7 @@
                         <span>4</span>
                         <i class="fa fa-users fa-2x"></i>
                     </div>
-                    <h3>PRACTISE</h3>
+                    <h3>PRACTICE</h3>
                 </div>
             </div>
             <div class="col-md-2 col-md-4 col-xs-6">
@@ -525,7 +525,7 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-6">
-                &copy; 2016 Netcracker. Designed by <a target="_blank" href="http://shapebootstrap.net/"
+                &copy; 2016 Netcracker. Designed by <a target="_blank" href="http://nc-training.tk/"
                                                        title="Walking Dead Team">Walking Dead Team</a>
             </div>
             <div class="col-sm-6">
