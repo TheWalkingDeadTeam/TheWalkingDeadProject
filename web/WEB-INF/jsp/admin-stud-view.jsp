@@ -120,9 +120,11 @@
                                             </select>
                                             <div>
                                                 <div ng-repeat="head in data.users.header">
+                                                    <label>
                                                     <input type="checkbox" checklist-model="headerStud.head"
                                                            checklist-value="head">
                                                     <p>{{head.name}}</p>
+                                                    </label>
                                                 </div>
                                             </div>
 

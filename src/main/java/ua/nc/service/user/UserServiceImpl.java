@@ -4,10 +4,8 @@ package ua.nc.service.user;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.support.WebApplicationContextUtils;
 import ua.nc.dao.RoleDAO;
 import ua.nc.dao.UserDAO;
 import ua.nc.dao.enums.DataBaseType;
@@ -15,7 +13,6 @@ import ua.nc.dao.exception.DAOException;
 import ua.nc.dao.factory.DAOFactory;
 import ua.nc.dao.postgresql.PostgreUserDAO;
 import ua.nc.dao.postgresql.PostgreUserTableDAO;
-import ua.nc.entity.Application;
 import ua.nc.entity.Role;
 import ua.nc.entity.User;
 import ua.nc.entity.UserRow;
@@ -40,7 +37,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
 
     private PasswordEncoder passwordEncoder = ApplicationContextProvider.getApplicationContext().getBean("encoder", PasswordEncoder.class);
-
 
 
     @Override
@@ -104,7 +100,8 @@ public class UserServiceImpl implements UserService {
     public void changeStatus(String action, List<Integer> userIds) {
         if (Objects.equals(action, "activate")) {
             activateUsers(userIds);
-        } else if (Objects.equals(action, "deactivate")) {
+//            Objects.equals(action, "deactivate")
+        } else if ("deactivate".equals(action)) {
             deactivateUsers(userIds);
         } else {
             LOGGER.error(action + " action not supported");
@@ -247,7 +244,6 @@ public class UserServiceImpl implements UserService {
         return false;
     }
 
-    @Override
     public void activateUsers(List<Integer> userIds) {
         DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
         Connection connection = daoFactory.getConnection();
@@ -256,7 +252,6 @@ public class UserServiceImpl implements UserService {
             PostgreUserDAO userDAO = (PostgreUserDAO) daoFactory.getUserDAO(connection);
             for (Integer id : userIds) {
                 userDAO.activateUser(id);
-                userDAO.updateUser(findUserById(id));
             }
         } catch (DAOException e) {
             LOGGER.warn("Cannot activate users");
@@ -265,8 +260,6 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-
-    @Override
     public void deactivateUsers(List<Integer> userIds) {
         DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
         Connection connection = daoFactory.getConnection();
@@ -274,7 +267,6 @@ public class UserServiceImpl implements UserService {
             PostgreUserDAO userDAO = (PostgreUserDAO) daoFactory.getUserDAO(connection);
             for (Integer id : userIds) {
                 userDAO.deactivateUser(id);
-                userDAO.updateUser(findUserById(id));
             }
         } catch (DAOException e) {
             LOGGER.warn("Cannot deactivate users");
@@ -289,9 +281,7 @@ public class UserServiceImpl implements UserService {
         UserDAO userDAO = daoFactory.getUserDAO(connection);
         try {
             User user = userDAO.findByEmail(email);
-            System.out.println(user.getName());
             RoleDAO roleDAO = daoFactory.getRoleDAO(connection);
-            System.out.println(roleDAO);
             Set<Role> newRoles = new HashSet<>();
             for (Role role : roles) {
                 newRoles.add(roleDAO.findByName(role.getName()));

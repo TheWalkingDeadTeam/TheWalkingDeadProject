@@ -116,34 +116,44 @@ public class AdminController {
     }
 
 
-    @RequestMapping(value = {"/students/search/{itemsPerPage}/{pageNumber}/{pattern}"}, method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = {"/students/search/{itemsPerPage}/{pageNumber}/{pattern}"}, method = RequestMethod.GET,
+            produces = "application/json")
     public
     @ResponseBody
-    StudentData studentsSearch(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("pattern") String pattern) {
-        StudentData studentData = studentService.getStudents(itemsPerPage, (pageNumber * itemsPerPage - itemsPerPage), pattern);
+    StudentData studentsSearch(@PathVariable("itemsPerPage") Integer itemsPerPage,
+                               @PathVariable("pageNumber") Integer pageNumber,
+                               @PathVariable("pattern") String pattern) {
+        StudentData studentData = studentService.getStudents(itemsPerPage,
+                (pageNumber * itemsPerPage - itemsPerPage), pattern);
         if (studentData == null) {
             LOGGER.warn("studData == null");
         }
-        LOGGER.info("studData == " + studentData.toString());
         return studentData;
     }
 
 
-    @RequestMapping(value = {"/students/list/{itemsPerPage}/{pageNumber}"}, method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = {"/students/list/{itemsPerPage}/{pageNumber}"}, method = RequestMethod.GET,
+            produces = "application/json")
     @ResponseBody
-    public StudentData getStudents(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber) {
+    public StudentData getStudents(@PathVariable("itemsPerPage") Integer itemsPerPage,
+                                   @PathVariable("pageNumber") Integer pageNumber) {
         StudentData studentData = studentService.getStudents(itemsPerPage, (pageNumber * itemsPerPage - itemsPerPage));
         if (studentData == null) {
             LOGGER.warn("studData == null");
         }
-        LOGGER.info("studData == " + studentData.toString());
         return studentData;
     }
 
-    @RequestMapping(value = {"/students/list/{itemsPerPage}/{pageNumber}/{sortType}/{type}"}, method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = {"/students/list/{itemsPerPage}/{pageNumber}/{sortType}/{type}"},
+            method = RequestMethod.GET,
+            produces = "application/json")
     @ResponseBody
-    public StudentData getStudentsBySort(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("sortType") Integer sortType, @PathVariable("type") Boolean asc) {
-        StudentData studentData = studentService.getStudents(itemsPerPage, (pageNumber * itemsPerPage - itemsPerPage), sortType, asc);
+    public StudentData getStudentsBySort(@PathVariable("itemsPerPage") Integer itemsPerPage,
+                                         @PathVariable("pageNumber") Integer pageNumber,
+                                         @PathVariable("sortType") Integer sortType,
+                                         @PathVariable("type") Boolean asc) {
+        StudentData studentData = studentService.getStudents(itemsPerPage,
+                (pageNumber * itemsPerPage - itemsPerPage), sortType, asc);
         if (studentData == null) {
             LOGGER.warn("studData == null");
         }
@@ -181,10 +191,14 @@ public class AdminController {
         return "admin-iter-view";
     }
 
-    @RequestMapping(value = {"/interviewers/list/{itemsPerPage}/{pageNumber}"}, method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = {"/interviewers/list/{itemsPerPage}/{pageNumber}"},
+            method = RequestMethod.GET,
+            produces = "application/json")
     @ResponseBody
-    public List<Interviewer> interviewGetJSON(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber) {
-        List<Interviewer> interviewers = interviewerService.getInterviewer(itemsPerPage, (pageNumber * itemsPerPage - itemsPerPage));
+    public List<Interviewer> interviewGetJSON(@PathVariable("itemsPerPage") Integer itemsPerPage,
+                                              @PathVariable("pageNumber") Integer pageNumber) {
+        List<Interviewer> interviewers = interviewerService.getInterviewer(itemsPerPage,
+                (pageNumber * itemsPerPage - itemsPerPage));
         if (interviewers == null) {
             LOGGER.warn("interviewers == null");
         }
@@ -194,12 +208,15 @@ public class AdminController {
 
     @RequestMapping(value = {"/interviewers/list/{itemsPerPage}/{pageNumber}/{sortType}/{type}"}, method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<Interviewer> interviewGetJSONSort(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("sortType") String sortType, @PathVariable("type") Boolean asc) {
-        List<Interviewer> interviewers = interviewerService.getInterviewer(itemsPerPage, (pageNumber * itemsPerPage - itemsPerPage), sortType, asc);
+    public List<Interviewer> interviewGetJSONSort(@PathVariable("itemsPerPage") Integer itemsPerPage,
+                                                  @PathVariable("pageNumber") Integer pageNumber,
+                                                  @PathVariable("sortType") String sortType,
+                                                  @PathVariable("type") Boolean asc) {
+        List<Interviewer> interviewers = interviewerService.getInterviewer(itemsPerPage,
+                (pageNumber * itemsPerPage - itemsPerPage), sortType, asc);
         if (interviewers == null) {
             LOGGER.warn("interviewers == null");
         }
-        LOGGER.info("interviewers.get - successful");
         return interviewers;
 
     }
@@ -211,22 +228,28 @@ public class AdminController {
         return interviewerService.getInterviewerSize("");
     }
 
-    @RequestMapping(value = {"/interviewers/size/{pattern}"}, method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = {"/interviewers/size/{pattern}"},
+            method = RequestMethod.GET,
+            produces = "application/json")
     public
     @ResponseBody
     Integer interviewGetJSONSize(@PathVariable("pattern") String pattern) {
         return interviewerService.getInterviewerSize(pattern);
     }
 
-    @RequestMapping(value = {"/interviewer/search/{itemsPerPage}/{pageNumber}/{sortType}/{pattern}"}, method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = {"/interviewer/search/{itemsPerPage}/{pageNumber}/{sortType}/{pattern}"},
+            method = RequestMethod.GET,
+            produces = "application/json")
     public
     @ResponseBody
-    List<Interviewer> interviewerSearch(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("sortType") String sortType, @PathVariable("pattern") String pattern) {
+    List<Interviewer> interviewerSearch(@PathVariable("itemsPerPage") Integer itemsPerPage,
+                                        @PathVariable("pageNumber") Integer pageNumber,
+                                        @PathVariable("sortType") String sortType,
+                                        @PathVariable("pattern") String pattern) {
         List<Interviewer> interviewers = interviewerService.getInterviewer(itemsPerPage, (pageNumber * itemsPerPage - itemsPerPage), sortType, pattern);
         if (interviewers == null) {
             LOGGER.warn("interviewers == null");
         }
-        System.out.println(interviewers);
         return interviewers;
     }
 
@@ -263,10 +286,14 @@ public class AdminController {
         return userService.getSize(pattern);
     }
 
-    @RequestMapping(value = {"/users/search/{itemsPerPage}/{pageNumber}/{pattern}"}, method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = {"/users/search/{itemsPerPage}/{pageNumber}/{pattern}"},
+            method = RequestMethod.GET,
+            produces = "application/json")
     public
     @ResponseBody
-    List<UserRow> usersSearch(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("pattern") String pattern) {
+    List<UserRow> usersSearch(@PathVariable("itemsPerPage") Integer itemsPerPage,
+                              @PathVariable("pageNumber") Integer pageNumber,
+                              @PathVariable("pattern") String pattern) {
         List<UserRow> userRows = userService.getUser(itemsPerPage, (pageNumber * itemsPerPage - itemsPerPage), pattern);
         if (userRows == null) {
             LOGGER.warn("users == null");
@@ -274,11 +301,16 @@ public class AdminController {
         return userRows;
     }
 
-    @RequestMapping(value = {"/users/search/{itemsPerPage}/{pageNumber}/{sortType}/{pattern}"}, method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = {"/users/search/{itemsPerPage}/{pageNumber}/{sortType}/{pattern}"},
+            method = RequestMethod.GET, produces = "application/json")
     public
     @ResponseBody
-    List<UserRow> usersSearch(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("sortType") String sortType, @PathVariable("pattern") String pattern) {
-        List<UserRow> userRows = userService.getUser(itemsPerPage, (pageNumber * itemsPerPage - itemsPerPage), sortType, pattern);
+    List<UserRow> usersSearch(@PathVariable("itemsPerPage") Integer itemsPerPage,
+                              @PathVariable("pageNumber") Integer pageNumber,
+                              @PathVariable("sortType") String sortType,
+                              @PathVariable("pattern") String pattern) {
+        List<UserRow> userRows = userService.getUser(itemsPerPage,
+                (pageNumber * itemsPerPage - itemsPerPage), sortType, pattern);
         if (userRows == null) {
             LOGGER.warn("users == null");
         }
@@ -286,21 +318,27 @@ public class AdminController {
     }
 
 
-    @RequestMapping(value = {"/users/list/{itemsPerPage}/{pageNumber}"}, method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = {"/users/list/{itemsPerPage}/{pageNumber}"}, method = RequestMethod.GET,
+            produces = "application/json")
     @ResponseBody
-    public List<UserRow> getUsers(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber) {
+    public List<UserRow> getUsers(@PathVariable("itemsPerPage") Integer itemsPerPage,
+                                  @PathVariable("pageNumber") Integer pageNumber) {
         List<UserRow> userRows = userService.getUser(itemsPerPage, (pageNumber * itemsPerPage - itemsPerPage));
         if (userRows == null) {
             LOGGER.warn("users == null");
         }
-        LOGGER.warn("users != null");
         return userRows;
     }
 
-    @RequestMapping(value = {"/users/list/{itemsPerPage}/{pageNumber}/{sortType}/{type}"}, method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = {"/users/list/{itemsPerPage}/{pageNumber}/{sortType}/{type}"}, method = RequestMethod.GET,
+            produces = "application/json")
     @ResponseBody
-    public List<UserRow> getUsersBySort(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("sortType") String sortType, @PathVariable("type") Boolean asc) {
-        List<UserRow> userRows = userService.getUser(itemsPerPage, (pageNumber * itemsPerPage - itemsPerPage), sortType, asc);
+    public List<UserRow> getUsersBySort(@PathVariable("itemsPerPage") Integer itemsPerPage,
+                                        @PathVariable("pageNumber") Integer pageNumber,
+                                        @PathVariable("sortType") String sortType,
+                                        @PathVariable("type") Boolean asc) {
+        List<UserRow> userRows = userService.getUser(itemsPerPage,
+                (pageNumber * itemsPerPage - itemsPerPage), sortType, asc);
         if (userRows == null) {
             LOGGER.warn("users == null");
         }
@@ -335,7 +373,8 @@ public class AdminController {
 
     @RequestMapping(value = {"/interviewee/list/{itemsPerPage}/{pageNumber}"}, method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<IntervieweeRow> intervieweeGetJSON(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber) {
+    public List<IntervieweeRow> intervieweeGetJSON(@PathVariable("itemsPerPage") Integer itemsPerPage,
+                                                   @PathVariable("pageNumber") Integer pageNumber) {
         List<IntervieweeRow> interviewees = intervieweeService.getInterviewee(itemsPerPage, (pageNumber * itemsPerPage - itemsPerPage));
         if (interviewees == null) {
             LOGGER.warn("interviewee == null");

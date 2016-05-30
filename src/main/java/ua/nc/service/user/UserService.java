@@ -37,9 +37,6 @@ public interface UserService {
 
     boolean checkRole(User user, String roleName);
 
-    void activateUsers(List<Integer> userIds);
-
-    void deactivateUsers(List<Integer> userIds);
 
     void changeRoles(String email, Set<Role> roles);
 }

@@ -135,7 +135,7 @@
             </thead>
             <tbody>
             <tr ng-show="data.users.length <= 0">
-                <td colspan="5" style="text-align:center;">Please Wait</td>
+                <td colspan="5" style="text-align:center;">No data</td>
             </tr>
             <tr dir-paginate="user in data.users|itemsPerPage:data.itemsPerPage" total-items="data.total_count">
                 <td><input type="checkbox" checklist-model="dataStudents.studId" checklist-value="user.id"></td>
