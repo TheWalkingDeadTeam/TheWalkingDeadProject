@@ -179,7 +179,7 @@
                             You are able to create new Admin or Interviewer
                         </div>
                         <div class="mdl-card__actions mdl-card--border">
-                            <a href="/admin/create" class="mdl-button mdl-js-button mdl-js-ripple-effect">Create
+                            <a href="/admin/create-user" class="mdl-button mdl-js-button mdl-js-ripple-effect">Create
                                 User</a>
                         </div>
                     </div>
@@ -223,14 +223,13 @@
             <div class="demo-cards mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet mdl-cell--4-col-phone mdl-grid mdl-grid--no-spacing">
                 <div class="demo-updates mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--4-col-phone mdl-cell--12-col-desktop">
                     <div class="mdl-card__title mdl-card--expand mdl-color--teal-300">
-                        <h2 class="mdl-card__title-text"><i class="material-icons">show_chart</i> Statistic & Reports</h2>
+                        <h2 class="mdl-card__title-text"><i class="material-icons">show_chart</i>Reports</h2>
                     </div>
                     <div class="mdl-card__supporting-text mdl-color-text--grey-600">
-                        You are able to view statistic and reports
+                        You are able to view and download reports
                     </div>
                     <div class="mdl-card__actions mdl-card--border">
-                        <a href="/admin/report" class="mdl-button mdl-js-button mdl-js-ripple-effect">Statistic &
-                            Reports</a>
+                        <a href="/admin/report" class="mdl-button mdl-js-button mdl-js-ripple-effect">Reports</a>
                     </div>
                 </div>
                 <div class="demo-separator mdl-cell--1-col"></div>

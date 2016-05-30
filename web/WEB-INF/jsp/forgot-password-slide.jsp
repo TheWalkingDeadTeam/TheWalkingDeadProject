@@ -28,7 +28,7 @@
                 </div>
             </div>
             <input id="userMail" name="email" class="form-control" type="text" value=""
-                   placeholder=<spring:message code="locale.email"/>>
+                   placeholder="<spring:message code="locale.email"/>">
             <div class="correct-email"></div>
             <button id="buttonRecoverPassword" style="margin-top: 10px;" class="btn btn-lg btn-primary btn-block">
                 <spring:message code="locale.sendRequest"/></button>

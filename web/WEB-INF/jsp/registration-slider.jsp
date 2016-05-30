@@ -30,7 +30,7 @@
             <div class="correct-name"></div>
             <input id="surname" name="surname" class="form-control"  type="text" value="" placeholder=<spring:message code="locale.surname"/>>
             <div class="correct-surname"></div>
-            <input id="email" name="email" class="form-control"  type="text" value="" placeholder=<spring:message code="locale.email"/>>
+            <input id="email" name="email" class="form-control"  type="text" value="" placeholder="<spring:message code="locale.email"/>">
             <div class="correct-email"></div>
             <input id="password" name="password" class="form-control login-field  login-field-password" type="password" value="" placeholder=<spring:message code="locale.password"/>>
             <div class="correct-password"></div>

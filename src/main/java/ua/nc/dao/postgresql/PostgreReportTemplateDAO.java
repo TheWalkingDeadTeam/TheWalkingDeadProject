@@ -136,9 +136,16 @@ public class PostgreReportTemplateDAO extends AbstractPostgreDAO<ReportTemplate,
                 }
                 rows.add(columns);
             }
+            if (rows.isEmpty()) {
+                Map<String, Object> columns = new LinkedHashMap<>();
+                for (int i = 1; i <= metaData.getColumnCount(); i++) {
+                    columns.put(metaData.getColumnLabel(i), null);
+                }
+                rows.add(columns);
+            }
             LOGGER.debug("Execute query " + report.getName());
         } catch (SQLException e) {
-            LOGGER.info("Cant execute query " + report.getName()  ,e.getCause());
+            LOGGER.info("Cant execute query " + report.getName(), e.getCause());
             throw new DAOException(e);
         } finally {
             try {
