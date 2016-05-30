@@ -144,7 +144,8 @@
                 <td>{{user.surname}}</td>
                 <td>{{user.email}}</td>
                 <td>{{user.role}}</td>
-                <td ng-style="{opacity:0.5,'background-color':'{{user.status == 'Active' ? 'green' : 'red'}}'}" >{{user.status}}</td>
+                <td ng-style="{opacity:0.5,'background-color':'{{user.status == 'Active' ? 'green' : 'red'}}'}"
+                    title="{{user.status}}"></td>
             </tr>
             </tbody>
         </table>

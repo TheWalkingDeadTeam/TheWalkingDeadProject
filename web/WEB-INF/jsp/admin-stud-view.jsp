@@ -174,8 +174,8 @@
                 <td ng-repeat="head in headerStud.head">
                     {{user.fields[head.id]}}
                 </td>
-                <td ng-style="{opacity:0.5,'background-color':'{{user.rejected ? 'red' : 'green'}}'}">
-                    {{user.rejected}}
+                <td ng-style="{opacity:0.8,'background-color':'{{user.rejected ? 'red' : 'green'}}'}"
+                    title="{{user.rejected}}">
                 </td>
             </tr>
             </tbody>
