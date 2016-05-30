@@ -247,7 +247,8 @@ public class PostgreApplicationTableDAO implements ApplicationTableDAO {
             statement.setObject(4, null);
             statement.setObject(5, null);
             // 45 subs standard query beginning, replacing "as field_0" removes alias from surname
-            return statement.toString().substring(45).replace("AS field_0", "").replace("ORDER BY field_0 ASC","");
+            return statement.toString().substring(45).replace("AS field_0", "").
+                    replace("ORDER BY field_0 ASC","").replace("AS field_2147483647", "");
         } catch (Exception e) {
             throw new DAOException(e);
         }
