@@ -16,6 +16,13 @@ reporter.controller('ReportController', ['$scope', 'ReportService','$http', 'Not
             .then(
                 function(d) {
                     self.reports = d;
+                    if (self.reports.length != 0) {
+                        self.reportsTemplateTable = false;
+                        self.emptyTemplateTable = true;
+                    } else {
+                        self.reportsTemplateTable = true;
+                        self.emptyTemplateTable = false;
+                    }
                 },
                 function(errResponse){
                     console.error('Error while fetching Currencies');
@@ -42,7 +49,7 @@ reporter.controller('ReportController', ['$scope', 'ReportService','$http', 'Not
     self.updateReport = function(report, id){
         ReportService.updateReport(report, id)
             .then(
-                self.fetchReports,
+                self.fetchReports(),
                 function(errResponse){
                     console.error('Error while updating Report.');
                 }
@@ -52,7 +59,7 @@ reporter.controller('ReportController', ['$scope', 'ReportService','$http', 'Not
     self.deleteReport = function(id){
         ReportService.deleteReport(id)
             .then(
-                self.fetchReports,
+                self.fetchReports(),
                 function(errResponse){
                     console.error('Error while deleting Report.');
                 }
@@ -90,7 +97,6 @@ reporter.controller('ReportController', ['$scope', 'ReportService','$http', 'Not
             self.reset();
         }
         Notification.info({message: 'Report ' + id + ' deleted', delay: 5000});
-
         self.deleteReport(id);
     };
 

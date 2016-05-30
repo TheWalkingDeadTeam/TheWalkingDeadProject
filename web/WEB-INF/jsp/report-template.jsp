@@ -83,7 +83,7 @@
                 </div>
             </div>
             <%-- Report View--%>
-            <div class="card hoverable">
+            <div ng-hide="rc.reportsTemplateTable" class="card hoverable">
                 <div class="card-content">
                     <div class="panel panel-default">
                         <h5 align="center">Report Template </h5>
@@ -128,6 +128,9 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div ng-hide="rc.emptyTemplateTable == true">
+                <jsp:include page="error-empty-table.jsp" />
             </div>
         </div>
     </div>
