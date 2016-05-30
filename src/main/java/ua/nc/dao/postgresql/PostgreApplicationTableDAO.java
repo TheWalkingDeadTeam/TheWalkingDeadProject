@@ -238,19 +238,23 @@ public class PostgreApplicationTableDAO implements ApplicationTableDAO {
     }
 
     public String getFullQuery(Integer cesId) throws DAOException {
-        try {
-            List<FieldData> fieldData = getFieldIds(cesId);
+        List<FieldData> fieldData = getFieldIds(cesId);
+        if (fieldData.size() != 0) {
             String fullQuery = buildReportFullQuery(fieldData, 0);
-            PreparedStatement statement = this.connection.prepareStatement(fullQuery);
-            statement.setInt(1, cesId);
-            statement.setString(2, "%");
-            statement.setString(3, "%");
-            statement.setObject(4, null);
-            statement.setObject(5, null);
-            // 45 subs standard query beginning, replacing "as field_0" removes alias from surname
-            return statement.toString().substring(45).replace("AS field_0", "").replace("ORDER BY field_0 ASC","");
-        } catch (Exception e) {
-            throw new DAOException(e);
+            try (PreparedStatement statement = this.connection.prepareStatement(fullQuery)) {
+                statement.setInt(1, cesId);
+                statement.setString(2, "%");
+                statement.setString(3, "%");
+                statement.setObject(4, null);
+                statement.setObject(5, null);
+                // 45 subs standard query beginning, replacing "as field_0" removes alias from surname
+                return statement.toString().substring(45).replace("AS field_0", "").
+                        replace("ORDER BY field_0 ASC", "").replace("AS field_2147483647", "");
+            } catch (Exception e) {
+                throw new DAOException(e);
+            }
+        } else {
+            return null;
         }
     }
 

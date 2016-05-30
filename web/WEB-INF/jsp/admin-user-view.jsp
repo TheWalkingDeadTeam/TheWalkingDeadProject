@@ -84,7 +84,7 @@
                 </label>
                 <div class="mdl-textfield__expandable-holder">
                     <form ng-submit = "searchFiltr(field)"><input  class="mdl-textfield__input" type="text" id="search" name="field" ng-model="field"></form>
-                    <label class="mdl-textfield__label" for="search">Enter your query...</label>
+                    <%--<label class="mdl-textfield__label" for="search">Enter your query...</label>--%>
                 </div>
             </div>
             <div class="cssload-thecube">

@@ -114,7 +114,7 @@
             </div>
         </div>
         <!--/.item-->
-        <div class="item" style="background-image: url(/resources/images/test/slider/bg1.jpg);">
+        <div class="item" style="background-image: url(/resources/images/bg1.jpg);">
             <div class="slider-inner">
                 <div class="container">
                     <div class="row">
@@ -137,34 +137,6 @@
 
 <section id="cta" class="wow fadeIn">
     <div class="container">
-        <%--<div class="reg registration">--%>
-        <%--<div class="layout"></div>--%>
-        <%--<sec:authorize access="!isAuthenticated()">--%>
-        <%--<form id="user">--%>
-        <%--<div id="messageRegistration"></div>--%>
-        <%--<div class="row container-fluid reg-head">--%>
-        <%--<div class="col-lg-6 col-md-8 col-sm-9 col-xs-9">--%>
-        <%--<h2 class="form-signin-heading"><spring:message code="locale.registration"/></h2>--%>
-        <%--</div>--%>
-        <%--<div class="col-lg-6 col-md-4 col-sm-3 col-xs-3 ">--%>
-        <%--<i class="material-icons closeico"><span class="closebtn">highlight_off</span></i>--%>
-        <%--</div>--%>
-        <%--</div>--%>
-        <%--<input id="name" name="name" class="form-control" placeholder=<spring:message code="locale.name"/> type="text" value="">--%>
-        <%--<div class="correct-name"></div>--%>
-        <%--<input id="surname" name="surname" class="form-control" placeholder=<spring:message code="locale.surname"/> type="text" value="">--%>
-        <%--<div class="correct-surname"></div>--%>
-        <%--<input id="email" name="email" class="form-control" placeholder=<spring:message code="locale.email"/> type="text" value="">--%>
-        <%--<div class="correct-email"></div>--%>
-        <%--<input id="password" name="password" class="form-control login-field  login-field-password" placeholder=<spring:message code="locale.password"/> type="password"--%>
-        <%--value="">--%>
-        <%--<div class="correct-password"></div>--%>
-        <%--<div class="g-recaptcha" data-sitekey="6LdZ1R8TAAAAAMwVjN-N-oTtZR51Li8QmKoSYEiF"></div>--%>
-        <%--<button id="buttonRegistration" class="btn btn-lg btn-primary btn-block"><spring:message code="locale.register"/></button>--%>
-
-        <%--</form>--%>
-        <%--</sec:authorize>--%>
-        <%--</div>--%>
 
         <div class="row ">
             <div class="col-lg-5 col-md-5 col-xs-12 col-sm-12 col-centered">
@@ -186,10 +158,6 @@
                         <a href="#slideDown" type="button" style="margin-top: 3px;"
                            class="btn btn-lg btn-primary btn-block regbut" >
                             <spring:message code="locale.registration"/></a>
-                        <%--<a href="#slideForgotPass" type="button" style="display: none;" type="button" id="recpass"--%>
-                           <%--class="btn btn-lg btn-primary btn-block recoverybtn"><spring:message code="locale.forgotPassword"/>--%>
-                        <%--</a>--%>
-                        <%--<label for="recpass"><spring:message code="locale.forgotPassword"/></label>--%>
                         <a href="#slideForgotPass" class="passRec"><spring:message code="locale.forgotPassword"/></a>
                     </form>
                 </sec:authorize>
@@ -198,36 +166,13 @@
             </div>
         </div>
 
-        <div id="" class="col-lg-5 col-md-7 col-sm-12 col-xs-12 col-centered">
+        <div class="col-lg-5 col-md-7 col-sm-12 col-xs-12 col-centered">
             <jsp:include page="registration-slider.jsp"/>
         </div>
 
-        <div id="" class="col-lg-5 col-md-7 col-sm-12 col-xs-12 col-centered"">
+        <div class="col-lg-5 col-md-7 col-sm-12 col-xs-12 col-centered">
             <jsp:include page="forgot-password-slide.jsp"/>
         </div>
-
-        <%--<div class="recovery registration">--%>
-            <%--<div class="layout"></div>--%>
-            <%--<sec:authorize access="!isAuthenticated()">--%>
-                <%--<form id="stupidUser" action="/passwordRecovery">--%>
-                    <%--<div id="passwordRecoveryMessage"></div>--%>
-                    <%--<div class="row container-fluid recovery-head">--%>
-                        <%--<div class="col-lg-6 col-md-8 col-sm-9 col-xs-9">--%>
-                            <%--<h2 class="form-signin-heading"><spring:message code="locale.recoverPassword"/></h2>--%>
-                        <%--</div>--%>
-                        <%--<div class="col-lg-6 col-md-4 col-sm-3 col-xs-3 ">--%>
-                            <%--<i class="material-icons closeico"><span class="closebtn">clear</span></i>--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
-                    <%--<input id="userEmail" name="email" class="form-control" placeholder=--%>
-                        <%--<spring:message code="locale.email"/> type="text"--%>
-                           <%--value="">--%>
-                    <%--<div class="correct-email"></div>--%>
-                    <%--<button id="buttonRecoverPassword" class="btn btn-lg btn-primary btn-block"><spring:message--%>
-                            <%--code="locale.sendRequest"/></button>--%>
-                <%--</form>--%>
-            <%--</sec:authorize>--%>
-        <%--</div>--%>
 
         <div class="row">
             <div class="inputBox col-lg-4 col-md-4 col-sm-12 col-xs-12">

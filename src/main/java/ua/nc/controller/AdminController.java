@@ -469,7 +469,7 @@ public class AdminController {
         try {
             cesService.checkRegistrationDate();
             cesService.checkInterviewDate();
-            return cesService.getCES();
+            return cesService.getCurrentCES();
         } catch (DAOException e) {
             LOGGER.error("Can`t get CES");
             return null;
@@ -507,7 +507,8 @@ public class AdminController {
     @RequestMapping(value = {"/edit-form"}, method = RequestMethod.GET)
     public String editFormView() {
         if (cesService.getPendingCES() == null) {
-            return "error-ces-ongoing";
+//            return "error-ces-ongoing";
+            return "edit-form-error";
         }
         return "edit-form";
     }

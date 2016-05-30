@@ -97,7 +97,7 @@
                                                                                                class="form-control"
                                                                                                ng-model="ctrl.ces.startInterviewingDate"
                                                                                                placeholder="yyyy-MM-dd"
-                                                                                               ng-readonly="interviewBegan"
+                                                                                               ng-readonly=true
                                                                                                id="5"/></div>
                             <div class="correct-date"></div>
                             <div><span class="myTextInfo">End interviewing date</span><input type="date"
