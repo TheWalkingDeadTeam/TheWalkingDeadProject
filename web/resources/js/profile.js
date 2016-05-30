@@ -28,10 +28,6 @@
 
             },
             error: function (jqXHR, exception) {
-                console.log(jqXHR);
-                console.log(exception);
-                alert(jqXHR);
-                alert(exception);
                 window.location.href = "/error"
             }
         });
@@ -245,7 +241,6 @@
                     });
                     $('#select' + item.id).on('change', function () {
                         var updatedSelect = requestData.fields[$(this).attr('ng-model')].values.map(function (item) {
-                            allah = $(this).attr('ng-model');
                             if (item.fieldValueName == this.value) {
                                 item.value = 'true';
                                 return item;

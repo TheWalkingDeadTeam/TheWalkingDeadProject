@@ -20,7 +20,6 @@
 <body>
 
 
-
 <jsp:include page="header.jsp"/>
 
 <sec:authentication var="principal" property="principal"/>
@@ -32,14 +31,14 @@
                 <img id="photo_img" src="/getPhoto" alt="User's photo" width="100" height="100"
                      onError="this.src='/resources/images/user-photo.png'" class="profile-photo">
             </div>
-            <%--<div class='col-lg-3 col-md-3 col-sm-3 col-xs-8'>--%>
+                <%--<div class='col-lg-3 col-md-3 col-sm-3 col-xs-8'>--%>
                 <%--<form id="photo_form" type=post enctype="multipart/form-data">--%>
-                    <%--<div id="photoMessages"></div>--%>
-                    <%--<label for='photo_input' class='file_upload'/>--%>
-                    <%--<input type="file" id="photo_input" name=" photo_input" accept="image/*">--%>
-                    <%--<button id="photo_button" type="submit">Upload</button>--%>
+                <%--<div id="photoMessages"></div>--%>
+                <%--<label for='photo_input' class='file_upload'/>--%>
+                <%--<input type="file" id="photo_input" name=" photo_input" accept="image/*">--%>
+                <%--<button id="photo_button" type="submit">Upload</button>--%>
                 <%--</form>--%>
-            <%--</div>--%>
+                <%--</div>--%>
             <div class=" col-lg-4 col-md-5 col-sm-5 col-xs-5 mainf">
                 <h4><spring:message code="locale.name"/>:</h4>
                 <h4><spring:message code="locale.surname"/>:</h4>
@@ -57,6 +56,7 @@
     <form id="fields">
 
     </form>
+
     <sec:authorize access="hasRole('ROLE_STUDENT')">
         <div id="agreement">
             <label for="agree"><spring:message code="locale.agreement"/></label>
@@ -64,11 +64,15 @@
         </div>
         <div id="fieldsCheck"></div>
         <div id="profileButtons">
-            <button id="save" type="submit" form="fields" value="Submit" disabled="disabled"><spring:message code="locale.save"/></button>
+            <button id="save" type="submit" form="fields" value="Submit" disabled="disabled"><spring:message
+                    code="locale.save"/></button>
                 <%--<button id="buttonEnroll" type="submit" value="Enroll" href="/enroll">Enroll</button>--%>
         </div>
     </sec:authorize>
-    <button id="pdf" type="submit" form="fields" value="Submit" onclick="download();">Download PDF</button>
+
+    <div style="display: block; margin: 10px auto; max-width: 700px;">
+        <button id="pdf" type="submit" form="fields" value="Submit" onclick="download();">Download PDF</button>
+    </div>
 
 </sec:authorize>
 
