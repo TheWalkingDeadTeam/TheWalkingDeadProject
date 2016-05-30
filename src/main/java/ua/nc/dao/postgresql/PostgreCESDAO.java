@@ -246,6 +246,7 @@ public class PostgreCESDAO extends AbstractPostgreDAO<CES, Integer> implements C
             statement.setInt(1, interviewerId);
             statement.setInt(2, cesId);
             ResultSet rs = statement.executeQuery();
+            rs.next();
             return rs.getInt("count");
         } catch (SQLException ex){
             throw new DAOException(ex);

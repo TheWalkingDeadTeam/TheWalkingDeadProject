@@ -32,7 +32,7 @@
                                 if (response.applicationExists == true && response.intervieweeExists == true) {
                                     if (response.restricted == false) {
                                         //$('#feedbacks').html(div_form);
-                                        $('#feedbacks').load('/interviewer/leave-feedback',function( response, status, xhr ){
+                                        $('#feedbacks').load('/interviewer/leave-feedback',function(){
                                             var feedback;
                                             if (response.interviewerRole == 'ROLE_DEV') {
                                                 feedback = response.devFeedback;
@@ -42,7 +42,7 @@
                                             if (feedback != null) {
                                                 $('#feedback_score').val(feedback.score);
                                                 $('#feedback_text').val(feedback.comment);
-                                                $('#special_mark').val(response.specialMark);
+                                                $('#special_mark').val(response.specialMark).change();
                                             }
                                             $('#feedback_form').submit(function (event) {
                                                     event.preventDefault();
