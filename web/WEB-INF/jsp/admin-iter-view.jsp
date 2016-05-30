@@ -91,8 +91,9 @@
                 </label>
                 <div class="mdl-textfield__expandable-holder">
                     <form ng-submit="searchFiltr(field)"><input class="mdl-textfield__input" type="text" id="search"
-                                                                name="field" ng-model="field"></form>
-                    <label class="mdl-textfield__label" for="search">Enter your query...</label>
+                                                                name="field" ng-model="field" style="    border-bottom: 1px solid rgba(0,0,0,.12);
+    box-shadow: none;"></form>
+                    <%--<label class="mdl-textfield__label" for="search">Enter your query...</label>--%>
                 </div>
             </div>
 
