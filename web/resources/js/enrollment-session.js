@@ -18,11 +18,7 @@ var sessionController = angular.module('sessionController', []);
 
 
 sessionController.controller("enrollCtrl", ["$scope", "$http", "$rootElement", function ($scope, $http, $rootElement) {
-    // $http.get('resources/json/studentsData.json').success(function (data) {
-    //     $scope.interviewer = data;
-    // });
     var self = this;
-
     $http.get('/CES/').success(function (data) {
         $scope.session = data;
         if (data.length != 0) {
@@ -33,35 +29,11 @@ sessionController.controller("enrollCtrl", ["$scope", "$http", "$rootElement", f
             self.emptyTemplateTable = false;
         }
     });
-
-
+    
     $scope.sortType = 'id';
     $scope.sortReverse = false;
     $scope.searchFiltr = '';
-
-
-    // $scope.searchFilter = function () {
-    //     var dataObj = {
-    //         type: "search",
-    //         values: [$scope.searchFilt]
-    //     };
-    //     var res = $http.post('interview', dataObj);
-    //     res.success(function (data, status, headers, config) {
-    //         $scope.message = data;
-    //     });
-    //     res.error(function (data, status, headers, config) {
-    //         alert("failure message: " + JSON.stringify({data: data}));
-    //     });
-    // }
+    
 }]);
 
 
-// it('should change state', function () {
-//     var value1 = element(by.binding('h.isActive'));
-//
-//     expect(value1.getText()).toContain('1');
-//
-//     element(by.model('h.isActive')).click();
-//     expect(isActive.getText()).toContain('0');
-
-// });

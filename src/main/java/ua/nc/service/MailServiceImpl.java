@@ -151,18 +151,14 @@ public class MailServiceImpl implements MailService {
      * @return customized mail.
      */
     private Mail customizeMail(Mail mail, Map<String, String> parameters) {
-        //customize mail topic
         String head = mail.getHeadTemplate();
         for (Map.Entry<String, String> param : parameters.entrySet()) {
             head = head.replace(param.getKey(), param.getValue());
         }
-
-        //customize mail body
         String body = mail.getBodyTemplate();
         for (Map.Entry<String, String> param : parameters.entrySet()) {
             body = body.replace(param.getKey(), param.getValue());
         }
-
         Mail result = new Mail();
         result.setBodyTemplate(body);
         result.setHeadTemplate(head);
@@ -331,15 +327,14 @@ public class MailServiceImpl implements MailService {
         }
     }
 
-
     @Override
     public void sendFinalNotification(Integer rejectId, Integer jobId, Integer courseId) {
         Integer cesId = cesService.getCurrentCES().getId();
         Connection connection = DAO_FACTORY.getConnection();
         UserDAO userDAO = new PostgreUserDAO(connection);
-        Set<User> jobOfferUsers = new HashSet<>();
-        Set<User> courseAcceptedUsers = new HashSet<>();
-        Set<User> courseRejectedUsers = new HashSet<>();
+        Set<User> jobOfferUsers = null;
+        Set<User> courseAcceptedUsers = null;
+        Set<User> courseRejectedUsers = null;
         try {
             jobOfferUsers = userDAO.getJobOfferedUsers(cesId);
         } catch (DAOException e) {
@@ -366,30 +361,17 @@ public class MailServiceImpl implements MailService {
 
         if ((!mailRejectedTemplate.getBodyTemplate().isEmpty()) && (!mailWorkOffer.getBodyTemplate().isEmpty()) &&
                 (!mailCourseOffer.getBodyTemplate().isEmpty())) {
-//            Async send
-//            final Set<User> finalJobOfferUsers = jobOfferUsers;
-//            final Set<User> finalCourseRejectedUsers = courseRejectedUsers;
-//            final Set<User> finalCourseAcceptedUsers = courseAcceptedUsers;
-//            schedulerMassDeliveryService.schedule(new Runnable() {
-//                public void run() {
-//                    massDelivery(finalJobOfferUsers, mailWorkOffer);
-//
-//                    massDelivery(finalCourseRejectedUsers, mailRejectedTemplate);
-//
-//                    massDelivery(finalCourseAcceptedUsers, mailCourseOffer);
-//                }
-//            }, new Date());
-            if (!jobOfferUsers.isEmpty()) {
+            if (jobOfferUsers != null) {
                 massDelivery(jobOfferUsers, mailWorkOffer);
             }
-            if (!courseRejectedUsers.isEmpty()) {
+            if (courseRejectedUsers != null) {
                 massDelivery(courseRejectedUsers, mailRejectedTemplate);
             }
-            if (!courseAcceptedUsers.isEmpty()) {
+            if (courseAcceptedUsers != null) {
                 massDelivery(courseAcceptedUsers, mailCourseOffer);
             }
         } else {
-            LOGGER.warn("Mails is not existing now! Someone could drop them.");
+            LOGGER.warn("Delivery failed, someone have dropped templates!");
         }
     }
 
@@ -415,6 +397,5 @@ public class MailServiceImpl implements MailService {
             sendMail(user.getEmail(), "Registration", "Welcome " + user.getName() + " ! \n " + DEFAULT_REG_MESSAGE);
         }
     }
-
 
 }
