@@ -48,10 +48,10 @@ public class RegistrationValidator implements Validator {
                 errors.add(new ValidationError("surname", "Enter correct name"));
             }
             if (user.getName().length() > 60) {
-                errors.add(new ValidationError("surname", "Name length should be less than 60 "));
+                errors.add(new ValidationError("surname", "Surname length should be less than 60 "));
             }
         } else {
-            errors.add(new ValidationError("surname", "Name shouldn't be empty"));
+            errors.add(new ValidationError("surname", "Surname shouldn't be empty"));
         }
 
 
