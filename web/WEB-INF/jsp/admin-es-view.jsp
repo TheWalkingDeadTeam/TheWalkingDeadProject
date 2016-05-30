@@ -35,7 +35,7 @@
      class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
     <jsp:include page="admin-header.jsp"/>
     <main class="mdl-layout__content mdl-color--grey-100">
-        <div class="panel panel-default">
+        <div ng-hide="enrollCtrl.cesTable" class="panel panel-default">
             <div class="panel-heading"><span class="lead">Enrollment Session History </span></div>
             <div class="table-responsive">
                 <table class="table table-hover table-bordered table-striped span11">
@@ -168,6 +168,9 @@
                     </tbody>
                 </table>
             </div>
+        </div>
+        <div ng-hide="enrollCtrl.emptyTemplateTable == true">
+            <jsp:include page="error-empty-table.jsp" />
         </div>
     </main>
 </div>

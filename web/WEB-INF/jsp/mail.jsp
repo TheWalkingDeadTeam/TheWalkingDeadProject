@@ -76,7 +76,7 @@
                 </div>
             </div>
 
-            <div class="card hoverable">
+            <div ng-hide="ctrl.mailsTemplateTable"  class="card hoverable">
                 <div class="card-content">
                     <div class="panel panel-default">
                         <h5 align="center">List of Mails </h5>
@@ -110,6 +110,9 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div ng-hide="ctrl.emptyTemplateTable == true">
+                <jsp:include page="error-empty-table.jsp" />
             </div>
         </div>
     </div>

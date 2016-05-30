@@ -95,7 +95,7 @@
             </div>
         </div>
         <div class="table-responsive">
-        <table id="tableUsers" class="table table-striped table-hover">
+        <table id="tableUsers" class="table table-striped table-hover table-bordered">
             <thead>
             <tr>
                 <td>

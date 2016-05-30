@@ -21,9 +21,17 @@ sessionController.controller("enrollCtrl", ["$scope", "$http", "$rootElement", f
     // $http.get('resources/json/studentsData.json').success(function (data) {
     //     $scope.interviewer = data;
     // });
+    var self = this;
 
     $http.get('/CES/').success(function (data) {
         $scope.session = data;
+        if (data.length != 0) {
+            self.cesTable = false;
+            self.emptyTemplateTable = true;
+        } else {
+            self.cesTable = true;
+            self.emptyTemplateTable = false;
+        }
     });
 
 

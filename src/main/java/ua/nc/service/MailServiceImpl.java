@@ -9,13 +9,11 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Service;
 import ua.nc.dao.ApplicationDAO;
-import ua.nc.dao.CESDAO;
 import ua.nc.dao.MailDAO;
 import ua.nc.dao.UserDAO;
 import ua.nc.dao.enums.DataBaseType;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.dao.factory.DAOFactory;
-import ua.nc.dao.postgresql.PostgreMailDAO;
 import ua.nc.dao.postgresql.PostgreUserDAO;
 import ua.nc.entity.CES;
 import ua.nc.entity.Mail;
@@ -39,6 +37,7 @@ public class MailServiceImpl implements MailService {
     private static final String USERNAME = "netcrackerua@gmail.com";
     private static final String PASSWORD = "netcrackerpwd";
     private static final long SLEEP = 1000;
+    private static final long ONE_MESSAGE_DELIVERY = 500;
     private static final String DATE_PATTERN = "$date";
     private static final String NAME_PATTERN = "$name";
     private static final String SURNAME_PATTERN = "$surname";
@@ -75,7 +74,7 @@ public class MailServiceImpl implements MailService {
             Mail newCreated = mailDAO.create(mail);
             LOGGER.debug(newCreated.getId());
         } catch (DAOException e) {
-            LOGGER.warn("Mail not created ", e);
+            LOGGER.warn("Mail was not created ", e);
         } finally {
             daoFactory.putConnection(connection);
         }
@@ -89,7 +88,6 @@ public class MailServiceImpl implements MailService {
 
     @Override
     public void sendMail(String address, String header, String body) {
-
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         Properties properties = getMailProperties();
         mailSender.setProtocol(PROTOCOL);
@@ -103,7 +101,6 @@ public class MailServiceImpl implements MailService {
         message.setSubject(header);
         message.setText(body);
         AsynchronousSender(message, mailSender);
-        //mailSender.send(message);
     }
 
     /**
@@ -180,7 +177,7 @@ public class MailServiceImpl implements MailService {
         try {
             mails = mailDAO.getAll();
         } catch (DAOException e) {
-            LOGGER.error("Can't retrieve all mail", e);
+            LOGGER.error("Can't retrieve all mails", e);
         } finally {
             daoFactory.putConnection(connection);
         }
@@ -326,7 +323,7 @@ public class MailServiceImpl implements MailService {
         for (User i : users) {
             mail = basicSubstituteBody(i, mail);
             try {
-                Thread.sleep(500);
+                Thread.sleep(ONE_MESSAGE_DELIVERY);
                 sendMail(i.getEmail(), mail);
             } catch (InterruptedException e) {
                 LOGGER.error("Interrupted thread exception", e);
@@ -385,13 +382,14 @@ public class MailServiceImpl implements MailService {
             if (!jobOfferUsers.isEmpty()) {
                 massDelivery(jobOfferUsers, mailWorkOffer);
             }
-            if(!courseRejectedUsers.isEmpty()){
+            if (!courseRejectedUsers.isEmpty()) {
                 massDelivery(courseRejectedUsers, mailRejectedTemplate);
             }
-            if(!courseAcceptedUsers.isEmpty()){
+            if (!courseAcceptedUsers.isEmpty()) {
                 massDelivery(courseAcceptedUsers, mailCourseOffer);
             }
-
+        } else {
+            LOGGER.warn("Mails is not existing now! Someone could drop them.");
         }
     }
 
