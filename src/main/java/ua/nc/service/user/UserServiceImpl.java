@@ -25,7 +25,6 @@ import ua.nc.service.UserDetailsImpl;
 import java.sql.Connection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -39,7 +38,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
 
     private PasswordEncoder passwordEncoder = ApplicationContextProvider.getApplicationContext().getBean("encoder", PasswordEncoder.class);
-
 
 
     @Override
@@ -245,9 +243,15 @@ public class UserServiceImpl implements UserService {
     public void activateUsers(List<Integer> userIds) {
         Connection connection = daoFactory.getConnection();
         try {
+            Integer userId = ((UserDetailsImpl) SecurityContextHolder
+                    .getContext()
+                    .getAuthentication()
+                    .getPrincipal()).getId();
             PostgreUserDAO userDAO = (PostgreUserDAO) daoFactory.getUserDAO(connection);
             for (Integer id : userIds) {
-                userDAO.activateUser(id);
+                if (!userId.equals(id)) {
+                    userDAO.activateUser(id);
+                }
             }
         } catch (DAOException e) {
             LOGGER.warn("Cannot activate users");
@@ -265,7 +269,7 @@ public class UserServiceImpl implements UserService {
                     .getPrincipal()).getId();
             PostgreUserDAO userDAO = (PostgreUserDAO) daoFactory.getUserDAO(connection);
             for (Integer id : userIds) {
-                if(!userId.equals(id)) {
+                if (!userId.equals(id)) {
                     userDAO.deactivateUser(id);
                 }
             }

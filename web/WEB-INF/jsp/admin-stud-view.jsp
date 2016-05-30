@@ -96,7 +96,6 @@
             </div>
 
             <div id="FooThree" class="collapse">
-                <%--<jsp:include page="custom-mail.jsp"/>--%>
                 <div class="container">
                     <div class="row">
                         <div class="col-md-8">
