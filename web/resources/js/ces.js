@@ -53,7 +53,6 @@ app.controller('FormController', ['$scope', 'MailService', '$http', 'Notificatio
                 $scope.ctrl.ces.reminders = '';
                 $scope.ctrl.ces.interviewTimeForDay = '';
                 $scope.ctrl.ces.interviewTimeForPerson = '';
-                expect(element(by.css('[type="date"]')).getAttribute('readonly')).toBeFalsy();
                 return;
             }
             if (1 == response.statusId) {
@@ -137,16 +136,6 @@ app.controller('FormController', ['$scope', 'MailService', '$http', 'Notificatio
             };
 
         if ($scope.rejection && $scope.work && $scope.course != null) {
-            // var response = $http.post('/admin/cesclose', formData);
-            // response.success(function (data, status, headers, config) {
-            //     $scope.list.push(data);
-            //     Notification.success({message: 'CES was successfully closed ', delay: 1000});
-            // });
-            // response.error(function (data, status, headers, config) {
-            //     alert("Exception details: " + JSON.stringify({data: data}));
-            //     Notification.error({message: 'CES wasn\'t closed', delay: 2000});
-            // });
-            
             
             $http({
                 method: "POST",
@@ -154,6 +143,7 @@ app.controller('FormController', ['$scope', 'MailService', '$http', 'Notificatio
                 data: formData
             }).then(function mySucces(response) {
                 Notification.success({message: 'CES was successfully closed ', delay: 1000});
+                $scope.current = false;
                 getReq();
             }, function myError(response) {
                 $scope.postError = true;

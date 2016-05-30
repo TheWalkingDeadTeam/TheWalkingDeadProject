@@ -12,14 +12,15 @@ import java.util.Set;
  * Created by Pavel on 03.05.2016.
  */
 public interface CESService {
-    int POST_INTERVIEWING_ID = 5;
-    int INTERVIEWING_ONGOING_ID = 4;
-    int POST_REGISTRATION_ID = 3;
+    int PENDING_ID = 1;
     int REGISTRATION_ONGOING_ID = 2;
+    int POST_REGISTRATION_ID = 3;
+    int INTERVIEWING_ONGOING_ID = 4;
+    int POST_INTERVIEWING_ID = 5;
     int CLOSED_ID = 6;
+
     CES getCurrentCES();
 
-    CES getCES() throws DAOException;
 
     void setCES(CES ces) throws DAOException;
 
