@@ -83,7 +83,7 @@
                 </div>
             </div>
             <%-- Report View--%>
-            <div ng-hide="rc.reportsTemplateTable" class="card hoverable">
+            <div class="card hoverable">
                 <div class="card-content">
                     <div class="panel panel-default">
                         <h5 align="center">Report Template </h5>
@@ -99,7 +99,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr ng-repeat="r in rc.reports">
+                                <tr ng-hide="rc.reportsTemplateTable" ng-repeat="r in rc.reports">
                                     <%--                    <td><input
                                                                 type="checkbox" &lt;%&ndash;data-ng-model="$parent.mailIdUser" ng-value="{{r.id}}"&ndash;%&gt;>
                                                         </td>--%>
@@ -123,14 +123,14 @@
                                                                                    title="Delete"/></a>
                                     </td>
                                 </tr>
+                                <tr ng-hide="rc.emptyTemplateTable == true">
+                                    <td colspan="4"  class="vert-align text-center">Empty table</td>
+                                </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div ng-hide="rc.emptyTemplateTable == true">
-                <jsp:include page="error-empty-table.jsp" />
             </div>
         </div>
     </div>
