@@ -3,6 +3,7 @@
     var id = location.search.substr(1);
     $('#photo_img').attr('src', '/getPhoto/' + id);
     var isAgree = false;
+    var isFilled = false;
 
     $(document).ready(function () {
         $.ajax({
@@ -19,6 +20,7 @@
                         typeSwitcher(item, i, '#fields');
                         if (item.fieldName == 'Phone number' && item.values[0].value) {
                             isAgree = true;
+                            isFilled = true;
                         }
                     });
                     $('#agree').on('click', enableSave);
@@ -28,8 +30,6 @@
 
             },
             error: function (jqXHR, exception) {
-                console.log(jqXHR);
-                console.log(exception);
                 window.location.href = "/error"
             }
         });
@@ -48,12 +48,21 @@
                         for (var i in response) {
                             errorMsg += response[i].field + " " + response[i].errorMessage + "</br>";
                         }
-                        $('#fieldsCheck').addClass('alert alert-danger').html(errorMsg).fadeIn();
+                        $('#fieldsCheck')
+                            .addClass('alert alert-danger')
+                            .html(errorMsg)
+                            .fadeIn();
                     } else {
-                        $('#fieldsCheck').removeClass().empty();
-                        $('#fieldsCheck').addClass('alert alert-success').html('Profile saved successfully').fadeIn();
+                        $('#fieldsCheck')
+                            .removeClass()
+                            .empty()
+                            .addClass('alert alert-success')
+                            .html('Profile saved successfully')
+                            .fadeIn();
                         setTimeout(function () {
-                            $("#fieldsCheck").fadeOut().empty();
+                            $("#fieldsCheck")
+                                .fadeOut()
+                                .empty();
                         }, 3000);
                     }
                 }
@@ -73,12 +82,21 @@
                         for (var i in response) {
                             errorMsg += response[i].errorMessage + "</br>";
                         }
-                        $('#fieldsCheck').addClass('alert alert-danger').html(errorMsg).fadeIn();
+                        $('#fieldsCheck')
+                            .addClass('alert alert-danger')
+                            .html(errorMsg)
+                            .fadeIn();
                     } else {
-                        $('#fieldsCheck').removeClass().empty();
-                        $('#fieldsCheck').addClass('alert alert-success').html('You have successfully enrolled on current courses!').fadeIn();
+                        $('#fieldsCheck')
+                            .removeClass()
+                            .empty()
+                            .addClass('alert alert-success')
+                            .html('You have successfully enrolled on current courses!')
+                            .fadeIn();
                         setTimeout(function () {
-                            $("#fieldsCheck").fadeOut().empty();
+                            $("#fieldsCheck")
+                                .fadeOut()
+                                .empty();
                         }, 3000);
                     }
                 }
@@ -108,7 +126,9 @@
             $('#fieldsCheck').addClass('alert alert-danger').html('Please, fill each field and check Agree button').fadeIn();
             $('#save').attr('disabled', 'disabled');
         } else if (!empty && $('#agree').is(':checked') && checkCheckboxes() && checkRadio()) {
-            $('#fieldsCheck').removeClass().empty();
+            $('#fieldsCheck')
+                .removeClass()
+                .empty();
             $('#save').prop('disabled', false);
         }
 
@@ -231,7 +251,12 @@
                     $('<div id=\"block' + i + '\">').appendTo($(divname));
                     $('<span>').attr({for: item.id}).text(item.fieldName + ' ').appendTo($('#block' + i));
                     $('<select>').attr(attributes).attr('ng-model', i).appendTo($('#block' + i));
-                    $('#select' + item.id).append('<option ' + 'disabled' + '>' + '-' + '</option>');
+                    $('#select' + item.id).append('<option id=\'opt' + item.id + '\'  disabled>-</option>');
+                    if (isFilled) {
+                        $('#opt' + item.id).prop('selected', false);
+                    } else {
+                        $('#opt' + item.id).prop('selected', true);
+                    }
                     item.values.forEach(function (item_value, j) {
                         var rand = _getRandomInt();
                         var isSelected = item_value.value == "true";

@@ -111,6 +111,7 @@ button {
     padding: .7em 1.5em; /* отступ от текста */
     outline: none; /* убирать контур в Mozilla */
     border: none;
+    border-radius: 4px;
 }
 
 #labelpasskod {
