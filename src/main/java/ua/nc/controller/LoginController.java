@@ -108,8 +108,7 @@ public class LoginController implements HandlerExceptionResolver {
     public
     @ResponseBody
     Set<ValidationError> registerUser(@RequestBody User user) {
-        Validator validator = new RegistrationValidator();
-        Set<ValidationError> errors = validator.validate(user);
+        Set<ValidationError> errors =  new RegistrationValidator().validate(user);
         if (errors.isEmpty()) {
             User registeredUser = userService.createUser(user);
             if (registeredUser == null) {
