@@ -120,7 +120,7 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="carousel-content">
-                                <h2><span>Netcracker</span> focused on your most important step... the next one</h2>
+                                <h2>Netcracker<span> focused on your most important step... the next one</span></h2>
                                 <p>Компания NetCracker Technology является мировым лидером в области создания и
                                     внедрения комплексных решений для провайдеров услуг связи</p>
                                 <a class="btn btn-primary btn-lg" href="#about">Read More</a>
