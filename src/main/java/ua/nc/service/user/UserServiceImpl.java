@@ -32,13 +32,14 @@ import java.util.Set;
 /**
  * Created by Pavel on 18.04.2016.
  */
-
+@Service
 public class UserServiceImpl implements UserService {
     private final static Logger LOGGER = Logger.getLogger(UserServiceImpl.class);
     private DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
     private MailService mailService = new MailServiceImpl();
-    private PasswordEncoder passwordEncoder = ApplicationContextProvider.getApplicationContext().
-            getBean("encoder", PasswordEncoder.class);
+    @Autowired
+
+    private PasswordEncoder passwordEncoder = ApplicationContextProvider.getApplicationContext().getBean("encoder", PasswordEncoder.class);
 
 
 
@@ -177,6 +178,8 @@ public class UserServiceImpl implements UserService {
         Connection connection = daoFactory.getConnection();
         UserDAO userDAO = daoFactory.getUserDAO(connection);
         RoleDAO roleDAO = daoFactory.getRoleDAO(connection);
+        System.out.println("before encode");
+        System.out.println(passwordEncoder);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         Set<Role> roles = new HashSet<>();
         try {
@@ -184,9 +187,11 @@ public class UserServiceImpl implements UserService {
                 roles.add(roleDAO.findByName(role.getName()));
             }
             user.setRoles(roles);
+            System.out.println("before create");
             userDAO.createUser(user);
-            mailService.sendRegistrationNotification(user);
-            //mailService.sendMail(user.getEmail(), "Registration", "Welcome " + user.getName() + " ! \n NetCracker[TheWalkingDeadTeam] ");
+            System.out.println("after create");
+/*            mailService.sendRegistrationNotification(user);*/
+            mailService.sendMail(user.getEmail(), "Registration", "Welcome " + user.getName() + " ! \n NetCracker[TheWalkingDeadTeam] ");
             return user;
         } catch (DAOException e) {
             LOGGER.warn("User " + user.getEmail() + " hasn't been created");
@@ -280,9 +285,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void changeRoles(String email, Set<Role> roles) {
-        DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
         Connection connection = daoFactory.getConnection();
-        PostgreUserDAO userDAO = (PostgreUserDAO) daoFactory.getUserDAO(connection);
+        UserDAO userDAO = daoFactory.getUserDAO(connection);
         try {
             User user = userDAO.findByEmail(email);
             System.out.println(user.getName());
