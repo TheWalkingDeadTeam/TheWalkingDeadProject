@@ -281,8 +281,8 @@
             <div class="container">
                 <div class="section-header">
                     <h2 class="section-title text-center wow fadeInDown">Awesome Features</h2>
-                    <p class="text-center wow fadeInDown">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
-                        do eiusmod tempor incididunt ut <br> et dolore magna aliqua. Ut enim ad minim veniam</p>
+                    <p class="text-center wow fadeInDown">Вы можете выбрать одно из следующих направлений
+                        <br>в своем нелог</p>
                 </div>
                 <div class="row">
                     <div class="col-lg-4 wow fadeInLeft">

@@ -33,7 +33,8 @@
     <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
     <meta name="msapplication-TileColor" content="#3372DF">
 
-    <link rel="shortcut icon" href="images/favicon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/resources/images/ico.png"/>
+
 
     <!-- SEO: If your mobile URL is different from the desktop URL, add a canonical link to the desktop page https://developers.google.com/webmasters/smartphone-sites/feature-phones -->
     <!--
@@ -163,7 +164,10 @@
                 <td>{{user.surname}}</td>
                 <td>{{user.email}}</td>
                      <td>{{user.role}}</td>
-                <td ng-style="{opacity:0.5,'background-color':'{{user.participation ? 'green' : 'red'}}'}">{{user.participation}}</td>
+                <td ng-style="{opacity:0.5,'background-color':'{{user.participation ? 'green' : 'red'}}'}"
+                title="{{user.participation}}">
+
+                </td>
             </tr>
             </tbody>
         </table>
