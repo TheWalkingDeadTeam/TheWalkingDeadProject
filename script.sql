@@ -291,7 +291,7 @@ INSERT INTO CES_Status (Name) VALUES
 
 INSERT INTO Course_Enrollment_Session (Year, Start_Registration_Date, End_Registration_Date,
                                        Quota, CES_Status_ID, Reminders, Interviewing_Time_Person, Interviewing_Time_Day) VALUES
-  (2016, CURRENT_DATE, CURRENT_DATE+5,100,1,
+  (2016, CURRENT_DATE+1, CURRENT_DATE+5,100,1,
    72,10,4);
 
 INSERT INTO Interviewer_Participation (System_User_ID,CES_ID) VALUES
