@@ -16,12 +16,12 @@
     <link rel="stylesheet" href="/resources/css/roboto-font/roboto.css"/>
 </head>
 <body ng-app="mailer" class="ng-cloack">
-<div class="generic-container">
+<div class="generic-container" ng-controller="MailController as ctrl">
     <div class="panel panel-default">
         <h5 align="center">Scheduler Parameters </h5>
         <div class="formcontainer">
             <form ng-submit="submit()" name="myForm" class="form-horizontal"
-                  data-ng-controller="MailController as ctrl" autocomplete="on">
+                  autocomplete="on">
 
                 <%-- Interview Start Date --%>
                 <div class="row">
@@ -104,6 +104,7 @@
                     </div>
                 </div>
                 <%--Student Mail View--%>
+                    <div ng-hide="ctrl.mailsTemplateTable">
                 <div class="panel panel-default">
                     <h5 align="center">Student Mail Template</h5>
                     <div class="table-responsive tablecontainer">
@@ -153,6 +154,7 @@
                         </table>
                     </div>
                 </div>
+                    </div>
                 <%--Buttons--%>
                 <div class="row">
                     <div class="form-actions floatRight">
@@ -170,6 +172,10 @@
                 </div>
             </form>
         </div>
+    </div>
+
+    <div ng-hide="ctrl.emptyTemplateTable == true">
+        <jsp:include page="error-empty-table.jsp" />
     </div>
 </div>
 <script src="/resources/js/google-api.js"></script>
