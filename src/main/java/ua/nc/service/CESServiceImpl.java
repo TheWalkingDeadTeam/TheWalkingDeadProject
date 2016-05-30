@@ -28,11 +28,7 @@ import java.util.Set;
 public class CESServiceImpl implements CESService {
     private final static Logger LOGGER = Logger.getLogger(CESServiceImpl.class);
     private static final String TIME_FOR_DATE_FROM_DB = " 00:00:00";
-    private static final int POST_INTERVIEWING_ID = 5;
-    private static final int INTERVIEWING_ONGOING_ID = 4;
-    private static final int POST_REGISTRATION_ID = 3;
-    private static final int REGISTRATION_ONGOING_ID = 2;
-    private static final int CLOSED_ID = 6;
+
     private final DAOFactory DAO_FACTORY = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
     private static final ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
     private static final int POOL_SIZE = 5;
