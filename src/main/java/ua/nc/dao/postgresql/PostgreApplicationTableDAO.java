@@ -41,10 +41,9 @@ public class PostgreApplicationTableDAO implements ApplicationTableDAO {
                     "FROM public.application " +
                     "JOIN public.system_user ON application.system_user_id = system_user.system_user_id " +
                     "JOIN public.course_enrollment_session ON course_enrollment_session.ces_id = application.ces_id " +
-                    "JOIN public.ces_field ON ces_field.ces_id = course_enrollment_session.ces_id " +
-                    "JOIN public.field ON field.field_id = ces_field.field_id " +
+                    "JOIN field_value ON application.application_id = field_value.application_id " +
+                    "JOIN field ON field_value.field_id = field.field_id " +
                     "JOIN public.field_type ON field.field_type_id = field_type.field_type_id " +
-                    "JOIN public.field_value ON field_value.field_id = field.field_id " +
                     "LEFT JOIN public.list_value ON field_value.list_value_id = list_value.list_value_id " +
                     "WHERE course_enrollment_session.ces_id = ? AND (system_user.surname LIKE ? OR system_user.name LIKE ? ) " +
                     "GROUP BY system_user.system_user_id, application.rejected " +
