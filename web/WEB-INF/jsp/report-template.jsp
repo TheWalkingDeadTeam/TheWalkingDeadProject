@@ -13,6 +13,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
     <title>Report Template</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/resources/images/ico.png"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link href="/resources/css/scheduler-styles.css" rel="stylesheet"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap.timepicker/0.2.6/css/bootstrap-timepicker.min.css">
@@ -59,11 +60,11 @@
                                         <textarea type="text"
                                                   class="materialize-textarea" ng-model="rc.report.query"
                                                   placeholder="Enter query" name="rquery"
-                                                  required>
+                                                  ng-required="rquery" ng-pattern="queryPattern">
                                         </textarea>
                                         <div class="has-error" ng-show="myForm.$dirty">
                                             <span ng-show="myForm.rquery.$error.required">This is a required field</span>
-                                            <span ng-show="myForm.rquery.$invalid">This field is invalid </span>
+                                            <span ng-show="myForm.rquery.$invalid">Cant update, delete, insert or drop in query</span>
                                         </div>
                                     </div>
                                 </div>

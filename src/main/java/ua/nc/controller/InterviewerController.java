@@ -64,7 +64,7 @@ public class InterviewerController {
     @ResponseBody
     Set<ValidationError> enroll(@RequestBody IntegerList integerList) {
         CES currentCES = cesService.getCurrentCES();
-        Validator validator = new InterviewEnrollValidator();
+        Validator validator =  new InterviewEnrollValidator();
         Set<ValidationError> errors = validator.validate(integerList);
         if (errors.isEmpty()) {
             if (currentCES != null) {

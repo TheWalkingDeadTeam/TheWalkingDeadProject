@@ -10,6 +10,18 @@ reporter.controller('ReportController', ['$scope', 'ReportService', '$http', 'No
     self.report = {id: null, name: '', query: ''};
     self.reports = [];
 
+    $scope.queryPattern = (function() {
+        var regexp = /^.*?(update|delete|insert|drop).*$/;
+        return {
+            test: function(value) {
+                if( $scope.rquery === false ) {
+                    return true;
+                }
+                return !regexp.test(value);
+            }
+        };
+    })();
+
 
     self.fetchReports = function () {
         ReportService.fetchReports()
