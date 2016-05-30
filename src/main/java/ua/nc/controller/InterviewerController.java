@@ -131,7 +131,7 @@ public class InterviewerController {
         Date today = new Date();
         CES currentCES = cesService.getCurrentCES();
 
-        if (currentCES.getStatusId().equals(cesService.INTERVIEWING_ONGOING_ID)) {
+        if (currentCES.getStatusId().equals(CESService.INTERVIEWING_ONGOING_ID)) {
             feedbackDTO.setInterviewingPeriod();
             if (application == null) {
                 feedbackDTO.setApplicationExists(false);
@@ -179,7 +179,7 @@ public class InterviewerController {
                 feedbackDTO.setRestricted(true);
                 return feedbackDTO;
             }
-        } else if (currentCES.getStatusId().equals(cesService.POST_INTERVIEWING_ID)) {
+        } else if (currentCES.getStatusId().equals(CESService.POST_INTERVIEWING_ID)) {
             feedbackDTO.setAfterInterviewingPeriod();
             if (application == null) {
                 feedbackDTO.setApplicationExists(false);
