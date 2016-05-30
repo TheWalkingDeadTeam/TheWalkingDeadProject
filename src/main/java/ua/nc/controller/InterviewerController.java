@@ -37,55 +37,55 @@ public class InterviewerController {
     private IntervieweeService intervieweeService = new IntervieweeServiceImpl();
     private CESService cesService = new CESServiceImpl();
 
-//    @RequestMapping(value = "/enroll-ces-interviewer", method = RequestMethod.POST)
-//    public
-//    @ResponseBody
-//    HttpStatus enroll(@RequestBody IntegerList integerList) {
-//        CES currentCES = cesService.getCurrentCES();
-//        if (currentCES != null) {
-//            int cesId = cesService.getCurrentCES().getId();
-//            for (Integer userId :integerList.getValues() ) {
-//                try {
-//                    cesService.enrollAsInterviewer(userId, cesId);
-//                    LOGGER.info("Successfully enrolled on current CES");
-//                } catch (DAOException e) {
-//                    LOGGER.info("Cant enroll on current CES", e);
-//                }
-//            }
-//        } else {
-//            LOGGER.info("Can't enroll to current CES. Current CES session is not exist");
-//            return HttpStatus.BAD_REQUEST;
-//        }
-//        return HttpStatus.OK;
-//    }
-
     @RequestMapping(value = "/enroll-ces-interviewer", method = RequestMethod.POST)
     public
     @ResponseBody
-    Set<ValidationError> enroll(@RequestBody IntegerList integerList) {
+    HttpStatus enroll(@RequestBody IntegerList integerList) {
         CES currentCES = cesService.getCurrentCES();
-        Validator validator =  new InterviewEnrollValidator();
-        Set<ValidationError> errors = validator.validate(integerList);
-        if (errors.isEmpty()) {
-            if (currentCES != null) {
-                int cesId = cesService.getCurrentCES().getId();
-                for (Integer userId : integerList.getValues()) {
-                    try {
-                        cesService.enrollAsInterviewer(userId, cesId);
-                        LOGGER.info("Successfully enrolled on current CES");
-                    } catch (DAOException e) {
-                        LOGGER.info("Cant enroll on current CES", e);
-                        errors.add(new ValidationError("enrollment session", "Already enrolled. Can't enroll to current CES"));
-                    }
+        if (currentCES != null) {
+            int cesId = cesService.getCurrentCES().getId();
+            for (Integer userId :integerList.getValues() ) {
+                try {
+                    cesService.enrollAsInterviewer(userId, cesId);
+                    LOGGER.info("Successfully enrolled on current CES");
+                } catch (DAOException e) {
+                    LOGGER.info("Cant enroll on current CES", e);
                 }
-            } else {
-                LOGGER.info("Can't enroll to current CES. Current CES session is not exist");
-                errors.add(new ValidationError("enrollment session", "Can't enroll to current CES. Current CES session is not exist"));
-                return errors;
             }
+        } else {
+            LOGGER.info("Can't enroll to current CES. Current CES session is not exist");
+            return HttpStatus.BAD_REQUEST;
         }
-        return errors;
+        return HttpStatus.OK;
     }
+
+//    @RequestMapping(value = "/enroll-ces-interviewer", method = RequestMethod.POST)
+//    public
+//    @ResponseBody
+//    Set<ValidationError> enroll(@RequestBody IntegerList integerList) {
+//        CES currentCES = cesService.getCurrentCES();
+//        Validator validator = new InterviewEnrollValidator();
+//        Set<ValidationError> errors = validator.validate(integerList);
+//        if (errors.isEmpty()) {
+//            if (currentCES != null) {
+//                int cesId = cesService.getCurrentCES().getId();
+//                for (Integer userId : integerList.getValues()) {
+//                    try {
+//                        cesService.enrollAsInterviewer(userId, cesId);
+//                        LOGGER.info("Successfully enrolled on current CES");
+//                    } catch (DAOException e) {
+//                        LOGGER.info("Cant enroll on current CES", e);
+//                        errors.add(new ValidationError("enrollment session", "Already enrolled. Can't enroll to current CES"));
+//                    }
+//                }
+//            } else {
+//                LOGGER.info("Can't enroll to current CES. Current CES session is not exist");
+//                errors.add(new ValidationError("enrollment session", "Can't enroll to current CES. Current CES session is not exist"));
+//                return errors;
+//            }
+//        }
+//        return errors;
+//    }
 
     @RequestMapping(value = "/feedback", method = RequestMethod.GET)
     public String feedback() {

@@ -122,7 +122,7 @@
                     </a>
                 </td>
                 <td>
-                    <a>
+                    <a ng-click=" sortReverse = !sortReverse; sortType('role',sortReverse);">
                         Role
                     </a>
                 </td>
@@ -135,7 +135,7 @@
             </thead>
             <tbody>
             <tr ng-show="data.users.length <= 0">
-                <td colspan="5" style="text-align:center;">Please Wait</td>
+                <td colspan="5" style="text-align:center;">No data</td>
             </tr>
             <tr dir-paginate="user in data.users|itemsPerPage:data.itemsPerPage" total-items="data.total_count">
                 <td><input type="checkbox" checklist-model="dataStudents.studId" checklist-value="user.id"></td>
@@ -144,7 +144,7 @@
                 <td>{{user.surname}}</td>
                 <td>{{user.email}}</td>
                 <td>{{user.role}}</td>
-                <td ng-style="{opacity:0.5,'background-color':'{{user.status == 'Active' ? 'green' : 'red'}}'}"
+                <td ng-style="{opacity:0.8,'background-color':'{{user.status == 'Active' ? 'green' : 'red'}}'}"
                     title="{{user.status}}"></td>
             </tr>
             </tbody>
