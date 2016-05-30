@@ -214,8 +214,11 @@ INSERT INTO System_User (Email, Password, Name, Surname, System_User_Status_ID) 
 INSERT INTO System_User_Role (System_User_ID, Role_ID) VALUES
   (1, (SELECT Role_ID FROM Role WHERE Name='ROLE_ADMIN')),
   (1, (SELECT Role_ID FROM Role WHERE Name='ROLE_DEV')),
+  (2, (SELECT Role_ID FROM Role WHERE Name='ROLE_ADMIN')),
   (2, (SELECT Role_ID FROM Role WHERE Name='ROLE_DEV')),
+  (3, (SELECT Role_ID FROM Role WHERE Name='ROLE_ADMIN')),
   (3, (SELECT Role_ID FROM Role WHERE Name='ROLE_DEV')),
+  (4, (SELECT Role_ID FROM Role WHERE Name='ROLE_ADMIN')),
   (4, (SELECT Role_ID FROM Role WHERE Name='ROLE_BA')),
   (5, (SELECT Role_ID FROM Role WHERE Name='ROLE_BA')),
   (6, (SELECT Role_ID FROM Role WHERE Name='ROLE_BA')),

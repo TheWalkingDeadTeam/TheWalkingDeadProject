@@ -174,7 +174,7 @@
                         <h2 class="form-signin-heading"><spring:message code="locale.pleaseSignIn"/></h2>
                         <input id="j_username" type="text" class="form-control" name="j_username"
                                placeholder=
-                                   <spring:message code="locale.email"/> required>
+                                   "<spring:message code="locale.email"/>" required>
                         <input id="j_password" type="password" class="form-control login-field  login-field-password"
                                name="j_password" placeholder=
                                    <spring:message code="locale.password"/>

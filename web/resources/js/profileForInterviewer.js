@@ -32,7 +32,7 @@
                                 if (response.applicationExists == true && response.intervieweeExists == true) {
                                     if (response.restricted == false) {
                                         //$('#feedbacks').html(div_form);
-                                        $('#feedbacks').load('/interviewer/leave-feedback',function( response, status, xhr ){
+                                        $('#feedbacks').load('/interviewer/leave-feedback',function(){
                                             var feedback;
                                             if (response.interviewerRole == 'ROLE_DEV') {
                                                 feedback = response.devFeedback;
@@ -42,7 +42,11 @@
                                             if (feedback != null) {
                                                 $('#feedback_score').val(feedback.score);
                                                 $('#feedback_text').val(feedback.comment);
-                                                $('#special_mark').val(response.specialMark);
+                                            }
+                                            if (response.specialMark != null) {
+                                                $('#special_mark').val(response.specialMark).change();
+                                            } else {
+                                                $('#special_mark').val('none').change();
                                             }
                                             $('#feedback_form').submit(function (event) {
                                                     event.preventDefault();
@@ -104,12 +108,12 @@
                             } else if (response.viewLevel == 'after') {
                                 if (response.applicationExists == true && response.intervieweeExists == true) {
                                     //$('#feedbacks').html(div_view);
-                                    $('#feedbacks').load('/interviewer/view-feedback',function( response, status, xhr ){
+                                    $('#feedbacks').load('/interviewer/view-feedback',function(){
                                         $('#special_mark_display').append(response.specialMark);
-                                        $('#dev_score').append(response.devFeedback.score);
-                                        $('#hr_score').append(response.hrFeedback.score);
-                                        $('#dev_feedback').append(response.devFeedback.comment);
-                                        $('#hr_feedback').append(response.hrFeedback.comment);
+                                        $('#dev_score').html(response.devFeedback.score);
+                                        $('#hr_score').html(response.hrFeedback.score);
+                                        $('#dev_feedback').html(response.devFeedback.comment);
+                                        $('#hr_feedback').html(response.hrFeedback.comment);
                                     });
                                 } else {
                                     $('#feedbacks')

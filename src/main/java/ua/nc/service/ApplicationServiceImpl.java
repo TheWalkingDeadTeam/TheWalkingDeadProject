@@ -19,13 +19,13 @@ import java.sql.Connection;
 public class ApplicationServiceImpl implements ApplicationService {
 
     private final static Logger LOGGER = Logger.getLogger(ApplicationService.class);
-    private final static DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
+    private final static DAOFactory DAO_FACTORY = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
 
     @Override
     public Application getApplicationByUserForCurrentCES(int userId) {
-        Connection connection = daoFactory.getConnection();
-        CESDAO cesdao = daoFactory.getCESDAO(connection);
-        ApplicationDAO applicationDAO = daoFactory.getApplicationDAO(connection);
+        Connection connection = DAO_FACTORY.getConnection();
+        CESDAO cesdao = DAO_FACTORY.getCESDAO(connection);
+        ApplicationDAO applicationDAO = DAO_FACTORY.getApplicationDAO(connection);
 
         Application application = null;
         try {
@@ -34,7 +34,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         } catch (DAOException ex){
             LOGGER.warn(ex.getMessage());
         } finally {
-            daoFactory.putConnection(connection);
+            DAO_FACTORY.putConnection(connection);
         }
         return application;
     }

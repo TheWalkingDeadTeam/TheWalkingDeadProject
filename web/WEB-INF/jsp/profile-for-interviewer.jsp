@@ -46,12 +46,12 @@
             <img id="photo_img" src="/getPhoto" alt="User's photo" width="100" height="100"
                  onError="this.src='/resources/images/user-photo.png'" class="profile-photo">
         </div>
-        <div class=" col-lg-3 col-md-3 col-sm-3 col-xs-3 mainf">
+        <div class=" col-lg-4 col-md-5 col-sm-5 col-xs-5 mainf">
             <h4><spring:message code="locale.name"/>:</h4>
             <h4><spring:message code="locale.surname"/>:</h4>
             <h4><spring:message code="locale.email"/>:</h4>
         </div>
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 userDetails">
+        <div class="col-lg-5 col-md-4 col-sm-4 col-xs-4 userDetails">
             <span id="userName"></span>
             <span id="userSurname"></span>
             <span id="userEmail"></span>
@@ -61,7 +61,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h4 class="panel-title">
-                    <a data-toggle="collapse" href="#collapse1">
+                    <a data-toggle="collapse" href="#collapse1" id="studForm">
                         <spring:message code="locale.profile"/> <i class="material-icons">keyboard_arrow_down</i>
                     </a>
                 </h4>
@@ -78,9 +78,9 @@
     </div>
 
 <div id="restrict_message" style="margin-top: 7px;"></div>
-    <div id="feedbacks"></div>
+    <div id="feedbacks" style="margin-bottom: 10px;"></div>
 
-  
+
 
 
 

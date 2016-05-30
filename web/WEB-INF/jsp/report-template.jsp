@@ -99,7 +99,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr ng-repeat="r in rc.reports">
+                                <tr ng-hide="rc.reportsTemplateTable" ng-repeat="r in rc.reports">
                                     <%--                    <td><input
                                                                 type="checkbox" &lt;%&ndash;data-ng-model="$parent.mailIdUser" ng-value="{{r.id}}"&ndash;%&gt;>
                                                         </td>--%>
@@ -122,6 +122,9 @@
                                                                                    alt="Delete" width="50" height="50"
                                                                                    title="Delete"/></a>
                                     </td>
+                                </tr>
+                                <tr ng-hide="rc.emptyTemplateTable == true">
+                                    <td colspan="4"  class="vert-align text-center">Empty table</td>
                                 </tr>
                                 </tbody>
                             </table>
