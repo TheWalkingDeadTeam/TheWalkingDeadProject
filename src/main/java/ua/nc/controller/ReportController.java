@@ -7,10 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import ua.nc.dao.ApplicationDAO;
-import ua.nc.dao.ApplicationTableDAO;
 import ua.nc.dao.exception.DAOException;
-import ua.nc.dao.postgresql.PostgreApplicationTableDAO;
 import ua.nc.entity.ReportTemplate;
 import ua.nc.entity.ReportWrapper;
 import ua.nc.service.ReportService;
@@ -27,11 +24,8 @@ public class ReportController {
     private static final Logger LOGGER = Logger.getLogger(ReportController.class);
     private ReportService reportService = new ReportServiceImpl();
 
-    /**
-     * @return
-     */
     @RequestMapping(value = "/reports", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<ReportTemplate>> getReports() {
+    public ResponseEntity<List<ReportTemplate>> getReportsTemplate() {
         List<ReportTemplate> reports = reportService.getReports();
         if (!reports.isEmpty()) {
             LOGGER.info("Return " + reports.size() + " reports");
@@ -42,12 +36,8 @@ public class ReportController {
         }
     }
 
-    /**
-     * @param id
-     * @return
-     */
     @RequestMapping(value = "/reports/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ReportTemplate> getReport(@PathVariable Integer id) {
+    public ResponseEntity<ReportTemplate> getReportById(@PathVariable Integer id) {
         ReportTemplate report = reportService.getReportById(id);
         if (report != null) {
             LOGGER.info("Get report " + id);
@@ -58,10 +48,6 @@ public class ReportController {
         }
     }
 
-    /**
-     * @param report
-     * @return
-     */
     @RequestMapping(value = "/reports/", method = RequestMethod.POST)
     public ResponseEntity<Void> createReport(@RequestBody ReportTemplate report) {
         reportService.createReport(report);
@@ -69,11 +55,6 @@ public class ReportController {
         return new ResponseEntity<Void>(HttpStatus.CREATED);
     }
 
-    /**
-     * @param id
-     * @param report
-     * @return
-     */
     @RequestMapping(value = "/reports/{id}", method = RequestMethod.POST)
     public ResponseEntity<ReportTemplate> updateReport(@PathVariable("id") Integer id, @RequestBody ReportTemplate report) {
         ReportTemplate reportCurrent = reportService.getReportById(id);
@@ -88,11 +69,6 @@ public class ReportController {
         return new ResponseEntity<ReportTemplate>(reportCurrent, HttpStatus.OK);
     }
 
-
-    /**
-     * @param id
-     * @return
-     */
     @RequestMapping(value = "/reports/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<ReportTemplate> deleteReport(@PathVariable("id") Integer id) {
         ReportTemplate report = reportService.getReportById(id);
@@ -159,14 +135,10 @@ public class ReportController {
         }
     }
 
-    /**
-     * @param id The report id that want to get
-     * @return json
-     */
     @RequestMapping(value = "/reports/view/{id}", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity<ReportWrapper> showReport(@PathVariable Integer id) {
+    public ResponseEntity<ReportWrapper> showReportById(@PathVariable Integer id) {
         ReportTemplate report = reportService.getReportById(id);
         List<Map<String, Object>> reportRows = null;
         try {
@@ -188,22 +160,15 @@ public class ReportController {
     }
 
 
-
-
-        /**
-         * @return The jsp page of the report view
-         */
     @RequestMapping(value = {"/report/view", "/report/view/ces"}, method = RequestMethod.GET)
-    public String reportid() {
+    public String report() {
         return "report";
     }
 
 
-    /**
-     * @return The jsp page of the reports
-     */
+
     @RequestMapping(value = "/report", method = RequestMethod.GET)
-    public String report() {
+    public String reportTemplate() {
         return "report-template";
     }
 }

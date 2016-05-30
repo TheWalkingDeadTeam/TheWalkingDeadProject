@@ -5,7 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ua.nc.dao.exception.DAOException;
@@ -43,31 +44,19 @@ public class AdminController {
         return "admin";
     }
 
-    /**
-     * @param user
-     * @return json of errors that were created during registration
-     */
     @RequestMapping(value = {"/register"}, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public
     @ResponseBody
-    Set<ValidationError> registerUser(@RequestBody User user) {
+    Set<ValidationError> registerUser(@RequestBody User user, SecurityContextHolderAwareRequestWrapper request) {
         Validator validator = new RegistrationValidator();
         Set<ValidationError> errors = validator.validate(user);
-
         if (errors.isEmpty()) {
-            if (userService.getUser(user.getEmail()) == null) {
-
-                User registeredUser = userService.createUser(user);
-                if (registeredUser == null) {
-                    LOGGER.warn("Register failed " + user.getEmail().toString());
-                    errors.add(new ValidationError("register", "Register failed"));
-                } else {
-                    LOGGER.info(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
-                            .getPrincipal()).getUsername().toString() + " create user " + user.getEmail().toString());
-                }
+            User registeredUser = userService.createUser(user);
+            if (registeredUser == null) {
+                LOGGER.warn("Register failed " + user.getEmail());
+                errors.add(new ValidationError("register", "Register failed"));
             } else {
-                LOGGER.warn("User " + user.getEmail().toString() + " already exists");
-                errors.add(new ValidationError("user", "Such user already exists"));
+                LOGGER.info(((UserDetailsImpl) ((Authentication) request.getUserPrincipal()).getDetails()).getUsername() + " create user " + user.getEmail());
             }
         }
         return errors;
@@ -76,7 +65,7 @@ public class AdminController {
     /**
      * @return view of the page that register new Admin, HR, DEV, BA
      */
-    @RequestMapping(value = {"/create"})
+    @RequestMapping(value = {"/create-user"})
     public String createUser() {
         return "admin-create-user";
     }
@@ -467,7 +456,7 @@ public class AdminController {
         } catch (IOException e) {
             LOGGER.error("Failed to parse", e);
         }
-        mailService.sendFinalNotification(rejectionId,workId,courseId);
+        mailService.sendFinalNotification(rejectionId, workId, courseId);
         cesService.closeCES();
     }
 
@@ -478,7 +467,7 @@ public class AdminController {
 
     @RequestMapping(value = {"/edit-form"}, method = RequestMethod.GET)
     public String editFormView() {
-        if (cesService.getPendingCES() == null){
+        if (cesService.getPendingCES() == null) {
             return "error-ces-ongoing";
         }
         return "edit-form";

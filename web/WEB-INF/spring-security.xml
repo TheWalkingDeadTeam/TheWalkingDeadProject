@@ -12,10 +12,10 @@
                 class="ua.nc.security.FeedbackPermissions">
     </beans:bean>
 
-    <http use-expressions="true">
+    <http use-expressions="true" >
         <csrf disabled="true"/>
         <intercept-url pattern="/error" access="permitAll"/>
-        <intercept-url pattern="/login" access="permitAll" />
+        <intercept-url pattern="/login**" access="permitAll" />
         <intercept-url pattern="/" access="permitAll" />
 
 
@@ -56,7 +56,7 @@
 
         <access-denied-handler error-page="/403"/>
 
-        <form-login login-page="/login"
+        <form-login  login-page="/login#cta"
                     authentication-failure-url="/login?error" />
              <!--       authentication-success-handler-ref="myAuthenticationSuccessHandler"-->
 
@@ -73,13 +73,16 @@
 
 
     <authentication-manager id="authenticationManager">
-        <authentication-provider user-service-ref="UserDetailsServiceImpl">
-            <password-encoder hash="bcrypt"/>
+        <authentication-provider user-service-ref="userDetailsServiceImpl">
+        <password-encoder ref="encoder"/>
         </authentication-provider>
     </authentication-manager>
 
-    <beans:bean id="UserDetailsServiceImpl"
-                class="ua.nc.service.user.UserDetailsServiceImpl">
-    </beans:bean>
+    <beans:bean  id="applicationContextProvider"
+          class="ua.nc.security.ApplicationContextProvider"/>
+    <beans:bean id="encoder"
+                class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+    <beans:bean id="userDetailsServiceImpl"
+                class="ua.nc.service.user.UserDetailsServiceImpl" depends-on="applicationContextProvider, encoder"/>
 
 </beans:beans>

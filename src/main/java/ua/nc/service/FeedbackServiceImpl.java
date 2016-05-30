@@ -47,7 +47,7 @@ public class FeedbackServiceImpl implements FeedbackService {
             }
             Integer feedbackId = null;
             Feedback oldFeedback = null;
-            User user = userService.getUser(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+            User user = userService.findUserByEmail(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                     .getPrincipal()).getUsername());
             Set<Role> roles = user.getRoles();
             if (roles.contains(roleDAO.findByName(ROLE_DEV))){

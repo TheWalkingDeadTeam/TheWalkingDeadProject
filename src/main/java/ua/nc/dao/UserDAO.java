@@ -13,7 +13,7 @@ import java.util.Set;
 public interface UserDAO extends GenericDAO<User, Integer> {
     User findByEmail(String email) throws DAOException;
 
-    void createUser(User user, Set<Role> roles) throws DAOException;
+    void createUser(User user) throws DAOException;
 
     void updateUser(User user) throws DAOException;
 

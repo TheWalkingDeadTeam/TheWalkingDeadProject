@@ -23,7 +23,7 @@
                     <small>or error caught you...</small>
                 </h1>
                 <img class="img-responsive" src="/resources/images/error.gif" style="margin: 0 auto;"/>
-                <h1 class="page-header"><a href="/">Back to sweat home</a></h1>
+                <h1 class="page-header"><a href="/">Back to sweet home</a></h1>
                 <small>${error == null ? " " : error}</small>
             </div>
 

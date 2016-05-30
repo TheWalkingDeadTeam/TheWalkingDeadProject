@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Created by Alexander on 22.04.2016.
  */
-@Repository
+
 public class PostgreMailDAO extends AbstractPostgreDAO<Mail, Integer> implements MailDAO {
 
     private static final Logger LOGGER = Logger.getLogger(PostgreMailDAO.class);

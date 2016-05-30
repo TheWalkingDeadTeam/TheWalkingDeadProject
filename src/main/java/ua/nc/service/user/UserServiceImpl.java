@@ -3,7 +3,11 @@ package ua.nc.service.user;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 import ua.nc.dao.RoleDAO;
 import ua.nc.dao.UserDAO;
 import ua.nc.dao.enums.DataBaseType;
@@ -11,9 +15,11 @@ import ua.nc.dao.exception.DAOException;
 import ua.nc.dao.factory.DAOFactory;
 import ua.nc.dao.postgresql.PostgreUserDAO;
 import ua.nc.dao.postgresql.PostgreUserTableDAO;
+import ua.nc.entity.Application;
 import ua.nc.entity.Role;
 import ua.nc.entity.User;
 import ua.nc.entity.UserRow;
+import ua.nc.security.ApplicationContextProvider;
 import ua.nc.service.MailService;
 import ua.nc.service.MailServiceImpl;
 
@@ -26,10 +32,15 @@ import java.util.Set;
 /**
  * Created by Pavel on 18.04.2016.
  */
+
 public class UserServiceImpl implements UserService {
     private final static Logger LOGGER = Logger.getLogger(UserServiceImpl.class);
     private DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
     private MailService mailService = new MailServiceImpl();
+    private PasswordEncoder passwordEncoder = ApplicationContextProvider.getApplicationContext().
+            getBean("encoder", PasswordEncoder.class);
+
+
 
     @Override
     public List<UserRow> getUser(Integer itemPerPage, Integer pageNumber) {
@@ -128,7 +139,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUser(String email) {
+    public User findUserByEmail(String email) {
         Connection connection = daoFactory.getConnection();
         UserDAO userDAO = daoFactory.getUserDAO(connection);
         RoleDAO roleDAO = daoFactory.getRoleDAO(connection);
@@ -145,7 +156,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUser(Integer id) {
+    public User findUserById(Integer id) {
         Connection connection = daoFactory.getConnection();
         UserDAO userDAO = daoFactory.getUserDAO(connection);
         RoleDAO roleDAO = daoFactory.getRoleDAO(connection);
@@ -166,17 +177,16 @@ public class UserServiceImpl implements UserService {
         Connection connection = daoFactory.getConnection();
         UserDAO userDAO = daoFactory.getUserDAO(connection);
         RoleDAO roleDAO = daoFactory.getRoleDAO(connection);
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        user.setPassword(encoder.encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         Set<Role> roles = new HashSet<>();
         try {
             for (Role role : user.getRoles()) {
                 roles.add(roleDAO.findByName(role.getName()));
             }
             user.setRoles(roles);
-            userDAO.createUser(user, user.getRoles());
+            userDAO.createUser(user);
             mailService.sendRegistrationNotification(user);
-//            mailService.sendMail(user.getEmail(), "Registration", "Welcome " + user.getName() + " ! \n NetCracker[TheWalkingDeadTeam] ");
+            //mailService.sendMail(user.getEmail(), "Registration", "Welcome " + user.getName() + " ! \n NetCracker[TheWalkingDeadTeam] ");
             return user;
         } catch (DAOException e) {
             LOGGER.warn("User " + user.getEmail() + " hasn't been created");
@@ -190,8 +200,7 @@ public class UserServiceImpl implements UserService {
     public void changePassword(User user, String password) {
         Connection connection = daoFactory.getConnection();
         UserDAO userDAO = daoFactory.getUserDAO(connection);
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        user.setPassword(encoder.encode(password));
+        user.setPassword(passwordEncoder.encode(password));
         try {
             userDAO.updateUser(user);
         } catch (DAOException e) {
@@ -206,9 +215,8 @@ public class UserServiceImpl implements UserService {
         Connection connection = daoFactory.getConnection();
         UserDAO userDAO = daoFactory.getUserDAO(connection);
         String testPassword = RandomStringUtils.randomAlphanumeric(10);
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         try {
-            user.setPassword(encoder.encode(testPassword));
+            user.setPassword(passwordEncoder.encode(testPassword));
             userDAO.updateUser(user);
             mailService.sendMail(user.getEmail(), "Password recovery", "Welcome " + user.getName() + " ! \n NetCracker[TheWalkingDeadTeam] \n New password \n" + testPassword);
             return user;
@@ -243,7 +251,7 @@ public class UserServiceImpl implements UserService {
             PostgreUserDAO userDAO = (PostgreUserDAO) daoFactory.getUserDAO(connection);
             for (Integer id : userIds) {
                 userDAO.activateUser(id);
-                userDAO.updateUser(getUser(id));
+                userDAO.updateUser(findUserById(id));
             }
         } catch (DAOException e) {
             LOGGER.warn("Cannot activate users");
@@ -261,7 +269,7 @@ public class UserServiceImpl implements UserService {
             PostgreUserDAO userDAO = (PostgreUserDAO) daoFactory.getUserDAO(connection);
             for (Integer id : userIds) {
                 userDAO.deactivateUser(id);
-                userDAO.updateUser(getUser(id));
+                userDAO.updateUser(findUserById(id));
             }
         } catch (DAOException e) {
             LOGGER.warn("Cannot deactivate users");
