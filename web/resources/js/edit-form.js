@@ -79,6 +79,9 @@ tableController.controller('tableCtrl', ["$scope", "$http", function ($scope, $h
                         .empty()
                         .addClass('alert alert-success')
                         .html('Position saved successfully');
+                    setTimeout(function () {
+                        $("#errorsDiv").fadeOut().empty();
+                    }, 3000);
                 }
             });
         }
