@@ -151,18 +151,14 @@ public class MailServiceImpl implements MailService {
      * @return customized mail.
      */
     private Mail customizeMail(Mail mail, Map<String, String> parameters) {
-        //customize mail topic
         String head = mail.getHeadTemplate();
         for (Map.Entry<String, String> param : parameters.entrySet()) {
             head = head.replace(param.getKey(), param.getValue());
         }
-
-        //customize mail body
         String body = mail.getBodyTemplate();
         for (Map.Entry<String, String> param : parameters.entrySet()) {
             body = body.replace(param.getKey(), param.getValue());
         }
-
         Mail result = new Mail();
         result.setBodyTemplate(body);
         result.setHeadTemplate(head);
@@ -331,7 +327,6 @@ public class MailServiceImpl implements MailService {
         }
     }
 
-
     @Override
     public void sendFinalNotification(Integer rejectId, Integer jobId, Integer courseId) {
         Integer cesId = cesService.getCurrentCES().getId();
@@ -364,25 +359,16 @@ public class MailServiceImpl implements MailService {
         Mail mailWorkOffer = getMail(jobId);
         Mail mailCourseOffer = getMail(courseId);
 
-
         if ((!mailRejectedTemplate.getBodyTemplate().isEmpty()) && (!mailWorkOffer.getBodyTemplate().isEmpty()) &&
                 (!mailCourseOffer.getBodyTemplate().isEmpty())) {
             if (jobOfferUsers != null) {
                 massDelivery(jobOfferUsers, mailWorkOffer);
-            } else {
-                LOGGER.warn("JobOffer users not existing or null!");
             }
-
             if (courseRejectedUsers != null) {
                 massDelivery(courseRejectedUsers, mailRejectedTemplate);
-            } else {
-                LOGGER.warn("CourseRejection users not existing or null");
             }
-
             if (courseAcceptedUsers != null) {
                 massDelivery(courseAcceptedUsers, mailCourseOffer);
-            } else {
-                LOGGER.warn("CourseAccepted users not existing or null!");
             }
         } else {
             LOGGER.warn("Delivery failed, someone have dropped templates!");
@@ -411,6 +397,5 @@ public class MailServiceImpl implements MailService {
             sendMail(user.getEmail(), "Registration", "Welcome " + user.getName() + " ! \n " + DEFAULT_REG_MESSAGE);
         }
     }
-
 
 }
