@@ -27,47 +27,47 @@ import java.util.List;
 public class EditFormServiceImpl implements EditFormService {
 
     private final static Logger LOGGER = Logger.getLogger(EditFormServiceImpl.class);
-    private final DAOFactory daoFactory = new PostgreDAOFactory();
+    private final DAOFactory DAO_FACTORY = new PostgreDAOFactory();
 
     @Override
     public List<Field> getAllFields(Integer ces_id) {
-        Connection connection = daoFactory.getConnection();
-        FieldDAO fieldDAO = daoFactory.getFieldDAO(connection);
+        Connection connection = DAO_FACTORY.getConnection();
+        FieldDAO fieldDAO = DAO_FACTORY.getFieldDAO(connection);
         List<Field> fields = new LinkedList<>();
         try {
             fields.addAll(fieldDAO.getFieldsForCES(ces_id));
         } catch (DAOException e) {
             LOGGER.error(e);
         } finally {
-            daoFactory.putConnection(connection);
+            DAO_FACTORY.putConnection(connection);
         }
         return fields;
     }
 
     @Override
     public List<ListValue> getListValues(Integer listId) {
-        Connection connection = daoFactory.getConnection();
-        ListValueDAO listValueDAO = daoFactory.getListValueDAO(connection);
+        Connection connection = DAO_FACTORY.getConnection();
+        ListValueDAO listValueDAO = DAO_FACTORY.getListValueDAO(connection);
         List<ListValue> listValues = new LinkedList<>();
         try {
             listValues.addAll(listValueDAO.getAllListListValue(listId));
         } catch (DAOException e) {
             LOGGER.error(e);
         } finally {
-            daoFactory.putConnection(connection);
+            DAO_FACTORY.putConnection(connection);
         }
         return listValues;
     }
 
     @Override
     public void addNewQuestion(FullFieldWrapper field) {
-        Connection connection = daoFactory.getConnection();
+        Connection connection = DAO_FACTORY.getConnection();
         try {
             connection.setAutoCommit(false);
-            FieldDAO fieldDAO = daoFactory.getFieldDAO(connection);
-            CESDAO cesDAO = daoFactory.getCESDAO(connection);
-            ListTypeDAO listTypeDAO = daoFactory.getListTypeDAO(connection);
-            ListValueDAO listValueDAO = daoFactory.getListValueDAO(connection);
+            FieldDAO fieldDAO = DAO_FACTORY.getFieldDAO(connection);
+            CESDAO cesDAO = DAO_FACTORY.getCESDAO(connection);
+            ListTypeDAO listTypeDAO = DAO_FACTORY.getListTypeDAO(connection);
+            ListValueDAO listValueDAO = DAO_FACTORY.getListValueDAO(connection);
             if (field.getListTypeName().isEmpty() || field.getListTypeName() == null) {
                 Field newField = fieldDAO.create(new Field(field.getName(), field.getFieldTypeID(), field.isMultipleChoice(), field.getOrderNum(), null));
                 cesDAO.addCESField(getCES_ID(), newField.getId());
@@ -88,54 +88,54 @@ public class EditFormServiceImpl implements EditFormService {
             }
             LOGGER.error(e);
         } finally {
-            daoFactory.putConnection(connection);
+            DAO_FACTORY.putConnection(connection);
         }
     }
 
     @Override
     public void deleteQuestionFromCES(Integer ces_id, Integer field_id) {
-        Connection connection = daoFactory.getConnection();
-        CESDAO cesDAO = daoFactory.getCESDAO(connection);
+        Connection connection = DAO_FACTORY.getConnection();
+        CESDAO cesDAO = DAO_FACTORY.getCESDAO(connection);
         try {
             cesDAO.removeCESField(ces_id, field_id);
         } catch (DAOException e) {
             LOGGER.error(e);
         } finally {
-            daoFactory.putConnection(connection);
+            DAO_FACTORY.putConnection(connection);
         }
     }
 
     @Override
     public void updatePosition(Field field) {
-        Connection connection = daoFactory.getConnection();
-        FieldDAO fieldDAO = daoFactory.getFieldDAO(connection);
+        Connection connection = DAO_FACTORY.getConnection();
+        FieldDAO fieldDAO = DAO_FACTORY.getFieldDAO(connection);
         try {
             fieldDAO.update(field);
         } catch (DAOException e) {
             LOGGER.error(e);
         } finally {
-            daoFactory.putConnection(connection);
+            DAO_FACTORY.putConnection(connection);
         }
     }
 
     @Override
     public Integer getCES_ID() {
-        Connection connection = daoFactory.getConnection();
-        CESDAO cesDAO = daoFactory.getCESDAO(connection);
+        Connection connection = DAO_FACTORY.getConnection();
+        CESDAO cesDAO = DAO_FACTORY.getCESDAO(connection);
         try {
             return cesDAO.getCurrentCES().getId();
         } catch (DAOException e) {
             LOGGER.error(e);
         } finally {
-            daoFactory.putConnection(connection);
+            DAO_FACTORY.putConnection(connection);
         }
         return 1;
     }
 
     public void deleteOption() {
-        Connection connection = daoFactory.getConnection();
-        ListValueDAO listValueDAO = daoFactory.getListValueDAO(connection);
-        daoFactory.putConnection(connection);
+        Connection connection = DAO_FACTORY.getConnection();
+        ListValueDAO listValueDAO = DAO_FACTORY.getListValueDAO(connection);
+        DAO_FACTORY.putConnection(connection);
     }
 
     @Override
@@ -156,15 +156,15 @@ public class EditFormServiceImpl implements EditFormService {
 
     @Override
     public Field getField(Integer id) {
-        Connection connection = daoFactory.getConnection();
-        FieldDAO fieldDAO = daoFactory.getFieldDAO(connection);
+        Connection connection = DAO_FACTORY.getConnection();
+        FieldDAO fieldDAO = DAO_FACTORY.getFieldDAO(connection);
         Field field = new Field();
         try {
            field = fieldDAO.read(id);
         } catch (DAOException e) {
             LOGGER.error(e);
         } finally {
-            daoFactory.putConnection(connection);
+            DAO_FACTORY.putConnection(connection);
         }
         return field;
     }
