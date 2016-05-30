@@ -24,7 +24,7 @@ import java.util.Set;
  */
 public class ReportServiceImpl implements ReportService {
     private static final Logger LOGGER = Logger.getLogger(ReportServiceImpl.class);
-    private final DAOFactory daoFactory  = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
+    private final DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
     private final Validator reportExecuteValidator = new ReportExecuteValidator();
 
 
@@ -35,6 +35,7 @@ public class ReportServiceImpl implements ReportService {
         List<ReportTemplate> reports = new ArrayList<>();
         try {
             reports = reportTemplateDAO.getAll();
+            LOGGER.info("Get " + reports.size() + " reports");
         } catch (DAOException e) {
             LOGGER.warn("Can't retrieve reports");
         } finally {
@@ -101,7 +102,7 @@ public class ReportServiceImpl implements ReportService {
     public List<Map<String, Object>> getReportRows(ReportTemplate report) throws DAOException {
         Connection connection = daoFactory.getConnection();
         ReportTemplateDAO reportTemplateDAO = new PostgreReportTemplateDAO(connection);
-        List<Map<String, Object>> reportRows = null;
+        List<Map<String, Object>> reportRows = new ArrayList<>();
         Set<ValidationError> errors = reportExecuteValidator.validate(report.getQuery());
         if (errors.isEmpty()) {
             try {
@@ -114,22 +115,25 @@ public class ReportServiceImpl implements ReportService {
                 daoFactory.putConnection(connection);
             }
         } else {
-            LOGGER.warn("Report "+ report.getName() +" query has errors");
+            LOGGER.warn("Report " + report.getName() + " query has errors");
             throw new DAOException("Report query has errors");
         }
-        return  reportRows;
+        return reportRows;
     }
 
     @Override
-    public ReportTemplate getUserProfileQueryById (Integer id) {
+    public ReportTemplate getUsersProfileQueryById(Integer id) {
         Connection connection = daoFactory.getConnection();
-        ReportTemplate reportTemplate = new ReportTemplate();
         ApplicationTableDAO applicationTableDAO = new PostgreApplicationTableDAO(connection);
+        ReportTemplate reportTemplate = new ReportTemplate();
         try {
             reportTemplate.setName("Profile Report");
-            reportTemplate.setQuery(applicationTableDAO.getFullQuery(id));
+            String query = applicationTableDAO.getFullQuery(id);
+            if (query != null) {
+                reportTemplate.setQuery(query);
+            }
         } catch (DAOException e) {
-            LOGGER.warn("Cant get applicatio user profile query for ces id " + id, e.getCause());
+            LOGGER.warn("Cant get applicatio user profile query for ces id " + id, e);
         } finally {
             daoFactory.putConnection(connection);
         }

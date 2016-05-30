@@ -238,9 +238,10 @@ public class PostgreApplicationTableDAO implements ApplicationTableDAO {
     }
 
     public String getFullQuery(Integer cesId) throws DAOException {
-        List<FieldData> fieldData = getFieldIds(cesId);
-        String fullQuery = buildReportFullQuery(fieldData, 0);
-        try (PreparedStatement statement = this.connection.prepareStatement(fullQuery)) {
+        try {
+            List<FieldData> fieldData = getFieldIds(cesId);
+            String fullQuery = buildReportFullQuery(fieldData, 0);
+            PreparedStatement statement = this.connection.prepareStatement(fullQuery);
             statement.setInt(1, cesId);
             statement.setString(2, "%");
             statement.setString(3, "%");

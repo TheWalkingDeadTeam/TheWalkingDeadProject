@@ -5,14 +5,15 @@ package ua.nc.entity;
  */
 public class ReportTemplate implements Identified<Integer> {
     private int reportTemplateID;
-    private String query;
-    private String name;
+    private String query = "";
+    private String name = "";
 
     public ReportTemplate(String query, String name) {
         this.query = query;
         this.name = name;
     }
-    public ReportTemplate(){}
+    public ReportTemplate(){
+    }
 
     @Override
     public Integer getId() {
