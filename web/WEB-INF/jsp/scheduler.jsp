@@ -104,7 +104,7 @@
                     </div>
                 </div>
                 <%--Student Mail View--%>
-                    <div ng-hide="ctrl.mailsTemplateTable">
+
                 <div class="panel panel-default">
                     <h5 align="center">Student Mail Template</h5>
                     <div class="table-responsive tablecontainer">
@@ -154,7 +154,7 @@
                         </table>
                     </div>
                 </div>
-                    </div>
+
                 <%--Buttons--%>
                 <div class="row">
                     <div class="form-actions floatRight">
@@ -174,9 +174,7 @@
         </div>
     </div>
 
-    <div ng-hide="ctrl.emptyTemplateTable == true">
-        <jsp:include page="error-empty-table.jsp" />
-    </div>
+
 </div>
 <script src="/resources/js/google-api.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
