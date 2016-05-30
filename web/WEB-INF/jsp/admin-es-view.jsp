@@ -19,7 +19,6 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-title" content="Material Design Lite">
-    <link rel="stylesheet" type="text/css" href="/resources/bootstrap/css/bootstrap.css"/>
     <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
     <meta name="msapplication-TileColor" content="#3372DF">
     <link rel="stylesheet"
@@ -29,6 +28,13 @@
     <link rel="stylesheet" href="/resources/css/styles.css"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="/resources/css/roboto-style/roboto.css">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.cyan-light_blue.min.css">
+    <style>
+        .panel {
+            margin-left: 1%;
+            margin-top: 1%;
+        }
+    </style>
 </head>
 <body class="ng-cloak">
 <div clas="generic-container" ng-controller="enrollCtrl"
@@ -38,112 +44,26 @@
         <div class="panel panel-default">
             <div class="panel-heading"><span class="lead">Enrollment Session History </span></div>
             <div class="table-responsive">
-                <table class="table table-hover table-bordered table-striped span11">
+                <table class="table table-striped table-hover table-bordered">
                     <thead>
                     <tr>
-                        <td>
-                            <a href="#" ng-click="sortType = 'id'; sortReverse = !sortReverse">
-                                #
-                                <span ng-show="sortType == 'id' && !sortReverse" class="fa fa-caret-down"></span>
-                                <span ng-show="sortType == 'id' && sortReverse" class="fa fa-caret-up"></span>
-                            </a>
-                        </td>
-
-                        <td>
-                            <a href="#" ng-click="sortType = 'year'; sortReverse = !sortReverse">
-                                Year
-                                <span ng-show="sortType == 'year' && !sortReverse" class="fa fa-caret-down"></span>
-                                <span ng-show="sortType == 'year' && sortReverse" class="fa fa-caret-up"></span>
-                            </a>
-                        </td>
-                        <td>
-                            <a href="#" ng-click="sortType = 'startRegistrationDate'; sortReverse = !sortReverse">
-                                Start Registration Date
-                                <span ng-show="sortType == 'startRegistrationDate' && !sortReverse"
-                                      class="fa fa-caret-down"></span>
-                                <span ng-show="sortType == 'startRegistrationDate' && sortReverse"
-                                      class="fa fa-caret-up"></span>
-                            </a>
-                        </td>
-
-                        <td>
-                            <a href="#" ng-click="sortType = 'endRegistrationDate'; sortReverse = !sortReverse">
-                                End Registration Date
-                                <span ng-show="sortType == 'endRegistrationDate' && !sortReverse"
-                                      class="fa fa-caret-down"></span>
-                                <span ng-show="sortType == 'endRegistrationDate' && sortReverse"
-                                      class="fa fa-caret-up"></span>
-                            </a>
-                        </td>
-                        <td>
-                            <a href="#" ng-click="sortType = 'startInterviewingDate'; sortReverse = !sortReverse">
-                                Start Interview Date
-                                <span ng-show="sortType == 'startInterviewingDate' && !sortReverse"
-                                      class="fa fa-caret-down"></span>
-                                <span ng-show="sortType == 'startInterviewingDate' && sortReverse"
-                                      class="fa fa-caret-up"></span>
-                            </a>
-                        </td>
-
-                        <td>
-                            <a href="#" ng-click="sortType = 'endInterviewingDate'; sortReverse = !sortReverse">
-                                End Interview Date
-                                <span ng-show="sortType == 'endInterviewingDate' && !sortReverse"
-                                      class="fa fa-caret-down"></span>
-                                <span ng-show="sortType == 'endInterviewingDate' && sortReverse"
-                                      class="fa fa-caret-up"></span>
-                            </a>
-                        </td>
-
-                        <td>
-                            <a href="#" ng-click="sortType = 'quota'; sortReverse = !sortReverse">
-                                Quota
-                                <span ng-show="sortType == 'quota' && !sortReverse" class="fa fa-caret-down"></span>
-                                <span ng-show="sortType == 'quota' && sortReverse" class="fa fa-caret-up"></span>
-                            </a>
-                        </td>
-
-                        <td>
-                            <a href="#" ng-click="sortType = 'reminders'; sortReverse = !sortReverse">
-                                Reminders
-                                <span ng-show="sortType == 'reminders' && !sortReverse" class="fa fa-caret-down"></span>
-                                <span ng-show="sortType == 'reminders' && sortReverse" class="fa fa-caret-up"></span>
-                            </a>
-                        </td>
-
-                        <td>
-                            <a href="#" ng-click="sortType = 'statusId'; sortReverse = !sortReverse">
-                                Status Id
-                                <span ng-show="sortType == 'statusId' && !sortReverse" class="fa fa-caret-down"></span>
-                                <span ng-show="sortType == 'statusId' && sortReverse" class="fa fa-caret-up"></span>
-                            </a>
-                        </td>
-
-                        <td>
-                            <a href="#" ng-click="sortType = 'interviewTimeForPerson'; sortReverse = !sortReverse">
-                                Interview Time For Person
-                                <span ng-show="sortType == 'interviewTimeForPerson' && !sortReverse"
-                                      class="fa fa-caret-down"></span>
-                                <span ng-show="sortType == 'interviewTimeForPerson' && sortReverse"
-                                      class="fa fa-caret-up"></span>
-                            </a>
-                        </td>
-                        <td>
-                            <a href="#" ng-click="sortType = 'interviewTimeForDay'; sortReverse = !sortReverse">
-                                Interview Time For Day
-                                <span ng-show="sortType == 'interviewTimeForDay' && !sortReverse"
-                                      class="fa fa-caret-down"></span>
-                                <span ng-show="sortType == 'interviewTimeForDay' && sortReverse"
-                                      class="fa fa-caret-up"></span>
-                            </a>
-                        </td>
-                        <td>
-                            Profile report
-                        </td>
+                        <td>#</td>
+                        <td>Year</td>
+                        <td>Start Registration Date</td>
+                        <td>End Registration Date</td>
+                        <td>Start Interview Date</td>
+                        <td>End Interview Date</td>
+                        <td>Quota</td>
+                        <td>Reminders</td>
+                        <td>Status Id</td>
+                        <td>Interview Time For Person</td>
+                        <td>Interview Time For Day</td>
+                        <td>Profile report</td>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-hide="enrollCtrl.cesTable" ng-repeat="ch in session | orderBy:sortType:sortReverse | filter:searchFilt">
+                    <tr ng-hide="enrollCtrl.cesTable"
+                        ng-repeat="ch in session | orderBy:sortType:sortReverse | filter:searchFilt">
                         <td ng-init="index=$index + 1">{{index}}</td>
                         <td>{{ch.year}}</td>
                         <td>{{ch.startRegistrationDate}}</td>
@@ -165,11 +85,9 @@
                                                                            width="50" height="50" title="Excel"/></a>
                         </td>
                     </tr>
-                    <tr ng-hide="enrollCtrl.emptyTemplateTable == true">
-
+                    <tr ng-hide="enrollCtrl.emptyTemplateTable != true">
                         <td colspan="12" class="vert-align col-xs-12 text-center">Empty table</td>
                     </tr>
-
                     </tbody>
                 </table>
             </div>
