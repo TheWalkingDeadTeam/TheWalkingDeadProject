@@ -447,11 +447,7 @@ public class AdminController {
         CESValidator cesValidator = new CESValidator();
         Set<ValidationError> errors = cesValidator.validate(ces);
         if (errors.isEmpty()) {
-            try {
-                cesService.setCES(ces);
-            } catch (DAOException e) {
-                e.printStackTrace();
-            }
+            cesService.setCES(ces);
         }
         return errors;
     }
@@ -466,14 +462,9 @@ public class AdminController {
     public
     @ResponseBody
     CES ces() {
-        try {
-            cesService.checkRegistrationDate();
-            cesService.checkInterviewDate();
-            return cesService.getCurrentCES();
-        } catch (DAOException e) {
-            LOGGER.error("Can`t get CES");
-            return null;
-        }
+        cesService.checkRegistrationDate();
+        cesService.checkInterviewDate();
+        return cesService.getCurrentCES();
     }
 
     @RequestMapping(value = {"/cesclose"}, method = RequestMethod.POST, produces = "application/json")

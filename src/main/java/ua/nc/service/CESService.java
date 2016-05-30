@@ -6,10 +6,11 @@ import ua.nc.entity.CES;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by Pavel on 03.05.2016.
- */
+
 public interface CESService {
+    /**
+     * ID of statuses in constants. Same id`s must be written in database, in ces_status table
+     */
     int PENDING_ID = 1;
     int REGISTRATION_ONGOING_ID = 2;
     int POST_REGISTRATION_ID = 3;
@@ -17,12 +18,25 @@ public interface CESService {
     int POST_INTERVIEWING_ID = 5;
     int CLOSED_ID = 6;
 
+    /**
+     *
+     * @return Course enroll session, that ongoing now (status id can be from 1 to 5) or null
+     */
     CES getCurrentCES();
 
-
-    void setCES(CES ces) throws DAOException;
+    void setCES(CES ces);
 
     void closeCES();
+
+    void switchToInterviewingOngoing();
+
+    void checkRegistrationDate();
+
+    void checkInterviewDate();
+
+    void updateInterViewingDate(Date start, Date end);
+
+    CES getPendingCES();
 
     void enrollAsStudent(Integer userId, Integer cesId) throws DAOException;
 
@@ -32,12 +46,6 @@ public interface CESService {
 
     List<CES> getAllCES();
 
-    void switchToInterviewingOngoing() throws DAOException;
-
-    void checkRegistrationDate() throws DAOException;
-
-    void checkInterviewDate() throws DAOException;
-
     /**
      * Plan current interview schedule.
      *
@@ -45,10 +53,6 @@ public interface CESService {
      * @throws DAOException missing data about current course enrolment session.
      */
     List<Date> planSchedule(Date startDate) throws DAOException;
-
-    void updateInterViewingDate(Date start, Date end);
-
-    CES getPendingCES();
 
     boolean checkParticipation(Integer interviewerId);
 }
