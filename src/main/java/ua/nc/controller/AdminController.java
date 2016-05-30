@@ -469,7 +469,7 @@ public class AdminController {
         try {
             cesService.checkRegistrationDate();
             cesService.checkInterviewDate();
-            return cesService.getCES();
+            return cesService.getCurrentCES();
         } catch (DAOException e) {
             LOGGER.error("Can`t get CES");
             return null;
