@@ -114,7 +114,7 @@
             </div>
         </div>
         <!--/.item-->
-        <div class="item" style="background-image: url(/resources/images/test/slider/bg1.jpg);">
+        <div class="item" style="background-image: url(/resources/images/bg1.jpg);">
             <div class="slider-inner">
                 <div class="container">
                     <div class="row">
