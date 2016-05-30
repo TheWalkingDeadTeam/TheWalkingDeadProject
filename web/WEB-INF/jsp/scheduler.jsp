@@ -118,12 +118,15 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr ng-repeat="m in ctrl.mails">
+                            <tr ng-hide="ctrl.mailsTemplateTable" ng-repeat="m in ctrl.mails">
                                 <td class="vert-align"><input type="radio" data-ng-model="$parent.mailIdUser"
                                                               ng-value="{{m.id}}"></td>
                                 <td class="vert-align"><span ng-bind="m.headTemplate"></span></td>
                                 <td class="vert-align"><span ng-bind="m.bodyTemplate"></span></td>
 
+                            </tr>
+                            <tr ng-hide="ctrl.emptyTemplateTable == true">
+                                <td colspan="4"  class="vert-align col-xs-12 text-center">Empty table</td>
                             </tr>
                             </tbody>
                         </table>
@@ -143,12 +146,15 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr ng-repeat="m in ctrl.mails">
+                            <tr ng-hide="ctrl.mailsTemplateTable" ng-repeat="m in ctrl.mails">
                                 <td class="vert-align"><input type="radio" data-ng-model="$parent.mailIdStaff"
                                                               ng-value="{{m.id}}">
                                 </td>
                                 <td class="vert-align"><span ng-bind="m.headTemplate"></span></td>
                                 <td class="vert-align"><span ng-bind="m.bodyTemplate"></span></td>
+                            </tr>
+                            <tr ng-hide="ctrl.emptyTemplateTable == true">
+                                <td colspan="4"  class="vert-align col-xs-12 text-center">Empty table</td>
                             </tr>
                             </tbody>
                         </table>

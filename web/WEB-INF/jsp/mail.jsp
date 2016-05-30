@@ -76,7 +76,7 @@
                 </div>
             </div>
 
-            <div ng-hide="ctrl.mailsTemplateTable"  class="card hoverable">
+            <div class="card hoverable">
                 <div class="card-content">
                     <div class="panel panel-default">
                         <h5 align="center">List of Mails </h5>
@@ -92,7 +92,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr ng-repeat="m in ctrl.mails">
+                                <tr ng-hide="ctrl.mailsTemplateTable"  ng-repeat="m in ctrl.mails">
                                     <td class="vert-align"><span ng-bind="m.id"></span></td>
                                     <td class="vert-align"><span ng-bind="m.headTemplate"></span></td>
                                     <td class="vert-align"><span ng-bind="m.bodyTemplate"></span></td>
@@ -105,14 +105,14 @@
                                         </button>
                                     </td>
                                 </tr>
+                                <tr ng-hide="ctrl.emptyTemplateTable == true">
+                                    <td colspan="4"  class="vert-align col-xs-12 text-center">Empty table</td>
+                                </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div ng-hide="ctrl.emptyTemplateTable == true">
-                <jsp:include page="error-empty-table.jsp" />
             </div>
         </div>
     </div>

@@ -49,7 +49,7 @@ reporter.controller('ReportController', ['$scope', 'ReportService', '$http', 'No
     self.updateReport = function (report, id) {
         ReportService.updateReport(report, id)
             .then(
-                self.fetchReports(),
+                self.fetchReports,
                 function (errResponse) {
                     console.error('Error while updating Report.');
                 }
@@ -59,7 +59,7 @@ reporter.controller('ReportController', ['$scope', 'ReportService', '$http', 'No
     self.deleteReport = function (id) {
         ReportService.deleteReport(id)
             .then(
-                self.fetchReports(),
+                self.fetchReports,
                 function (errResponse) {
                     console.error('Error while deleting Report.');
                 }
