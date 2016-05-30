@@ -32,7 +32,8 @@
     <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
     <meta name="msapplication-TileColor" content="#3372DF">
 
-    <link rel="shortcut icon" href="images/favicon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/resources/images/ico.png"/>
+
 
     <!-- SEO: If your mobile URL is different from the desktop URL, add a canonical link to the desktop page https://developers.google.com/webmasters/smartphone-sites/feature-phones -->
     <!--
@@ -46,7 +47,11 @@
     <link rel="stylesheet" href="/resources/css/styles.css">
     <link rel="stylesheet" href="/resources/css/checkbox.css">
 
-
+<style>
+    p {
+        line-height: 15px;
+    }
+</style>
 </head>
 <body>
 
@@ -74,7 +79,7 @@
                 <div class="cssload-cube cssload-c3"></div>
             </div>
         </div>
-        <table  id="tableUsers" class="table table-striped table-hover">
+        <table  id="tableUsers" class="table table-striped table-hover table-bordered">
             <thead>
             <tr>
                 <td>

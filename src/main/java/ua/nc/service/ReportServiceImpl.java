@@ -11,6 +11,7 @@ import ua.nc.dao.postgresql.PostgreReportTemplateDAO;
 import ua.nc.entity.ReportTemplate;
 import ua.nc.validator.ReportExecuteValidator;
 import ua.nc.validator.ValidationError;
+import ua.nc.validator.Validator;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -23,11 +24,13 @@ import java.util.Set;
  */
 public class ReportServiceImpl implements ReportService {
     private static final Logger LOGGER = Logger.getLogger(ReportServiceImpl.class);
-    private final DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
+    private final DAOFactory DAO_FACTORY = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
+    private final Validator reportExecuteValidator = new ReportExecuteValidator();
+
 
     @Override
     public List<ReportTemplate> getReports() {
-        Connection connection = daoFactory.getConnection();
+        Connection connection = DAO_FACTORY.getConnection();
         ReportTemplateDAO reportTemplateDAO = new PostgreReportTemplateDAO(connection);
         List<ReportTemplate> reports = new ArrayList<>();
         try {
@@ -35,14 +38,14 @@ public class ReportServiceImpl implements ReportService {
         } catch (DAOException e) {
             LOGGER.warn("Can't retrieve reports");
         } finally {
-            daoFactory.putConnection(connection);
+            DAO_FACTORY.putConnection(connection);
         }
         return reports;
     }
 
     @Override
     public ReportTemplate getReportById(Integer id) {
-        Connection connection = daoFactory.getConnection();
+        Connection connection = DAO_FACTORY.getConnection();
         ReportTemplateDAO reportTemplateDAO = new PostgreReportTemplateDAO(connection);
         ReportTemplate report = null;
         try {
@@ -50,57 +53,56 @@ public class ReportServiceImpl implements ReportService {
         } catch (DAOException e) {
             LOGGER.warn("Can't retrieve report " + id);
         } finally {
-            daoFactory.putConnection(connection);
+            DAO_FACTORY.putConnection(connection);
         }
         return report;
     }
 
     @Override
     public void createReport(ReportTemplate report) {
-        Connection connection = daoFactory.getConnection();
+        Connection connection = DAO_FACTORY.getConnection();
         ReportTemplateDAO reportTemplateDAO = new PostgreReportTemplateDAO(connection);
         try {
             reportTemplateDAO.create(report);
         } catch (DAOException e) {
             LOGGER.warn("Can't create report " + report.getName() + " Query :" + report.getQuery());
         } finally {
-            daoFactory.putConnection(connection);
+            DAO_FACTORY.putConnection(connection);
         }
     }
 
     @Override
     public void updateReport(ReportTemplate report) {
-        Connection connection = daoFactory.getConnection();
+        Connection connection = DAO_FACTORY.getConnection();
         ReportTemplateDAO reportTemplateDAO = new PostgreReportTemplateDAO(connection);
         try {
             reportTemplateDAO.update(report);
         } catch (DAOException e) {
             LOGGER.warn("Can't update report " + report.getId());
         } finally {
-            daoFactory.putConnection(connection);
+            DAO_FACTORY.putConnection(connection);
         }
     }
 
     @Override
     public void deleteReport(ReportTemplate report) {
-        Connection connection = daoFactory.getConnection();
+        Connection connection = DAO_FACTORY.getConnection();
         ReportTemplateDAO reportTemplateDAO = new PostgreReportTemplateDAO(connection);
         try {
             reportTemplateDAO.delete(report);
         } catch (DAOException e) {
             LOGGER.warn("Can't delete report " + report.getId());
         } finally {
-            daoFactory.putConnection(connection);
+            DAO_FACTORY.putConnection(connection);
         }
     }
 
     @Override
     public List<Map<String, Object>> getReportRows(ReportTemplate report) throws DAOException {
-        Connection connection = daoFactory.getConnection();
+        Connection connection = DAO_FACTORY.getConnection();
         ReportTemplateDAO reportTemplateDAO = new PostgreReportTemplateDAO(connection);
-        ReportExecuteValidator validator = new ReportExecuteValidator();
         List<Map<String, Object>> reportRows = null;
-        Set<ValidationError> errors = validator.validate(report.getQuery());
+        Set<ValidationError> errors = reportExecuteValidator.validate(report.getQuery());
         if (errors.isEmpty()) {
             try {
                 reportRows = reportTemplateDAO.execute(report);
@@ -113,10 +115,10 @@ public class ReportServiceImpl implements ReportService {
                 LOGGER.warn("Can't execute report query " + report.getId());
                 throw new DAOException(e);
             } finally {
-                daoFactory.putConnection(connection);
+                DAO_FACTORY.putConnection(connection);
             }
         } else {
-            LOGGER.warn("Report "+ report.getName() +" query has errors ");
+            LOGGER.warn("Report "+ report.getName() +" query has errors");
             throw new DAOException("Report query has errors");
         }
         return  reportRows;
@@ -124,19 +126,16 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public ReportTemplate getUserProfileQueryById (Integer id) {
-        Connection connection = daoFactory.getConnection();
+        Connection connection = DAO_FACTORY.getConnection();
         ReportTemplate reportTemplate = new ReportTemplate();
         ApplicationTableDAO applicationTableDAO = new PostgreApplicationTableDAO(connection);
-        System.out.println("Problem before try");
         try {
             reportTemplate.setName("Profile Report");
-            System.out.println("In before full");
             reportTemplate.setQuery(applicationTableDAO.getFullQuery(id));
-            System.out.println(reportTemplate.getQuery());
         } catch (DAOException e) {
             LOGGER.warn("Cant get applicatio user profile query for ces id " + id, e.getCause());
         } finally {
-            daoFactory.putConnection(connection);
+            DAO_FACTORY.putConnection(connection);
         }
         return reportTemplate;
     }

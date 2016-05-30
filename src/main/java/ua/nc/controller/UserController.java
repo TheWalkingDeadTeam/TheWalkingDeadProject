@@ -40,7 +40,7 @@ public class UserController {
     public Set<ValidationError> changePassword(@RequestBody String password) {
         Validator validator = new PasswordValidator();
         Set<ValidationError> errors = null;
-        User user = userService.getUser(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+        User user = userService.findUserByEmail(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal()).getUsername());
         ObjectMapper objectMapper = new ObjectMapper();
         try {

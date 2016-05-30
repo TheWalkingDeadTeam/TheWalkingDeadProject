@@ -16,12 +16,12 @@
     <link rel="stylesheet" href="/resources/css/roboto-font/roboto.css"/>
 </head>
 <body ng-app="mailer" class="ng-cloack">
-<div class="generic-container">
+<div class="generic-container" ng-controller="MailController as ctrl">
     <div class="panel panel-default">
         <h5 align="center">Scheduler Parameters </h5>
         <div class="formcontainer">
             <form ng-submit="submit()" name="myForm" class="form-horizontal"
-                  data-ng-controller="MailController as ctrl" autocomplete="on">
+                  autocomplete="on">
 
                 <%-- Interview Start Date --%>
                 <div class="row">
@@ -104,6 +104,7 @@
                     </div>
                 </div>
                 <%--Student Mail View--%>
+
                 <div class="panel panel-default">
                     <h5 align="center">Student Mail Template</h5>
                     <div class="table-responsive tablecontainer">
@@ -117,12 +118,15 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr ng-repeat="m in ctrl.mails">
+                            <tr ng-hide="ctrl.mailsTemplateTable" ng-repeat="m in ctrl.mails">
                                 <td class="vert-align"><input type="radio" data-ng-model="$parent.mailIdUser"
                                                               ng-value="{{m.id}}"></td>
                                 <td class="vert-align"><span ng-bind="m.headTemplate"></span></td>
                                 <td class="vert-align"><span ng-bind="m.bodyTemplate"></span></td>
 
+                            </tr>
+                            <tr ng-hide="ctrl.emptyTemplateTable == true">
+                                <td colspan="4"  class="vert-align col-xs-12 text-center">Empty table</td>
                             </tr>
                             </tbody>
                         </table>
@@ -142,17 +146,21 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr ng-repeat="m in ctrl.mails">
+                            <tr ng-hide="ctrl.mailsTemplateTable" ng-repeat="m in ctrl.mails">
                                 <td class="vert-align"><input type="radio" data-ng-model="$parent.mailIdStaff"
                                                               ng-value="{{m.id}}">
                                 </td>
                                 <td class="vert-align"><span ng-bind="m.headTemplate"></span></td>
                                 <td class="vert-align"><span ng-bind="m.bodyTemplate"></span></td>
                             </tr>
+                            <tr ng-hide="ctrl.emptyTemplateTable == true">
+                                <td colspan="4"  class="vert-align col-xs-12 text-center">Empty table</td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
+
                 <%--Buttons--%>
                 <div class="row">
                     <div class="form-actions floatRight">
@@ -171,6 +179,8 @@
             </form>
         </div>
     </div>
+
+
 </div>
 <script src="/resources/js/google-api.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>

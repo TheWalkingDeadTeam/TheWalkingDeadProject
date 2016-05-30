@@ -13,11 +13,14 @@ import ua.nc.service.*;
 import ua.nc.service.user.UserService;
 import ua.nc.service.user.UserServiceImpl;
 import ua.nc.validator.FeedbackValidator;
+import ua.nc.validator.InterviewEnrollValidator;
 import ua.nc.validator.ValidationError;
+import ua.nc.validator.Validator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
@@ -34,28 +37,55 @@ public class InterviewerController {
     private IntervieweeService intervieweeService = new IntervieweeServiceImpl();
     private CESService cesService = new CESServiceImpl();
 
+//    @RequestMapping(value = "/enroll-ces-interviewer", method = RequestMethod.POST)
+//    public
+//    @ResponseBody
+//    HttpStatus enroll(@RequestBody IntegerList integerList) {
+//        CES currentCES = cesService.getCurrentCES();
+//        if (currentCES != null) {
+//            int cesId = cesService.getCurrentCES().getId();
+//            for (Integer userId :integerList.getValues() ) {
+//                try {
+//                    cesService.enrollAsInterviewer(userId, cesId);
+//                    LOGGER.info("Successfully enrolled on current CES");
+//                } catch (DAOException e) {
+//                    LOGGER.info("Cant enroll on current CES", e);
+//                }
+//            }
+//        } else {
+//            LOGGER.info("Can't enroll to current CES. Current CES session is not exist");
+//            return HttpStatus.BAD_REQUEST;
+//        }
+//        return HttpStatus.OK;
+//    }
+
     @RequestMapping(value = "/enroll-ces-interviewer", method = RequestMethod.POST)
     public
     @ResponseBody
-    HttpStatus enroll(@RequestBody IntegerList integerList) {
+    Set<ValidationError> enroll(@RequestBody IntegerList integerList) {
         CES currentCES = cesService.getCurrentCES();
-        if (currentCES != null) {
-            int cesId = cesService.getCurrentCES().getId();
-            for (Integer userId :integerList.getValues() ) {
-                try {
-                    cesService.enrollAsInterviewer(userId, cesId);
-                    LOGGER.info("Successfully enrolled on current CES");
-                } catch (DAOException e) {
-                    LOGGER.info("Cant enroll on current CES", e);
+        Validator validator = new InterviewEnrollValidator();
+        Set<ValidationError> errors = validator.validate(integerList);
+        if (errors.isEmpty()) {
+            if (currentCES != null) {
+                int cesId = cesService.getCurrentCES().getId();
+                for (Integer userId : integerList.getValues()) {
+                    try {
+                        cesService.enrollAsInterviewer(userId, cesId);
+                        LOGGER.info("Successfully enrolled on current CES");
+                    } catch (DAOException e) {
+                        LOGGER.info("Cant enroll on current CES", e);
+                        errors.add(new ValidationError("enrollment session", "Already enrolled. Can't enroll to current CES"));
+                    }
                 }
+            } else {
+                LOGGER.info("Can't enroll to current CES. Current CES session is not exist");
+                errors.add(new ValidationError("enrollment session", "Can't enroll to current CES. Current CES session is not exist"));
+                return errors;
             }
-        } else {
-            LOGGER.info("Can't enroll to current CES. Current CES session is not exist");
-            return HttpStatus.BAD_REQUEST;
         }
-        return HttpStatus.OK;
+        return errors;
     }
-
 
     @RequestMapping(value = "/feedback", method = RequestMethod.GET)
     public String feedback() {
@@ -67,7 +97,7 @@ public class InterviewerController {
     public Set<ValidationError> saveFeedback(@RequestBody FeedbackAndSpecialMark feedbackAndSpecialMark, @PathVariable("id") Integer id, HttpServletRequest request) {
         Feedback feedback = feedbackAndSpecialMark.getFeedback();
         Set<ValidationError> errors = new FeedbackValidator().validate(feedback);
-        int interviewerID = userService.getUser(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+        int interviewerID = userService.findUserByEmail(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal()).getUsername()).getId();
         feedback.setInterviewerID(interviewerID);
         Application application = applicationService.getApplicationByUserForCurrentCES(id);
@@ -100,7 +130,8 @@ public class InterviewerController {
         }
         Date today = new Date();
         CES currentCES = cesService.getCurrentCES();
-        if (today.after(currentCES.getStartInterviewingDate())&&today.before(currentCES.getEndInterviewingDate())) {
+
+        if (currentCES.getStatusId().equals(CESService.INTERVIEWING_ONGOING_ID)) {
             feedbackDTO.setInterviewingPeriod();
             if (application == null) {
                 feedbackDTO.setApplicationExists(false);
@@ -115,7 +146,7 @@ public class InterviewerController {
             } else {
                 feedbackDTO.setIntervieweeExists(true);
             }
-            User user = userService.getUser(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+            User user = userService.findUserByEmail(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                     .getPrincipal()).getUsername());
             if (!cesService.checkParticipation(user.getId())){
                 feedbackDTO.setRestricted(true);
@@ -148,7 +179,7 @@ public class InterviewerController {
                 feedbackDTO.setRestricted(true);
                 return feedbackDTO;
             }
-        } else if (today.after(currentCES.getEndInterviewingDate())) {
+        } else if (currentCES.getStatusId().equals(CESService.POST_INTERVIEWING_ID)) {
             feedbackDTO.setAfterInterviewingPeriod();
             if (application == null) {
                 feedbackDTO.setApplicationExists(false);

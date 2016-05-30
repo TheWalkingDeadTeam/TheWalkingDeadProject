@@ -31,7 +31,8 @@
     <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
     <meta name="msapplication-TileColor" content="#3372DF">
 
-    <link rel="shortcut icon" href="images/favicon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/resources/images/ico.png"/>
+
 
     <!-- SEO: If your mobile URL is different from the desktop URL, add a canonical link to the desktop page https://developers.google.com/webmasters/smartphone-sites/feature-phones -->
     <!--
@@ -132,7 +133,7 @@
                                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white formControllingButt">
                             <%--<button ng-click="backButton()" class="btn btn-lg btn-primary btn-block"> Back </button>--%>
 
-                            <a href="#slideDown" style="margin-top: 10px; width: 100%;"
+                            <a href="#slideDown" type="button" style="margin-top: 10px; width: 100%;"
                                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white formControllingButt"
                                data-toggle="collapse">Close Session</a>
 
@@ -146,7 +147,7 @@
             <%--class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">Exit</a>--%>
         </div>
 
-        <div id="slideDown" class="collapse col-lg-6 col-md-8 col-sm-12 col-xs-12" style="    margin-left: 30px;">
+        <div id="slideDown" class="collapse col-lg-6 col-md-8 col-sm-12 col-xs-12" style="margin-left: 30px;">
             <jsp:include page="ces-mail.jsp"/>
         </div>
     </main>

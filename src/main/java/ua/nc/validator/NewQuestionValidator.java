@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
  */
 public class NewQuestionValidator implements Validator {
 
+    private static Integer FIELD_TYPE_NUMBER = 8;
     private static String NAME_PATTERN = "[^.!?\\s][^.!?]*(?:[.!?](?!['\"]?\\s|$)[^.!?]*)*[.!?]?['\"]?(?=\\s|$)";
     private Pattern pattern;
     private Matcher matcher;
@@ -32,13 +33,14 @@ public class NewQuestionValidator implements Validator {
     }
 
     private static void fieldTypeCheck(FullFieldWrapper fullFieldWrapper, Set<ValidationError> errors) {
-        if (fullFieldWrapper.getFieldTypeID() <= 0 || fullFieldWrapper.getFieldTypeID() > 8) {//TODO replace digit with proper method
+        if (fullFieldWrapper.getFieldTypeID() <= 0 || fullFieldWrapper.getFieldTypeID() > FIELD_TYPE_NUMBER) {
             errors.add(new ValidationError("field type", "Choose correct type"));
-        } else {
-            if (!(((Integer) fullFieldWrapper.getFieldTypeID()) instanceof Integer)) {
-                errors.add(new ValidationError("field type", "Choose correct type, Mr.Hacker"));
-            }
         }
+//        else {
+//            if (!(((Integer) fullFieldWrapper.getFieldTypeID()) instanceof Integer)) {
+//                errors.add(new ValidationError("field type", "Choose correct type, Mr.Hacker"));
+//            }
+//        }
     }
 
     private static void newOptionsCheck(FullFieldWrapper fullFieldWrapper, Set<ValidationError> errors) {
@@ -71,14 +73,14 @@ public class NewQuestionValidator implements Validator {
         }
     }
 
-    private static void orderCheck(FullFieldWrapper fullFieldWrapper, Set<ValidationError> errors) {
-        if (!((Integer) fullFieldWrapper.getOrderNum() instanceof Integer)) {
-            errors.add(new ValidationError("order num", "Order num is set automatically, good try :)"));
-        }
-    }
+//    private static void orderCheck(FullFieldWrapper fullFieldWrapper, Set<ValidationError> errors) {
+//        if (!((Integer) fullFieldWrapper.getOrderNum() instanceof Integer)) {
+//            errors.add(new ValidationError("order num", "Order num is set automatically, good try :)"));
+//        }
+//    }
 
     private static void isMultipleCheck(FullFieldWrapper fullFieldWrapper, Set<ValidationError> errors) {
-        if (!((Boolean) fullFieldWrapper.isMultipleChoice() instanceof Boolean)) {
+        if (!(fullFieldWrapper.isMultipleChoice() instanceof Boolean)) {
             errors.add(new ValidationError("multiple field choice", "Multiple type is set automatically, good try :)"));
         }
     }
@@ -113,7 +115,7 @@ public class NewQuestionValidator implements Validator {
             newOptionsCheck(fullFieldWrapper, errors);
 
             // check order number for validity
-            orderCheck(fullFieldWrapper, errors);
+//            orderCheck(fullFieldWrapper, errors);
 
             // check multiple choice for validity
             isMultipleCheck(fullFieldWrapper, errors);

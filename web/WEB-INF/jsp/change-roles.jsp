@@ -18,9 +18,11 @@
                         </select>
                     </div>
                 </div>
-                <button id="save_roles" class="btn btn-lg btn-primary btn-block changebtn mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">Save roles</button>
+                <button id="buttonSaveRoles" class="btn btn-lg btn-primary btn-block changebtn mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">Save roles</button>
             </div>
         </form>
         <div id="messageChangeRoles"></div>
     </div>
 </sec:authorize>
+
+

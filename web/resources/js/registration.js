@@ -1,17 +1,17 @@
     $(document).ready(function () {
     // popup-------------------------------------------------------------------------------popup
-    $('.regbut').bind('click', function () {
-        $('.reg').fadeIn(500); //openpopup
-        // openValidate();
-    });
-
-    $('.closebtn').bind('click', function () {
-        $('.reg').fadeOut(300); //closebutton
-    });
-
-    $('.layout').bind('click', function () {
-        $('.reg').fadeOut(300); //layoutclose
-    });
+    // $('.regbut').bind('click', function () {
+    //     $('.reg').fadeIn(500); //openpopup
+    //     // openValidate();
+    // });
+    //
+    // $('.closebtn').bind('click', function () {
+    //     $('.reg').fadeOut(300); //closebutton
+    // });
+    //
+    // $('.layout').bind('click', function () {
+    //     $('.reg').fadeOut(300); //layoutclose
+    // });
     //popup
     // -------------------------------------------------------------------------------validation
     $('.form-control').bind('input', ValidateForm);
@@ -174,19 +174,19 @@
                     $('#messageRegistration')
                         .removeClass()
                         .empty();
-                    $('#messageSignIn')
+                    $('#messageRegistration')
                         .removeClass()
                         .empty();
                     $('.registration')
                         .fadeOut(300);
-                    $('#messageSignIn')
+                    $('#messageRegistration')
                         .show()
                         .addClass('alert alert-success')
                         .html('Registered successfully').fadeIn();
                     $('.registration input')
                         .val("");
                     setTimeout(function() {
-                        $("#messageSignIn").fadeOut().empty();
+                        $("#messageRegistration").fadeOut().empty();
                     }, 3000);
                 }
             },

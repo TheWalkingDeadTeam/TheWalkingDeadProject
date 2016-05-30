@@ -214,8 +214,11 @@ INSERT INTO System_User (Email, Password, Name, Surname, System_User_Status_ID) 
 INSERT INTO System_User_Role (System_User_ID, Role_ID) VALUES
   (1, (SELECT Role_ID FROM Role WHERE Name='ROLE_ADMIN')),
   (1, (SELECT Role_ID FROM Role WHERE Name='ROLE_DEV')),
+  (2, (SELECT Role_ID FROM Role WHERE Name='ROLE_ADMIN')),
   (2, (SELECT Role_ID FROM Role WHERE Name='ROLE_DEV')),
+  (3, (SELECT Role_ID FROM Role WHERE Name='ROLE_ADMIN')),
   (3, (SELECT Role_ID FROM Role WHERE Name='ROLE_DEV')),
+  (4, (SELECT Role_ID FROM Role WHERE Name='ROLE_ADMIN')),
   (4, (SELECT Role_ID FROM Role WHERE Name='ROLE_BA')),
   (5, (SELECT Role_ID FROM Role WHERE Name='ROLE_BA')),
   (6, (SELECT Role_ID FROM Role WHERE Name='ROLE_BA')),
@@ -303,14 +306,9 @@ INSERT INTO Interviewer_Participation (System_User_ID,CES_ID) VALUES
 INSERT INTO Application(System_User_ID, CES_ID) VALUES
   (35,1),
   (36,1),
-  (37,1),
-  (38,1),
-  (39,1),
-  (40,1),
-  (41,1),
-  (42,1);
+  (37,1);
 
-INSERT INTO interviewee (application_id, interview_time) VALUES
+/*INSERT INTO interviewee (application_id, interview_time) VALUES
   (1,'2001-09-28 03:00:00'),
   (2,'2001-09-28 03:00:00'),
   (3,'2001-09-28 03:00:00'),
@@ -342,7 +340,7 @@ INSERT INTO Feedback (Score, Comment, Interviewer_ID) VALUES
   (65, 'Medium', 24),
   (80, 'Good', 34),
   (95, 'Very good', 15),
-  (40, 'Bad', 25);
+  (40, 'Bad', 25);*/
 
 INSERT INTO Field_Type (Name) VALUES
   ('number'),
@@ -453,6 +451,62 @@ INSERT INTO Field_Value (Field_ID, Application_ID, Value_Text, Value_Double, Val
   (8,1,
    'Very goooood',NULL,NULL, NULL);
 
+INSERT INTO Field_Value (Field_ID, Application_ID, Value_Text, Value_Double, Value_Date, List_Value_ID) VALUES
+  (1,2,
+   NULL,NULL,NULL, (SELECT List_Value_ID FROM List_Value lv JOIN List l on lv.List_ID = l.List_ID WHERE (l.Name = 'Marks' AND lv.Value_Text = '7'))),
+
+  (2,2,
+   NULL,NULL,NULL, (SELECT List_Value_ID FROM List_Value lv JOIN List l on lv.List_ID = l.List_ID WHERE (l.Name = 'Marks' AND lv.Value_Text = '7'))),
+
+  (3,2,
+   NULL,NULL,NULL, (SELECT List_Value_ID FROM List_Value lv JOIN List l on lv.List_ID = l.List_ID WHERE (l.Name = 'Interests' AND lv.Value_Text = 'Research'))),
+
+  (3,2,
+   NULL,NULL,NULL, (SELECT List_Value_ID FROM List_Value lv JOIN List l on lv.List_ID = l.List_ID WHERE (l.Name = 'Interests' AND lv.Value_Text = 'Practice'))),
+
+  (4,2,
+   NULL,NULL,NULL, (SELECT List_Value_ID FROM List_Value lv JOIN List l on lv.List_ID = l.List_ID WHERE (l.Name = 'Information' AND lv.Value_Text = 'VK'))),
+
+  (6,2,
+   NULL,NULL,NULL, (SELECT List_Value_ID FROM List_Value lv JOIN List l on lv.List_ID = l.List_ID WHERE (l.Name = 'University' AND lv.Value_Text = 'KPI'))),
+
+  (7,2,
+   'Hi',NULL,NULL, NULL),
+
+  (5,2,
+   '333333',NULL,NULL, NULL),
+
+  (8,2,
+   'Very medium',NULL,NULL, NULL);
+
+INSERT INTO Field_Value (Field_ID, Application_ID, Value_Text, Value_Double, Value_Date, List_Value_ID) VALUES
+  (1,3,
+   NULL,NULL,NULL, (SELECT List_Value_ID FROM List_Value lv JOIN List l on lv.List_ID = l.List_ID WHERE (l.Name = 'Marks' AND lv.Value_Text = '1'))),
+
+  (2,3,
+   NULL,NULL,NULL, (SELECT List_Value_ID FROM List_Value lv JOIN List l on lv.List_ID = l.List_ID WHERE (l.Name = 'Marks' AND lv.Value_Text = '1'))),
+
+  (3,3,
+   NULL,NULL,NULL, (SELECT List_Value_ID FROM List_Value lv JOIN List l on lv.List_ID = l.List_ID WHERE (l.Name = 'Interests' AND lv.Value_Text = 'Research'))),
+
+  (3,3,
+   NULL,NULL,NULL, (SELECT List_Value_ID FROM List_Value lv JOIN List l on lv.List_ID = l.List_ID WHERE (l.Name = 'Interests' AND lv.Value_Text = 'Practice'))),
+
+  (4,3,
+   NULL,NULL,NULL, (SELECT List_Value_ID FROM List_Value lv JOIN List l on lv.List_ID = l.List_ID WHERE (l.Name = 'Information' AND lv.Value_Text = 'VK'))),
+
+  (6,3,
+   NULL,NULL,NULL, (SELECT List_Value_ID FROM List_Value lv JOIN List l on lv.List_ID = l.List_ID WHERE (l.Name = 'University' AND lv.Value_Text = 'KNU'))),
+
+  (7,3,
+   'Goodbye',NULL,NULL, NULL),
+
+  (5,3,
+   '6666666',NULL,NULL, NULL),
+
+  (8,3,
+   'Very baaaad',NULL,NULL, NULL);
+
 INSERT INTO email_template (head_template, body_template) VALUES
   ('NetCracker', 'Доброго дня, $name $surname!
 
@@ -462,6 +516,7 @@ INSERT INTO email_template (head_template, body_template) VALUES
 З повагою, NetCracker.
 
 Якщо ви отримали цього листа випадково та не розумієте, про що йдеться, будь ласка, не реагуйте на це повідомлення.'),
+
   ('Запрошення на курси NetCracker', 'Вітаємо, $name $surname!
 
 Повідомляємо, що Вас запрошено на курси $courseType у НЦ НТУУ "КПІ" NetCracker.
@@ -472,15 +527,15 @@ INSERT INTO email_template (head_template, body_template) VALUES
 Якщо ви отримали цього листа випадково та не розумієте, про що йдеться, будь ласка, не реагуйте на це повідомлення.'),
   ('Нагадування про співбесіду у NetCracker', 'Доброго дня, $name $surname!
 
-Нагадуємо, що $date о $hours:$minutes Ви проводите співбесіду на курси $courseType, що проходитиме у $location (подивитися на карті: googleMaps).
+Нагадуємо, що $date о $hours:$minutes Ви проводите співбесіду на курси $courseType, що проходитиме у $location (подивитися на карті: $googleMaps).
 За додатковою інформацією звертатися: $contactInterviewers.
 
 З повагою, NetCracker.
 
 Якщо ви отримали цього листа випадково та не розумієте, про що йдеться, будь ласка, не реагуйте на це повідомлення.'),
-  ('Запрошення на співбесіду у NetCracker', 'Вітаємо, $name $surname!
+  ('Запрошення на співбесіду у NetCracker','Вітаємо, $name $surname!
 
-Нагадуємо, що $date о $hours:$minutes у Вас співбесіда на курси $courseType, що проходитиме у $location (подивитися на карті: googleMaps).
+Нагадуємо, що $date о $hours:$minutes у Вас співбесіда на курси $courseType, що проходитиме у $location (подивитися на карті: $googleMaps).
 За додатковою інформацією звертатися: $contactStudent.
 
 З повагою, NetCracker.
