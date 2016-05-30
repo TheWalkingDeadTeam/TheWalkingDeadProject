@@ -258,7 +258,7 @@ interView.controller('InterCtrl', ["$http", "$scope",'MailService','Notification
             vm.showSpin();
             var res = $http.post('/interviewer/enroll-ces-interviewer', dataObj);
             res.success(function (data, status, headers, config) {
-                $scope.message = data;
+                // $scope.message = data;
                 vm.getData();
                 vm.getSize();
             });

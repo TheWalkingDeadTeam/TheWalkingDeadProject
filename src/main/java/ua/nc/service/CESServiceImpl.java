@@ -2,7 +2,9 @@ package ua.nc.service;
 
 import org.apache.log4j.Logger;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
-import ua.nc.dao.*;
+import ua.nc.dao.ApplicationDAO;
+import ua.nc.dao.CESDAO;
+import ua.nc.dao.UserDAO;
 import ua.nc.dao.enums.DataBaseType;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.dao.factory.DAOFactory;
@@ -10,12 +12,10 @@ import ua.nc.dao.postgresql.PostgreApplicationDAO;
 import ua.nc.dao.postgresql.PostgreCESDAO;
 import ua.nc.entity.Application;
 import ua.nc.entity.CES;
-import ua.nc.entity.CESStatus;
 import ua.nc.entity.User;
 
 import java.sql.Connection;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -59,7 +59,6 @@ public class CESServiceImpl implements CESService {
         }
         return allCES;
     }
-
 
 
     @Override
@@ -158,7 +157,7 @@ public class CESServiceImpl implements CESService {
         try {
             int cesId = getCurrentCES().getId();
             return cesdao.countInterviewerParticipation(cesId, interviewerId) > 0;
-        } catch (DAOException ex){
+        } catch (DAOException ex) {
             LOGGER.warn(ex);
         } finally {
             DAO_FACTORY.putConnection(connection);
@@ -230,7 +229,6 @@ public class CESServiceImpl implements CESService {
     }
 
 
-
     @Override
     public void setCES(CES ces) throws DAOException {
         Connection connection = DAO_FACTORY.getConnection();
@@ -282,28 +280,33 @@ public class CESServiceImpl implements CESService {
         String dateFromDB = getCurrentCES().getStartRegistrationDate().toString() + TIME_FOR_DATE_FROM_DB;
         runThreadForChangeStatus(dateFromDB, REGISTRATION_ONGOING_ID);
     }
+
     private void switchToPostRegistration() throws DAOException {
         String dateFromDB = getCurrentCES().getEndRegistrationDate().toString() + TIME_FOR_DATE_FROM_DB;
         runThreadForChangeStatus(dateFromDB, POST_REGISTRATION_ID);
     }
+
     @Override
     public void switchToInterviewingOngoing() throws DAOException {
-        if (getCurrentCES().getStatusId() != POST_REGISTRATION_ID){
+        if (getCurrentCES().getStatusId() != POST_REGISTRATION_ID) {
             LOGGER.warn("Session is not in post registration status!");
             return;
         }
         changeStatus(INTERVIEWING_ONGOING_ID);
     }
+
     private void switchToPostInterviewing() throws DAOException {
         String dateFromDB = getCurrentCES().getEndInterviewingDate().toString() + TIME_FOR_DATE_FROM_DB;
         runThreadForChangeStatus(dateFromDB, POST_INTERVIEWING_ID);
     }
+
     @Override
     public void closeCES() {
         changeStatus(CLOSED_ID);
         scheduler.shutdown();
     }
-    private void runThreadForChangeStatus(String dateFromDB, final int statusId){
+
+    private void runThreadForChangeStatus(String dateFromDB, final int statusId) {
         Date date;
         try {
             date = dateFormatter.parse(dateFromDB);
@@ -318,7 +321,7 @@ public class CESServiceImpl implements CESService {
         }
     }
 
-    private void changeStatus(int statusId){
+    private void changeStatus(int statusId) {
         Connection connection = DAO_FACTORY.getConnection();
         CESDAO cesDAO = DAO_FACTORY.getCESDAO(connection);
         try {
@@ -331,7 +334,7 @@ public class CESServiceImpl implements CESService {
                     cesDAO.update(ces);
                     LOGGER.info("Status changed");
                 }
-            }else {
+            } else {
                 LOGGER.warn("Current CES does not exist");
             }
         } catch (Exception e) {
@@ -340,14 +343,16 @@ public class CESServiceImpl implements CESService {
             DAO_FACTORY.putConnection(connection);
         }
     }
-    private CES setFieldsForInterviewPeriod(CES ces, CES cesFromDb){
+
+    private CES setFieldsForInterviewPeriod(CES ces, CES cesFromDb) {
         cesFromDb.setStartInterviewingDate(ces.getStartInterviewingDate());
         cesFromDb.setEndInterviewingDate(ces.getEndInterviewingDate());
         cesFromDb.setInterviewTimeForPerson(ces.getInterviewTimeForPerson());
         cesFromDb.setInterviewTimeForDay(ces.getInterviewTimeForDay());
         return cesFromDb;
     }
-    private CES setFieldsForRegistrationPeriod(CES ces, CES cesFromDb){
+
+    private CES setFieldsForRegistrationPeriod(CES ces, CES cesFromDb) {
         cesFromDb.setYear(ces.getYear());
         cesFromDb.setStartRegistrationDate(ces.getStartRegistrationDate());
         cesFromDb.setEndRegistrationDate(ces.getEndRegistrationDate());

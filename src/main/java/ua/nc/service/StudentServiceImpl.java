@@ -28,10 +28,10 @@ public class StudentServiceImpl implements StudentService {
             return studentData;
         } catch (DAOException e) {
             log.warn("Can't get students", e.getCause());
+            return null;
         } finally {
             daoFactory.putConnection(connection);
         }
-        return null;
     }
 
     @Override
@@ -43,10 +43,10 @@ public class StudentServiceImpl implements StudentService {
             return applicationTableDAO.getApplicationsTable(ces.getId(), itemPerPage, pageNumber, pattern);
         } catch (DAOException e) {
             log.warn("Can't get students", e.getCause());
+            return null;
         } finally {
             daoFactory.putConnection(connection);
         }
-        return null;
     }
 
     @Override
@@ -59,10 +59,10 @@ public class StudentServiceImpl implements StudentService {
             return applicationTableDAO.getApplicationsTable(ces.getId(), itemPerPage, pageNumber, sortType, asc);
         } catch (DAOException e) {
             log.warn("Can't get students", e.getCause());
+            return null;
         } finally {
             daoFactory.putConnection(connection);
         }
-        return null;
     }
 
     @Override

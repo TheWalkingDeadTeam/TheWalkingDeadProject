@@ -495,7 +495,7 @@ public class AdminController {
         } catch (IOException e) {
             LOGGER.error("Failed to parse CESclose parameters", e);
         }
-//        mailService.sendFinalNotification(rejectionId, workId, courseId);
+        mailService.sendFinalNotification(rejectionId, workId, courseId);
         cesService.closeCES();
     }
 
