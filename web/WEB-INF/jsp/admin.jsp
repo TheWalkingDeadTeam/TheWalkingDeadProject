@@ -179,7 +179,7 @@
                             You are able to create new Admin or Interviewer
                         </div>
                         <div class="mdl-card__actions mdl-card--border">
-                            <a href="/admin/create" class="mdl-button mdl-js-button mdl-js-ripple-effect">Create
+                            <a href="/admin/create-user" class="mdl-button mdl-js-button mdl-js-ripple-effect">Create
                                 User</a>
                         </div>
                     </div>
