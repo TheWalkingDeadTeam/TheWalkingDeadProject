@@ -67,7 +67,7 @@ public class InterviewerController {
     public Set<ValidationError> saveFeedback(@RequestBody FeedbackAndSpecialMark feedbackAndSpecialMark, @PathVariable("id") Integer id, HttpServletRequest request) {
         Feedback feedback = feedbackAndSpecialMark.getFeedback();
         Set<ValidationError> errors = new FeedbackValidator().validate(feedback);
-        int interviewerID = userService.getUser(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+        int interviewerID = userService.findUserByEmail(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal()).getUsername()).getId();
         feedback.setInterviewerID(interviewerID);
         Application application = applicationService.getApplicationByUserForCurrentCES(id);
@@ -115,7 +115,7 @@ public class InterviewerController {
             } else {
                 feedbackDTO.setIntervieweeExists(true);
             }
-            User user = userService.getUser(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+            User user = userService.findUserByEmail(((UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                     .getPrincipal()).getUsername());
             if (!cesService.checkParticipation(user.getId())){
                 feedbackDTO.setRestricted(true);

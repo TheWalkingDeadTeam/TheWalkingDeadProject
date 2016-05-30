@@ -86,7 +86,7 @@ public class PostgreUserDAO extends AbstractPostgreDAO<User, Integer> implements
     }
 
     @Override
-    public void createUser(User user, Set<Role> roles) throws DAOException {
+    public void createUser(User user) throws DAOException {
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
@@ -103,9 +103,9 @@ public class PostgreUserDAO extends AbstractPostgreDAO<User, Integer> implements
             statement.setString(4, user.getPassword());
             statement.setInt(5, statusId);
             statement.executeUpdate();
-            if (!roles.isEmpty()) {
+            if (!user.getRoles().isEmpty()) {
                 statement = connection.prepareStatement(SET_ROLE_TO_USER);
-                for (Role role : roles) {
+                for (Role role : user.getRoles()) {
                     statement.setInt(1, role.getId());
                     statement.setString(2, user.getEmail());
                     statement.addBatch();
@@ -114,12 +114,12 @@ public class PostgreUserDAO extends AbstractPostgreDAO<User, Integer> implements
             }
             connection.commit();
         } catch (SQLException e) {
-            LOGGER.warn("User with name" + user.getName() + "  not created" + e.getMessage());
+            LOGGER.warn("User with name" + user.getName() + "  not created", e.getCause());
             try {
                 connection.rollback();
-            } catch (SQLException e1) {
-                LOGGER.warn("Unable to rollback transaction");
-                throw new DAOException(e1);
+            } catch (SQLException eRoll) {
+                LOGGER.warn("Unable to rollback transaction", eRoll.getCause());
+                throw new DAOException(eRoll);
             }
             throw new DAOException(e);
         } finally {

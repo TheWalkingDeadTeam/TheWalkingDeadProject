@@ -11,6 +11,7 @@ import ua.nc.dao.postgresql.PostgreReportTemplateDAO;
 import ua.nc.entity.ReportTemplate;
 import ua.nc.validator.ReportExecuteValidator;
 import ua.nc.validator.ValidationError;
+import ua.nc.validator.Validator;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -24,6 +25,8 @@ import java.util.Set;
 public class ReportServiceImpl implements ReportService {
     private static final Logger LOGGER = Logger.getLogger(ReportServiceImpl.class);
     private final DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
+    private final Validator reportExecuteValidator = new ReportExecuteValidator();
+
 
     @Override
     public List<ReportTemplate> getReports() {
@@ -98,9 +101,8 @@ public class ReportServiceImpl implements ReportService {
     public List<Map<String, Object>> getReportRows(ReportTemplate report) throws DAOException {
         Connection connection = daoFactory.getConnection();
         ReportTemplateDAO reportTemplateDAO = new PostgreReportTemplateDAO(connection);
-        ReportExecuteValidator validator = new ReportExecuteValidator();
         List<Map<String, Object>> reportRows = null;
-        Set<ValidationError> errors = validator.validate(report.getQuery());
+        Set<ValidationError> errors = reportExecuteValidator.validate(report.getQuery());
         if (errors.isEmpty()) {
             try {
                 reportRows = reportTemplateDAO.execute(report);
@@ -116,7 +118,7 @@ public class ReportServiceImpl implements ReportService {
                 daoFactory.putConnection(connection);
             }
         } else {
-            LOGGER.warn("Report "+ report.getName() +" query has errors ");
+            LOGGER.warn("Report "+ report.getName() +" query has errors");
             throw new DAOException("Report query has errors");
         }
         return  reportRows;
@@ -127,12 +129,9 @@ public class ReportServiceImpl implements ReportService {
         Connection connection = daoFactory.getConnection();
         ReportTemplate reportTemplate = new ReportTemplate();
         ApplicationTableDAO applicationTableDAO = new PostgreApplicationTableDAO(connection);
-        System.out.println("Problem before try");
         try {
             reportTemplate.setName("Profile Report");
-            System.out.println("In before full");
             reportTemplate.setQuery(applicationTableDAO.getFullQuery(id));
-            System.out.println(reportTemplate.getQuery());
         } catch (DAOException e) {
             LOGGER.warn("Cant get applicatio user profile query for ces id " + id, e.getCause());
         } finally {
