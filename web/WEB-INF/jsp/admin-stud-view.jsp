@@ -47,7 +47,7 @@
     <jsp:include page="admin-header.jsp"/>
 
     <main class="mdl-layout__content mdl-color--grey-100">
-        <div>
+        <%--<div>--%>
 
             <button ng-click="rejectStud()"
                     class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
@@ -70,13 +70,13 @@
                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white"
                data-toggle="collapse">Settings</a>
 
-            <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
-                <label class="mdl-button mdl-js-button mdl-button--icon" for="search">
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable" style="padding: 10px">
+                <label class="mdl-button mdl-js-button mdl-button--icon is-focused" for="search">
                     <i class="material-icons">search</i>
                 </label>
                 <div class="mdl-textfield__expandable-holder">
                     <form ng-submit = "searchFiltr(field)"><input  class="mdl-textfield__input" type="text" id="search" name="field" ng-model="field"></form>
-                    <label class="mdl-textfield__label" for="search">Enter your query...</label>
+                    <label class="mdl-textfield__label" for="search" style="">Enter your query...</label>
                 </div>
             </div>
 
@@ -136,7 +136,7 @@
                 </div>
             </div>
 
-        </div>
+        <%--</div>--%>
         <div class="table-responsive">
         <table id="tableUsers" class="table table-striped table-hover table-bordered">
             <thead>
