@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <footer class="footer container-fluid">
     <div class="footerLg container visible-md visible-lg">
-        <div class="col-lg-3 col-lg-3 col-sm-3" style="margin-top: 5px;"><img class='img-responsive' src="/resources/images/logo-gray.png"></div>
+        <div class="col-lg-3 col-md-3 col-sm-3" style="margin-top: 5px;"><img class='img-responsive' src="/resources/images/logo-gray.png"></div>
 
         <div class="col-lg-8 col-md-8 col-lg-offset-1 col-lg-offset-1 col-md-offset-1" style="margin-top: 5px;">
             <div class="footerLgText col-lg-3 col-md-3 col-lg-offset-1 col-md-offset-1">
