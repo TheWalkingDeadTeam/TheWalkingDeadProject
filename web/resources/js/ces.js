@@ -23,7 +23,6 @@ app.controller('FormController', ['$scope', 'MailService', '$http', 'Notificatio
         "statusId": ''
     };
     $scope.current = false;
-    $scope.interviewBegan = false;
 
     self.fetchAllMails = function () {
         MailService.fetchAllMails()
@@ -42,12 +41,11 @@ app.controller('FormController', ['$scope', 'MailService', '$http', 'Notificatio
 
     var getReq = function () {
         $http.get('/admin/cessettings').success(function (response) {
-            // console.log(response)
             if (response == '') {
                 $scope.ctrl.ces.year = '';
                 $scope.ctrl.ces.id = '';
                 $scope.ctrl.ces.statusId = '';
-                $scope.ctrl.ces.startRegistrationDate = new Date(response.startRegistrationDate);
+                $scope.ctrl.ces.startRegistrationDate = '';
                 $scope.ctrl.ces.endRegistrationDate = '';
                 $scope.ctrl.ces.startInterviewingDate = '';
                 $scope.ctrl.ces.endInterviewingDate = '';
@@ -55,31 +53,23 @@ app.controller('FormController', ['$scope', 'MailService', '$http', 'Notificatio
                 $scope.ctrl.ces.reminders = '';
                 $scope.ctrl.ces.interviewTimeForDay = '';
                 $scope.ctrl.ces.interviewTimeForPerson = '';
-                $scope.current = false;
-                $scope.interviewBegan = false;
+                expect(element(by.css('[type="date"]')).getAttribute('readonly')).toBeFalsy();
                 return;
             }
             if (1 == response.statusId) {
                 $scope.current = false;
-                $scope.interviewBegan = false;
             } else if (response.statusId < 4) {
                 $scope.current = true;
-                $scope.interviewBegan = false;
             } else if (response.statusId >= 4) {
                 $scope.current = true;
-                $scope.interviewBegan = true;
             }
             $scope.ctrl.ces.year = response.year;
             $scope.ctrl.ces.id = response.id;
             $scope.ctrl.ces.statusId = response.statusId;
             $scope.ctrl.ces.startRegistrationDate = new Date(response.startRegistrationDate);
             $scope.ctrl.ces.endRegistrationDate = new Date(response.endRegistrationDate);
-            if (response.startInterviewingDate != null) {
-                $scope.ctrl.ces.startInterviewingDate = new Date(response.startInterviewingDate);
-            }
-            if (response.endInterviewingDate != null) {
-                $scope.ctrl.ces.endInterviewingDate = new Date(response.endInterviewingDate);
-            }
+            $scope.ctrl.ces.startInterviewingDate = new Date(response.startInterviewingDate);
+            $scope.ctrl.ces.endInterviewingDate = new Date(response.endInterviewingDate);
             $scope.ctrl.ces.quota = response.quota;
             $scope.ctrl.ces.reminders = response.reminders;
             $scope.ctrl.ces.interviewTimeForDay = response.interviewTimeForDay;

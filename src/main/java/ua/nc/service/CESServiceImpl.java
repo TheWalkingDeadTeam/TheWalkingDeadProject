@@ -35,7 +35,7 @@ public class CESServiceImpl implements CESService {
     private static final int CLOSED_ID = 6;
     private final DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
     private static final ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
-    private static final int POOL_SIZE = 5;
+    private static final int POOL_SIZE = 3;
     private DateFormat dateFormatter = new SimpleDateFormat(DATE_FORMAT);
     private static final String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss";
     private static final int MINUTES_PER_HOUR = 60;
@@ -278,6 +278,7 @@ public class CESServiceImpl implements CESService {
     @Override
     public void closeCES() {
         changeStatus(CLOSED_ID);
+        scheduler.shutdown();
     }
 
     public void checkInterviewDate() throws DAOException {
@@ -301,6 +302,10 @@ public class CESServiceImpl implements CESService {
         runThreadForChangeStatus(dateFromDB, POST_REGISTRATION_ID);
     }
     public void switchToInterviewingOngoing() throws DAOException {
+        if (getCurrentCES().getStatusId() != POST_REGISTRATION_ID){
+            LOGGER.warn("Session is not in post registration status!");
+            return;
+        }
         changeStatus(INTERVIEWING_ONGOING_ID);
     }
     private void switchToPostInterviewing() throws DAOException {
