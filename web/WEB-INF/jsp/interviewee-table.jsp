@@ -47,7 +47,11 @@
     <link rel="stylesheet" href="/resources/css/styles.css">
     <link rel="stylesheet" href="/resources/css/checkbox.css">
 
-
+<style>
+    p {
+        line-height: 15px;
+    }
+</style>
 </head>
 <body>
 
