@@ -3,6 +3,8 @@ package ua.nc.validator;
 import ua.nc.entity.profile.Profile;
 import ua.nc.entity.profile.ProfileField;
 import ua.nc.entity.profile.ProfileFieldValue;
+import ua.nc.service.CESService;
+import ua.nc.service.CESServiceImpl;
 
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -18,20 +20,33 @@ public class ProfileValidator implements Validator {
     private Pattern pattern;
     private Matcher matcher;
     private int minNumberOfChoice = 1;
-    private int maxNumberOfChoice = 3;
-    private String numbPattern = "([0-9]+.?[0-9]+)";
+    private int maxNumberOfChoice = 4;
+//    private String numbPattern = "([0-5]+.?[0-5]+)";
+    private String numbPattern = "/^(0\\.[1-5]|[1-5][0-5]{0,2}(\\.[1-5])?)$/";
     private String telPattern = "^\\+\\d{12}$";
     private Set<ValidationError> errors;
+    private static int REGISTRATION_ONGOING_ID = 2;
 
     @Override
     public Set<ValidationError> validate(Object obj) {
         errors = new LinkedHashSet<>();
         Profile profile = (Profile) obj;
 
+        CESService cesService = new CESServiceImpl();
+        Integer status = cesService.getCurrentCES().getStatusId();
+        if (status != REGISTRATION_ONGOING_ID) {
+            if (status < 2) {
+                errors.add(new ValidationError("ces status", "Can't enroll before an interviewing period"));
+            } else if (status > 2) {
+                errors.add(new ValidationError("ces status", "Can't enroll after an interviewing period"));
+            }
+
+        }
+
         for (ProfileField profileField:profile.getFields() ) {
             ValidationError validationError ;
             if (profileField.getMultipleChoice()) {
-                validationError = validateMultipleChoiceField(profileField, minNumberOfChoice, maxNumberOfChoice, profileField.getFieldType());// TODO dafuck are this numbers??
+                validationError = validateMultipleChoiceField(profileField, minNumberOfChoice, maxNumberOfChoice, profileField.getFieldType());
             } else {
                 validationError = validateNotMultipleChoiceField(profileField, profileField.getFieldType());
             }
@@ -49,7 +64,7 @@ public class ProfileValidator implements Validator {
                 pattern = Pattern.compile(numbPattern);
                 matcher = pattern.matcher(profileField.getValues().get(0).getValue());
                 if (matcher.matches()) {
-                    return  new ValidationError(profileField.getFieldName(), "Please, enter number");
+                    return  new ValidationError(profileField.getFieldName(), "Please, enter number from 1 to 5");
                 }
             }
 

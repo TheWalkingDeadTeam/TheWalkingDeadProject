@@ -1,3 +1,4 @@
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!--Created by Alexander Haliy on 05.05.2016. !-->
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
 <html>
@@ -18,7 +19,7 @@
 <body ng-app="mailer" class="ng-cloack">
 <div class="generic-container" ng-controller="MailController as ctrl">
     <div class="panel panel-default">
-        <h5 align="center">Scheduler Parameters </h5>
+        <h5 align="center"><spring:message code="locale.shedulerParam"/></h5>
         <div class="formcontainer">
             <form ng-submit="submit()" name="myForm" class="form-horizontal"
                   autocomplete="on">
@@ -26,11 +27,11 @@
                 <%-- Interview Start Date --%>
                 <div class="row">
                     <div class="form-group col-md-12">
-                        <label class="col-md-2 control-lable" for="file">Start Time</label>
+                        <label class="col-md-2 control-lable" for="file"><spring:message code="locale.startTime"/></label>
                         <div class="col-md-7">
                             <div class="input-append  date form_datetime">
                                 <input class="input-sm" type="text" value="" data-ng-model="interviewTime"
-                                       placeholder="Provide interview time" name="nterviewTime" readonly>
+                                       placeholder="<spring:message code="locale.provideInterviewTime"/>" name="nterviewTime" readonly>
                                 <span class="add-on"><i class="icon-th"></i></span>
                             </div>
                         </div>
@@ -40,14 +41,14 @@
                 <%-- Interview contact info--%>
                 <div class="row">
                     <div class="form-group col-md-12">
-                        <label class="col-md-2 control-lable" for="file">Interviewer Contact Information</label>
+                        <label class="col-md-2 control-lable" for="file"><spring:message code="locale.intContact"/></label>
                         <div class="col-md-7">
                             <input type="text" data-ng-model="contactStaff" name="contactStaff"
-                                   class="contact form-control input-sm" placeholder="Enter contact information"
+                                   class="contact form-control input-sm" placeholder="<spring:message code="locale.enterContactInfo"/>"
                                    ng-minlength="3" required/>
                             <div class="has-error" ng-show="myForm.$dirty">
-                                <span ng-show="myForm.contactStaff.$error.required">Required field </span>
-                                <span ng-show="myForm.contactStaff.$error.minlength">Contact should be at least 3 symbols</span>
+                                <span ng-show="myForm.contactStaff.$error.required"><spring:message code="locale.requiredField"/> </span>
+                                <span ng-show="myForm.contactStaff.$error.minlength"><spring:message code="locale.minLength"/> 3 </span>
                             </div>
                         </div>
                     </div>
@@ -55,18 +56,18 @@
                 <%--Student Contact Info--%>
                 <div class="row">
                     <div class="form-group col-md-12">
-                        <label class="col-md-2 control-lable" for="file">Student Contact Information</label>
+                        <label class="col-md-2 control-lable" for="file"><spring:message code="locale.studentContact"/></label>
                         <div class="col-md-7">
                             <input type="text"
                                    data-ng-model="contactStudent"
                                    name="contactStudent"
                                    class="studContact form-control input-sm"
-                                   placeholder="Enter contact information"
+                                   placeholder="<spring:message code="locale.enterContactInfo"/>"
                                    ng-minlength="3"
                                    required/>
                             <div class="has-error" ng-show="myForm.$dirty">
-                                <span ng-show="myForm.contactStudent.$error.required"> Required field </span>
-                                <span ng-show="myForm.contactStudent.$error.minlength">Contact should be at least 3 symbols</span>
+                                <span ng-show="myForm.contactStudent.$error.required"><spring:message code="locale.requiredField"/> </span>
+                                <span ng-show="myForm.contactStudent.$error.minlength"><spring:message code="locale.minLength"/> 3</span>
                             </div>
                         </div>
                     </div>
@@ -74,16 +75,16 @@
                 <%--Course Type--%>
                 <div class="row">
                     <div class="form-group col-md-12">
-                        <label class="col-md-2 control-lable" for="file">Course Type</label>
+                        <label class="col-md-2 control-lable" for="file"><spring:message code="locale.courseType"/></label>
                         <div class="col-md-7">
                             <input type="text" data-ng-model="courseType" name="course"
                                    class="courseType form-control input-sm"
-                                   placeholder="Enter course type information"
+                                   placeholder="<spring:message code="locale.enterCourseType"/>"
                                    ng-minlength="4"
                                    required/>
                             <div class="has-error" ng-show="myForm.$dirty">
-                                <span ng-show="myForm.course.$error.required">Required field</span>
-                                <span ng-show="myForm.course.$error.minlength">Course type should be 4 symbols</span>
+                                <span ng-show="myForm.course.$error.required"><spring:message code="locale.requiredField"/></span>
+                                <span ng-show="myForm.course.$error.minlength"><spring:message code="locale.minLength"/> 4 </span>
                             </div>
                         </div>
                     </div>
@@ -91,14 +92,14 @@
                 <%--Place interview--%>
                 <div class="row">
                     <div class="form-group col-md-12">
-                        <label class="col-md-2 control-lable" for="file">Location</label>
+                        <label class="col-md-2 control-lable" for="file"><spring:message code="locale.location"/></label>
                         <div class="col-md-7">
                             <input id="searchTextField" name="place" type="text" data-ng-model="location" size="50"
                                    class="location form-control input-sm"
-                                   placeholder="Enter interview location" ng-minlength="3" required/>
+                                   placeholder="<spring:message code="locale.enterIntLocation"/>" ng-minlength="3" required/>
                             <div class="has-error" ng-show="myForm.$dirty">
-                                <span ng-show="myForm.place.$error.required">Required field</span>
-                                <span ng-show="myForm.place.$error.minlength">Location should be at least 3 symbols</span>
+                                <span ng-show="myForm.place.$error.required"><spring:message code="locale.requiredField"/></span>
+                                <span ng-show="myForm.place.$error.minlength"><spring:message code="locale.minLength"/> 3</span>
                             </div>
                         </div>
                     </div>
@@ -106,14 +107,14 @@
                 <%--Student Mail View--%>
 
                 <div class="panel panel-default">
-                    <h5 align="center">Student Mail Template</h5>
+                    <h5 align="center"><spring:message code="locale.studentMailTemp"/></h5>
                     <div class="table-responsive tablecontainer">
                         <table class="table" class="ng-cloak">
                             <thead>
                             <tr>
                                 <th><img src="/resources/images/checkbox.png" width="15" height="15"></th>
-                                <th>Topic</th>
-                                <th>Body</th>
+                                <th><spring:message code="locale.topic"/></th>
+                                <th><spring:message code="locale.body"/></th>
                                 <th width="20%"></th>
                             </tr>
                             </thead>
@@ -126,7 +127,7 @@
 
                             </tr>
                             <tr ng-hide="ctrl.emptyTemplateTable == true">
-                                <td colspan="4"  class="vert-align col-xs-12 text-center">Empty table</td>
+                                <td colspan="4"  class="vert-align col-xs-12 text-center"><spring:message code="locale.emptyTable"/></td>
                             </tr>
                             </tbody>
                         </table>
@@ -134,14 +135,14 @@
                 </div>
                 <div class="panel panel-default">
                     <%--Staff Mail Template--%>
-                    <h5 align="center">Interviewer Mail Template</h5>
+                    <h5 align="center"><spring:message code="locale.interviewerMailTemp"/></h5>
                     <div class="table-responsive tablecontainer">
                         <table class="table" class="ng-cloak">
                             <thead>
                             <tr>
                                 <th><img src="/resources/images/checkbox.png" width="15" height="15"></th>
-                                <th>Topic</th>
-                                <th>Body</th>
+                                <th><spring:message code="locale.topic"/></th>
+                                <th><spring:message code="locale.body"/></th>
                                 <th width="20%"></th>
                             </tr>
                             </thead>
@@ -154,7 +155,7 @@
                                 <td class="vert-align"><span ng-bind="m.bodyTemplate"></span></td>
                             </tr>
                             <tr ng-hide="ctrl.emptyTemplateTable == true">
-                                <td colspan="4"  class="vert-align col-xs-12 text-center">Empty table</td>
+                                <td colspan="4"  class="vert-align col-xs-12 text-center"><spring:message code="locale.emptyTable"/></td>
                             </tr>
                             </tbody>
                         </table>
@@ -164,16 +165,15 @@
                 <%--Buttons--%>
                 <div class="row">
                     <div class="form-actions floatRight">
-                        <input type="submit" id="submit" value="Submit" class="btn btn-primary btn-sm"
+                        <input type="submit" id="submit" value="<spring:message code="locale.submit"/>" class="btn btn-primary btn-sm"
                                ng-disabled="myForm.$invalid">
                         <button type="reset" class="btn btn-warning btn-sm">
-                            Reset Form
+                            <spring:message code="locale.reset"/>
                         </button>
                         <a href="/admin/mail-template">
-                            <button type="button" class="btn btn-success btn-sm"> Mail Templates
+                            <button type="button" class="btn btn-success btn-sm"><spring:message code="locale.mailTemp"/>
                             </button>
                         </a>
-
                     </div>
                 </div>
             </form>

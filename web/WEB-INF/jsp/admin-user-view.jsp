@@ -1,3 +1,4 @@
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%--
   Created by IntelliJ IDEA.
   User: creed
@@ -70,21 +71,21 @@
         <div>
             <button ng-click="activateUser()"
                     class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
-                Activate
+                <spring:message code="locale.activate"/>
             </button>
             <button ng-click="deactivateUser()"
                     class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
-                Deactivate
+                <spring:message code="locale.deactivate"/>
             </button>
             <%--<button ng-click="setSize(100);">setSize</button>--%>
             <%--<button ng-click="setSize(25)">setSize</button>--%>
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
                 <label class="mdl-button mdl-js-button mdl-button--icon" for="search">
-                    <i class="material-icons">search</i>
+                    <i class="material-icons"><spring:message code="locale.search"/></i>
                 </label>
                 <div class="mdl-textfield__expandable-holder">
                     <form ng-submit = "searchFiltr(field)"><input  class="mdl-textfield__input" type="text" id="search" name="field" ng-model="field"></form>
-                    <label class="mdl-textfield__label" for="search">Enter your query...</label>
+                    <label class="mdl-textfield__label" for="search"><spring:message code="locale.enterQuery"/>...</label>
                 </div>
             </div>
             <div class="cssload-thecube">
@@ -108,34 +109,34 @@
                 </td>
                 <td>
                     <a ng-click="sortReverse = !sortReverse; sortType('name',sortReverse);">
-                        Name
+                        <spring:message code="locale.name"/>
                     </a>
                 </td>
                 <td>
                     <a ng-click="sortReverse = !sortReverse; sortType('surname',sortReverse);">
-                        Surname
+                        <spring:message code="locale.surname"/>
                     </a>
                 </td>
                 <td>
                     <a ng-click="sortReverse = !sortReverse; sortType('email',sortReverse);">
-                        Email
+                        <spring:message code="locale.email"/>
                     </a>
                 </td>
                 <td>
-                    <a ng-click=" sortReverse = !sortReverse; sortType('role',sortReverse);">
-                        Role
+                    <a>
+                        <spring:message code="locale.roles"/>
                     </a>
                 </td>
                 <td>
                     <a ng-click=" sortReverse = !sortReverse; sortType('status',sortReverse);">
-                        Status
+                        <spring:message code="locale.status"/>
                     </a>
                 </td>
             </tr>
             </thead>
             <tbody>
             <tr ng-show="data.users.length <= 0">
-                <td colspan="5" style="text-align:center;">No data</td>
+                <td colspan="5" style="text-align:center;"><spring:message code="locale.plsWait"/>...</td>
             </tr>
             <tr dir-paginate="user in data.users|itemsPerPage:data.itemsPerPage" total-items="data.total_count">
                 <td><input type="checkbox" checklist-model="dataStudents.studId" checklist-value="user.id"></td>
@@ -144,7 +145,7 @@
                 <td>{{user.surname}}</td>
                 <td>{{user.email}}</td>
                 <td>{{user.role}}</td>
-                <td ng-style="{opacity:0.8,'background-color':'{{user.status == 'Active' ? 'green' : 'red'}}'}"
+                <td ng-style="{opacity:0.5,'background-color':'{{user.status == 'Active' ? 'green' : 'red'}}'}"
                     title="{{user.status}}"></td>
             </tr>
             </tbody>

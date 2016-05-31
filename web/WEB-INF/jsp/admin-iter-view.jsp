@@ -1,3 +1,4 @@
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%--
   Created by IntelliJ IDEA.
   User: Alexander
@@ -70,31 +71,20 @@
         <div>
             <button ng-click="subscribeInterviewer()"
                     class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
-                Subscribe for CES
+                <spring:message code="locale.subscribe"/>
             </button>
             <button ng-click="unsubscribeInterviewer()"
                     class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
-                Unsubscribe from CES
+                <spring:message code="locale.unsubscribe"/>
             </button>
 
             <a href="#FooOne"
                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white"
-               data-toggle="collapse">Mail</a>
+               data-toggle="collapse"><spring:message code="locale.mail"/></a>
 
             <a href="#FooTwo"
                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white"
-               data-toggle="collapse">Mail With Template</a>
-
-            <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
-                <label class="mdl-button mdl-js-button mdl-button--icon" for="search">
-                    <i class="material-icons">search</i>
-                </label>
-                <div class="mdl-textfield__expandable-holder">
-                    <form ng-submit="searchFiltr(field)"><input class="mdl-textfield__input" type="text" id="search"
-                                                                name="field" ng-model="field"></form>
-                    <label class="mdl-textfield__label" for="search">Enter your query...</label>
-                </div>
-            </div>
+               data-toggle="collapse"><spring:message code="locale.mailWithTemplate"/></a>
 
             <div id="FooOne" class="collapse">
                 <jsp:include page="custom-mail.jsp"/>
@@ -106,6 +96,15 @@
             </div>
 
 
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+                <label class="mdl-button mdl-js-button mdl-button--icon" for="search">
+                    <i class="material-icons"><spring:message code="locale.search"/></i>
+                </label>
+                <div class="mdl-textfield__expandable-holder">
+                    <form ng-submit = "searchFiltr(field)"><input  class="mdl-textfield__input" type="text" id="search" name="field" ng-model="field"></form>
+                    <label class="mdl-textfield__label" for="search"><spring:message code="locale.enterQuery"/>...</label>
+                </div>
+            </div>
             <div class="cssload-thecube">
                 <div class="cssload-cube cssload-c1"></div>
                 <div class="cssload-cube cssload-c2"></div>
@@ -114,73 +113,73 @@
             </div>
         </div>
         <div class="table-responsive">
-            <table id="tableUsers" class="table table-bordered table-striped" style="{margin-top: 200px}">
+        <table id="tableUsers" class="table table-bordered table-striped" style="{margin-top: 200px}">
 
-                <thead>
-                <tr>
-                    <td>
-                        <input type="checkbox" ng-model="selectedAll" ng-click="checkAll()">
-                    </td>
-                    <td>
-                        <a ng-click="sortReverse = !sortReverse; sortType('system_user_id',sortReverse); ">
-                            id
-                        </a>
-                    </td>
-                    <td>
-                        <a ng-click="sortReverse = !sortReverse; sortType('name',sortReverse); ">
-                            Name
-                        </a>
-                    </td>
-                    <td>
-                        <a ng-click="sortReverse = !sortReverse; sortType('surname',sortReverse); ">
-                            Surname
-                        </a>
-                    </td>
-                    <td>
-                        <a ng-click="sortReverse = !sortReverse; sortType('email',sortReverse);">
-                            Email
-                        </a>
-                    </td>
-                    <td>
-                        <a ng-click="sortReverse = !sortReverse; sortType('role',sortReverse); ">
-                            Role
-                        </a>
-                    </td>
-                    <td>
-                        <a ng-click="sortReverse = !sortReverse; sortType('participation',sortReverse); ">
-                            Participation
-                        </a>
-                    </td>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-show="data.users.length <= 0">
-                    <td colspan="5" style="text-align:center;">No data</td>
-                </tr>
-                <tr dir-paginate="user in data.users|itemsPerPage:data.itemsPerPage" total-items="data.total_count">
-                    <td><input type="checkbox" checklist-model="dataStudents.studId" checklist-value="user.id">
-                    </td>
-                    <%--<td ng-init="index=$index + 1">{{index}}</td>--%>
-                    <td><a href="/account?{{user.id}}" target="_blanks">{{user.id}}</a></td>
-                    <td>{{user.name}}</td>
-                    <td>{{user.surname}}</td>
-                    <td>{{user.email}}</td>
-                    <td>{{user.role}}</td>
-                    <td ng-style="{opacity:0.8,'background-color':'{{user.participation ? 'green' : 'red'}}'}"
-                        title="{{user.participation}}">
+            <thead>
+            <tr>
+                <td>
+                    <input type="checkbox" ng-model="selectedAll" ng-click="checkAll()">
+                </td>
+                <td>
+                    <a ng-click="sortReverse = !sortReverse; sortType('system_user_id',sortReverse); ">
+                        id
+                    </a>
+                </td>
+                <td>
+                    <a ng-click="sortReverse = !sortReverse; sortType('name',sortReverse); ">
+                        <spring:message code="locale.name"/>
+                    </a>
+                </td>
+                <td>
+                    <a ng-click="sortReverse = !sortReverse; sortType('surname',sortReverse); ">
+                        <spring:message code="locale.surname"/>
+                    </a>
+                </td>
+                <td>
+                    <a ng-click="sortReverse = !sortReverse; sortType('email',sortReverse);">
+                        <spring:message code="locale.email"/>
+                    </a>
+                </td>
+                <td>
+                    <a ng-click="sortReverse = !sortReverse; sortType('role',sortReverse); ">
+                        <spring:message code="locale.roles"/>
+                    </a>
+                </td>
+                <td>
+                    <a>
+                        <spring:message code="locale.status"/>
+                    </a>
+                </td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-show="data.users.length <= 0">
+                <td colspan="5" style="text-align:center;"><spring:message code="locale.plsWait"/>...</td>
+            </tr>
+            <tr dir-paginate="user in data.users|itemsPerPage:data.itemsPerPage" total-items="data.total_count">
+                <td><input type="checkbox" checklist-model="dataStudents.studId" checklist-value="user.id">
+                </td>
+                <%--<td ng-init="index=$index + 1">{{index}}</td>--%>
+                <td><a href="/account?{{user.id}}" target="_blanks">{{user.id}}</a></td>
+                <td>{{user.name}}</td>
+                <td>{{user.surname}}</td>
+                <td>{{user.email}}</td>
+                     <td>{{user.role}}</td>
+                <td ng-style="{opacity:0.5,'background-color':'{{user.participation ? 'green' : 'red'}}'}"
+                title="{{user.participation}}">
 
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+            </div>
         <div id="pagination">
-            <dir-pagination-controls
-                    max-size="8"
-                    direction-links="true"
-                    boundary-links="true"
-                    on-page-change="data.setPageno(newPageNumber)">
-            </dir-pagination-controls>
+        <dir-pagination-controls
+                max-size="8"
+                direction-links="true"
+                boundary-links="true"
+                on-page-change="data.setPageno(newPageNumber)">
+        </dir-pagination-controls>
         </div>
 
     </main>

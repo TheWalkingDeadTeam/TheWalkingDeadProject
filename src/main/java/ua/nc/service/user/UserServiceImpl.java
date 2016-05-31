@@ -209,18 +209,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User recoverPass(User user) {
+    public void recoverPass(User user) {
         Connection connection = daoFactory.getConnection();
         UserDAO userDAO = daoFactory.getUserDAO(connection);
-        String testPassword = RandomStringUtils.randomAlphanumeric(10);
+        //Generating randomized alphanumeric string
+        String newPassword = RandomStringUtils.randomAlphanumeric(10);
         try {
-            user.setPassword(passwordEncoder.encode(testPassword));
+            user.setPassword(passwordEncoder.encode(newPassword));
             userDAO.updateUser(user);
-            mailService.sendMail(user.getEmail(), "Password recovery", "Welcome " + user.getName() + " ! \n NetCracker[TheWalkingDeadTeam] \n New password \n" + testPassword);
-            return user;
+            mailService.sendMail(user.getEmail(), "Password recovery", "Welcome " + user.getName() + " ! \n NetCracker[TheWalkingDeadTeam] \n New password \n" + newPassword);
         } catch (DAOException e) {
             LOGGER.info("Password recovery failed for user " + user.getEmail());
-            return null;
         } finally {
             daoFactory.putConnection(connection);
         }

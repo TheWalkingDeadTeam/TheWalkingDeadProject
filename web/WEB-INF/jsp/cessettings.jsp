@@ -1,3 +1,4 @@
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%--
   Created by IntelliJ IDEA.
   User: IGOR
@@ -61,22 +62,22 @@
                     <div>
                         <div class="row container-fluid reg-head">
                             <div id="sessionSettings">
-                                <h4 class="form-signin-heading">Session settings</h4>
+                                <h4 class="form-signin-heading"> <spring:message code="locale.sessionSet"/></h4>
                             </div>
                         </div>
                         <div name="myForm" id="CESfields" ng-submit="ctrl.save()"
                              class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <div><span class="myTextInfo">Year</span><input type="number" name="year"
+                            <div><span class="myTextInfo"> <spring:message code="locale.year"/></span><input type="number" name="year"
                                                                             id="1" class="form-control"
                                                                             ng-model="ctrl.ces.year"
                                                                             ng-readonly="current" required/></div>
                             <div class="correct-year"></div>
-                            <div><span class="myTextInfo">Quota</span><input type="number" name="quota" id="quota"
+                            <div><span class="myTextInfo"> <spring:message code="locale.quota"/></span><input type="number" name="quota" id="quota"
                                                                              class="form-control"
                                                                              ng-model="ctrl.ces.quota"
                                                                              required/></div>
                             <div class="correct-quota"></div>
-                            <div><span class="myTextInfo">Start registration date</span><input type="date"
+                            <div><span class="myTextInfo"> <spring:message code="locale.startReg"/></span><input type="date"
                                                                                                name="startRegistrationDate"
                                                                                                class="form-control"
                                                                                                ng-model="ctrl.ces.startRegistrationDate"
@@ -84,7 +85,7 @@
                                                                                                placeholder="yyyy-MM-dd"
                                                                                                id="3" required></div>
                             <div class="correct-date"></div>
-                            <div><span class="myTextInfo">End registration date</span><input type="date"
+                            <div><span class="myTextInfo"> <spring:message code="locale.endReg"/></span><input type="date"
                                                                                              name="endRegistrationDate"
                                                                                              class="form-control"
                                                                                              ng-model="ctrl.ces.endRegistrationDate"
@@ -92,15 +93,15 @@
                                                                                              placeholder="yyyy-MM-dd"
                                                                                              id="4" required/></div>
                             <div class="correct-date"></div>
-                            <div><span class="myTextInfo">Start interviewing date</span><input type="date"
+                            <div><span class="myTextInfo"> <spring:message code="locale.startInt"/></span><input type="date"
                                                                                                name="startInterviewingDate"
                                                                                                class="form-control"
                                                                                                ng-model="ctrl.ces.startInterviewingDate"
                                                                                                placeholder="yyyy-MM-dd"
-                                                                                               ng-readonly="interviewBegan"
+                                                                                               ng-readonly=true
                                                                                                id="5"/></div>
                             <div class="correct-date"></div>
-                            <div><span class="myTextInfo">End interviewing date</span><input type="date"
+                            <div><span class="myTextInfo"> <spring:message code="locale.endInt"/></span><input type="date"
                                                                                              name="endInterviewingDate"
                                                                                              class="form-control"
                                                                                              ng-model="ctrl.ces.endInterviewingDate"
@@ -108,11 +109,11 @@
                                                                                              ng-readonly=true id="6"/>
                             </div>
                             <div class="correct-date"></div>
-                            <div><span class="myTextInfo">Reminders </span><input type="number" name="reminders" id="7"
+                            <div><span class="myTextInfo"> <spring:message code="locale.reminders"/> </span><input type="number" name="reminders" id="7"
                                                                                   ng-model="ctrl.ces.reminders"
                                                                                   class="form-control"
                                                                                   ng-readonly="current" required/></div>
-                            <div><span class="myTextInfo">Interview time for person </span><input type="number"
+                            <div><span class="myTextInfo">I <spring:message code="locale.timePerson"/></span><input type="number"
                                                                                                   name="interviewTimeForPerson"
                                                                                                   id="8"
                                                                                                   class="form-control"
@@ -120,7 +121,7 @@
                                                                                                   ng-readonly="interviewBegan"
                                                                                                   required/></div>
                             <div class="correct-int"></div>
-                            <div>Interview time for day <input type="number" name="interviewTimeForDay" id="9"
+                            <div> <spring:message code="locale.timeDay"/><input type="number" name="interviewTimeForDay" id="9"
                                                                class="form-control"
                                                                ng-model="ctrl.ces.interviewTimeForDay"
                                                                ng-readonly="interviewBegan" required/></div>
@@ -135,7 +136,7 @@
 
                             <a href="#slideDown" type="button" style="margin-top: 10px; width: 100%;"
                                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white formControllingButt"
-                               data-toggle="collapse">Close Session</a>
+                               data-toggle="collapse"> <spring:message code="locale.closeSes"/></a>
 
                             <div id="errorsDiv" style="margin-top: 10px;"></div>
                         </div>

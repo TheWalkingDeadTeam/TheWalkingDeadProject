@@ -1,3 +1,4 @@
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
 <html>
 <head>
@@ -31,7 +32,7 @@
                         });
                     </script>
 
-                    <h5 align="center">Mail Template </h5>
+                    <h5 align="center"> <spring:message code="locale.mailTemp"/></h5>
                     <form ng-submit="ctrl.submit()" name="myForm" class="form-horizontal">
                         <input type="hidden" ng-model="ctrl.mail.id"/>
                         <div class="row">
@@ -40,12 +41,12 @@
                                 <div class="col-md-7">
                                     <input type="text" ng-model="ctrl.mail.headTemplate" name="mhead"
                                            class="md-textarea"
-                                           placeholder="Enter mail topic" required
+                                           placeholder="<spring:message code="locale.mailTopic"/>" required
                                            ng-minlength="3"/>
                                     <div class="has-error" ng-show="myForm.$dirty">
-                                        <span ng-show="myForm.mhead.$error.required">This is a required field!</span>
-                                        <span ng-show="myForm.mhead.$error.minlength">Minimum length required is 3</span>
-                                        <span ng-show="myForm.mhead.$invalid">This field is invalid!</span>
+                                        <span ng-show="myForm.mhead.$error.required"><spring:message code="locale.requiredField"/></span>
+                                        <span ng-show="myForm.mhead.$error.minlength"><spring:message code="locale.minLength"/> 3</span>
+                                        <span ng-show="myForm.mhead.$invalid"><spring:message code="locale.invalidField"/></span>
                                     </div>
                                 </div>
                             </div>
@@ -57,18 +58,18 @@
                                                     <textarea rows="5" cols="5" type="text"
                                                               ng-model="ctrl.mail.bodyTemplate"
                                                               class="materialize-textarea"
-                                                              placeholder="Enter mail body">
+                                                              placeholder="<spring:message code="locale.enterBody"/>">
                                                     </textarea>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="form-actions floatRight">
-                                <input type="submit" value="{{!ctrl.mail.id ? 'Add' : 'Update'}}"
+                                <input type="submit" value="{{!ctrl.mail.id ? '<spring:message code="locale.add"/>' : '<spring:message code="locale.update"/>'}}"
                                        class="btn btn-primary btn-sm" ng-disabled="myForm.$invalid">
                                 <button type="button" ng-click="ctrl.reset()"
                                         class="btn btn-warning btn-sm" ng-disabled="myForm.$pristine">
-                                    Reset Form
+                                    <spring:message code="locale.reset"/>
                                 </button>
                             </div>
                         </div>
@@ -79,15 +80,15 @@
             <div class="card hoverable">
                 <div class="card-content">
                     <div class="panel panel-default">
-                        <h5 align="center">List of Mails </h5>
+                        <h5 align="center"><spring:message code="locale.listOfMails"/></h5>
 
                         <div class="table-responsive tablecontainer">
                             <table class="table table-hover">
                                 <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Topic</th>
-                                    <th>Body</th>
+                                    <th><spring:message code="locale.topic"/></th>
+                                    <th><spring:message code="locale.body"/></th>
                                     <th width="20%"></th>
                                 </tr>
                                 </thead>
@@ -98,15 +99,15 @@
                                     <td class="vert-align"><span ng-bind="m.bodyTemplate"></span></td>
                                     <td>
                                         <button type="button" ng-click="ctrl.edit(m.id)"
-                                                class="btn btn-success btn-sm">Edit
+                                                class="btn btn-success btn-sm"><spring:message code="locale.edit"/>
                                         </button>
                                         <button type="button" ng-click="ctrl.remove(m.id)"
-                                                class="btn btn-danger btn-sm">Remove
+                                                class="btn btn-danger btn-sm"> <spring:message code="locale.remove"/>
                                         </button>
                                     </td>
                                 </tr>
                                 <tr ng-hide="ctrl.emptyTemplateTable == true">
-                                    <td colspan="4"  class="vert-align col-xs-12 text-center">Empty table</td>
+                                    <td colspan="4"  class="vert-align col-xs-12 text-center"> <spring:message code="locale.emptyTable"/></td>
                                 </tr>
                                 </tbody>
                             </table>

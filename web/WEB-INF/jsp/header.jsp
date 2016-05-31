@@ -23,7 +23,6 @@
                     <img src='/resources/images/logo.png' alt="Brand" class="header-img">
                 </a>
             </div>
-            <div id='collapsed-menu' class='navbar-collapse collapse'>
                 <a href="?lang=en"><img src="/resources/images/en.png"></a> | <a href="?lang=uk"><img src="/resources/images/ua.png"></a>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="/login">
@@ -31,10 +30,10 @@
                             <spring:message code="locale.home"/>
                         </sec:authorize>
                         <sec:authorize access="hasRole('ROLE_ADMIN')">
-                            Admin Panel
+                            Admin <spring:message code="locale.panel"/>
                         </sec:authorize>
                         <sec:authorize access="hasRole('ROLE_HR')">
-                            Hr Panel
+                            Hr <spring:message code="locale.panel"/>
                         </sec:authorize>
                     </a></li>
                     <sec:authorize access="hasAnyRole('ROLE_HR','ROLE_DEV','ROLE_BA')">

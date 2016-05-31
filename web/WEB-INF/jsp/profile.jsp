@@ -71,7 +71,7 @@
     </sec:authorize>
 
     <div style="display: block; margin: 10px auto; max-width: 700px;">
-        <button id="pdf" onclick="download();">Download PDF</button>
+        <button id="pdf" onclick="download();"><spring:message code="locale.downloadPDF"/></button>
     </div>
 
 </sec:authorize>

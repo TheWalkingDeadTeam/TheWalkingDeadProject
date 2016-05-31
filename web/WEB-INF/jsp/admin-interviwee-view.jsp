@@ -1,3 +1,4 @@
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%--
   Created by IntelliJ IDEA.
   User: creed
@@ -69,102 +70,99 @@
     <main class="mdl-layout__content mdl-color--grey-100">
         <div>
             <%--<button ng-click="activateUser()"--%>
-            <%--class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">--%>
-            <%--Activate--%>
+                    <%--class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">--%>
+                <%--Activate--%>
             <%--</button>--%>
             <%--<button ng-click="deactivateUser()"--%>
-            <%--class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">--%>
-            <%--Deactivate--%>
+                    <%--class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">--%>
+                <%--Deactivate--%>
             <%--</button>--%>
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
                 <label class="mdl-button mdl-js-button mdl-button--icon" for="search">
-                    <i class="material-icons">search</i>
+                    <i class="material-icons"><spring:message code="locale.search"/></i>
                 </label>
                 <div class="mdl-textfield__expandable-holder">
-                    <form ng-submit="searchFiltr(field)"><input class="mdl-textfield__input" type="text" id="search"
-                                                                name="field" ng-model="field"></form>
-                    <label class="mdl-textfield__label" for="search">Enter your query...</label>
+                    <form ng-submit = "searchFiltr(field)"><input  class="mdl-textfield__input" type="text" id="search" name="field" ng-model="field"></form>
+                    <label class="mdl-textfield__label" for="search"><spring:message code="locale.enterQuery"/>...</label>
                 </div>
             </div>
-            <div class="cssload-thecube">
-                <div class="cssload-cube cssload-c1"></div>
-                <div class="cssload-cube cssload-c2"></div>
-                <div class="cssload-cube cssload-c4"></div>
-                <div class="cssload-cube cssload-c3"></div>
-            </div>
+                <div class="cssload-thecube">
+                    <div class="cssload-cube cssload-c1"></div>
+                    <div class="cssload-cube cssload-c2"></div>
+                    <div class="cssload-cube cssload-c4"></div>
+                    <div class="cssload-cube cssload-c3"></div>
+                </div>
         </div>
         <div class="table-responsive">
-            <table id="tableUsers" class="table table-striped table-hover table-bordered">
-                <thead>
-                <tr>
-                    <td>
-                        <a ng-click="sortReverse = !sortReverse; sortType('system_user_id',sortReverse);">
-                            Id
-                        </a>
-                    </td>
-                    <td>
-                        <a ng-click="sortReverse = !sortReverse; sortType('name',sortReverse);">
-                            Name
-                        </a>
-                    </td>
-                    <td>
-                        <a ng-click="sortReverse = !sortReverse; sortType('surname',sortReverse);">
-                            Surname
-                        </a>
-                    </td>
-                    <td>
-                        <a ng-click="sortReverse = !sortReverse; sortType('special_mark',sortReverse);">
-                            Special Mark
-                        </a>
-                    </td>
-                    <td>
-                        <a ng-click="sortReverse = !sortReverse; sortType('dev_score',sortReverse);">
-                            Dev Score
-                        </a>
-                    </td>
-                    <td>
-                        <a ng-click="sortReverse = !sortReverse; sortType('hr_score',sortReverse);">
-                            Hr Score
-                        </a>
-                    </td>
-                    <td>
-                        <a ng-click="sortReverse = !sortReverse; sortType('special_mark',sortReverse); ">
-                            Color
-                        </a>
-                    </td>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-show="data.users.length <= 0">
-                    <td colspan="5" style="text-align:center;">No data</td>
-                </tr>
-                <tr dir-paginate="interviewee in data.users|itemsPerPage:data.itemsPerPage"
-                    total-items="data.total_count">
-                    <%--<td><input type="checkbox" checklist-model="dataStudents.studId" checklist-value="interviewee.id"></td>--%>
-                    <td><a href="/interviewer/feedback?{{interviewee.id}}" target="_blanks">{{interviewee.id}}</a></td>
-                    <td>{{interviewee.name}}</td>
-                    <td>{{interviewee.surname}}</td>
-                    <td>{{interviewee.special_mark}}</td>
-                    <td>{{interviewee.dev_score}}</td>
-                    <td>{{interviewee.hr_score}}</td>
-                    <td ng-style="{opacity:0.8,'background-color':'{{interviewee.color == '1' ? 'blue' :
+        <table  id="tableUsers" class="table table-striped table-hover table-bordered">
+            <thead>
+            <tr>
+                <td>
+                    <a ng-click="sortType('system_user_id',sortReverse); sortReverse = !sortReverse">
+                        Id
+                    </a>
+                </td>
+                <td>
+                    <a ng-click="sortType('name',sortReverse); sortReverse = !sortReverse">
+                        <spring:message code="locale.name"/>
+                    </a>
+                </td>
+                <td>
+                    <a ng-click="sortType('surname',sortReverse); sortReverse = !sortReverse">
+                        <spring:message code="locale.surname"/>
+                    </a>
+                </td>
+                <td>
+                    <a ng-click="sortType('special_mark',sortReverse); sortReverse = !sortReverse">
+                        <spring:message code="locale.specmark"/>
+                    </a>
+                </td>
+                <td>
+                    <a ng-click="sortType('dev_score',sortReverse); sortReverse = !sortReverse">
+                        Dev <spring:message code="locale.score"/>
+                    </a>
+                </td>
+                <td>
+                    <a ng-click="sortType('hr_score',sortReverse); sortReverse = !sortReverse">
+                        Hr <spring:message code="locale.score"/>
+                    </a>
+                </td>
+                <td>
+                    <a ng-click="sortType('special_mark',sortReverse); sortReverse = !sortReverse">
+                        <spring:message code="locale.color"/>
+                    </a>
+                </td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-show="data.users.length <= 0">
+                <td colspan="5" style="text-align:center;"><spring:message code="locale.plsWait"/>...</td>
+            </tr>
+            <tr dir-paginate="interviewee in data.users|itemsPerPage:data.itemsPerPage" total-items="data.total_count">
+                <%--<td><input type="checkbox" checklist-model="dataStudents.studId" checklist-value="interviewee.id"></td>--%>
+                <td><a href="/interviewer/feedback?{{interviewee.id}}" target="_blanks">{{interviewee.id}}</a></td>
+                <td>{{interviewee.name}}</td>
+                <td>{{interviewee.surname}}</td>
+                <td>{{interviewee.special_mark}}</td>
+                <td>{{interviewee.dev_score}}</td>
+                <td>{{interviewee.hr_score}}</td>
+               <td ng-style="{opacity:0.5,'background-color':'{{interviewee.color == '1' ? 'blue' :
                                 interviewee.color == '2' ? 'green' :
                                 interviewee.color == '4' ? 'yellow' : 'red'}}'}" title="
                               {{interviewee.color == '1' ? 'blue' :
                                 interviewee.color == '2' ? 'green' :
                                 interviewee.color == '4' ? 'yellow' : 'red'}}"></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+            </tr>
+            </tbody>
+        </table>
+            </div>
         <div id="pagination">
-            <dir-pagination-controls
-                    max-size="8"
-                    direction-links="true"
-                    boundary-links="true"
-                    on-page-change="data.setPageno(newPageNumber)">
-            </dir-pagination-controls>
-        </div>
+        <dir-pagination-controls
+                max-size="8"
+                direction-links="true"
+                boundary-links="true"
+                on-page-change="data.setPageno(newPageNumber)">
+        </dir-pagination-controls></div>
 
     </main>
 </main>

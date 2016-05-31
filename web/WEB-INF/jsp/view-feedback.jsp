@@ -1,8 +1,9 @@
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <div id="all_feedbacks">
   <div class="widget">
     <div class="widget-header clearfix">
       <h3><i class="icon ion-ios-browsers"></i> <span>
-                    <p id="special_mark_display">Special mark: </p>
+                    <p id="special_mark_display"><spring:message code="locale.specmark"/>: </p>
 
 
         </span></h3>
@@ -16,10 +17,10 @@
 
     <div class="widget-content tab-content">
       <div class="tab-pane fade active in" id="tab1">
-        <p id="dev_feedback">Dev feedback</p>
+        <p id="dev_feedback">Dev <spring:message code="locale.feedback"/></p>
       </div>
       <div class="tab-pane fade" id="tab2">
-        <p id="hr_feedback">Hr feedback</p>
+        <p id="hr_feedback">Hr <spring:message code="locale.feedback"/></p>
       </div>
     </div>
   </div>
