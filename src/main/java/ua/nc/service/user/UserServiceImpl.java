@@ -287,15 +287,23 @@ public class UserServiceImpl implements UserService {
         try {
             User user = userDAO.findByEmail(email);
             RoleDAO roleDAO = daoFactory.getRoleDAO(connection);
+            System.out.println(roleDAO);
             Set<Role> newRoles = new HashSet<>();
+            System.out.println(roles);
             for (Role role : roles) {
+                System.out.println(role);
                 newRoles.add(roleDAO.findByName(role.getName()));
             }
+            System.out.println(newRoles);
+            System.out.println("111");
             roleDAO.removeRolesFromUser(user);
+            System.out.println("222");
             roleDAO.setRolesToUser(newRoles, user);
+            System.out.println("333");
         } catch (DAOException e) {
+            LOGGER.warn(e.getCause());
+        } finally {
             daoFactory.putConnection(connection);
-            LOGGER.warn("Cannot find user with email " + email + " in DB.");
         }
     }
 }

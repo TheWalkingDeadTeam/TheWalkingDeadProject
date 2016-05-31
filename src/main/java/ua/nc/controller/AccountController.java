@@ -65,12 +65,13 @@ public class AccountController {
     @ResponseBody
     @RequestMapping(value = "/account/changeroles", method = RequestMethod.POST)
     public void changeRoles(@RequestBody User user) {
-        System.out.println("Booom !");
+        System.out.println(user);
         String email = user.getEmail();
         Set<Role> roles = user.getRoles();
         System.out.println(email);
+        System.out.println(roles);
         for (Role role : roles) {
-            System.out.println(role.getId());
+            System.out.println(role.getName());
         }
         userService.changeRoles(email, roles);
         System.out.println("!!!");

@@ -15,11 +15,16 @@ public class SchedulerValidator implements Validator {
 
     @Override
     public Set<ValidationError> validate(Object obj) {
+        System.out.println("!!!");
         Set<ValidationError> errors = new LinkedHashSet<>();
         Map<String, Object> map = (Map) obj;
+        System.out.println("???");
         Date interviewStart = (Date) map.get(INTERVIEW_START_TIME);
+        System.out.println(interviewStart);
         List<Date> interviewDates = (List) map.get(INTERVIEW_END_TIME);
+        System.out.println(interviewDates);
         Date endRegistrationDate = cesService.getCurrentCES().getEndRegistrationDate();
+        System.out.println(endRegistrationDate);
 
         if (interviewStart.before(endRegistrationDate)) {
             errors.add(new ValidationError("interViewStart", "interview start time can't be before endRegistration"));

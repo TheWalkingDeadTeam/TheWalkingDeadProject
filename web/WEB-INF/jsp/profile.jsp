@@ -53,6 +53,10 @@
     </div>
     </div>
 
+    <div style="display: block; margin: 10px auto; max-width: 700px;">
+        <button id="pdf" onclick="download();">Download PDF</button>
+    </div>
+
     <form id="fields">
 
     </form>
@@ -70,10 +74,6 @@
         </div>
     </sec:authorize>
 
-    <div style="display: block; margin: 10px auto; max-width: 700px;">
-        <button id="pdf" onclick="download();">Download PDF</button>
-    </div>
-
 </sec:authorize>
 
 
@@ -83,7 +83,7 @@
 <script src="/resources/js/profile.js"></script>
 <script src="/resources/js/account.js"></script>
 <script src="/resources/js/photo.js"></script>
-<script src="/resources/js/pdfstructure.js"></script>
+<script src="/resources/js/pdfStructure.js"></script>
 <script src='/resources/js/pdfmake.min.js'></script>
 <script src='/resources/js/vfs_fonts.js'></script>
 

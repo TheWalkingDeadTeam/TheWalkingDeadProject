@@ -142,15 +142,23 @@ public class CESServiceImpl implements CESService {
         Connection connection = DAO_FACTORY.getConnection();
         CESService cesService = new CESServiceImpl();
         UserDAO userDAO = DAO_FACTORY.getUserDAO(connection);
+        System.out.println("!!!");
         CES ces = cesService.getCurrentCES();
+        System.out.println(ces);
         int hoursPerDay = ces.getInterviewTimeForDay();
+        System.out.println(hoursPerDay);
         int timePerStudent = ces.getInterviewTimeForPerson();
+        System.out.println(timePerStudent);
         Set<User> studentsList = userDAO.getAllAcceptedStudents(ces.getId());
+        System.out.println(studentsList);
         int studentsAmount = studentsList.size();
         int studentsTogether = Math.min(userDAO.getDEVCount(ces.getId()), userDAO.getHRBACount(ces.getId()));
+        System.out.println(studentsTogether);
         List<Date> interviewDates = getInterviewDates(startDate, studentsAmount, studentsTogether, timePerStudent, hoursPerDay);
+        System.out.println(interviewDates);
         updateInterViewingDate(startDate, interviewDates.get(interviewDates.size() - 1));
         DAO_FACTORY.putConnection(connection);
+        System.out.println("***");
         return interviewDates;
     }
 
