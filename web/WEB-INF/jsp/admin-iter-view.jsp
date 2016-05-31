@@ -156,6 +156,7 @@
                 <td ng-style="{opacity:0.8,'background-color':'{{user.participation ? 'green' : 'red'}}'}"
                 title="{{user.participation}}">
 
+
                 </td>
             </tr>
             </tbody>

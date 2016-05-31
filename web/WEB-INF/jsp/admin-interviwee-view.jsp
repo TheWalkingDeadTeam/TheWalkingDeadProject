@@ -131,6 +131,7 @@
                                 interviewee.color == '2' ? 'green' :
                                 interviewee.color == '4' ? 'yellow' : 'red'}}"></td>
             </tr>
+
             </tbody>
         </table>
             </div>

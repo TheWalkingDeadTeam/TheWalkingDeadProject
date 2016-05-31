@@ -131,6 +131,7 @@
             </tr>
             </tbody>
         </table>
+
             </div>
             <div id="pagination">
         <dir-pagination-controls
