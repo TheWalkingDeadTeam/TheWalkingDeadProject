@@ -18,6 +18,7 @@ public class StudentServiceImpl implements StudentService {
     private final static Logger log = Logger.getLogger(StudentServiceImpl.class);
     private final DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
     private final CESServiceImpl cesService = new CESServiceImpl();
+
     @Override
     public StudentData getStudents(Integer itemPerPage, Integer pageNumber) {
         Connection connection = daoFactory.getConnection();
@@ -55,7 +56,6 @@ public class StudentServiceImpl implements StudentService {
         try {
             PostgreApplicationTableDAO applicationTableDAO = new PostgreApplicationTableDAO(connection);
             CES ces = cesService.getCurrentCES();
-            log.info(sortType);
             return applicationTableDAO.getApplicationsTable(ces.getId(), itemPerPage, pageNumber, sortType, asc);
         } catch (DAOException e) {
             log.warn("Can't get students", e.getCause());
@@ -74,10 +74,11 @@ public class StudentServiceImpl implements StudentService {
             return applicationTableDAO.getApplicationsCount(ces.getId(), pattern);
         } catch (DAOException e) {
             log.warn("Can't get students", e.getCause());
+            return null;
         } finally {
             daoFactory.putConnection(connection);
         }
-        return null;
+
     }
 
     @Override

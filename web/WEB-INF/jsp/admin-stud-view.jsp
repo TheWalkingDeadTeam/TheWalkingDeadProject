@@ -72,14 +72,18 @@
                data-toggle="collapse"><spring:message code="locale.settings"/></a>
 
 
-            <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
-                <label class="mdl-button mdl-js-button mdl-button--icon" for="search">
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable" style="margin: 10px; bottom: 20px">
+                <label class="mdl-button mdl-js-button mdl-button--icon" for="search" style="bottom: 10px; left:0px">
                     <i class="material-icons">search</i>
                 </label>
-                <div class="mdl-textfield__expandable-holder">
-                    <form ng-submit="searchFiltr(field)"><input class="mdl-textfield__input" type="text" id="search"
+                <div class="mdl-textfield__expandable-holder" style="padding: 0px">
+                    <form ng-submit="searchFiltr(field)">
+                        <input class="mdl-textfield__input" type="text" id="search" style="border-bottom: 1px solid #9e9e9e;
+                        box-shadow: none"
                                                                 name="field" ng-model="field"></form>
-                    <label class="mdl-textfield__label" for="search"><spring:message code="locale.enterQuery"/>...</label>
+                    <%--<label class="mdl-textfield__label" for="search" style="border-bottom: none;--%>
+                        <%--box-shadow: none"--%>
+                    <%--><spring:message code="locale.enterQuery"/>...</label>--%>
                 </div>
             </div>
             <div>
@@ -121,9 +125,10 @@
                                             </select>
                                             <div>
                                                 <div ng-repeat="head in data.users.header">
-                                                    <input type="checkbox" checklist-model="headerStud.head"
+                                                    <label><input type="checkbox" checklist-model="headerStud.head"
                                                            checklist-value="head">
                                                     <p>{{head.name}}</p>
+                                                    </label>
                                                 </div>
                                             </div>
 
@@ -159,7 +164,7 @@
                     </a>
                 </td>
                 <td>
-                    <a ng-click="sortReverse = !sortReverse; sortType('rejected',sortReverse);">
+                    <a ng-click="sortReverse = !sortReverse; sortType('2147483647',sortReverse);">
                         <spring:message code="locale.status"/>
                     </a>
                 </td>

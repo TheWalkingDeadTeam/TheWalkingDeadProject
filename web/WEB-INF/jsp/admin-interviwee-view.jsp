@@ -77,15 +77,15 @@
                     <%--class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">--%>
                 <%--Deactivate--%>
             <%--</button>--%>
-            <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
-                <label class="mdl-button mdl-js-button mdl-button--icon" for="search">
-                    <i class="material-icons"><spring:message code="locale.search"/></i>
-                </label>
-                <div class="mdl-textfield__expandable-holder">
-                    <form ng-submit = "searchFiltr(field)"><input  class="mdl-textfield__input" type="text" id="search" name="field" ng-model="field"></form>
-                    <label class="mdl-textfield__label" for="search"><spring:message code="locale.enterQuery"/>...</label>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="search">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <form ng-submit = "searchFiltr(field)"><input  class="mdl-textfield__input" type="text" id="search" name="field" ng-model="field"></form>
+                        <label class="mdl-textfield__label" for="search">searchtext</label>
+                    </div>
                 </div>
-            </div>
                 <div class="cssload-thecube">
                     <div class="cssload-cube cssload-c1"></div>
                     <div class="cssload-cube cssload-c2"></div>
@@ -136,7 +136,7 @@
             </thead>
             <tbody>
             <tr ng-show="data.users.length <= 0">
-                <td colspan="5" style="text-align:center;"><spring:message code="locale.plsWait"/>...</td>
+                <td colspan="5" style="text-align:center;"><spring:message code="locale.emptyTable"/>...</td>
             </tr>
             <tr dir-paginate="interviewee in data.users|itemsPerPage:data.itemsPerPage" total-items="data.total_count">
                 <%--<td><input type="checkbox" checklist-model="dataStudents.studId" checklist-value="interviewee.id"></td>--%>
