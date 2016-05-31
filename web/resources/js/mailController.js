@@ -24,13 +24,7 @@ mailer.controller('MailController', ['$scope', 'MailService', '$http', 'Notifica
             var response = $http.post('/admin/scheduler', formData);
             response.success(function (data, status, headers, config) {
                 $scope.list.push(data);
-                // if (data.length) {
-                //     for (var i in data) {
-                //         Notification.error({message: data[i].errorMessage, delay: 2000});
-                //     }
-                // } else {
-                //     Notification.success({message: 'Scheduler  successfully started ', delay: 1000});
-                // }
+                Notification.success({message: 'Scheduler  successfully started ', delay: 1000});
             });
             response.error(function (data, status, headers, config) {
                 alert("Exception details: " + JSON.stringify({data: data}));

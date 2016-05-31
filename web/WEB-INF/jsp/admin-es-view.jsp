@@ -30,6 +30,13 @@
     <link rel="stylesheet" href="/resources/css/styles.css"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="/resources/css/roboto-style/roboto.css">
+    <style>
+        .panel{
+            margin-left: 2%;
+            margin-top: 2%;
+        }
+    </style>
+
 </head>
 <body class="ng-cloak">
 <div clas="generic-container" ng-controller="enrollCtrl"
@@ -42,105 +49,19 @@
                 <table class="table table-hover table-bordered table-striped span11">
                     <thead>
                     <tr>
-                        <td>
-                            <a href="#" ng-click="sortType = 'id'; sortReverse = !sortReverse">
-                                #
-                                <span ng-show="sortType == 'id' && !sortReverse" class="fa fa-caret-down"></span>
-                                <span ng-show="sortType == 'id' && sortReverse" class="fa fa-caret-up"></span>
-                            </a>
-                        </td>
+                        <td>#</td>
 
-                        <td>
-                            <a href="#" ng-click="sortType = 'year'; sortReverse = !sortReverse">
-                                <spring:message code="locale.year"/>
-                                <span ng-show="sortType == 'year' && !sortReverse" class="fa fa-caret-down"></span>
-                                <span ng-show="sortType == 'year' && sortReverse" class="fa fa-caret-up"></span>
-                            </a>
-                        </td>
-                        <td>
-                            <a href="#" ng-click="sortType = 'startRegistrationDate'; sortReverse = !sortReverse">
-                                <spring:message code="locale.startReg"/>
-                                <span ng-show="sortType == 'startRegistrationDate' && !sortReverse"
-                                      class="fa fa-caret-down"></span>
-                                <span ng-show="sortType == 'startRegistrationDate' && sortReverse"
-                                      class="fa fa-caret-up"></span>
-                            </a>
-                        </td>
-
-                        <td>
-                            <a href="#" ng-click="sortType = 'endRegistrationDate'; sortReverse = !sortReverse">
-                                <spring:message code="locale.endReg"/>
-                                <span ng-show="sortType == 'endRegistrationDate' && !sortReverse"
-                                      class="fa fa-caret-down"></span>
-                                <span ng-show="sortType == 'endRegistrationDate' && sortReverse"
-                                      class="fa fa-caret-up"></span>
-                            </a>
-                        </td>
-                        <td>
-                            <a href="#" ng-click="sortType = 'startInterviewingDate'; sortReverse = !sortReverse">
-                                <spring:message code="locale.startInt"/>
-                                <span ng-show="sortType == 'startInterviewingDate' && !sortReverse"
-                                      class="fa fa-caret-down"></span>
-                                <span ng-show="sortType == 'startInterviewingDate' && sortReverse"
-                                      class="fa fa-caret-up"></span>
-                            </a>
-                        </td>
-
-                        <td>
-                            <a href="#" ng-click="sortType = 'endInterviewingDate'; sortReverse = !sortReverse">
-                                <spring:message code="locale.endInt"/>
-                                <span ng-show="sortType == 'endInterviewingDate' && !sortReverse"
-                                      class="fa fa-caret-down"></span>
-                                <span ng-show="sortType == 'endInterviewingDate' && sortReverse"
-                                      class="fa fa-caret-up"></span>
-                            </a>
-                        </td>
-
-                        <td>
-                            <a href="#" ng-click="sortType = 'quota'; sortReverse = !sortReverse">
-                                <spring:message code="locale.quota"/>
-                                <span ng-show="sortType == 'quota' && !sortReverse" class="fa fa-caret-down"></span>
-                                <span ng-show="sortType == 'quota' && sortReverse" class="fa fa-caret-up"></span>
-                            </a>
-                        </td>
-
-                        <td>
-                            <a href="#" ng-click="sortType = 'reminders'; sortReverse = !sortReverse">
-                                <spring:message code="locale.reminders"/>
-                                <span ng-show="sortType == 'reminders' && !sortReverse" class="fa fa-caret-down"></span>
-                                <span ng-show="sortType == 'reminders' && sortReverse" class="fa fa-caret-up"></span>
-                            </a>
-                        </td>
-
-                        <td>
-                            <a href="#" ng-click="sortType = 'statusId'; sortReverse = !sortReverse">
-                                <spring:message code="locale.status"/> Id
-                                <span ng-show="sortType == 'statusId' && !sortReverse" class="fa fa-caret-down"></span>
-                                <span ng-show="sortType == 'statusId' && sortReverse" class="fa fa-caret-up"></span>
-                            </a>
-                        </td>
-
-                        <td>
-                            <a href="#" ng-click="sortType = 'interviewTimeForPerson'; sortReverse = !sortReverse">
-                                <spring:message code="locale.timePerson"/>
-                                <span ng-show="sortType == 'interviewTimeForPerson' && !sortReverse"
-                                      class="fa fa-caret-down"></span>
-                                <span ng-show="sortType == 'interviewTimeForPerson' && sortReverse"
-                                      class="fa fa-caret-up"></span>
-                            </a>
-                        </td>
-                        <td>
-                            <a href="#" ng-click="sortType = 'interviewTimeForDay'; sortReverse = !sortReverse">
-                                <spring:message code="locale.timeDay"/>
-                                <span ng-show="sortType == 'interviewTimeForDay' && !sortReverse"
-                                      class="fa fa-caret-down"></span>
-                                <span ng-show="sortType == 'interviewTimeForDay' && sortReverse"
-                                      class="fa fa-caret-up"></span>
-                            </a>
-                        </td>
-                        <td>
-                            <spring:message code="locale.report"/>
-                        </td>
+                        <td><spring:message code="locale.year"/><td>
+                        <spring:message code="locale.startReg"/></td>
+                        <td><spring:message code="locale.endReg"/></td>
+                        <td><spring:message code="locale.startInt"/></td>
+                        <td><spring:message code="locale.endInt"/></td>
+                        <td><spring:message code="locale.quota"/></td>
+                        <td><spring:message code="locale.reminders"/></td>
+                        <td><spring:message code="locale.status"/> Id</td>
+                        <td><spring:message code="locale.timePerson"/></td>
+                        <td><spring:message code="locale.timeDay"/></td>
+                        <td><spring:message code="locale.report"/></td>
                     </tr>
                     </thead>
                     <tbody>
@@ -166,7 +87,7 @@
                                                                            width="50" height="50" title="Excel"/></a>
                         </td>
                     </tr>
-                    <tr ng-hide="enrollCtrl.emptyTemplateTable == true">
+                    <tr ng-hide="enrollCtrl.emptyTemplateTable != true">
 
                         <td colspan="12" class="vert-align col-xs-12 text-center"> <spring:message code="locale.emptyTable"/></td>
                     </tr>

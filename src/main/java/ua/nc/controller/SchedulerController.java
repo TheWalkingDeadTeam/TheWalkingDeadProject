@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ua.nc.dao.exception.DAOException;
+import ua.nc.entity.CES;
 import ua.nc.entity.Mail;
 import ua.nc.entity.Scheduler;
 import ua.nc.service.CESService;
@@ -39,6 +40,7 @@ public class SchedulerController {
     private final static String DATA_FORMAT = "yyyy-MM-dd HH:mm";
     private final static String INTERVIEW_START_TIME = "interviewDateStart";
     private final static String INTERVIEW_END_TIME = "interviewDateEnd";
+    private final static Integer POST_REGISTRATION_STATUS = 3;
     private final CESService cesService = new CESServiceImpl();
     private final MailService mailService = new MailServiceImpl();
 
@@ -92,27 +94,31 @@ public class SchedulerController {
      *
      * @param scheduler
      */
-//    @RequestMapping(value = "/admin/scheduler", method = RequestMethod.POST, produces = "application/json")
-//    @ResponseStatus(value = HttpStatus.OK)
-//    public void PostService(@RequestBody Scheduler scheduler) {
-//        Mail interviewerMail = mailService.getMail(scheduler.getMailIdStaff());
-//        Mail studentMail = mailService.getMail(scheduler.getMailIdUser());
-//        Map<String, String> interviewerParameters = param(scheduler);
-//        Map<String, String> studentParameters = param(scheduler);
-//        interviewerParameters.put(CONTACT_INTERVIEWERS, scheduler.getContactStaff());
-//        studentParameters.put(CONTACT_STUDENTS, scheduler.getContactStudent());
-//        Date startDate = convertDate(scheduler.getInterviewTime());
-//        try {
-//            List<Date> interviewDates = cesService.planSchedule(startDate);
-//            mailService.sendInterviewReminders(interviewDates, interviewerMail, interviewerParameters,
-//                    studentMail, studentParameters);
-//        } catch (DAOException e) {
-//            log.error("Check Scheduler parameters", e);
-//        }
-//    }
     @RequestMapping(value = "/admin/scheduler", method = RequestMethod.POST, produces = "application/json")
+    @ResponseStatus(value = HttpStatus.OK)
+    public void PostService(@RequestBody Scheduler scheduler) {
+        Mail interviewerMail = mailService.getMail(scheduler.getMailIdStaff());
+        Mail studentMail = mailService.getMail(scheduler.getMailIdUser());
+        Map<String, String> interviewerParameters = param(scheduler);
+        Map<String, String> studentParameters = param(scheduler);
+        interviewerParameters.put(CONTACT_INTERVIEWERS, scheduler.getContactStaff());
+        studentParameters.put(CONTACT_STUDENTS, scheduler.getContactStudent());
+        Date startDate = convertDate(scheduler.getInterviewTime());
+        try {
+            if (cesService.getCurrentCES().getStatusId() == POST_REGISTRATION_STATUS) {
+                List<Date> interviewDates = cesService.planSchedule(startDate);
+                mailService.sendInterviewReminders(interviewDates, interviewerMail, interviewerParameters,
+                        studentMail, studentParameters);
+            }
+        } catch (DAOException e) {
+            log.error("Check Scheduler parameters", e);
+        }
+    }
+
+
+    @RequestMapping(value = "/admin/schedulerValidate", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
-    Set<ValidationError> PostService(@RequestBody Scheduler scheduler) {
+    Set<ValidationError> schedulingImprove(@RequestBody Scheduler scheduler) {
         Mail interviewerMail = mailService.getMail(scheduler.getMailIdStaff());
         Mail studentMail = mailService.getMail(scheduler.getMailIdUser());
         Map<String, String> interviewerParameters = param(scheduler);
@@ -134,7 +140,7 @@ public class SchedulerController {
         } catch (DAOException e) {
             log.error("Check Scheduler date parameter", e);
         }
-        System.out.println("error size"+errors.size());
+        System.out.println("error size" + errors.size());
         return errors;
     }
 
