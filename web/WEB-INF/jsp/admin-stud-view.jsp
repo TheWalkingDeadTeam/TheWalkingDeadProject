@@ -2,7 +2,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%--
   Created by IntelliJ IDEA.
-  User: Alexander
+  User: Kryvonis
   Date: 29.04.2016
   Time: 22:26
   To change this template use File | Settings | File Templates.
@@ -81,9 +81,6 @@
                         <input class="mdl-textfield__input" type="text" id="search" style="border-bottom: 1px solid #9e9e9e;
                         box-shadow: none"
                                                                 name="field" ng-model="field"></form>
-                    <%--<label class="mdl-textfield__label" for="search" style="border-bottom: none;--%>
-                        <%--box-shadow: none"--%>
-                    <%--><spring:message code="locale.enterQuery"/>...</label>--%>
                 </div>
             </div>
             <div>
