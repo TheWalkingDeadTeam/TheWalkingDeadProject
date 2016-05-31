@@ -125,6 +125,9 @@ public class CESServiceImpl implements CESService {
         int studentsAmount = studentsList.size();
         int studentsTogether = Math.min(userDAO.getDEVCount(ces.getId()), userDAO.getHRBACount(ces.getId()));
         List<Date> interviewDates = getInterviewDates(startDate, studentsAmount, studentsTogether, timePerStudent, hoursPerDay);
+        if (interviewDates.get(0).getDay() == interviewDates.get(interviewDates.size()).getDay()) {
+            interviewDates.add(new Date(interviewDates.get(0).getTime() + MILLIS_PER_DAY));
+        }
         updateInterViewingDate(startDate, interviewDates.get(interviewDates.size() - 1));
         DAO_FACTORY.putConnection(connection);
         return interviewDates;
