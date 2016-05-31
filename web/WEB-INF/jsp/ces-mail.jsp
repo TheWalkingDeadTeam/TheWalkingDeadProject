@@ -1,3 +1,4 @@
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%--
   Created by IntelliJ IDEA.
   User: Alexander
@@ -41,13 +42,13 @@
 
                     <div class="card-content">
                         <div class="panel panel-default">
-                            <h5 align="center">Rejection Template</h5>
+                            <h5 align="center"><spring:message code="locale.reject"/> <spring:message code="locale.mailTemp"/></h5>
                             <div class="table-responsive tablecontainer">
                                 <table class="table">
                                     <thead>
                                     <tr>
                                         <th><img src="/resources/images/checkbox.png" width="15" height="15"></th>
-                                        <th>Topic</th>
+                                        <th><spring:message code="locale.topic"/></th>
                                         <th width="20%"></th>
                                     </tr>
                                     </thead>
@@ -72,13 +73,13 @@
 
                     <div class="card-content">
                         <div class="panel panel-default">
-                            <h5 align="center">Job Offer Template</h5>
+                            <h5 align="center"><spring:message code="locale.jobOffer"/> <spring:message code="locale.mailTemp"/></h5>
                             <div class="table-responsive tablecontainer">
                                 <table class="table">
                                     <thead>
                                     <tr>
                                         <th><img src="/resources/images/checkbox.png" width="15" height="15"></th>
-                                        <th>Topic</th>
+                                        <th><spring:message code="locale.topic"/></th>
                                         <%--<th>Body</th>--%>
                                         <th width="20%"></th>
 
@@ -104,13 +105,13 @@
 
                     <div class="card-content">
                         <div class="panel panel-default">
-                            <h5 align="center">Course Offer Template</h5>
+                            <h5 align="center"><spring:message code="locale.takeOnCourses"/> <spring:message code="locale.mailTemp"/></h5>
                             <div class="table-responsive tablecontainer">
                                 <table class="table">
                                     <thead>
                                     <tr>
                                         <th><img src="/resources/images/checkbox.png" width="15" height="15"></th>
-                                        <th>Topic</th>
+                                        <th><spring:message code="locale.topic"/></th>
                                         <th width="20%"></th>
 
                                     </tr>
@@ -134,7 +135,7 @@
                             <button ng-click="ctrl.closeButton()"
                                     class="floatRight btn btn-default waves-effect waves-light"
                                     style="margin-top: 3%;margin-bottom: 4%">
-                                Close
+                                <spring:message code="locale.close"/>
                             </button>
 
                         </div>

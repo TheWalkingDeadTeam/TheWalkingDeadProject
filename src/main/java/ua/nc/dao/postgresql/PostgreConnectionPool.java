@@ -30,16 +30,14 @@ public class PostgreConnectionPool extends ConnectionPool {
     }
 
     public static PostgreConnectionPool getInstance() {
-        PostgreConnectionPool localInstance = instance;
-        if (localInstance == null) {
+        if (instance == null) {
             synchronized (PostgreConnectionPool.class) {
-                localInstance = instance;
-                if (localInstance == null) {
-                    instance = localInstance = new PostgreConnectionPool();
+                if (instance == null) {
+                    instance = new PostgreConnectionPool();
                 }
             }
         }
-        return localInstance;
+        return instance;
     }
 
     public Connection getConnection() throws DAOException {

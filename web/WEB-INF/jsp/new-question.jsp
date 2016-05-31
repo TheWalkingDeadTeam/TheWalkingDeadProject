@@ -1,3 +1,4 @@
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%--
   Created by IntelliJ IDEA.
   User: Neltarion
@@ -68,18 +69,18 @@
     <main class="mdl-layout__content mdl-color--grey-100">
 
         <div>
-            <div style="margin-left: 20px;"><h4>Please, enter new question properties</h4></div>
+            <div style="margin-left: 20px;"><h4><spring:message code="locale.plsEnterNewQuest"/></h4></div>
             <div style="margin: 20px;">
                 <form role="form" ng-submit="sef.save()">
                     <div class="form-group">
-                        <label for="fieldName">Field name</label>
+                        <label for="fieldName"><spring:message code="locale.fieldName"/></label>
                         <input type="text" ng-model="sef.newQuestion.name" class="form-control" id="fieldName"
                                placeholder="Enter field name" required>
                     </div>
-                    <label for="fieldType">Field type</label>
+                    <label for="fieldType"><spring:message code="locale.type"/></label>
                     <select id="fieldType" class="form-control" style="margin-bottom: 10px;" ng-change="change()"
                             ng-model="sef.newQuestion.fieldTypeID" required>
-                        <option ng-selected="true" value="" disabled>Type</option>
+                        <option ng-selected="true" value="" disabled><spring:message code="locale.type"/></option>
                         <option value="1">Number</option>
                         <option value="2">Text</option>
                         <option value="3">Textarea</option>
@@ -105,7 +106,7 @@
                     <div id="messageDiv"></div>
                     <button type="submit"
                             class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
-                        Save
+                        <spring:message code="locale.save"/>
                     </button>
                     <button ng-click="sef.add()" ng-show="sef.isShown" type="button"
                             class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
@@ -114,7 +115,7 @@
                 </form>
                 <button ng-click="back()"
                         class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white"
-                        style="margin-top: 10px;">Back
+                        style="margin-top: 10px;"><spring:message code="locale.back"/>
                 </button>
             </div>
         </div>

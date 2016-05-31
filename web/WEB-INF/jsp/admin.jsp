@@ -1,4 +1,5 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!doctype html>
 <html lang="en">
@@ -59,14 +60,10 @@
             <div class="demo-cards mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet mdl-cell--4-col-phone mdl-grid mdl-grid--no-spacing">
                 <div class="demo-updates mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--4-col-phone mdl-cell--12-col-desktop">
                     <div class="mdl-card__title mdl-card--expand mdl-color--teal-300">
-                        <h2 class="mdl-card__title-text"> <i class="material-icons">date_range</i> Schedule planning</h2>
-                    </div>
-                    <div class="mdl-card__supporting-text mdl-color-text--grey-600">
-                         You are able to create new Schedule
+                        <h2 class="mdl-card__title-text"> <i class="material-icons">date_range</i><spring:message code="locale.shedulePlanning"/></h2>
                     </div>
                     <div class="mdl-card__actions mdl-card--border">
-                        <a href="/admin/scheduler" class="mdl-button mdl-js-button mdl-js-ripple-effect">Create New
-                            Schedule</a>
+                        <a href="/admin/scheduler" class="mdl-button mdl-js-button mdl-js-ripple-effect"><spring:message code="locale.createShedule"/></a>
                     </div>
                 </div>
                 <div class="demo-separator mdl-cell--1-col"></div>
@@ -76,14 +73,10 @@
                 <div class="demo-cards mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet mdl-cell--4-col-phone mdl-grid mdl-grid--no-spacing">
                     <div class="demo-updates mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--4-col-phone mdl-cell--12-col-desktop">
                         <div class="mdl-card__title mdl-card--expand mdl-color--teal-300">
-                            <h2 class="mdl-card__title-text"><i class="material-icons">assignment_ind</i> Edit form template</h2>
-                        </div>
-                        <div class="mdl-card__supporting-text mdl-color-text--grey-600">
-                            You are able to edit form template
+                            <h2 class="mdl-card__title-text"><i class="material-icons">assignment_ind</i> <spring:message code="locale.editForm"/></h2>
                         </div>
                         <div class="mdl-card__actions mdl-card--border">
-                            <a href="/admin/edit-form" class="mdl-button mdl-js-button mdl-js-ripple-effect">Edit Form
-                                Template</a>
+                            <a href="/admin/edit-form" class="mdl-button mdl-js-button mdl-js-ripple-effect"><spring:message code="locale.editForm"/></a>
                         </div>
                     </div>
                     <div class="demo-separator mdl-cell--1-col"></div>
@@ -93,14 +86,12 @@
             <div class="demo-cards mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet mdl-cell--4-col-phone mdl-grid mdl-grid--no-spacing">
                 <div class="demo-updates mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--4-col-phone mdl-cell--12-col-desktop">
                     <div class="mdl-card__title mdl-card--expand mdl-color--teal-300">
-                        <h2 class="mdl-card__title-text"><i class="material-icons">alarm</i> Registration period</h2>
+                        <h2 class="mdl-card__title-text"><i class="material-icons">alarm</i><spring:message code="locale.registrationPeriod"/></h2>
                     </div>
-                    <div class="mdl-card__supporting-text mdl-color-text--grey-600">
-                        You are able to set course enroll session settings
-                    </div>
+
                     <div class="mdl-card__actions mdl-card--border">
-                        <a href="/admin/cessettings" class="mdl-button mdl-js-button mdl-js-ripple-effect">Set Course
-                            Enroll Settings </a>
+                        <a href="/admin/cessettings" class="mdl-button mdl-js-button mdl-js-ripple-effect"><spring:message code="locale.set"/>
+                            <spring:message code="locale.registrationPeriod"/></a>
                     </div>
                 </div>
                 <div class="demo-separator mdl-cell--1-col"></div>
@@ -110,13 +101,11 @@
             <div class="demo-cards mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet mdl-cell--4-col-phone mdl-grid mdl-grid--no-spacing">
                 <div class="demo-updates mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--4-col-phone mdl-cell--12-col-desktop">
                     <div class="mdl-card__title mdl-card--expand mdl-color--teal-300">
-                        <h2 class="mdl-card__title-text"><i class="material-icons">view_list</i> Application list</h2>
-                    </div>
-                    <div class="mdl-card__supporting-text mdl-color-text--grey-600">
-                        You are able to view application list
+                        <h2 class="mdl-card__title-text"><i class="material-icons">view_list</i><spring:message code="locale.appList"/></h2>
                     </div>
                     <div class="mdl-card__actions mdl-card--border">
-                        <a href="/admin/students" class="mdl-button mdl-js-button mdl-js-ripple-effect">View Application List</a>
+                        <a href="/admin/students" class="mdl-button mdl-js-button mdl-js-ripple-effect"><spring:message code="locale.view"/>
+                            <spring:message code="locale.appList"/></a>
                     </div>
                 </div>
                 <div class="demo-separator mdl-cell--1-col"></div>
@@ -125,13 +114,12 @@
             <div class="demo-cards mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet mdl-cell--4-col-phone mdl-grid mdl-grid--no-spacing">
                 <div class="demo-updates mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--4-col-phone mdl-cell--12-col-desktop">
                     <div class="mdl-card__title mdl-card--expand mdl-color--teal-300">
-                        <h2 class="mdl-card__title-text"><i class="material-icons">supervisor_account</i> Interviewee list</h2>
+                        <h2 class="mdl-card__title-text"><i class="material-icons">supervisor_account</i><spring:message code="locale.IntervieweeList"/></h2>
                     </div>
-                    <div class="mdl-card__supporting-text mdl-color-text--grey-600">
-                        You are able to view interviewee list
-                    </div>
+
                     <div class="mdl-card__actions mdl-card--border">
-                        <a href="/admin/interviewee" class="mdl-button mdl-js-button mdl-js-ripple-effect">View Interviewee List</a>
+                        <a href="/admin/interviewee" class="mdl-button mdl-js-button mdl-js-ripple-effect"><spring:message code="locale.view"/>
+                            <spring:message code="locale.IntervieweeList"/></a>
                     </div>
                 </div>
                 <div class="demo-separator mdl-cell--1-col"></div>
@@ -140,13 +128,12 @@
             <div class="demo-cards mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet mdl-cell--4-col-phone mdl-grid mdl-grid--no-spacing">
                 <div class="demo-updates mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--4-col-phone mdl-cell--12-col-desktop">
                     <div class="mdl-card__title mdl-card--expand mdl-color--teal-300">
-                        <h2 class="mdl-card__title-text"><i class="material-icons">supervisor_account</i> Interviewer List</h2>
+                        <h2 class="mdl-card__title-text"><i class="material-icons">supervisor_account</i><spring:message code="locale.InterviewerList"/></h2>
                     </div>
-                    <div class="mdl-card__supporting-text mdl-color-text--grey-600">
-                        You are able to view interviewer List
-                    </div>
+
                     <div class="mdl-card__actions mdl-card--border">
-                        <a href="/admin/interviewers" class="mdl-button mdl-js-button mdl-js-ripple-effect">Interviewer List</a>
+                        <a href="/admin/interviewers" class="mdl-button mdl-js-button mdl-js-ripple-effect"><spring:message code="locale.view"/>
+                            <spring:message code="locale.InterviewerList"/></a>
                     </div>
                 </div>
 
@@ -156,13 +143,12 @@
                 <div class="demo-cards mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet mdl-cell--4-col-phone mdl-grid mdl-grid--no-spacing">
                     <div class="demo-updates mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--4-col-phone mdl-cell--12-col-desktop">
                         <div class="mdl-card__title mdl-card--expand mdl-color--teal-300">
-                            <h2 class="mdl-card__title-text"><i class="material-icons">supervisor_account</i> User List</h2>
+                            <h2 class="mdl-card__title-text"><i class="material-icons">supervisor_account</i><spring:message code="locale.userList"/></h2>
                         </div>
-                        <div class="mdl-card__supporting-text mdl-color-text--grey-600">
-                            You are able to view user List
-                        </div>
+
                         <div class="mdl-card__actions mdl-card--border">
-                            <a href="/admin/users" class="mdl-button mdl-js-button mdl-js-ripple-effect">User List</a>
+                            <a href="/admin/users" class="mdl-button mdl-js-button mdl-js-ripple-effect"><spring:message code="locale.view"/>
+                                <spring:message code="locale.userList"/></a>
                         </div>
                     </div>
                     <div class="demo-separator mdl-cell--1-col"></div>
@@ -170,35 +156,27 @@
             </sec:authorize>
 
             <sec:authorize access="hasRole('ROLE_ADMIN')">
-            <div class="demo-cards mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet mdl-cell--4-col-phone mdl-grid mdl-grid--no-spacing">
+                <div class="demo-cards mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet mdl-cell--4-col-phone mdl-grid mdl-grid--no-spacing">
                     <div class="demo-updates mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--4-col-phone mdl-cell--12-col-desktop">
                         <div class="mdl-card__title mdl-card--expand mdl-color--teal-300">
-                            <h2 class="mdl-card__title-text"><i class="material-icons">portrait</i> Create User</h2>
-                        </div>
-                        <div class="mdl-card__supporting-text mdl-color-text--grey-600">
-                            You are able to create new Admin or Interviewer
+                            <h2 class="mdl-card__title-text"><i class="material-icons">portrait</i><spring:message code="locale.createUser"/></h2>
                         </div>
                         <div class="mdl-card__actions mdl-card--border">
-                            <a href="/admin/create-user" class="mdl-button mdl-js-button mdl-js-ripple-effect">Create
-                                User</a>
+                            <a href="/admin/create-user" class="mdl-button mdl-js-button mdl-js-ripple-effect"><spring:message code="locale.createUser"/></a>
                         </div>
                     </div>
                     <div class="demo-separator mdl-cell--1-col"></div>
                 </div>
             </sec:authorize>
 
-
             <div class="demo-cards mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet mdl-cell--4-col-phone mdl-grid mdl-grid--no-spacing">
                 <div class="demo-updates mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--4-col-phone mdl-cell--12-col-desktop">
                     <div class="mdl-card__title mdl-card--expand mdl-color--teal-300">
-                        <h2 class="mdl-card__title-text"><i class="material-icons">contact_mail</i> Letters Template</h2>
+                        <h2 class="mdl-card__title-text"><i class="material-icons">contact_mail</i><spring:message code="locale.editMailTemplates"/></h2>
                     </div>
-                    <div class="mdl-card__supporting-text mdl-color-text--grey-600">
-                        You are able to edit Letters Template here
-                    </div>
+
                     <div class="mdl-card__actions mdl-card--border">
-                        <a href="/admin/mail-template" class="mdl-button mdl-js-button mdl-js-ripple-effect">Letters
-                            Template</a>
+                        <a href="/admin/mail-template" class="mdl-button mdl-js-button mdl-js-ripple-effect"><spring:message code="locale.editMailTemplates"/></a>
                     </div>
                 </div>
                 <div class="demo-separator mdl-cell--1-col"></div>
@@ -208,14 +186,11 @@
             <div class="demo-cards mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet mdl-cell--4-col-phone mdl-grid mdl-grid--no-spacing">
                 <div class="demo-updates mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--4-col-phone mdl-cell--12-col-desktop">
                     <div class="mdl-card__title mdl-card--expand mdl-color--teal-300">
-                        <h2 class="mdl-card__title-text"><i class="material-icons">history</i> Session Enrollment History</h2>
+                        <h2 class="mdl-card__title-text"><i class="material-icons">history</i><spring:message code="locale.setCourseEnroll"/></h2>
                     </div>
-                    <div class="mdl-card__supporting-text mdl-color-text--grey-600">
-                        You are able to view session enrollment history
-                    </div>
+
                     <div class="mdl-card__actions mdl-card--border">
-                        <a href="/admin/enroll-session" class="mdl-button mdl-js-button mdl-js-ripple-effect">Session
-                            Enrollment</a>
+                        <a href="/admin/enroll-session" class="mdl-button mdl-js-button mdl-js-ripple-effect"><spring:message code="locale.setCourseEnroll"/></a>
                     </div>
                 </div>
                 <div class="demo-separator mdl-cell--1-col"></div>
@@ -223,13 +198,11 @@
             <div class="demo-cards mdl-cell mdl-cell--4-col mdl-cell--8-col-tablet mdl-cell--4-col-phone mdl-grid mdl-grid--no-spacing">
                 <div class="demo-updates mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--4-col-phone mdl-cell--12-col-desktop">
                     <div class="mdl-card__title mdl-card--expand mdl-color--teal-300">
-                        <h2 class="mdl-card__title-text"><i class="material-icons">show_chart</i>Reports</h2>
+                        <h2 class="mdl-card__title-text"><i class="material-icons">show_chart</i><spring:message code="locale.statistics"/></h2>
                     </div>
-                    <div class="mdl-card__supporting-text mdl-color-text--grey-600">
-                        You are able to view and download reports
-                    </div>
+
                     <div class="mdl-card__actions mdl-card--border">
-                        <a href="/admin/report" class="mdl-button mdl-js-button mdl-js-ripple-effect">Reports</a>
+                        <a href="/admin/report" class="mdl-button mdl-js-button mdl-js-ripple-effect"><spring:message code="locale.statistics"/></a>
                     </div>
                 </div>
                 <div class="demo-separator mdl-cell--1-col"></div>

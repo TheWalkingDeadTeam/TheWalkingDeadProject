@@ -25,8 +25,8 @@ public class NewQuestionValidator implements Validator {
             if (!matcher.matches()) {
                 errors.add(new ValidationError("field name", "Field name should contain only letters, numbers and '_' "));
             } else {
-                if (fullFieldWrapper.getName().length() < 5 || fullFieldWrapper.getName().length() > 100) {
-                    errors.add(new ValidationError("field name", "Field name should have not more than 100 but not less than 5 characters"));
+                if (fullFieldWrapper.getName().length() < 5 || fullFieldWrapper.getName().length() > 50) {
+                    errors.add(new ValidationError("field name", "Field name should have not more than 50 but not less than 5 characters"));
                 }
             }
         }

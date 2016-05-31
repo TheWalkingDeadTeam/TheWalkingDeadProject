@@ -1,6 +1,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <sec:authorize access="hasRole('ROLE_ADMIN')">
-    <h5 style="float: left;">Change role</h5>
+    <h5 style="float: left;"><spring:message code="locale.change"/> <spring:message code="locale.roles"/></h5>
     <div class="" role="alert">
         <form>
             <div style="display: inline-block;  width: 100%;">
@@ -18,7 +19,8 @@
                         </select>
                     </div>
                 </div>
-                <button id="buttonSaveRoles" class="btn btn-lg btn-primary btn-block changebtn mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">Save roles</button>
+                <button id="buttonSaveRoles" class="btn btn-lg btn-primary btn-block changebtn mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
+                    <spring:message code="locale.save"/> <spring:message code="locale.roles"/></button>
             </div>
         </form>
         <div id="messageChangeRoles"></div>

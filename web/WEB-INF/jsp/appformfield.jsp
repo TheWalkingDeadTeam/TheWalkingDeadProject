@@ -1,3 +1,4 @@
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%--
   Created by IntelliJ IDEA.
   User: Neltarion
@@ -90,7 +91,7 @@
             </table>
             <button ng-click="back()"
                     class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white"
-                    style="margin-left: 20px;">Back
+                    style="margin-left: 20px;"><spring:message code="locale.back"/>
             </button>
         </div>
     </main>

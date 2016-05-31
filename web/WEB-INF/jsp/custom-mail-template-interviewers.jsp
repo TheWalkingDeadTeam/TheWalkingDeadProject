@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <html>
 <head>
@@ -30,7 +31,7 @@
                 </div>
                 <div class="card-content">
                     <div class="panel panel-default">
-                        <h5 align="center">Interviewer Mail Template </h5>
+                        <h5 align="center"><spring:message code="locale.interviewerMailTemp"/> </h5>
                         <form ng-submit="templateSend()" name="myForm" class="form-horizontal" autocomplete="on">
 
                             <div class="table-responsive tablecontainer">
@@ -39,8 +40,8 @@
                                     <thead>
                                     <tr>
                                         <th><img src="/resources/images/checkbox.png" width="15" height="15"></th>
-                                        <th>Topic</th>
-                                        <th>Body</th>
+                                        <th><spring:message code="locale.topic"/></th>
+                                        <th><spring:message code="locale.body"/></th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -64,7 +65,7 @@
                             </div>
 
                             <div class="form-actions floatRight" style="margin-top: 2%;margin-bottom: 4%">
-                                <input type="submit" id="templateSend" value="Send"
+                                <input type="submit" id="templateSend" value="<spring:message code="locale.send"/>"
                                        class="btn btn-default waves-effect waves-light">
                             </div>
                         </form>

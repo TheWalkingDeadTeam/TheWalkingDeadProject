@@ -192,7 +192,8 @@ public class LoginController implements HandlerExceptionResolver {
     public ModelAndView resolveException(HttpServletRequest httpServletRequest,
                                          HttpServletResponse httpServletResponse, Object o, Exception e) {
         if (e instanceof MaxUploadSizeExceededException) {
-            ModelAndView modelAndView = new ModelAndView(new MappingJackson2JsonView());
+            ModelAndView modelAndView = new ModelAndView();
+            httpServletResponse.setHeader("exception", "File is too big");
             Set<ValidationError> errors = new LinkedHashSet<>();
             errors.add(new ValidationError("photo", "File is too big"));
             modelAndView.addObject("errors", errors);
@@ -201,4 +202,11 @@ public class LoginController implements HandlerExceptionResolver {
         return new ModelAndView("redirect:/login");
     }
 
+    /*@ExceptionHandler(MaxUploadSizeExceededException.class)
+    public Set<ValidationError> resolveException(HttpServletRequest request){
+        request.setAttribute("exception", "File is too big");
+        Set<ValidationError> errors = new LinkedHashSet<>();
+        errors.add(new ValidationError("photo", "File is too big"));
+        return errors;
+    }*/
 }

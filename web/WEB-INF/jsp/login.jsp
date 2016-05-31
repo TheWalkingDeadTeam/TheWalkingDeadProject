@@ -35,7 +35,6 @@
     <script src="/resources/js/test/html5shiv.js"></script>
     <script src="/resources/js/test/respond.min.js"></script>
     <![endif]-->
-    <link rel="shortcut icon" href="/resources/images/test/ico/favicon.ico">
     <link rel="apple-touch-icon-precomposed" sizes="144x144"
           href="/resources/images/test/ico/apple-touch-icon-144-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="114x114"
@@ -72,11 +71,12 @@
             </div>
 
             <div class="collapse navbar-collapse navbar-right">
+                <a href="?lang=en"><img src="/resources/images/en.png"></a> | <a href="?lang=uk"><img src="/resources/images/ua.png"></a>
                 <ul class="nav navbar-nav">
-                    <li class="scroll active"><a href="#home">Home</a></li>
-                    <li class="scroll"><a href="#cta">Login</a></li>
-                    <li class="scroll"><a href="#about">About</a></li>
-                    <li class="scroll"><a href="#get-in-touch">Contact</a></li>
+                    <li class="scroll active"><a href="#home"><spring:message code="locale.home"/></a></li>
+                    <li class="scroll"><a href="#cta"><spring:message code="locale.login"/></a></li>
+                    <li class="scroll"><a href="#about"><spring:message code="locale.info"/></a></li>
+                    <li class="scroll"><a href="#get-in-touch"><spring:message code="locale.contacts"/></a></li>
                     <sec:authorize access="hasAnyRole('ROLE_HR','ROLE_DEV','ROLE_BA')">
                         <li><a href="/interviewee"><spring:message code="locale.interviewee"/></a></li>
                     </sec:authorize>
@@ -105,8 +105,8 @@
                                 <h2>You are welcome to the official portal of the <span>Netcracker</span> Training
                                     Center! </h2>
                                 <p>
-                                    The mission of our Training Center is effective education of young specialists for
-                                    future employment in Netcracker Systems. </p>
+                                    <spring:message code="locale.mission"/></p>
+                                <a class="btn btn-primary btn-lg" href="#about"><spring:message code="locale.readMore"/></a>
                             </div>
                         </div>
                     </div>
@@ -121,10 +121,8 @@
                         <div class="col-sm-6">
                             <div class="carousel-content">
                                 <h2><span>Netcracker</span> focused on your most important step... the next one</h2>
-                                <p>Компания NetCracker Technology является мировым лидером в области создания и
-                                    внедрения комплексных решений для провайдеров услуг связи</p>
-                                <a class="btn btn-primary btn-lg" href="#about">Read More</a>
-
+                                <p><spring:message code="locale.complexSolutions"/></p>
+                                <a class="btn btn-primary btn-lg" href="#about"><spring:message code="locale.readMore"/></a>
                             </div>
                         </div>
                     </div>
@@ -174,22 +172,6 @@
             <jsp:include page="forgot-password-slide.jsp"/>
         </div>
 
-        <div class="row">
-            <div class="inputBox col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                <sec:authorize access="isAuthenticated()">
-                    <div class="alert alert-info" role="alert">
-                        <div id="messageCheckPassword"></div>
-                        <form>
-                            <input id="changePassword" name="password" class="form-control" type="password" value=""
-                                   placeholder=<spring:message code="locale.password"/>>
-                            <button id="buttonChangePassword" class="btn btn-lg btn-primary btn-block changebtn">
-                                <spring:message code="locale.changePassword"/>
-                            </button>
-                        </form>
-                    </div>
-                </sec:authorize>
-            </div>
-        </div>
     </div>
 </section><!--/#cta-->
 
@@ -197,25 +179,19 @@
     <div class="container">
 
         <div class="section-header">
-            <h2 class="section-title text-center wow fadeInDown">Welcome to Netcracker training portal</h2>
+            <h2 class="section-title text-center wow fadeInDown"><spring:message code="locale.welcome"/></h2>
             <p class="text-center wow fadeInDown">
 
             <ul>
-                <li>Ты уже сейчас сможешь учиться в университете и параллельно осваивать современные востребованные
-                    технологии
+                <li><spring:message code="locale.pos1"/>
                 </li>
-                <li>Получишь первый опыт командной работы на учебных проектах, очень близких к реальным, с помощью наших
-                    опытных разработчиков
+                <li><spring:message code="locale.pos2"/>
                 </li>
-                <li> Есть возможность получить первую работу задолго до окончания университета, не волнуясь при этом за
-                    учебу
+                <li><spring:message code="locale.pos3"/>
                 </li>
-                <li> Сможешь строить успешную карьеру в бурно развивающейся отрасли (IT/Телеком), участвовать в
-                    разработке и внедрении сверхсложной сверхгибкой системы, востребованной сотнями крупнейших мировых
-                    компаний
+                <li><spring:message code="locale.pos4"/>
                 </li>
-                <li> Научишься принимать сложные технические и управленческие решения Получишь неоценимый опыт
-                    бизнес-коммуникаций, работая непосредственно с заказчиком, летая в командировки по всему миру
+                <li><spring:message code="locale.pos5"/>
                 </li>
             </ul>
             </p>
@@ -225,9 +201,7 @@
         <section id="features">
             <div class="container">
                 <div class="section-header">
-                    <h2 class="section-title text-center wow fadeInDown">Awesome Features</h2>
-                    <p class="text-center wow fadeInDown">Вы можете выбрать одно из следующих направлений
-                        <br>в своем нелог</p>
+                    <h2 class="section-title text-center wow fadeInDown"><spring:message code="locale.awesome"/></h2>
                 </div>
                 <div class="row">
                     <div class="col-lg-4 wow fadeInLeft">
@@ -284,15 +258,15 @@
 
 
         <div class="section-header">
-            <h2 class="section-title text-center wow fadeInDown">The training program</h2>
+            <h2 class="section-title text-center wow fadeInDown"><spring:message code="locale.trainingProgram"/></h2>
             <p class="text-center wow fadeInDown">
             <ul>
-                <li>объектно-ориентированное программирование на Java</li>
-                <li>проектирование реляционных баз данных в Oracle</li>
-                <li>разработка на Java EE, технологии построения распределенных систем</li>
-                <li>методы построения, технологии и протоколы современных сетей связи</li>
-                <li>мастер-классы от сотрудников NetCracker</li>
-                <li>учебные проекты под руководством кураторов</li>
+                <li><spring:message code="locale.oop"/></li>
+                <li><spring:message code="locale.databases"/></li>
+                <li><spring:message code="locale.javaEE"/></li>
+                <li><spring:message code="locale.constructionMethods"/></li>
+                <li><spring:message code="locale.master"/></li>
+                <li><spring:message code="locale.curators"/></li>
             </ul>
             </p>
         </div>
@@ -313,37 +287,36 @@
             </div>
 
             <div class="col-sm-6 wow fadeInRight">
-                <h3 class="column-title">7 главных аргументов в пользу учебы и работы в NetCracker</h3>
+                <h3 class="column-title"> <spring:message code="locale.arguments"/></h3>
                 <p>
 
                 <ul>
-                    <li>NetCracker – компания с мировым именем</li>
-                    <li>Лидер отрасли. О нас пишут крупнейшие издания, такие как Forbes, Mobile Europe, Connect World,
-                        Vanillaplus, European communication.
+                    <li> <spring:message code="locale.arg1"/></li>
+                    <li>  <spring:message code="locale.arg2"/>
                     </li>
-                    <li>Глобальная экспертиза в области телеком</li>
-                    <li>Инновационные решения</li>
-                    <li>Клиенты NetCracker</li>
+                    <li> <spring:message code="locale.arg3"/></li>
+                    <li> <spring:message code="locale.arg4"/></li>
+                    <li> <spring:message code="locale.arg5"/></li>
                     <ul>
-                        <li>Многомиллионные операторы связи на 5 континентах</li>
-                        <li>Компании из списка Fortune1000</li>
-                        <li>Флагманы телекомрынка</li>
+                        <li> <spring:message code="locale.arg51"/></li>
+                        <li> <spring:message code="locale.arg52"/></li>
+                        <li> <spring:message code="locale.arg53"/></li>
                     </ul>
-                    <li>NetCracker – профессиональное и личностное развитие</li>
+                    <li> <spring:message code="locale.arg6"/></li>
                     <ul>
-                        <li>Курсы английского языка в офисе</li>
-                        <li>Soft Skills – тренинги</li>
-                        <li>Технические тренинги и семинары</li>
-                        <li>Учебные центры NetCracker для студентов при ведущих технических ВУЗах Украины</li>
+                        <li> <spring:message code="locale.arg61"/></li>
+                        <li> <spring:message code="locale.arg62"/></li>
+                        <li> <spring:message code="locale.arg63"/></li>
+                        <li> <spring:message code="locale.arg64"/></li>
                     </ul>
-                    <li>NetCracker – уникальная корпоративная культура</li>
+                    <li> <spring:message code="locale.arg7"/></li>
                     <ul>
-                        <li>Открытый диалог с руководством любого уровня. Отсутствие бюрократии и строгого дресс-кода
+                        <li> <spring:message code="locale.arg71"/>
                         </li>
-                        <li>Гибкий график работы для всех, включая студентов</li>
-                        <li>Корпоративные мероприятия, спорт</li>
-                        <li>Социальное обеспечение</li>
-                        <li>Социальные проекты</li>
+                        <li> <spring:message code="locale.arg72"/></li>
+                        <li> <spring:message code="locale.arg73"/></li>
+                        <li> <spring:message code="locale.arg74"/></li>
+                        <li> <spring:message code="locale.arg75"/></li>
                     </ul>
                 </ul>
             </div>
@@ -354,8 +327,8 @@
 <section id="work-process">
     <div class="container">
         <div class="section-header">
-            <h2 class="section-title text-center wow fadeInDown">YOUR PATH</h2>
-            <p class="text-center wow fadeInDown">Jedi way that you should pass to become part<br> of Netcracker team
+            <h2 class="section-title text-center wow fadeInDown"> <spring:message code="locale.path"/></h2>
+            <p class="text-center wow fadeInDown"> <spring:message code="locale.jedi"/>
             </p>
         </div>
 
@@ -422,9 +395,8 @@
 <section id="get-in-touch">
     <div class="container">
         <div class="section-header">
-            <h2 class="section-title text-center wow fadeInDown">Get in Touch</h2>
-            <p class="text-center wow fadeInDown"> Below you can find contact information <br> We will be glad to answer
-                all your questions</p>
+            <h2 class="section-title text-center wow fadeInDown"> <spring:message code="locale.getInTouch"/></h2>
+            <p class="text-center wow fadeInDown"> <spring:message code="locale.canFind"/> <br>  <spring:message code="locale.glad"/></p>
         </div>
     </div>
 </section><!--/#get-in-touch-->
@@ -502,8 +474,6 @@
 <script src="/resources/js/test/jquery.inview.min.js"></script>
 <script src="/resources/js/test/wow.min.js"></script>
 <script src="/resources/js/test/main.js"></script>
-
-<script src="/resources/js/changePassword.js"></script>
 <script src="/resources/js/login.js"></script>
 <script src="/resources/js/logout.js"></script>
 <%--<script src="/resources/bootstrap/js/bootstrap.js"></script>--%>

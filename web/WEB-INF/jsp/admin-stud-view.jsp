@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%--
   Created by IntelliJ IDEA.
   User: Alexander
@@ -47,139 +48,144 @@
     <jsp:include page="admin-header.jsp"/>
 
     <main class="mdl-layout__content mdl-color--grey-100">
-        <%--<div>--%>
+        <div>
 
-        <button ng-click="rejectStud()"
-                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
-            Reject
-        </button>
-        <button ng-click="unrejectStud()"
-                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
-            Accept
-        </button>
+            <button ng-click="rejectStud()"
+                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
+                <spring:message code="locale.reject"/>
+            </button>
+            <button ng-click="unrejectStud()"
+                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
+                <spring:message code="locale.accept"/>
+            </button>
 
-        <a href="#FooOne"
-           class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white"
-           data-toggle="collapse">Mail</a>
+            <a href="#FooOne"
+               class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white"
+               data-toggle="collapse"><spring:message code="locale.mail"/></a>
 
-        <a href="#FooTwo"
-           class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white"
-           data-toggle="collapse">Mail With Template</a>
+            <a href="#FooTwo"
+               class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white"
+               data-toggle="collapse"><spring:message code="locale.mailWithTemplate"/></a>
 
-        <a href="#FooThree"
-           class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white"
-           data-toggle="collapse">Settings</a>
+            <a href="#FooThree"
+               class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white"
+               data-toggle="collapse"><spring:message code="locale.settings"/></a>
 
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable" style="padding: 10px">
-            <label class="mdl-button mdl-js-button mdl-button--icon is-focused" for="search">
-                <i class="material-icons">search</i>
-            </label>
-            <div class="mdl-textfield__expandable-holder">
-                <form ng-submit="searchFiltr(field)"><input class="mdl-textfield__input" type="text" id="search"
-                                                            name="field" ng-model="field" style="    border-bottom: 1px solid rgba(0,0,0,.12);
-    box-shadow: none;"></form>
-                <%--<label class="mdl-textfield__label" for="search" style="">Enter your query...</label>--%>
+
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+                <label class="mdl-button mdl-js-button mdl-button--icon" for="search" style="bottom: 30px;">
+                    <i class="material-icons">search</i>
+                </label>
+                <div class="mdl-textfield__expandable-holder" style="padding: 0px">
+                    <form ng-submit="searchFiltr(field)">
+                        <input class="mdl-textfield__input" type="text" id="search" style="border-bottom: 1px solid #9e9e9e;
+                        box-shadow: none"
+                                                                name="field" ng-model="field"></form>
+                    <%--<label class="mdl-textfield__label" for="search" style="border-bottom: none;--%>
+                        <%--box-shadow: none"--%>
+                    <%--><spring:message code="locale.enterQuery"/>...</label>--%>
+                </div>
             </div>
-        </div>
+            <div>
 
-        <div id="FooOne" class="collapse">
-            <jsp:include page="custom-mail.jsp"/>
-        </div>
-        <div class="cssload-thecube">
-            <div class="cssload-cube cssload-c1"></div>
-            <div class="cssload-cube cssload-c2"></div>
-            <div class="cssload-cube cssload-c4"></div>
-            <div class="cssload-cube cssload-c3"></div>
-        </div>
+            </div>
+            <div id="FooOne" class="collapse">
+                <jsp:include page="custom-mail.jsp"/>
+            </div>
+            <div class="cssload-thecube">
+                <div class="cssload-cube cssload-c1"></div>
+                <div class="cssload-cube cssload-c2"></div>
+                <div class="cssload-cube cssload-c4"></div>
+                <div class="cssload-cube cssload-c3"></div>
+            </div>
 
 
-        <div id="FooTwo" class="collapse">
-            <jsp:include page="custom-mail-template-interviewers.jsp"/>
-        </div>
+            <div id="FooTwo" class="collapse">
+                <jsp:include page="custom-mail-template-interviewers.jsp"/>
+            </div>
 
-        <div id="FooThree" class="collapse">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="card hoverable">
-                            <div class="view overlay hm-white-slight z-depth-1">
-                                <div class="mask waves-effect"></div>
-                            </div>
+            <div id="FooThree" class="collapse">
+                <%--<jsp:include page="custom-mail.jsp"/>--%>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="card hoverable">
+                                <div class="view overlay hm-white-slight z-depth-1">
+                                    <div class="mask waves-effect"></div>
+                                </div>
 
-                            <div class="card-content">
-                                <div class="panel panel-default">
-                                    <form ng-submit="setSize(count)" id="settingsForm">
-                                        <select name="selectUsersCount" ng-model="count">
-                                            <option disabled value="">Choose count of rows</option>
-                                            <option selected value="10">10</option>
-                                            <option value="25">25</option>
-                                            <option value="50">50</option>
-                                        </select>
-                                        <div>
-                                            <div ng-repeat="head in data.users.header">
-                                                <label>
-                                                    <input type="checkbox" checklist-model="headerStud.head"
+                                <div class="card-content">
+                                    <div class="panel panel-default">
+                                        <form ng-submit="setSize(count)" id="settingsForm">
+                                            <select name="selectUsersCount" ng-model="count">
+                                                <option disabled value=""><spring:message code="locale.chooseCount"/></option>
+                                                <option selected value="10">10</option>
+                                                <option value="25">25</option>
+                                                <option value="50">50</option>
+                                            </select>
+                                            <div>
+                                                <div ng-repeat="head in data.users.header">
+                                                    <label><input type="checkbox" checklist-model="headerStud.head"
                                                            checklist-value="head">
                                                     <p>{{head.name}}</p>
-                                                </label>
+                                                    </label>
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        <div class="form-actions floatRight">
-                                            <input type="submit" id="mail" value="Save"
-                                                   class="btn btn-default waves-effect waves-light">
-                                        </div>
-                                    </form>
+                                            <div class="form-actions floatRight">
+                                                <input type="submit" id="mail" value="<spring:message code="locale.save"/>"
+                                                       class="btn btn-default waves-effect waves-light">
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <%--</div>--%>
+        </div>
         <div class="table-responsive">
-            <table id="tableUsers" class="table table-striped table-hover table-bordered">
-                <thead>
-                <tr>
-                    <td>
-                        <input type="checkbox" ng-model="selectedAll" ng-click="checkAll()">
-                    </td>
-                    <td>
-                        <a ng-click="sortReverse = !sortReverse; sortType(0,sortReverse)">
-                            Full Name
-                        </a>
-                    </td>
-                    <td ng-repeat="head in headerStud.head">
-                        <a ng-click="sortReverse = !sortReverse; sortType(head.id,sortReverse)">
-                            {{head.name}}
-                        </a>
-                    </td>
-                    <td>
-                        <a ng-click="sortReverse = !sortReverse; sortType('2147483647',sortReverse);">
-                            Rejected
-                        </a>
-                    </td>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-show="data.users.rows.length <= 0">
-                    <td colspan="5" style="text-align:center;">No data</td>
-                </tr>
-                <tr dir-paginate="user in data.users.rows|itemsPerPage:data.itemsPerPage"
-                    total-items="data.total_count">
-                    <td><input type="checkbox" checklist-model="dataStudents.studId" checklist-value="user.userId"></td>
-                    <td><a href="/profile?{{user.userId}}" target="_blanks">{{user.name}}</a></td>
-                    <td ng-repeat="head in headerStud.head">
-                        {{user.fields[head.id]}}
-                    </td>
-                    <td ng-style="{opacity:0.8,'background-color':'{{user.rejected ? 'red' : 'green'}}'}"
-                        title="{{user.rejected}}">
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+        <table id="tableUsers" class="table table-striped table-hover table-bordered">
+            <thead>
+            <tr>
+                <td>
+                    <input type="checkbox" ng-model="selectedAll" ng-click="checkAll()">
+                </td>
+                <td>
+                    <a ng-click="sortReverse = !sortReverse; sortType(0,sortReverse)">
+                        <spring:message code="locale.fullName"/>
+                    </a>
+                </td>
+                <td ng-repeat="head in headerStud.head">
+                    <a ng-click="sortReverse = !sortReverse; sortType(head.id,sortReverse)">
+                        {{head.name}}
+                    </a>
+                </td>
+                <td>
+                    <a ng-click="sortReverse = !sortReverse; sortType('2147483647',sortReverse);">
+                        <spring:message code="locale.status"/>
+                    </a>
+                </td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-show="data.users.rows.length <= 0">
+                <td colspan="5" style="text-align:center;"><spring:message code="locale.emptyTable"/></td>
+            </tr>
+            <tr dir-paginate="user in data.users.rows|itemsPerPage:data.itemsPerPage" total-items="data.total_count">
+                <td><input type="checkbox" checklist-model="dataStudents.studId" checklist-value="user.userId"></td>
+                <td><a href="/profile?{{user.userId}}" target="_blanks">{{user.name}}</a></td>
+                <td ng-repeat="head in headerStud.head">
+                    {{user.fields[head.id]}}
+                </td>
+                <td ng-style="{opacity:0.8,'background-color':'{{user.rejected ? 'red' : 'green'}}'}"
+                    title="{{user.rejected}}">
+                </td>
+            </tr>
+            </tbody>
+        </table>
         </div>
         <div id="pagination">
             <dir-pagination-controls
