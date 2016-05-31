@@ -64,7 +64,7 @@ public class ProfileValidator implements Validator {
                 pattern = Pattern.compile(numbPattern);
                 matcher = pattern.matcher(profileField.getValues().get(0).getValue());
                 if (matcher.matches()) {
-                    return  new ValidationError(profileField.getFieldName(), "Please, enter number from 1 to 5");
+                    return  new ValidationError(profileField.getFieldName(), "Please, enter number from "+minNumberOfChoice + " to " + maxNumberOfChoice);
                 }
             }
 
