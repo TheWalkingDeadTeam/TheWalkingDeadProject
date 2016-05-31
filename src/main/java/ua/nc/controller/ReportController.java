@@ -28,10 +28,10 @@ public class ReportController {
     public ResponseEntity<List<ReportTemplate>> getReportsTemplate() {
         List<ReportTemplate> reports = reportService.getReports();
         if (!reports.isEmpty()) {
-            LOGGER.info("Return " + reports.size() + " reports");
+            LOGGER.info("Return " + reports.size() + " reports template");
             return new ResponseEntity<List<ReportTemplate>>(reports, HttpStatus.OK);
         } else {
-            LOGGER.info("Reports not found");
+            LOGGER.info("Reports template not found");
             return new ResponseEntity<List<ReportTemplate>>(HttpStatus.NO_CONTENT);
         }
     }
@@ -90,14 +90,22 @@ public class ReportController {
     public ModelAndView downloadReport(@PathVariable Integer id) {
         ReportTemplate report = reportService.getReportById(id);
         ModelAndView modelAndView = new ModelAndView();
-        try {
-            List<Map<String, Object>> reportRows = reportService.getReportRows(report);
-            modelAndView.setViewName("excelView");
-            modelAndView.addObject("report", report);
-            modelAndView.addObject("reportRows", reportRows);
-        } catch (DAOException e) {
+        if (report != null) {
+            try {
+                List<Map<String, Object>> reportRows = reportService.getReportRows(report);
+                modelAndView.setViewName("excelView");
+                modelAndView.addObject("report", report);
+                modelAndView.addObject("reportRows", reportRows);
+                LOGGER.info("Report " + report.getName() + " successfully download");
+            } catch (DAOException e) {
+                modelAndView.setViewName("error");
+                modelAndView.addObject("error", "Wrong query");
+                LOGGER.warn("Report " + report.getName() + " has wrong query");
+            }
+        } else {
             modelAndView.setViewName("error");
-            modelAndView.addObject("error", "Wrong query");
+            modelAndView.addObject("error", "Report " + id + " not found");
+            LOGGER.warn("Report " + id + " not found");
         }
         return modelAndView;
     }
@@ -105,18 +113,18 @@ public class ReportController {
     @RequestMapping(value = "/reports/download/ces/{id}", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public ModelAndView downloadUsersProfileReport(@PathVariable Integer id) {
-        System.out.println("In");
-        ReportTemplate report = reportService.getUserProfileQueryById(id);
-        System.out.println("After");
+        ReportTemplate report = reportService.getUsersProfileQueryById(id);
         ModelAndView modelAndView = new ModelAndView();
         try {
             List<Map<String, Object>> reportRows = reportService.getReportRows(report);
             modelAndView.setViewName("excelView");
             modelAndView.addObject("report", report);
             modelAndView.addObject("reportRows", reportRows);
+            LOGGER.info("Report " + report.getName() + " successfully download");
         } catch (DAOException e) {
             modelAndView.setViewName("error");
             modelAndView.addObject("error", "Wrong query");
+            LOGGER.warn("Report " + report.getName() + " has wrong query");
         }
         return modelAndView;
     }
@@ -124,13 +132,15 @@ public class ReportController {
     @RequestMapping(value = "/reports/view/ces/{id}", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ReportWrapper> showUsersProfileReport(@PathVariable Integer id) {
-        ReportTemplate report = reportService.getUserProfileQueryById(id);
+        ReportTemplate report = reportService.getUsersProfileQueryById(id);
         List<Map<String, Object>> reportRows = null;
         try {
             reportRows = reportService.getReportRows(report);
+            LOGGER.info("Profile report for ces " + id + "successfully created");
             return new ResponseEntity<ReportWrapper>(new ReportWrapper(report, reportRows), HttpStatus.OK);
 
         } catch (DAOException e) {
+            LOGGER.info("Profile report for ces " + id + " not found");
             return new ResponseEntity<ReportWrapper>(HttpStatus.NOT_FOUND);
         }
     }
@@ -140,12 +150,18 @@ public class ReportController {
     @ResponseBody
     public ResponseEntity<ReportWrapper> showReportById(@PathVariable Integer id) {
         ReportTemplate report = reportService.getReportById(id);
-        List<Map<String, Object>> reportRows = null;
-        try {
-            reportRows = reportService.getReportRows(report);
-            return new ResponseEntity<ReportWrapper>(new ReportWrapper(report, reportRows), HttpStatus.OK);
+        if (report != null) {
+            try {
+                List<Map<String, Object>> reportRows = reportService.getReportRows(report);
+                LOGGER.info("Report " + id + "successfully created");
+                return new ResponseEntity<ReportWrapper>(new ReportWrapper(report, reportRows), HttpStatus.OK);
 
-        } catch (DAOException e) {
+            } catch (DAOException e) {
+                LOGGER.info("Report " + id + " has wrong query");
+                return new ResponseEntity<ReportWrapper>(HttpStatus.NO_CONTENT);
+            }
+        } else {
+            LOGGER.info("Report " + id + " not found");
             return new ResponseEntity<ReportWrapper>(HttpStatus.NOT_FOUND);
         }
     }
@@ -164,7 +180,6 @@ public class ReportController {
     public String report() {
         return "report";
     }
-
 
 
     @RequestMapping(value = "/report", method = RequestMethod.GET)
