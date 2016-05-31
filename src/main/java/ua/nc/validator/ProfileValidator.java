@@ -21,7 +21,7 @@ public class ProfileValidator implements Validator {
     private Matcher matcher;
     private int minNumberOfChoice = 1;
     private int maxNumberOfChoice = 4;
-//    private String numbPattern = "([0-5]+.?[0-5]+)";
+//    private String numbPattern = "([0-9]+.?[0-9]+)";
     private String numbPattern = "/^(0\\.[1-5]|[1-5][0-5]{0,2}(\\.[1-5])?)$/";
     private String telPattern = "^\\+\\d{12}$";
     private Set<ValidationError> errors;
@@ -64,7 +64,7 @@ public class ProfileValidator implements Validator {
                 pattern = Pattern.compile(numbPattern);
                 matcher = pattern.matcher(profileField.getValues().get(0).getValue());
                 if (matcher.matches()) {
-                    return  new ValidationError(profileField.getFieldName(), "Please, enter number from 1 to 5");
+                    return  new ValidationError(profileField.getFieldName(), "Please, enter number from "+minNumberOfChoice + " to " + maxNumberOfChoice);
                 }
             }
 

@@ -27,6 +27,7 @@ public class ProfileController {
     private static final Logger LOGGER = Logger.getLogger(ProfileController.class);
     private ProfileService profileService = new ProfileServiceImpl();
     private CESService cesService = new CESServiceImpl();
+    private PhotoService photoService = new PhotoServiceImpl();
 
     @RequestMapping(value = "/profile/{id}", method = RequestMethod.GET, produces = "application/json")
     public
@@ -82,10 +83,19 @@ public class ProfileController {
         CES currentCES = cesService.getCurrentCES();
         if (currentCES != null) {
             try {
-                cesService.enrollAsStudent(((UserDetailsImpl) SecurityContextHolder
+                int userId = ((UserDetailsImpl) SecurityContextHolder
                         .getContext()
                         .getAuthentication()
-                        .getPrincipal()).getId(), currentCES.getId());
+                        .getPrincipal()).getId();
+                if (photoService.getPhotoById(userId) == null){
+                    errors.add(new ValidationError("enrollAsStudent", "Photo not specified"));
+                }
+                if (errors.isEmpty()) {
+                    cesService.enrollAsStudent(((UserDetailsImpl) SecurityContextHolder
+                            .getContext()
+                            .getAuthentication()
+                            .getPrincipal()).getId(), currentCES.getId());
+                }
             } catch (DAOException e) {
                 errors.add(new ValidationError("enrollAsStudent", "You have already enrolled to current CES"));
                 LOGGER.info("You have already enrolled to current CES", e.getCause());

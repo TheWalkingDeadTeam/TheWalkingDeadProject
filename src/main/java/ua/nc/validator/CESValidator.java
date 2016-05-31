@@ -9,12 +9,16 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * Created by IGOR on 16.05.2016.
- */
+
 public class CESValidator implements Validator {
     CESService cesService = new CESServiceImpl();
 
+    /**
+     * Check, if all fields of CES setting is valid (compares dates, checks int values)
+     *
+     * @param obj CES, that will be validate
+     * @return errors, that was found in CES
+     */
     @Override
     public Set<ValidationError> validate(Object obj) {
         Set<ValidationError> errors = new HashSet<>();

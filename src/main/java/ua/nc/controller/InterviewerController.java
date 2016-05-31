@@ -1,7 +1,6 @@
 package ua.nc.controller;
 
 import org.apache.log4j.Logger;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +19,6 @@ import ua.nc.validator.Validator;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
@@ -75,7 +73,7 @@ public class InterviewerController {
                         LOGGER.info("Successfully enrolled on current CES");
                     } catch (DAOException e) {
                         LOGGER.info("Cant enroll on current CES", e);
-                        errors.add(new ValidationError("enrollment session", "Already enrolled. Can't enroll to current CES"));
+                        errors.add(new ValidationError("enrollment session", "Already enrolled . Can't enroll twice to  current CES"));
                     }
                 }
             } else {

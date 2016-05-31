@@ -13,7 +13,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="A front-end template that helps you build fast, modern mobile web apps.">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <title>Statistic & Reports</title>
+    <title>Reports</title>
     <link rel="icon" type="image/png" sizes="32x32" href="/resources/images/ico.png"/>
 
     <!-- Add to homescreen for Chrome on Android -->
