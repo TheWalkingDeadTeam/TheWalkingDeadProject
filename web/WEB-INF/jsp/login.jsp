@@ -35,7 +35,6 @@
     <script src="/resources/js/test/html5shiv.js"></script>
     <script src="/resources/js/test/respond.min.js"></script>
     <![endif]-->
-    <link rel="shortcut icon" href="/resources/images/test/ico/favicon.ico">
     <link rel="apple-touch-icon-precomposed" sizes="144x144"
           href="/resources/images/test/ico/apple-touch-icon-144-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="114x114"

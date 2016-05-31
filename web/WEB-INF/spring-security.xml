@@ -17,13 +17,11 @@
         <intercept-url pattern="/error" access="permitAll"/>
         <intercept-url pattern="/login**" access="permitAll"/>
         <intercept-url pattern="/" access="permitAll"/>
-    </http>
-    <http use-expressions="true">
+
         <intercept-url pattern="/admin/create-user**" access="hasRole('ROLE_ADMIN')"/>
         <intercept-url pattern="/admin/users**" access="hasRole('ROLE_ADMIN')"/>
         <intercept-url pattern="/admin/edit-form**" access="hasRole('ROLE_ADMIN')"/>
-    </http>
-    <http use-expressions="true">
+
         <intercept-url pattern="/admin**" access="hasAnyRole('ROLE_ADMIN','ROLE_HR')"/>
         <intercept-url pattern="/admin/**" access="hasAnyRole('ROLE_ADMIN','ROLE_HR')"/>
         <intercept-url pattern="/admin/scheduler**" access="hasAnyRole('ROLE_ADMIN','ROLE_HR')"/>
@@ -38,26 +36,23 @@
         <intercept-url pattern="/report/**" access="hasAnyRole('ROLE_ADMIN','ROLE_HR')"/>
         <intercept-url pattern="/reports**" access="hasAnyRole('ROLE_ADMIN','ROLE_HR')"/>
         <intercept-url pattern="/reports/**" access="hasAnyRole('ROLE_ADMIN','ROLE_HR')"/>
-    </http>
-    <http use-expressions="true">
+
+
         <intercept-url pattern="/interviewer**" access="hasAnyRole('ROLE_HR','ROLE_DEV','ROLE_BA')"/>
         <intercept-url pattern="/interviewer/**" access="hasAnyRole('ROLE_HR','ROLE_DEV','ROLE_BA')"/>
-    </http>
 
-    <http use-expressions="true">
+
         <intercept-url pattern="/profile**"
                        access="hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_DEV','ROLE_BA','ROLE_STUDENT')"/>
         <intercept-url pattern="/profile/**"
                        access="hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_DEV','ROLE_BA','ROLE_STUDENT')"/>
-    </http>
-    <http use-expressions="true">
+
+
         <intercept-url pattern="/account**"
                        access="isAuthenticated()"/>
         <intercept-url pattern="/account/**"
                        access="isAuthenticated()"/>
-    </http>
 
-    <http use-expressions="true">
         <access-denied-handler error-page="/403"/>
         <form-login login-page="/login"
                     authentication-failure-url="/login?error"/>
