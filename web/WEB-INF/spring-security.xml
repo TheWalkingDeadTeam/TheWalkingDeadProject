@@ -12,17 +12,15 @@
                 class="ua.nc.security.FeedbackPermissions">
     </beans:bean>
 
-    <http use-expressions="true" >
+    <http use-expressions="true">
         <csrf disabled="true"/>
         <intercept-url pattern="/error" access="permitAll"/>
-        <intercept-url pattern="/login**" access="permitAll" />
-        <intercept-url pattern="/" access="permitAll" />
+        <intercept-url pattern="/login**" access="permitAll"/>
+        <intercept-url pattern="/" access="permitAll"/>
 
-
-        <intercept-url pattern="/admin/create**" access="hasRole('ROLE_ADMIN')"/>
+        <intercept-url pattern="/admin/create-user**" access="hasRole('ROLE_ADMIN')"/>
         <intercept-url pattern="/admin/users**" access="hasRole('ROLE_ADMIN')"/>
         <intercept-url pattern="/admin/edit-form**" access="hasRole('ROLE_ADMIN')"/>
-
 
         <intercept-url pattern="/admin**" access="hasAnyRole('ROLE_ADMIN','ROLE_HR')"/>
         <intercept-url pattern="/admin/**" access="hasAnyRole('ROLE_ADMIN','ROLE_HR')"/>
@@ -38,48 +36,39 @@
         <intercept-url pattern="/report/**" access="hasAnyRole('ROLE_ADMIN','ROLE_HR')"/>
         <intercept-url pattern="/reports**" access="hasAnyRole('ROLE_ADMIN','ROLE_HR')"/>
         <intercept-url pattern="/reports/**" access="hasAnyRole('ROLE_ADMIN','ROLE_HR')"/>
-<!--        <intercept-url pattern="/interviewer/feedback**" access="@feedbackPermissions.isInterviewingPeriod()"/>
-        <intercept-url pattern="/interviewer/feedback/**" access="@feedbackPermissions.isInterviewingPeriod()"/>-->
 
 
         <intercept-url pattern="/interviewer**" access="hasAnyRole('ROLE_HR','ROLE_DEV','ROLE_BA')"/>
         <intercept-url pattern="/interviewer/**" access="hasAnyRole('ROLE_HR','ROLE_DEV','ROLE_BA')"/>
+
+
         <intercept-url pattern="/profile**"
                        access="hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_DEV','ROLE_BA','ROLE_STUDENT')"/>
         <intercept-url pattern="/profile/**"
                        access="hasAnyRole('ROLE_ADMIN','ROLE_HR','ROLE_DEV','ROLE_BA','ROLE_STUDENT')"/>
+
+
         <intercept-url pattern="/account**"
                        access="isAuthenticated()"/>
         <intercept-url pattern="/account/**"
                        access="isAuthenticated()"/>
 
-
         <access-denied-handler error-page="/403"/>
-
-        <form-login  login-page="/login#cta"
-                    authentication-failure-url="/login?error" />
-             <!--       authentication-success-handler-ref="myAuthenticationSuccessHandler"-->
-
+        <form-login login-page="/login"
+                    authentication-failure-url="/login?error"/>
         <logout logout-url="/logout" logout-success-url="/login?logout"
                 invalidate-session="true"/>
     </http>
 
-<!--
-    <beans:bean id="myAuthenticationSuccessHandler"
-                class="ua.nc.security.MySimpleUrlAuthenticationSuccessHandler" />
--->
-
-
-
 
     <authentication-manager id="authenticationManager">
         <authentication-provider user-service-ref="userDetailsServiceImpl">
-        <password-encoder ref="encoder"/>
+            <password-encoder ref="encoder"/>
         </authentication-provider>
     </authentication-manager>
 
-    <beans:bean  id="applicationContextProvider"
-          class="ua.nc.security.ApplicationContextProvider"/>
+    <beans:bean id="applicationContextProvider"
+                class="ua.nc.security.ApplicationContextProvider"/>
     <beans:bean id="encoder"
                 class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
     <beans:bean id="userDetailsServiceImpl"
