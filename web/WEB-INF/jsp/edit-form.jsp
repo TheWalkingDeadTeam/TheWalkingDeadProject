@@ -1,3 +1,4 @@
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%--
   Created by IntelliJ IDEA.
   User: Neltarion
@@ -67,16 +68,16 @@
         <div style="margin: 20px;">
             <button style="margin-bottom: 15px;" ng-click="addQuestion()"
                     class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
-                Add question
+                <spring:message code="locale.addQuest"/>
             </button>
             <button style="margin-bottom: 15px;" ng-click="deleteQuestion()"
                     class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
-                Delete question
+                <spring:message code="locale.deleteQuest"/>
             </button>
 
             <button style="margin-bottom: 15px;" ng-click="savePosition()"
                     class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
-                Save position
+                <spring:message code="locale.savePosition"/>
             </button>
 
             <table class="table table-bordered table-striped" style="{margin-top: 200px}">
@@ -85,9 +86,9 @@
                 <td>
                     <input type="checkbox" ng-model="selectedAll" ng-click="checkAll()">
                 </td>
-                <td>Type</td>
+                <td><spring:message code="locale.type"/></td>
                 <td>
-                    Field name
+                    <spring:message code="locale.fieldName"/>
                 </td>
                 </thead>
 

@@ -4,10 +4,8 @@ package ua.nc.service.user;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.support.WebApplicationContextUtils;
 import ua.nc.dao.RoleDAO;
 import ua.nc.dao.UserDAO;
 import ua.nc.dao.enums.DataBaseType;
@@ -15,7 +13,6 @@ import ua.nc.dao.exception.DAOException;
 import ua.nc.dao.factory.DAOFactory;
 import ua.nc.dao.postgresql.PostgreUserDAO;
 import ua.nc.dao.postgresql.PostgreUserTableDAO;
-import ua.nc.entity.Application;
 import ua.nc.entity.Role;
 import ua.nc.entity.User;
 import ua.nc.entity.UserRow;
@@ -216,18 +213,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User recoverPass(User user) {
+    public void recoverPass(User user) {
         Connection connection = DAO_FACTORY.getConnection();
         UserDAO userDAO = DAO_FACTORY.getUserDAO(connection);
-        String testPassword = RandomStringUtils.randomAlphanumeric(10);
+        //Generation of the randomized alphanumeric string with size equaled 10
+        String newPassword = RandomStringUtils.randomAlphanumeric(10);
         try {
-            user.setPassword(passwordEncoder.encode(testPassword));
+            user.setPassword(passwordEncoder.encode(newPassword));
             userDAO.updateUser(user);
-            mailService.sendMail(user.getEmail(), "Password recovery", "Welcome " + user.getName() + " ! \n NetCracker[TheWalkingDeadTeam] \n New password \n" + testPassword);
-            return user;
+            mailService.sendMail(user.getEmail(), "Password recovery", "Welcome " + user.getName() + " ! \n NetCracker[TheWalkingDeadTeam] \n New password: \n" + newPassword);
         } catch (DAOException e) {
             LOGGER.info("Password recovery failed for user " + user.getEmail());
-            return null;
         } finally {
             DAO_FACTORY.putConnection(connection);
         }

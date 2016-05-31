@@ -1,3 +1,4 @@
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%--
   Created by IntelliJ IDEA.
   User: Alexander
@@ -70,20 +71,20 @@
         <div>
             <button ng-click="subscribeInterviewer()"
                     class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
-                Subscribe for CES
+                <spring:message code="locale.subscribe"/>
             </button>
             <button ng-click="unsubscribeInterviewer()"
                     class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
-                Unsubscribe from CES
+                <spring:message code="locale.unsubscribe"/>
             </button>
 
             <a href="#FooOne"
                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white"
-               data-toggle="collapse">Mail</a>
+               data-toggle="collapse"><spring:message code="locale.mail"/></a>
 
             <a href="#FooTwo"
                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white"
-               data-toggle="collapse">Mail With Template</a>
+               data-toggle="collapse"><spring:message code="locale.mailWithTemplate"/></a>
 
             <div id="FooOne" class="collapse">
                 <jsp:include page="custom-mail.jsp"/>
@@ -97,11 +98,11 @@
 
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
                 <label class="mdl-button mdl-js-button mdl-button--icon" for="search">
-                    <i class="material-icons">search</i>
+                    <i class="material-icons"><spring:message code="locale.search"/></i>
                 </label>
                 <div class="mdl-textfield__expandable-holder">
                     <form ng-submit = "searchFiltr(field)"><input  class="mdl-textfield__input" type="text" id="search" name="field" ng-model="field"></form>
-                    <label class="mdl-textfield__label" for="search">Enter your query...</label>
+                    <label class="mdl-textfield__label" for="search"><spring:message code="locale.enterQuery"/>...</label>
                 </div>
             </div>
             <div class="cssload-thecube">
@@ -126,34 +127,34 @@
                 </td>
                 <td>
                     <a ng-click="sortReverse = !sortReverse; sortType('name',sortReverse); ">
-                        Name
+                        <spring:message code="locale.name"/>
                     </a>
                 </td>
                 <td>
                     <a ng-click="sortReverse = !sortReverse; sortType('surname',sortReverse); ">
-                        Surname
+                        <spring:message code="locale.surname"/>
                     </a>
                 </td>
                 <td>
                     <a ng-click="sortReverse = !sortReverse; sortType('email',sortReverse);">
-                        Email
+                        <spring:message code="locale.email"/>
                     </a>
                 </td>
                 <td>
                     <a ng-click="sortReverse = !sortReverse; sortType('role',sortReverse); ">
-                        Role
+                        <spring:message code="locale.roles"/>
                     </a>
                 </td>
                 <td>
                     <a>
-                        Participation
+                        <spring:message code="locale.status"/>
                     </a>
                 </td>
             </tr>
             </thead>
             <tbody>
             <tr ng-show="data.users.length <= 0">
-                <td colspan="5" style="text-align:center;">Please Wait</td>
+                <td colspan="5" style="text-align:center;"><spring:message code="locale.plsWait"/>...</td>
             </tr>
             <tr dir-paginate="user in data.users|itemsPerPage:data.itemsPerPage" total-items="data.total_count">
                 <td><input type="checkbox" checklist-model="dataStudents.studId" checklist-value="user.id">

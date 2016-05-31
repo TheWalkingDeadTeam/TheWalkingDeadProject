@@ -1,3 +1,4 @@
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%--
   Created by IntelliJ IDEA.
   User: Pavel
@@ -29,7 +30,7 @@
 
 
 <div class="col-lg-18 col-md-12 col-sm-12 col-xs-12">
-    <h4>Report name : <span ng-bind="rc.report.name"></span> </h4>
+    <h4><spring:message code="locale.reportName"/> : <span ng-bind="rc.report.name"></span> </h4>
 
         <table class="table table-responsive table-bordered table-striped">
             <thead>

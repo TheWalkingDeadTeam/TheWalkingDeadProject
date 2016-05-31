@@ -1,3 +1,4 @@
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%--
   Created by IntelliJ IDEA.
   User: creed
@@ -78,11 +79,11 @@
             <%--</button>--%>
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
                 <label class="mdl-button mdl-js-button mdl-button--icon" for="search">
-                    <i class="material-icons">search</i>
+                    <i class="material-icons"><spring:message code="locale.search"/></i>
                 </label>
                 <div class="mdl-textfield__expandable-holder">
                     <form ng-submit = "searchFiltr(field)"><input  class="mdl-textfield__input" type="text" id="search" name="field" ng-model="field"></form>
-                    <label class="mdl-textfield__label" for="search">Enter your query...</label>
+                    <label class="mdl-textfield__label" for="search"><spring:message code="locale.enterQuery"/>...</label>
                 </div>
             </div>
                 <div class="cssload-thecube">
@@ -103,39 +104,39 @@
                 </td>
                 <td>
                     <a ng-click="sortType('name',sortReverse); sortReverse = !sortReverse">
-                        Name
+                        <spring:message code="locale.name"/>
                     </a>
                 </td>
                 <td>
                     <a ng-click="sortType('surname',sortReverse); sortReverse = !sortReverse">
-                        Surname
+                        <spring:message code="locale.surname"/>
                     </a>
                 </td>
                 <td>
                     <a ng-click="sortType('special_mark',sortReverse); sortReverse = !sortReverse">
-                        Special Mark
+                        <spring:message code="locale.specmark"/>
                     </a>
                 </td>
                 <td>
                     <a ng-click="sortType('dev_score',sortReverse); sortReverse = !sortReverse">
-                        Dev Score
+                        Dev <spring:message code="locale.score"/>
                     </a>
                 </td>
                 <td>
                     <a ng-click="sortType('hr_score',sortReverse); sortReverse = !sortReverse">
-                        Hr Score
+                        Hr <spring:message code="locale.score"/>
                     </a>
                 </td>
                 <td>
-                    <a ng-click="sortType('color',sortReverse); sortReverse = !sortReverse">
-                        Color
+                    <a ng-click="sortType('special_mark',sortReverse); sortReverse = !sortReverse">
+                        <spring:message code="locale.color"/>
                     </a>
                 </td>
             </tr>
             </thead>
             <tbody>
             <tr ng-show="data.users.length <= 0">
-                <td colspan="5" style="text-align:center;">Please Wait</td>
+                <td colspan="5" style="text-align:center;"><spring:message code="locale.plsWait"/>...</td>
             </tr>
             <tr dir-paginate="interviewee in data.users|itemsPerPage:data.itemsPerPage" total-items="data.total_count">
                 <%--<td><input type="checkbox" checklist-model="dataStudents.studId" checklist-value="interviewee.id"></td>--%>

@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%--
   Created by IntelliJ IDEA.
   User: Alexander
@@ -51,24 +52,24 @@
 
             <button ng-click="rejectStud()"
                     class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
-                Reject
+                <spring:message code="locale.reject"/>
             </button>
             <button ng-click="unrejectStud()"
                     class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">
-                Accept
+                <spring:message code="locale.accept"/>
             </button>
 
             <a href="#FooOne"
                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white"
-               data-toggle="collapse">Mail</a>
+               data-toggle="collapse"><spring:message code="locale.mail"/></a>
 
             <a href="#FooTwo"
                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white"
-               data-toggle="collapse">Mail With Template</a>
+               data-toggle="collapse"><spring:message code="locale.mailWithTemplate"/></a>
 
             <a href="#FooThree"
                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white"
-               data-toggle="collapse">Settings</a>
+               data-toggle="collapse"><spring:message code="locale.settings"/></a>
 
 
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
@@ -78,7 +79,7 @@
                 <div class="mdl-textfield__expandable-holder">
                     <form ng-submit="searchFiltr(field)"><input class="mdl-textfield__input" type="text" id="search"
                                                                 name="field" ng-model="field"></form>
-                    <label class="mdl-textfield__label" for="search">Enter your query...</label>
+                    <label class="mdl-textfield__label" for="search"><spring:message code="locale.enterQuery"/>...</label>
                 </div>
             </div>
             <div>
@@ -113,7 +114,7 @@
                                     <div class="panel panel-default">
                                         <form ng-submit="setSize(count)" id="settingsForm">
                                             <select name="selectUsersCount" ng-model="count">
-                                                <option disabled value="">Choose count of rows</option>
+                                                <option disabled value=""><spring:message code="locale.chooseCount"/></option>
                                                 <option selected value="10">10</option>
                                                 <option value="25">25</option>
                                                 <option value="50">50</option>
@@ -127,7 +128,7 @@
                                             </div>
 
                                             <div class="form-actions floatRight">
-                                                <input type="submit" id="mail" value="Save"
+                                                <input type="submit" id="mail" value="<spring:message code="locale.save"/>"
                                                        class="btn btn-default waves-effect waves-light">
                                             </div>
                                         </form>
@@ -149,7 +150,7 @@
                 </td>
                 <td>
                     <a ng-click="sortReverse = !sortReverse; sortType(0,sortReverse)">
-                        Full Name
+                        <spring:message code="locale.fullName"/>
                     </a>
                 </td>
                 <td ng-repeat="head in headerStud.head">
@@ -159,14 +160,14 @@
                 </td>
                 <td>
                     <a ng-click="sortReverse = !sortReverse; sortType('rejected',sortReverse);">
-                        Rejected
+                        <spring:message code="locale.status"/>
                     </a>
                 </td>
             </tr>
             </thead>
             <tbody>
             <tr ng-show="data.users.rows.length <= 0">
-                <td colspan="5" style="text-align:center;">No data</td>
+                <td colspan="5" style="text-align:center;"><spring:message code="locale.emptyTable"/></td>
             </tr>
             <tr dir-paginate="user in data.users.rows|itemsPerPage:data.itemsPerPage" total-items="data.total_count">
                 <td><input type="checkbox" checklist-model="dataStudents.studId" checklist-value="user.userId"></td>

@@ -1,4 +1,5 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%--
   Created by IntelliJ IDEA.
   User: Pavel
@@ -34,7 +35,7 @@
                     <div class="mask waves-effect"></div>
                 </div>
                 <div class="card-content">
-                    <h5 align="center">Report Template </h5>
+                    <h5 align="center"><spring:message code="locale.reportTemp"/></h5>
                     <form ng-submit="rc.submit()" name="myForm" class="form-horizontal">
                         <input type="hidden" ng-model="rc.report.id"/>
                         <div class="row">
@@ -42,11 +43,11 @@
                                 <label class="col-md-2 control-lable" for="file"></label>
                                 <div class="col-md-7">
                                     <input type="text" ng-model="rc.report.name" class="md-textarea"
-                                           placeholder="Enter report name" required ng-minlength="3" name="rname"/>
+                                           placeholder="<spring:message code="locale.enterReportName"/>" required ng-minlength="3" name="rname"/>
                                     <div class="has-error" ng-show="myForm.$dirty">
-                                        <span ng-show="myForm.rname.$error.required">This is a required field</span>
-                                        <span ng-show="myForm.rname.$error.minlength">Minimum length required is 3</span>
-                                        <span ng-show="myForm.rname.$invalid">This field is invalid</span>
+                                        <span ng-show="myForm.rname.$error.required"><spring:message code="locale.requiredField"/></span>
+                                        <span ng-show="myForm.rname.$error.minlength"><spring:message code="locale.minLength"/> 3</span>
+                                        <span ng-show="myForm.rname.$invalid"><spring:message code="locale.invalidField"/></span>
                                     </div>
                                 </div>
                             </div>
@@ -58,12 +59,12 @@
                                     <div class="col-md-7">
                                         <textarea type="text"
                                                   class="materialize-textarea" ng-model="rc.report.query"
-                                                  placeholder="Enter query" name="rquery"
+                                                  placeholder="<spring:message code="locale.enterQuery"/>" name="rquery"
                                                   required>
                                         </textarea>
                                         <div class="has-error" ng-show="myForm.$dirty">
-                                            <span ng-show="myForm.rquery.$error.required">This is a required field</span>
-                                            <span ng-show="myForm.rquery.$invalid">This field is invalid </span>
+                                            <span ng-show="myForm.rquery.$error.required"><spring:message code="locale.requiredField"/></span>
+                                            <span ng-show="myForm.rquery.$invalid"><spring:message code="locale.invalidField"/></span>
                                         </div>
                                     </div>
                                 </div>
@@ -71,11 +72,10 @@
                         </div>
                         <div class="row">
                             <div class="form-actions floatRight">
-                                <input type="submit" value="{{!rc.report.id ? 'Add' : 'Update'}}"
+                                <input type="submit" value="{{!rc.report.id ? '<spring:message code="locale.add"/>' : '<spring:message code="locale.update"/>'}}"
                                        class="btn btn-primary btn-sm"
                                        ng-disabled="myForm.$invalid">
-                                <button type="button" ng-click="rc.reset()" class="btn btn-warning btn-sm">Reset
-                                    Form
+                                <button type="button" ng-click="rc.reset()" class="btn btn-warning btn-sm"><spring:message code="locale.reset"/>
                                 </button>
                             </div>
                         </div>
@@ -86,15 +86,15 @@
             <div class="card hoverable">
                 <div class="card-content">
                     <div class="panel panel-default">
-                        <h5 align="center">Report Template </h5>
+                        <h5 align="center"><spring:message code="locale.reportTemp"/></h5>
                         <div class="table-responsive tablecontainer">
                             <table class="table table-hover">
                                 <thead>
                                 <tr>
                                     <%--                    <th><img src="/resources/images/checkbox.png" width="15" height="15"></th>--%>
                                     <th>#</th>
-                                    <th>Name</th>
-                                    <th>Query</th>
+                                    <th><spring:message code="locale.name"/></th>
+                                    <th><spring:message code="locale.query"/></th>
                                     <th width="20%"></th>
                                 </tr>
                                 </thead>
@@ -124,7 +124,7 @@
                                     </td>
                                 </tr>
                                 <tr ng-hide="rc.emptyTemplateTable == true">
-                                    <td colspan="4"  class="vert-align text-center">Empty table</td>
+                                    <td colspan="4"  class="vert-align text-center"><spring:message code="locale.emptyTable"/></td>
                                 </tr>
                                 </tbody>
                             </table>

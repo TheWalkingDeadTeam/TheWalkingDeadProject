@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <header class="demo-header mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600">
     <div class="mdl-layout__header-row">
         <%--   <span class="mdl-layout-title">Netcracker</span>--%>
@@ -83,44 +84,44 @@
     <nav class="demo-navigation mdl-navigation mdl-color--blue-grey-800">
         <div class="mdl-layout-spacer">
             <a id="menu" class="mdl-navigation__link" href="/admin"><i class="mdl-color-text--blue-grey-400 material-icons"
-                                                             role="presentation">view_module</i>Menu</a>
+                                                             role="presentation">view_module</i><spring:message code="locale.Menu"/></a>
         </div>
         <a class="mdl-navigation__link" href="/admin/scheduler"><i class="mdl-color-text--blue-grey-400 material-icons"
-                                                                   role="presentation">date_range</i>Schedule Planning</a>
+                                                                   role="presentation">date_range</i><spring:message code="locale.shedulePlanning"/></a>
 
         <sec:authorize access="hasRole('ROLE_ADMIN')">
             <a class="mdl-navigation__link" href="/admin/edit-form"><i
                     class="mdl-color-text--blue-grey-400 material-icons"
-                    role="presentation">assignment_ind</i>Form Template</a>
+                    role="presentation">assignment_ind</i><spring:message code="locale.formTemplate"/></a>
         </sec:authorize>
         <a class="mdl-navigation__link" href="/admin/cessettings"><i
                 class="mdl-color-text--blue-grey-400 material-icons"
-                role="presentation">alarm</i>Registration Period</a>
+                role="presentation">alarm</i><spring:message code="locale.registrationPeriod"/></a>
         <a class="mdl-navigation__link" href="/admin/students"><i class="mdl-color-text--blue-grey-400 material-icons"
-                                                                  role="presentation">supervisor_account</i>Application List</a>
+                                                                  role="presentation">supervisor_account</i><spring:message code="locale.appList"/></a>
         <sec:authorize access="hasRole('ROLE_ADMIN')">
             <a class="mdl-navigation__link" href="/admin/users"><i class="mdl-color-text--blue-grey-400 material-icons"
-                                                                   role="presentation">supervisor_account</i>Users List</a>
+                                                                   role="presentation">supervisor_account</i><spring:message code="locale.userList"/></a>
         </sec:authorize>
         <a class="mdl-navigation__link" href="/admin/interviewee"><i
                 class="mdl-color-text--blue-grey-400 material-icons"
-                role="presentation">supervisor_account</i>Interviewee List</a>
+                role="presentation">supervisor_account</i><spring:message code="locale.IntervieweeList"/></a>
         <a class="mdl-navigation__link" href="/admin/interviewers"><i
                 class="mdl-color-text--blue-grey-400 material-icons"
-                role="presentation">supervisor_account</i>Interviewer List</a>
+                role="presentation">supervisor_account</i><spring:message code="locale.InterviewerList"/></a>
         <sec:authorize access="hasRole('ROLE_ADMIN')">
             <a class="mdl-navigation__link" href="/admin/create-user"><i class="mdl-color-text--blue-grey-400 material-icons"
-                                                                    role="presentation">portrait</i>Create User</a>
+                                                                    role="presentation">portrait</i><spring:message code="locale.createUser"/></a>
         </sec:authorize>
         <a class="mdl-navigation__link" href="/admin/mail-template"><i
                 class="mdl-color-text--blue-grey-400 material-icons"
-                role="presentation">contact_mail</i> Edit Letter Templates</a>
+                role="presentation">contact_mail</i><spring:message code="locale.editMailTemplates"/></a>
         <a class="mdl-navigation__link" href="/admin/enroll-session"><i
                 class="mdl-color-text--blue-grey-400 material-icons"
-                role="presentation">history</i> Enrollment History</a>
+                role="presentation">history</i><spring:message code="locale.EnrollmentHistory"/></a>
         <a class="mdl-navigation__link" href="/admin/report"><i
                 class="mdl-color-text--blue-grey-400 material-icons"
-                role="presentation">show_chart</i>Statistic & Reports</a>
+                role="presentation">show_chart</i><spring:message code="locale.statistics"/></a>
     </nav>
 </div>
 
