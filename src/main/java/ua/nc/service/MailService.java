@@ -1,6 +1,5 @@
 package ua.nc.service;
 
-import ua.nc.entity.Application;
 import ua.nc.entity.Mail;
 import ua.nc.entity.User;
 
