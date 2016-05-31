@@ -40,7 +40,17 @@ $(document).ready(function () {
              .html('No file specified');
              }*/
             error: function (jqXHR, exception) {
-                console.log(exception)
+                console.log(exception);
+                var header = jqXHR.getResponseHeader('exception');
+                if (header!=null){
+                    $('#photoMessages')
+                        .addClass('alert alert-danger')
+                        .html(header).fadeIn();
+                } else {
+                    $('#photoMessages')
+                        .addClass('alert alert-danger')
+                        .html('photo not uploaded').fadeIn();
+                }
             }
         });
     });
