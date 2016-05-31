@@ -72,8 +72,8 @@
                data-toggle="collapse"><spring:message code="locale.settings"/></a>
 
 
-            <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable" style="margin: 10px; bottom: 20px">
-                <label class="mdl-button mdl-js-button mdl-button--icon" for="search" style="bottom: 10px; left:0px">
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+                <label class="mdl-button mdl-js-button mdl-button--icon" for="search" style="bottom: 30px;">
                     <i class="material-icons">search</i>
                 </label>
                 <div class="mdl-textfield__expandable-holder" style="padding: 0px">

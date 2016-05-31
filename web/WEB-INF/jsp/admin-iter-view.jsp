@@ -97,10 +97,10 @@
 
 
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
-                <label class="mdl-button mdl-js-button mdl-button--icon" for="search" style="padding: 0px">
+                <label class="mdl-button mdl-js-button mdl-button--icon" for="search" style="bottom: 30px;">
                     <i class="material-icons">search</i>
                 </label>
-                <div class="mdl-textfield__expandable-holder" >
+                <div class="mdl-textfield__expandable-holder" style="padding: 0px">
                     <form ng-submit="searchFiltr(field)">
                         <input class="mdl-textfield__input" type="text" id="search" style="border-bottom: 1px solid #9e9e9e;
                         box-shadow: none"
