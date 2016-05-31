@@ -92,6 +92,10 @@
                 </thead>
 
                 <tbody as-sortable="sortableOptions" ng-model="fields">
+                <tr ng-if="!fields.length">
+                    <%--<td style="text-align: center;"> No data yet. Create your first question with "Add Question" button </td>--%>
+                    <td style="text-align: center; margin: 10px;"> No data yet. Create your first question with "Add Question" button </td>
+                </tr>
                 <tr ng-repeat="ch in fields" as-sortable-item>
                     <td as-sortable-item-handle><input type="checkbox" checklist-model="dataFields.fieldId"
                                                        checklist-value="ch.id"></td>
