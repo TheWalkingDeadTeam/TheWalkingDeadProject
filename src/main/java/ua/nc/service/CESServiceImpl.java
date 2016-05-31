@@ -326,6 +326,9 @@ public class CESServiceImpl implements CESService {
     }
 
 
+    /**
+     * Method get date, when status should be changed to "Post interviewing", and run thread for this
+     */
     private void switchToPostInterviewing()  {
         String dateFromDB = getCurrentCES().getEndInterviewingDate().toString() + TIME_FOR_DATE_FROM_DB;
         runThreadForChangeStatus(dateFromDB, POST_INTERVIEWING_ID);
