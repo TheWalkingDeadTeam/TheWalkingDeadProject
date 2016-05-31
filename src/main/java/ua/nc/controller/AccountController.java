@@ -1,6 +1,7 @@
 package ua.nc.controller;
 
 import org.apache.log4j.Logger;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
@@ -64,17 +65,11 @@ public class AccountController {
 
     @ResponseBody
     @RequestMapping(value = "/account/changeroles", method = RequestMethod.POST)
-    public void changeRoles(@RequestBody User user) {
-        System.out.println(user);
+    public HttpStatus changeRoles(@RequestBody User user) {
         String email = user.getEmail();
         Set<Role> roles = user.getRoles();
-        System.out.println(email);
-        System.out.println(roles);
-        for (Role role : roles) {
-            System.out.println(role.getName());
-        }
         userService.changeRoles(email, roles);
-        System.out.println("!!!");
+        return HttpStatus.OK;
     }
 
     @ResponseBody
