@@ -6,24 +6,23 @@ import com.google.maps.model.GeocodingResult;
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ua.nc.dao.exception.DAOException;
+import ua.nc.entity.CES;
 import ua.nc.entity.Mail;
 import ua.nc.entity.Scheduler;
 import ua.nc.service.CESService;
 import ua.nc.service.CESServiceImpl;
 import ua.nc.service.MailService;
 import ua.nc.service.MailServiceImpl;
+import ua.nc.validator.RegistrationValidator;
+import ua.nc.validator.SchedulerValidator;
+import ua.nc.validator.ValidationError;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Alexander on 05.05.2016.
@@ -39,6 +38,9 @@ public class SchedulerController {
     private final static String CONTACT_INTERVIEWERS = "$contactInterviewers";
     private final static String CONTACT_STUDENTS = "$contactStudent";
     private final static String DATA_FORMAT = "yyyy-MM-dd HH:mm";
+    private final static String INTERVIEW_START_TIME = "interviewDateStart";
+    private final static String INTERVIEW_END_TIME = "interviewDateEnd";
+    private final static Integer POST_REGISTRATION_STATUS = 3;
     private final CESService cesService = new CESServiceImpl();
     private final MailService mailService = new MailServiceImpl();
 
@@ -70,6 +72,7 @@ public class SchedulerController {
      * 1)Location
      * 2)Google_Maps
      * 3) Course_type
+     *
      * @param scheduler
      * @return map
      */
@@ -102,13 +105,45 @@ public class SchedulerController {
         studentParameters.put(CONTACT_STUDENTS, scheduler.getContactStudent());
         Date startDate = convertDate(scheduler.getInterviewTime());
         try {
-            List<Date> interviewDates = cesService.planSchedule(startDate);
-            mailService.sendInterviewReminders(interviewDates, interviewerMail, interviewerParameters,
-                    studentMail, studentParameters);
+            if (cesService.getCurrentCES().getStatusId() == POST_REGISTRATION_STATUS) {
+                List<Date> interviewDates = cesService.planSchedule(startDate);
+                mailService.sendInterviewReminders(interviewDates, interviewerMail, interviewerParameters,
+                        studentMail, studentParameters);
+            }
         } catch (DAOException e) {
             log.error("Check Scheduler parameters", e);
         }
     }
+
+
+    @RequestMapping(value = "/admin/schedulerValidate", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    Set<ValidationError> schedulingImprove(@RequestBody Scheduler scheduler) {
+        Mail interviewerMail = mailService.getMail(scheduler.getMailIdStaff());
+        Mail studentMail = mailService.getMail(scheduler.getMailIdUser());
+        Map<String, String> interviewerParameters = param(scheduler);
+        Map<String, String> studentParameters = param(scheduler);
+        interviewerParameters.put(CONTACT_INTERVIEWERS, scheduler.getContactStaff());
+        studentParameters.put(CONTACT_STUDENTS, scheduler.getContactStudent());
+        Date startDate = convertDate(scheduler.getInterviewTime());
+        Set<ValidationError> errors = new LinkedHashSet<>();
+        try {
+            List<Date> interviewDates = cesService.planSchedule(startDate);
+            Map<String, Object> check = new HashMap<>();
+            check.put(INTERVIEW_END_TIME, interviewDates);
+            check.put(INTERVIEW_START_TIME, convertDate(scheduler.getInterviewTime()));
+            errors = new SchedulerValidator().validate(check);
+            if (errors.isEmpty()) {
+                mailService.sendInterviewReminders(interviewDates, interviewerMail, interviewerParameters,
+                        studentMail, studentParameters);
+            }
+        } catch (DAOException e) {
+            log.error("Check Scheduler date parameter", e);
+        }
+        System.out.println("error size" + errors.size());
+        return errors;
+    }
+
 
     /**
      * Converts string time to data object

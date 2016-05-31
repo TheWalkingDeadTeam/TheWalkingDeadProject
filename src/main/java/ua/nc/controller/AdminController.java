@@ -206,7 +206,8 @@ public class AdminController {
 
     }
 
-    @RequestMapping(value = {"/interviewers/list/{itemsPerPage}/{pageNumber}/{sortType}/{type}"}, method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = {"/interviewers/list/{itemsPerPage}/{pageNumber}/{sortType}/{type}"},
+            method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<Interviewer> interviewGetJSONSort(@PathVariable("itemsPerPage") Integer itemsPerPage,
                                                   @PathVariable("pageNumber") Integer pageNumber,
@@ -246,7 +247,8 @@ public class AdminController {
                                         @PathVariable("pageNumber") Integer pageNumber,
                                         @PathVariable("sortType") String sortType,
                                         @PathVariable("pattern") String pattern) {
-        List<Interviewer> interviewers = interviewerService.getInterviewer(itemsPerPage, (pageNumber * itemsPerPage - itemsPerPage), sortType, pattern);
+        List<Interviewer> interviewers = interviewerService.getInterviewer(itemsPerPage,
+                (pageNumber * itemsPerPage - itemsPerPage), sortType, pattern);
         if (interviewers == null) {
             LOGGER.warn("interviewers == null");
         }
@@ -371,21 +373,28 @@ public class AdminController {
         return "admin-interviwee-view";
     }
 
-    @RequestMapping(value = {"/interviewee/list/{itemsPerPage}/{pageNumber}"}, method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = {"/interviewee/list/{itemsPerPage}/{pageNumber}"},
+            method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public List<IntervieweeRow> intervieweeGetJSON(@PathVariable("itemsPerPage") Integer itemsPerPage,
                                                    @PathVariable("pageNumber") Integer pageNumber) {
-        List<IntervieweeRow> interviewees = intervieweeService.getInterviewee(itemsPerPage, (pageNumber * itemsPerPage - itemsPerPage));
+        List<IntervieweeRow> interviewees = intervieweeService.getInterviewee(itemsPerPage,
+                (pageNumber * itemsPerPage - itemsPerPage));
         if (interviewees == null) {
             LOGGER.warn("interviewee == null");
         }
         return interviewees;
     }
 
-    @RequestMapping(value = {"/interviewee/list/{itemsPerPage}/{pageNumber}/{sortType}/{type}"}, method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = {"/interviewee/list/{itemsPerPage}/{pageNumber}/{sortType}/{type}"},
+            method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public List<IntervieweeRow> intervieweeGetJSONSort(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("sortType") String sortType, @PathVariable("type") Boolean asc) {
-        List<IntervieweeRow> interviewee = intervieweeService.getInterviewee(itemsPerPage, (pageNumber * itemsPerPage - itemsPerPage), sortType, asc);
+    public List<IntervieweeRow> intervieweeGetJSONSort(@PathVariable("itemsPerPage") Integer itemsPerPage,
+                                                       @PathVariable("pageNumber") Integer pageNumber,
+                                                       @PathVariable("sortType") String sortType,
+                                                       @PathVariable("type") Boolean asc) {
+        List<IntervieweeRow> interviewee = intervieweeService.getInterviewee(itemsPerPage,
+                (pageNumber * itemsPerPage - itemsPerPage), sortType, asc);
         if (interviewee == null) {
             LOGGER.warn("interviewee == null");
         }
@@ -408,11 +417,16 @@ public class AdminController {
         return intervieweeService.getIntervieweeSize(pattern);
     }
 
-    @RequestMapping(value = {"/interviewee/search/{itemsPerPage}/{pageNumber}/{sortType}/{pattern}"}, method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = {"/interviewee/search/{itemsPerPage}/{pageNumber}/{sortType}/{pattern}"},
+            method = RequestMethod.GET, produces = "application/json")
     public
     @ResponseBody
-    List<IntervieweeRow> intervieweeSearch(@PathVariable("itemsPerPage") Integer itemsPerPage, @PathVariable("pageNumber") Integer pageNumber, @PathVariable("sortType") String sortType, @PathVariable("pattern") String pattern) {
-        List<IntervieweeRow> interviewee = intervieweeService.getInterviewee(itemsPerPage, (pageNumber * itemsPerPage - itemsPerPage), sortType, pattern);
+    List<IntervieweeRow> intervieweeSearch(@PathVariable("itemsPerPage") Integer itemsPerPage,
+                                           @PathVariable("pageNumber") Integer pageNumber,
+                                           @PathVariable("sortType") String sortType,
+                                           @PathVariable("pattern") String pattern) {
+        List<IntervieweeRow> interviewee = intervieweeService.getInterviewee(itemsPerPage,
+                (pageNumber * itemsPerPage - itemsPerPage), sortType, pattern);
         if (interviewee == null) {
             LOGGER.warn("interviewers == null");
         }
@@ -517,7 +531,8 @@ public class AdminController {
         return fields;
     }
 
-    @RequestMapping(value = "/edit-form/appformfield/{listTypeID}/{id}", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/edit-form/appformfield/{listTypeID}/{id}", method = RequestMethod.GET,
+            produces = "application/json")
     public
     @ResponseBody
     List<ListValue> getFieldInfoById(@PathVariable("listTypeID") Integer listType_id, @PathVariable("id") Integer id) {
@@ -551,7 +566,8 @@ public class AdminController {
         return errors;
     }
 
-    @RequestMapping(value = "/edit-form", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+    @RequestMapping(value = "/edit-form", method = RequestMethod.POST, produces = "application/json",
+            consumes = "application/json")
     public
     @ResponseBody
     Set<ValidationError> deleteQuestion(@RequestBody ListWrapper id) {

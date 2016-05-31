@@ -213,9 +213,9 @@
                                 <i class="fa fa-line-chart"></i>
                             </div>
                             <div class="media-body">
-                                <h4 class="media-heading">UX design</h4>
-                                <p>Backed by some of the biggest names in the industry, Firefox OS is an open platform
-                                    that fosters greater</p>
+                                <h4 class="media-heading">Dev</h4>
+                                <p>Чудові можливості для комфортної роботи, дружня команда розробників. Цікаві проекти
+                                та незабутьні подорожжі по різним містам світу</p>
                             </div>
                         </div>
 
@@ -224,9 +224,9 @@
                                 <i class="fa fa-cubes"></i>
                             </div>
                             <div class="media-body">
-                                <h4 class="media-heading">UI design</h4>
-                                <p>Backed by some of the biggest names in the industry, Firefox OS is an open platform
-                                    that fosters greater</p>
+                                <h4 class="media-heading">BA</h4>
+                                <p>Цікаві проекти для розвитку аналітичних навичок. Тісна робота в команді, дружній
+                                колектив.</p>
                             </div>
                         </div>
 
@@ -235,9 +235,9 @@
                                 <i class="fa fa-pie-chart"></i>
                             </div>
                             <div class="media-body">
-                                <h4 class="media-heading">SEO Services</h4>
-                                <p>Backed by some of the biggest names in the industry, Firefox OS is an open platform
-                                    that fosters greater</p>
+                                <h4 class="media-heading">HR</h4>
+                                <p>Гарний карєрний розвиток, зручний офіс, можливості для розвитку та реалізації себе
+                                в повному обсязі</p>
                             </div>
                         </div>
 
@@ -246,9 +246,9 @@
                                 <i class="fa fa-pie-chart"></i>
                             </div>
                             <div class="media-body">
-                                <h4 class="media-heading">SEO Services</h4>
-                                <p>Backed by some of the biggest names in the industry, Firefox OS is an open platform
-                                    that fosters greater</p>
+                                <h4 class="media-heading">Manager</h4>
+                                <p>Незабутьні та різноманітні проекти. Дружня команда та зручний офіс. Незабутьні
+                                подорожжі в різні офіси NetCracker.</p>
                             </div>
                         </div>
                     </div>

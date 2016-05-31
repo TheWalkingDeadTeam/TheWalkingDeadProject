@@ -165,7 +165,7 @@ public class PostgreApplicationTableDAO implements ApplicationTableDAO {
         builder.append(subQuery(fieldData.get(fieldData.size() - 1)));
         String sub = builder.toString();
         String order = asc ? "ASC" : "DESC";
-        return MessageFormat.format(BASE_QUERY, sub, orderByFieldId, order);
+        return MessageFormat.format(BASE_QUERY, sub, Long.toString(orderByFieldId), order);
     }
 
     private String buildReportFullQuery(List<FieldData> fieldData, Integer orderByFieldId) throws DAOException {
