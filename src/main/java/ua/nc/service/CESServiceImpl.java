@@ -167,6 +167,9 @@ public class CESServiceImpl implements CESService {
         return false;
     }
 
+    /**
+     * @see CESService#updateInterViewingDate(Date, Date)
+     */
     @Override
     public void updateInterViewingDate(Date start, Date end) {
         Connection connection = DAO_FACTORY.getConnection();
@@ -180,11 +183,11 @@ public class CESServiceImpl implements CESService {
                     cesDAO.update(cesFromDb);
                     checkInterviewDate();
                 } else {
-                    LOGGER.warn("Can't change interviewing date");
+                    LOGGER.warn("Can't change interviewing date, because interview period already start!");
                 }
-                LOGGER.info("CES was updated");
+                LOGGER.info("CES was updated (interview dates)");
             } else {
-                LOGGER.info("No current CES");
+                LOGGER.info("Current CES does not exist");
             }
         } catch (DAOException e) {
             LOGGER.warn("Can't change interviewing date", e);
@@ -193,7 +196,10 @@ public class CESServiceImpl implements CESService {
         }
     }
 
-
+    /**
+     *
+     * @see CESService#getCurrentCES()
+     */
     @Override
     public CES getCurrentCES() {
         Connection connection = DAO_FACTORY.getConnection();
@@ -210,6 +216,10 @@ public class CESServiceImpl implements CESService {
         return ces;
     }
 
+    /**
+     *
+     * @see CESService#getPendingCES()
+     */
     @Override
     public CES getPendingCES() {
         Connection connection = DAO_FACTORY.getConnection();
@@ -230,7 +240,10 @@ public class CESServiceImpl implements CESService {
         return ces;
     }
 
-
+    /**
+     *
+     * @see CESService#setCES(CES)
+     */
     @Override
     public void setCES(CES ces){
         Connection connection = DAO_FACTORY.getConnection();
@@ -264,13 +277,19 @@ public class CESServiceImpl implements CESService {
         }
     }
 
-
+    /**
+     * @see CESService#checkRegistrationDate()
+     */
     @Override
     public void checkRegistrationDate() {
         switchToRegistrationOngoing();
         switchToPostRegistration();
     }
 
+    /**
+     * @see CESService#checkInterviewDate()
+     */
+    @Override
     public void checkInterviewDate(){
         CES ces = getCurrentCES();
         if ((ces.getEndInterviewingDate() != null) && (ces.getStartInterviewingDate() != null)) {
@@ -278,17 +297,25 @@ public class CESServiceImpl implements CESService {
         }
     }
 
-
+    /**
+     * Method get date, when status should be changed to "Registration ongoing", and run thread for this
+     */
     private void switchToRegistrationOngoing() {
         String dateFromDB = getCurrentCES().getStartRegistrationDate().toString() + TIME_FOR_DATE_FROM_DB;
         runThreadForChangeStatus(dateFromDB, REGISTRATION_ONGOING_ID);
     }
 
+    /**
+     * Method get date, when status should be changed to "Post registration", and run thread for this
+     */
     private void switchToPostRegistration()  {
         String dateFromDB = getCurrentCES().getEndRegistrationDate().toString() + TIME_FOR_DATE_FROM_DB;
         runThreadForChangeStatus(dateFromDB, POST_REGISTRATION_ID);
     }
 
+    /**
+     * @see CESService#switchToInterviewingOngoing()
+     */
     @Override
     public void switchToInterviewingOngoing(){
         if (getCurrentCES().getStatusId() != POST_REGISTRATION_ID) {
@@ -298,17 +325,27 @@ public class CESServiceImpl implements CESService {
         changeStatus(INTERVIEWING_ONGOING_ID);
     }
 
+
     private void switchToPostInterviewing()  {
         String dateFromDB = getCurrentCES().getEndInterviewingDate().toString() + TIME_FOR_DATE_FROM_DB;
         runThreadForChangeStatus(dateFromDB, POST_INTERVIEWING_ID);
     }
 
+    /**
+     * @see CESService#closeCES()
+     */
     @Override
     public void closeCES() {
         changeStatus(CLOSED_ID);
         scheduler.shutdown();
     }
 
+    /**
+     * Run thread, that change status of CES in depend of date
+     *
+     * @param dateFromDB date, when status will be changed
+     * @param statusId status, that will be set for current CES
+     */
     private void runThreadForChangeStatus(String dateFromDB, final int statusId) {
         Date date;
         try {
@@ -324,6 +361,12 @@ public class CESServiceImpl implements CESService {
         }
     }
 
+    /**
+     * Change status of current CES.
+     *
+     * @param statusId status, that will be set for current ces. If current ces status id > than statusId, nothing
+     *                 will be changed
+     */
     private void changeStatus(int statusId) {
         Connection connection = DAO_FACTORY.getConnection();
         CESDAO cesDAO = DAO_FACTORY.getCESDAO(connection);
@@ -332,10 +375,12 @@ public class CESServiceImpl implements CESService {
             if (ces != null) {
                 if (ces.getStatusId() >= statusId) {
                     LOGGER.info("Status already changed");
-                } else {
+                } else if ((statusId == CLOSED_ID) || ((statusId - ces.getStatusId()) == 1)){
                     ces.setStatusId(statusId);
                     cesDAO.update(ces);
                     LOGGER.info("Status changed");
+                } else {
+                    LOGGER.warn("Can`t change status");
                 }
             } else {
                 LOGGER.warn("Current CES does not exist");
@@ -347,6 +392,13 @@ public class CESServiceImpl implements CESService {
         }
     }
 
+    /**
+     * Set fields, that can be changed, if interview period not started yet
+     *
+     * @param ces CES, with new values
+     * @param cesFromDb CES, that will be updated
+     * @return CES with new values of fields
+     */
     private CES setFieldsForInterviewPeriod(CES ces, CES cesFromDb) {
         cesFromDb.setStartInterviewingDate(ces.getStartInterviewingDate());
         cesFromDb.setEndInterviewingDate(ces.getEndInterviewingDate());
@@ -355,6 +407,13 @@ public class CESServiceImpl implements CESService {
         return cesFromDb;
     }
 
+    /**
+     * Set fields, that can be changed, if registration period not started yet
+     *
+     * @param ces CES, with new values
+     * @param cesFromDb CES, that will be updated
+     * @return CES with new values of fields
+     */
     private CES setFieldsForRegistrationPeriod(CES ces, CES cesFromDb) {
         cesFromDb.setYear(ces.getYear());
         cesFromDb.setStartRegistrationDate(ces.getStartRegistrationDate());
@@ -363,6 +422,11 @@ public class CESServiceImpl implements CESService {
         return cesFromDb;
     }
 
+    /**
+     * This method initializes fields of registration form for new CES
+     *
+     * @param ces new course enroll session (should have status 'Pending')
+     */
     private void initFieldsForCES(CES ces){
         Connection connection = DAO_FACTORY.getConnection();
         FieldDAO fieldDAO = DAO_FACTORY.getFieldDAO(connection);
