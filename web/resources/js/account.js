@@ -53,8 +53,7 @@ $(document).ready(function () {
                 } else {
                     $('#enrollMessages')
                         .removeClass()
-                        .empty();
-                    $('#enrollMessages')
+                        .empty()
                         .addClass('alert alert-success')
                         .html('Enrolled on interview')
                         .fadeIn();

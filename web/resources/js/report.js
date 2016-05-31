@@ -18,6 +18,14 @@ reporterid.controller('ReportControllerId', ['$scope', 'ReportServiceId', '$http
                     self.loading = true;
                     self.report = d.report;
                     self.reportRows = d.reportRows;
+                    self.colspan = Object.keys(self.reportRows[0]).length;
+                    if (self.reportRows[0][Object.keys(self.reportRows[0])[0]] != null  ) {
+                        self.reportTemplateTable = false;
+                        self.emptyTemplateTable = true;
+                    } else {
+                        self.reportTemplateTable = true;
+                        self.emptyTemplateTable = false;
+                    }
                 }, function (errResponse) {
                     console.error('Error while fetching Currencies');
                     $window.location.href = '/report/error';

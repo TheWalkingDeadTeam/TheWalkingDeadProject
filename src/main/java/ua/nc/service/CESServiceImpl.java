@@ -2,7 +2,10 @@ package ua.nc.service;
 
 import org.apache.log4j.Logger;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
-import ua.nc.dao.*;
+import ua.nc.dao.ApplicationDAO;
+import ua.nc.dao.CESDAO;
+import ua.nc.dao.FieldDAO;
+import ua.nc.dao.UserDAO;
 import ua.nc.dao.enums.DataBaseType;
 import ua.nc.dao.exception.DAOException;
 import ua.nc.dao.factory.DAOFactory;
@@ -10,12 +13,11 @@ import ua.nc.dao.postgresql.PostgreApplicationDAO;
 import ua.nc.dao.postgresql.PostgreCESDAO;
 import ua.nc.entity.Application;
 import ua.nc.entity.CES;
-import ua.nc.entity.CESStatus;
 import ua.nc.entity.User;
+import ua.nc.entity.profile.Field;
 
 import java.sql.Connection;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,18 +30,15 @@ import java.util.Set;
 public class CESServiceImpl implements CESService {
     private final static Logger LOGGER = Logger.getLogger(CESServiceImpl.class);
     private static final String TIME_FOR_DATE_FROM_DB = " 00:00:00";
-
     private final DAOFactory DAO_FACTORY = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
     private static final ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
-    private static final int POOL_SIZE = 5;
+    private static final int POOL_SIZE = 3;
     private DateFormat dateFormatter = new SimpleDateFormat(DATE_FORMAT);
     private static final String DATE_FORMAT = "yyyy-MM-dd hh:mm:ss";
-    private static final int MINUTES_PER_HOUR = 60;
     private static final int MILLIS_PER_MINUTE = 1000 * 60;
     private static final int MILLIS_PER_HOUR = MILLIS_PER_MINUTE * 60;
     private static final int MILLIS_PER_DAY = MILLIS_PER_HOUR * 24;
-    private Boolean registrationDateSet = false;
-    private Boolean interviewDateSet = false;
+
 
     static {
         scheduler.setPoolSize(POOL_SIZE);
@@ -63,29 +62,6 @@ public class CESServiceImpl implements CESService {
         return allCES;
     }
 
-    @Override
-    public void checkRegistrationDate() throws DAOException {
-        registrationDateSet = true;
-        switchToRegistrationOngoing();
-        switchToPostRegistration();
-    }
-
-
-    @Override
-    public CES getCurrentCES() {
-        Connection connection = DAO_FACTORY.getConnection();
-        CESDAO cesdao = new PostgreCESDAO(connection);
-        CES ces = null;
-        try {
-            ces = cesdao.getCurrentCES();
-            LOGGER.info("Current CES was gotten");
-        } catch (DAOException e) {
-            LOGGER.error("Can't get current CES", e.getCause());
-        } finally {
-            DAO_FACTORY.putConnection(connection);
-        }
-        return ces;
-    }
 
     @Override
     public void enrollAsStudent(Integer userId, Integer currentCESId) throws DAOException {
@@ -154,53 +130,6 @@ public class CESServiceImpl implements CESService {
         return interviewDates;
     }
 
-    @Override
-    public void updateInterViewingDate(Date start, Date end) {
-        Connection connection = DAO_FACTORY.getConnection();
-        CESDAO cesDAO = DAO_FACTORY.getCESDAO(connection);
-        CES cesFromDb = null;
-        try {
-            if (cesDAO.getCurrentCES() != null) {
-                cesFromDb = cesDAO.getCurrentCES();
-                if (cesDAO.getCurrentCES().getStatusId() < 4) {
-                    cesFromDb.setStartInterviewingDate(start);
-                    cesFromDb.setEndInterviewingDate(end);
-                    cesDAO.update(cesFromDb);
-                    checkInterviewDate();
-                } else {
-                    LOGGER.warn("Can't change interviewing date");
-                }
-                LOGGER.info("CES was updated");
-            } else {
-                LOGGER.info("No current CES");
-            }
-        } catch (DAOException e) {
-            LOGGER.warn("Can't change interviewing date", e);
-        } finally {
-            DAO_FACTORY.putConnection(connection);
-        }
-    }
-
-    @Override
-    public CES getPendingCES() {
-        Connection connection = DAO_FACTORY.getConnection();
-        CESDAO cesdao = new PostgreCESDAO(connection);
-        CES ces = null;
-        try {
-            if (cesdao.getPendingCES() != null) {
-                ces = cesdao.getPendingCES();
-                LOGGER.info("Successfully get pending CES");
-            } else {
-                LOGGER.info("No pending CES now");
-            }
-        } catch (DAOException e) {
-            LOGGER.warn("Can't get pending CES", e.getCause());
-        } finally {
-            DAO_FACTORY.putConnection(connection);
-        }
-        return ces;
-    }
-
     private List<Date> getInterviewDates(Date startDate, int studentsAmount, int studentsTogether,
                                          int minutesPerStudent, int hoursPerDay) {
         int millisPerStudent = minutesPerStudent * MILLIS_PER_MINUTE;
@@ -224,15 +153,57 @@ public class CESServiceImpl implements CESService {
     }
 
     @Override
-    public CES getCES() throws DAOException {
+    public boolean checkParticipation(Integer interviewerId) {
+        Connection connection = DAO_FACTORY.getConnection();
+        CESDAO cesdao = DAO_FACTORY.getCESDAO(connection);
+        try {
+            int cesId = getCurrentCES().getId();
+            return cesdao.countInterviewerParticipation(cesId, interviewerId) > 0;
+        } catch (DAOException ex) {
+            LOGGER.warn(ex);
+        } finally {
+            DAO_FACTORY.putConnection(connection);
+        }
+        return false;
+    }
+
+    @Override
+    public void updateInterViewingDate(Date start, Date end) {
         Connection connection = DAO_FACTORY.getConnection();
         CESDAO cesDAO = DAO_FACTORY.getCESDAO(connection);
+        try {
+            CES cesFromDb = cesDAO.getCurrentCES();
+            if (cesFromDb != null) {
+                if (cesFromDb.getStatusId() < INTERVIEWING_ONGOING_ID) {
+                    cesFromDb.setStartInterviewingDate(start);
+                    cesFromDb.setEndInterviewingDate(end);
+                    cesDAO.update(cesFromDb);
+                    checkInterviewDate();
+                } else {
+                    LOGGER.warn("Can't change interviewing date");
+                }
+                LOGGER.info("CES was updated");
+            } else {
+                LOGGER.info("No current CES");
+            }
+        } catch (DAOException e) {
+            LOGGER.warn("Can't change interviewing date", e);
+        } finally {
+            DAO_FACTORY.putConnection(connection);
+        }
+    }
+
+
+    @Override
+    public CES getCurrentCES() {
+        Connection connection = DAO_FACTORY.getConnection();
+        CESDAO cesDAO = new PostgreCESDAO(connection);
         CES ces = null;
         try {
             ces = cesDAO.getCurrentCES();
-            LOGGER.info("Current ces was gotten");
-        } catch (Exception e){
-            LOGGER.error("Can`t get ces");
+            LOGGER.info("Current CES was gotten");
+        } catch (DAOException e) {
+            LOGGER.error("Can't get current CES", e.getCause());
         } finally {
             DAO_FACTORY.putConnection(connection);
         }
@@ -240,7 +211,28 @@ public class CESServiceImpl implements CESService {
     }
 
     @Override
-    public void setCES(CES ces) throws DAOException {
+    public CES getPendingCES() {
+        Connection connection = DAO_FACTORY.getConnection();
+        CESDAO cesdao = new PostgreCESDAO(connection);
+        CES ces = null;
+        try {
+            if (cesdao.getPendingCES() != null) {
+                ces = cesdao.getPendingCES();
+                LOGGER.info("Successfully get pending CES");
+            } else {
+                LOGGER.info("No pending CES now");
+            }
+        } catch (DAOException e) {
+            LOGGER.warn("Can't get pending CES", e.getCause());
+        } finally {
+            DAO_FACTORY.putConnection(connection);
+        }
+        return ces;
+    }
+
+
+    @Override
+    public void setCES(CES ces){
         Connection connection = DAO_FACTORY.getConnection();
         CESDAO cesDAO = DAO_FACTORY.getCESDAO(connection);
         CES cesFromDb;
@@ -249,17 +241,18 @@ public class CESServiceImpl implements CESService {
                 cesFromDb = cesDAO.getCurrentCES();
                 cesFromDb.setQuota(ces.getQuota());
                 cesDAO.update(cesFromDb);
-                if (cesDAO.getCurrentCES().getStatusId() < 4) {
+                if (cesDAO.getCurrentCES().getStatusId() < INTERVIEWING_ONGOING_ID) {
                     cesDAO.update(setFieldsForInterviewPeriod(ces, cesFromDb));
                     checkInterviewDate();
                 }
-                if (cesDAO.getCurrentCES().getStatusId() == 1) {
+                if (cesDAO.getCurrentCES().getStatusId() == PENDING_ID) {
                     cesDAO.update(setFieldsForRegistrationPeriod(ces, cesFromDb));
                     checkRegistrationDate();
                 }
             } else {
-                ces.setStatusId(1);
+                ces.setStatusId(PENDING_ID);
                 cesDAO.create(ces);
+                initFieldsForCES(getPendingCES());
                 checkRegistrationDate();
                 checkInterviewDate();
             }
@@ -271,39 +264,52 @@ public class CESServiceImpl implements CESService {
         }
     }
 
+
     @Override
-    public void closeCES() {
-        changeStatus(CLOSED_ID);
+    public void checkRegistrationDate() {
+        switchToRegistrationOngoing();
+        switchToPostRegistration();
     }
 
-    public void checkInterviewDate() throws DAOException {
-//        if (interviewDateSet){
-//            return;
-//        }
-        CES ces = getCES();
+    public void checkInterviewDate(){
+        CES ces = getCurrentCES();
         if ((ces.getEndInterviewingDate() != null) && (ces.getStartInterviewingDate() != null)) {
-            interviewDateSet = true;
             switchToPostInterviewing();
         }
     }
 
 
-    private void switchToRegistrationOngoing() throws DAOException {
-        String dateFromDB = getCES().getStartRegistrationDate().toString() + TIME_FOR_DATE_FROM_DB;
+    private void switchToRegistrationOngoing() {
+        String dateFromDB = getCurrentCES().getStartRegistrationDate().toString() + TIME_FOR_DATE_FROM_DB;
         runThreadForChangeStatus(dateFromDB, REGISTRATION_ONGOING_ID);
     }
-    private void switchToPostRegistration() throws DAOException {
-        String dateFromDB = getCES().getEndRegistrationDate().toString() + TIME_FOR_DATE_FROM_DB;
+
+    private void switchToPostRegistration()  {
+        String dateFromDB = getCurrentCES().getEndRegistrationDate().toString() + TIME_FOR_DATE_FROM_DB;
         runThreadForChangeStatus(dateFromDB, POST_REGISTRATION_ID);
     }
-    public void switchToInterviewingOngoing() throws DAOException {
+
+    @Override
+    public void switchToInterviewingOngoing(){
+        if (getCurrentCES().getStatusId() != POST_REGISTRATION_ID) {
+            LOGGER.warn("Session is not in post registration status!");
+            return;
+        }
         changeStatus(INTERVIEWING_ONGOING_ID);
     }
-    private void switchToPostInterviewing() throws DAOException {
-        String dateFromDB = getCES().getEndInterviewingDate().toString() + TIME_FOR_DATE_FROM_DB;
+
+    private void switchToPostInterviewing()  {
+        String dateFromDB = getCurrentCES().getEndInterviewingDate().toString() + TIME_FOR_DATE_FROM_DB;
         runThreadForChangeStatus(dateFromDB, POST_INTERVIEWING_ID);
     }
-    private void runThreadForChangeStatus(String dateFromDB, final int statusId){
+
+    @Override
+    public void closeCES() {
+        changeStatus(CLOSED_ID);
+        scheduler.shutdown();
+    }
+
+    private void runThreadForChangeStatus(String dateFromDB, final int statusId) {
         Date date;
         try {
             date = dateFormatter.parse(dateFromDB);
@@ -318,7 +324,7 @@ public class CESServiceImpl implements CESService {
         }
     }
 
-    private void changeStatus(int statusId){
+    private void changeStatus(int statusId) {
         Connection connection = DAO_FACTORY.getConnection();
         CESDAO cesDAO = DAO_FACTORY.getCESDAO(connection);
         try {
@@ -331,7 +337,7 @@ public class CESServiceImpl implements CESService {
                     cesDAO.update(ces);
                     LOGGER.info("Status changed");
                 }
-            }else {
+            } else {
                 LOGGER.warn("Current CES does not exist");
             }
         } catch (Exception e) {
@@ -340,14 +346,16 @@ public class CESServiceImpl implements CESService {
             DAO_FACTORY.putConnection(connection);
         }
     }
-    private CES setFieldsForInterviewPeriod(CES ces, CES cesFromDb){
+
+    private CES setFieldsForInterviewPeriod(CES ces, CES cesFromDb) {
         cesFromDb.setStartInterviewingDate(ces.getStartInterviewingDate());
         cesFromDb.setEndInterviewingDate(ces.getEndInterviewingDate());
         cesFromDb.setInterviewTimeForPerson(ces.getInterviewTimeForPerson());
         cesFromDb.setInterviewTimeForDay(ces.getInterviewTimeForDay());
         return cesFromDb;
     }
-    private CES setFieldsForRegistrationPeriod(CES ces, CES cesFromDb){
+
+    private CES setFieldsForRegistrationPeriod(CES ces, CES cesFromDb) {
         cesFromDb.setYear(ces.getYear());
         cesFromDb.setStartRegistrationDate(ces.getStartRegistrationDate());
         cesFromDb.setEndRegistrationDate(ces.getEndRegistrationDate());
@@ -355,18 +363,22 @@ public class CESServiceImpl implements CESService {
         return cesFromDb;
     }
 
-    @Override
-    public boolean checkParticipation(Integer interviewerId) {
+    private void initFieldsForCES(CES ces){
         Connection connection = DAO_FACTORY.getConnection();
-        CESDAO cesdao = DAO_FACTORY.getCESDAO(connection);
+        FieldDAO fieldDAO = DAO_FACTORY.getFieldDAO(connection);
+        CESDAO cesDAO = DAO_FACTORY.getCESDAO(connection);
         try {
-            int cesId = getCurrentCES().getId();
-            return cesdao.countInterviewerParticipation(cesId, interviewerId) > 0;
-        } catch (DAOException ex){
-            LOGGER.warn(ex);
+            LOGGER.info("CES fields adding...");
+            for (Field field : fieldDAO.getAll()){
+                cesDAO.addCESField(ces.getId(), field.getId());
+            }
+            LOGGER.info("CES fields were added");
+        } catch (Exception e) {
+            LOGGER.error("Failed to add fields to new CES", e);
         } finally {
             DAO_FACTORY.putConnection(connection);
         }
-        return false;
     }
+
+
 }

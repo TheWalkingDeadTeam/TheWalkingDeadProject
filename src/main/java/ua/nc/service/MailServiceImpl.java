@@ -43,9 +43,6 @@ public class MailServiceImpl implements MailService {
     private static final String SURNAME_PATTERN = "$surname";
     private static final String REGISTRATION = "registration";
     private static final String DEFAULT_REG_MESSAGE = "We are we are happy to inform you that your have been successfully registered";
-    private DAOFactory DAO_FACTORY = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
-
-
     private static final int POOL_SIZE = 5;
     private static final int POOL_SIZE_SCHEDULER = 10;
     private static final int MILLIS_PER_MINUTE = 1000 * 60;
@@ -53,6 +50,7 @@ public class MailServiceImpl implements MailService {
     private static final int MILLIS_PER_DAY = MILLIS_PER_HOUR * 24;
     private static ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
     private static ThreadPoolTaskScheduler schedulerMassDeliveryService = new ThreadPoolTaskScheduler();
+    private DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
     private CESService cesService = new CESServiceImpl();
 
     static {
@@ -64,8 +62,8 @@ public class MailServiceImpl implements MailService {
 
     @Override
     public Mail createMail(String header, String body) {
-        Connection connection = DAO_FACTORY.getConnection();
-        MailDAO mailDAO = DAO_FACTORY.getMailDAO(connection);
+        Connection connection = daoFactory.getConnection();
+        MailDAO mailDAO = daoFactory.getMailDAO(connection);
         Mail mail = null;
         try {
             mail = new Mail();
@@ -76,7 +74,7 @@ public class MailServiceImpl implements MailService {
         } catch (DAOException e) {
             LOGGER.warn("Mail was not created ", e);
         } finally {
-            DAO_FACTORY.putConnection(connection);
+            daoFactory.putConnection(connection);
         }
         return mail;
     }
@@ -151,18 +149,14 @@ public class MailServiceImpl implements MailService {
      * @return customized mail.
      */
     private Mail customizeMail(Mail mail, Map<String, String> parameters) {
-        //customize mail topic
         String head = mail.getHeadTemplate();
         for (Map.Entry<String, String> param : parameters.entrySet()) {
             head = head.replace(param.getKey(), param.getValue());
         }
-
-        //customize mail body
         String body = mail.getBodyTemplate();
         for (Map.Entry<String, String> param : parameters.entrySet()) {
             body = body.replace(param.getKey(), param.getValue());
         }
-
         Mail result = new Mail();
         result.setBodyTemplate(body);
         result.setHeadTemplate(head);
@@ -171,56 +165,56 @@ public class MailServiceImpl implements MailService {
 
     @Override
     public List<Mail> getAllMails() {
-        Connection connection = DAO_FACTORY.getConnection();
-        MailDAO mailDAO = DAO_FACTORY.getMailDAO(connection);
+        Connection connection = daoFactory.getConnection();
+        MailDAO mailDAO = daoFactory.getMailDAO(connection);
         List<Mail> mails = new ArrayList<>();
         try {
             mails = mailDAO.getAll();
         } catch (DAOException e) {
             LOGGER.error("Can't retrieve all mails", e);
         } finally {
-            DAO_FACTORY.putConnection(connection);
+            daoFactory.putConnection(connection);
         }
         return mails;
     }
 
     @Override
     public void updateMail(Mail mail) {
-        Connection connection = DAO_FACTORY.getConnection();
-        MailDAO mailDAO = DAO_FACTORY.getMailDAO(connection);
+        Connection connection = daoFactory.getConnection();
+        MailDAO mailDAO = daoFactory.getMailDAO(connection);
         try {
             mailDAO.update(mail);
         } catch (DAOException e) {
             LOGGER.error("Can't update mail", e);
         } finally {
-            DAO_FACTORY.putConnection(connection);
+            daoFactory.putConnection(connection);
         }
     }
 
     @Override
     public void deleteMail(Mail mail) {
-        Connection connection = DAO_FACTORY.getConnection();
-        MailDAO mailDAO = DAO_FACTORY.getMailDAO(connection);
+        Connection connection = daoFactory.getConnection();
+        MailDAO mailDAO = daoFactory.getMailDAO(connection);
         try {
             mailDAO.delete(mail);
         } catch (DAOException e) {
             LOGGER.error("Can't delete mail", e);
         } finally {
-            DAO_FACTORY.putConnection(connection);
+            daoFactory.putConnection(connection);
         }
     }
 
     @Override
     public Mail getMail(Integer id) {
-        Connection connection = DAO_FACTORY.getConnection();
-        MailDAO mailDAO = DAO_FACTORY.getMailDAO(connection);
+        Connection connection = daoFactory.getConnection();
+        MailDAO mailDAO = daoFactory.getMailDAO(connection);
         Mail mail = null;
         try {
             mail = mailDAO.get(id);
         } catch (DAOException e) {
             LOGGER.error("Can't get mail", e);
         } finally {
-            DAO_FACTORY.putConnection(connection);
+            daoFactory.putConnection(connection);
         }
         return mail;
     }
@@ -228,14 +222,14 @@ public class MailServiceImpl implements MailService {
     @Override
     public List<Mail> getByHeaderMailTemplate(String header) {
         List<Mail> mails = new ArrayList<>();
-        Connection connection = DAO_FACTORY.getConnection();
-        MailDAO mailDAO = DAO_FACTORY.getMailDAO(connection);
+        Connection connection = daoFactory.getConnection();
+        MailDAO mailDAO = daoFactory.getMailDAO(connection);
         try {
             mails = mailDAO.getByHeader(header);
         } catch (DAOException e) {
             LOGGER.error("Can't handle mail template", e);
         } finally {
-            DAO_FACTORY.putConnection(connection);
+            daoFactory.putConnection(connection);
         }
         return mails;
     }
@@ -260,9 +254,9 @@ public class MailServiceImpl implements MailService {
                                        Map<String, String> studentParameters) {
         CES ces = cesService.getCurrentCES();
         if (ces.getStatusId() == 3) {
-            Connection connection = DAO_FACTORY.getConnection();
-            UserDAO userDAO = DAO_FACTORY.getUserDAO(connection);
-            ApplicationDAO appDAO = DAO_FACTORY.getApplicationDAO(connection);
+            Connection connection = daoFactory.getConnection();
+            UserDAO userDAO = daoFactory.getUserDAO(connection);
+            ApplicationDAO appDAO = daoFactory.getApplicationDAO(connection);
             IntervieweeService intService = new IntervieweeServiceImpl();
             try {
                 int reminderTime = ces.getReminders();
@@ -297,7 +291,7 @@ public class MailServiceImpl implements MailService {
             } catch (DAOException e) {
                 LOGGER.error(e.getCause());
             } finally {
-                DAO_FACTORY.putConnection(connection);
+                daoFactory.putConnection(connection);
             }
         }
     }
@@ -331,15 +325,14 @@ public class MailServiceImpl implements MailService {
         }
     }
 
-
     @Override
     public void sendFinalNotification(Integer rejectId, Integer jobId, Integer courseId) {
         Integer cesId = cesService.getCurrentCES().getId();
-        Connection connection = DAO_FACTORY.getConnection();
+        Connection connection = daoFactory.getConnection();
         UserDAO userDAO = new PostgreUserDAO(connection);
-        Set<User> jobOfferUsers = new HashSet<>();
-        Set<User> courseAcceptedUsers = new HashSet<>();
-        Set<User> courseRejectedUsers = new HashSet<>();
+        Set<User> jobOfferUsers = null;
+        Set<User> courseAcceptedUsers = null;
+        Set<User> courseRejectedUsers = null;
         try {
             jobOfferUsers = userDAO.getJobOfferedUsers(cesId);
         } catch (DAOException e) {
@@ -357,7 +350,7 @@ public class MailServiceImpl implements MailService {
         } catch (DAOException e) {
             LOGGER.error("Can't retrieve course accepted students", e);
         } finally {
-            DAO_FACTORY.putConnection(connection);
+            daoFactory.putConnection(connection);
         }
 
         Mail mailRejectedTemplate = getMail(rejectId);
@@ -366,30 +359,17 @@ public class MailServiceImpl implements MailService {
 
         if ((!mailRejectedTemplate.getBodyTemplate().isEmpty()) && (!mailWorkOffer.getBodyTemplate().isEmpty()) &&
                 (!mailCourseOffer.getBodyTemplate().isEmpty())) {
-//            Async send
-//            final Set<User> finalJobOfferUsers = jobOfferUsers;
-//            final Set<User> finalCourseRejectedUsers = courseRejectedUsers;
-//            final Set<User> finalCourseAcceptedUsers = courseAcceptedUsers;
-//            schedulerMassDeliveryService.schedule(new Runnable() {
-//                public void run() {
-//                    massDelivery(finalJobOfferUsers, mailWorkOffer);
-//
-//                    massDelivery(finalCourseRejectedUsers, mailRejectedTemplate);
-//
-//                    massDelivery(finalCourseAcceptedUsers, mailCourseOffer);
-//                }
-//            }, new Date());
-            if (!jobOfferUsers.isEmpty()) {
+            if (jobOfferUsers != null) {
                 massDelivery(jobOfferUsers, mailWorkOffer);
             }
-            if (!courseRejectedUsers.isEmpty()) {
+            if (courseRejectedUsers != null) {
                 massDelivery(courseRejectedUsers, mailRejectedTemplate);
             }
-            if (!courseAcceptedUsers.isEmpty()) {
+            if (courseAcceptedUsers != null) {
                 massDelivery(courseAcceptedUsers, mailCourseOffer);
             }
         } else {
-            LOGGER.warn("Mails is not existing now! Someone could drop them.");
+            LOGGER.warn("Delivery failed, someone have dropped templates!");
         }
     }
 
@@ -415,6 +395,5 @@ public class MailServiceImpl implements MailService {
             sendMail(user.getEmail(), "Registration", "Welcome " + user.getName() + " ! \n " + DEFAULT_REG_MESSAGE);
         }
     }
-
 
 }

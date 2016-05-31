@@ -13,103 +13,88 @@ import ua.nc.entity.profile.StudentData;
 
 import java.sql.Connection;
 import java.util.List;
-import java.util.Objects;
 
 public class StudentServiceImpl implements StudentService {
     private final static Logger log = Logger.getLogger(StudentServiceImpl.class);
-    private final DAOFactory DAO_FACTORY = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
-
+    private final DAOFactory daoFactory = DAOFactory.getDAOFactory(DataBaseType.POSTGRESQL);
+    private final CESServiceImpl cesService = new CESServiceImpl();
     @Override
     public StudentData getStudents(Integer itemPerPage, Integer pageNumber) {
-        Connection connection = DAO_FACTORY.getConnection();
+        Connection connection = daoFactory.getConnection();
         try {
             PostgreApplicationTableDAO applicationTableDAO = new PostgreApplicationTableDAO(connection);
-            CESServiceImpl cesService = new CESServiceImpl();
             CES ces = cesService.getCurrentCES();
             StudentData studentData = applicationTableDAO.getApplicationsTable(ces.getId(), itemPerPage, pageNumber);
             return studentData;
         } catch (DAOException e) {
             log.warn("Can't get students", e.getCause());
+            return null;
         } finally {
-            DAO_FACTORY.putConnection(connection);
+            daoFactory.putConnection(connection);
         }
-        return null;
     }
 
     @Override
     public StudentData getStudents(Integer itemPerPage, Integer pageNumber, String pattern) {
-        Connection connection = DAO_FACTORY.getConnection();
+        Connection connection = daoFactory.getConnection();
         try {
             PostgreApplicationTableDAO applicationTableDAO = new PostgreApplicationTableDAO(connection);
-            CESServiceImpl cesService = new CESServiceImpl();
             CES ces = cesService.getCurrentCES();
             return applicationTableDAO.getApplicationsTable(ces.getId(), itemPerPage, pageNumber, pattern);
         } catch (DAOException e) {
             log.warn("Can't get students", e.getCause());
+            return null;
         } finally {
-            DAO_FACTORY.putConnection(connection);
+            daoFactory.putConnection(connection);
         }
-        return null;
     }
 
     @Override
     public StudentData getStudents(Integer itemPerPage, Integer pageNumber, Integer sortType, Boolean asc) {
-        Connection connection = DAO_FACTORY.getConnection();
+        Connection connection = daoFactory.getConnection();
         try {
             PostgreApplicationTableDAO applicationTableDAO = new PostgreApplicationTableDAO(connection);
-            CESServiceImpl cesService = new CESServiceImpl();
             CES ces = cesService.getCurrentCES();
+            log.info(sortType);
             return applicationTableDAO.getApplicationsTable(ces.getId(), itemPerPage, pageNumber, sortType, asc);
         } catch (DAOException e) {
             log.warn("Can't get students", e.getCause());
+            return null;
         } finally {
-            DAO_FACTORY.putConnection(connection);
+            daoFactory.putConnection(connection);
         }
-        return null;
     }
 
     @Override
     public Integer getSize(String pattern) {
-        Connection connection = DAO_FACTORY.getConnection();
+        Connection connection = daoFactory.getConnection();
         try {
             PostgreApplicationTableDAO applicationTableDAO = new PostgreApplicationTableDAO(connection);
-            CESServiceImpl cesService = new CESServiceImpl();
             CES ces = cesService.getCurrentCES();
             return applicationTableDAO.getApplicationsCount(ces.getId(), pattern);
         } catch (DAOException e) {
             log.warn("Can't get students", e.getCause());
         } finally {
-            DAO_FACTORY.putConnection(connection);
+            daoFactory.putConnection(connection);
         }
         return null;
     }
 
     @Override
     public void changeStatus(String action, List<Integer> studentsId) {
-        if (Objects.equals(action, "reject")) {
-            rejectStudents(studentsId);
-        } else if (Objects.equals(action, "unreject")) {
-            acceptStudents(studentsId);
+        if ("reject".equals(action)) {
+            changeApplicationStatus(studentsId, true);
+        } else if ("unreject".equals(action)) {
+            changeApplicationStatus(studentsId, false);
         } else {
             log.error(action + " action not supported");
         }
     }
-     @Override
-    public void rejectStudents(List<Integer> studentsId) {
-        changeApplicationStatus(studentsId, true);
-        log.info("List of applications was rejected " + studentsId);
-    }
-
-    @Override
-    public void acceptStudents(List<Integer> studentsId) {
-        changeApplicationStatus(studentsId, false);
-        log.info("List of applications was accepted " + studentsId);
-    }
 
     private void changeApplicationStatus(List<Integer> studentsId, Boolean status) {
-        Connection connection = DAO_FACTORY.getConnection();
-        ApplicationDAO applicationDAO = DAO_FACTORY.getApplicationDAO(connection);
-        CESDAO cesDAO = DAO_FACTORY.getCESDAO(connection);
+        Connection connection = daoFactory.getConnection();
+        ApplicationDAO applicationDAO = daoFactory.getApplicationDAO(connection);
+        CESDAO cesDAO = daoFactory.getCESDAO(connection);
         try {
             Integer cesId = cesDAO.getCurrentCES().getId();
             List<Application> applications = applicationDAO.getApplicationsByCesIdUserId(cesId, studentsId);
@@ -120,7 +105,7 @@ public class StudentServiceImpl implements StudentService {
         } catch (DAOException e) {
             log.error(e);
         } finally {
-            DAO_FACTORY.putConnection(connection);
+            daoFactory.putConnection(connection);
         }
     }
 

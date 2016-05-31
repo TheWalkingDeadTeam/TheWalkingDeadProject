@@ -41,8 +41,21 @@ public class RegistrationValidator implements Validator {
             errors.add(new ValidationError("name", "Name shouldn't be empty"));
         }
 
+        if (!(user.getSurname() != null && user.getSurname().isEmpty())) {
+            pattern = Pattern.compile(NAME_PATTERN);
+            matcher = pattern.matcher(user.getSurname());
+            if (!matcher.matches()) {
+                errors.add(new ValidationError("surname", "Enter correct name"));
+            }
+            if (user.getName().length() > 60) {
+                errors.add(new ValidationError("surname", "Surname length should be less than 60 "));
+            }
+        } else {
+            errors.add(new ValidationError("surname", "Surname shouldn't be empty"));
+        }
 
-        if (!(user.getEmail() != null && user.getName().isEmpty())) {
+
+        if (!(user.getEmail() != null && user.getEmail().isEmpty())) {
             pattern = Pattern.compile(EMAIL_PATTERN);
             matcher = pattern.matcher(user.getEmail());
             if (!matcher.matches()) {
@@ -59,7 +72,7 @@ public class RegistrationValidator implements Validator {
                 errors.add(new ValidationError("password", "Enter correct password"));
             }
             if (user.getPassword().length() < 6 || user.getPassword().length() > 60) {
-                errors.add(new ValidationError("password", "Password length should be between 6 and 32 "));
+                errors.add(new ValidationError("password", "Password length should be between 6 and 60 "));
             }
         } else {
             errors.add(new ValidationError("password", "Password shouldn't be empty"));

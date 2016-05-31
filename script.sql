@@ -67,7 +67,7 @@ CREATE TABLE Course_Enrollment_Session (
   CES_Status_ID int NOT NULL references CES_Status(CES_Status_ID)  ON DELETE RESTRICT ON UPDATE CASCADE,
   Reminders int NOT NULL CHECK (Reminders > 0),
   Interviewing_Time_Person int NOT NULL CHECK (Interviewing_Time_Person > 0),
-  Interviewing_Time_Day int NOT NULL CHECK (Interviewing_Time_Day > 0)
+  Interviewing_Time_Day int NOT NULL CHECK ((Interviewing_Time_Day > 0) AND (Interviewing_Time_Day < 24))
 );
 
 CREATE TABLE Interviewer_Participation (
@@ -289,10 +289,10 @@ INSERT INTO CES_Status (Name) VALUES
   ('PostInterviewing'),
   ('Closed');
 
-INSERT INTO Course_Enrollment_Session (Year, Start_Registration_Date, End_Registration_Date, Start_Interviewing_Date,
-                                       End_Interviewing_Date, Quota, CES_Status_ID, Reminders, Interviewing_Time_Person, Interviewing_Time_Day) VALUES
-  (2016, CURRENT_DATE, CURRENT_DATE+5,CURRENT_DATE+10,CURRENT_DATE+15,100,1,
-   72,10,100);
+INSERT INTO Course_Enrollment_Session (Year, Start_Registration_Date, End_Registration_Date,
+                                       Quota, CES_Status_ID, Reminders, Interviewing_Time_Person, Interviewing_Time_Day) VALUES
+  (2016, CURRENT_DATE+1, CURRENT_DATE+5,100,1,
+   72,10,4);
 
 INSERT INTO Interviewer_Participation (System_User_ID,CES_ID) VALUES
   (1,1),

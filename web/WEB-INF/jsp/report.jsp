@@ -12,7 +12,7 @@
 <html>
 
 <head>
-
+    <link rel="icon" type="image/png" sizes="32x32" href="/resources/images/ico.png"/>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
     <script src="/resources/js/report.js"></script>
     <link href="/resources/css/report.css" rel="stylesheet"/>
@@ -39,8 +39,11 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="r in rc.reportRows">
+            <tr  ng-hide="rc.reportTemplateTable" ng-repeat="r in rc.reportRows">
                 <td class="col-xs-1" ng-repeat="(key,val) in r">{{val}}</td>
+            </tr>
+            <tr ng-hide="rc.emptyTemplateTable == true">
+                <td colspan="{{rc.colspan}}"  class="vert-align text-center">Empty table</td>
             </tr>
             </tbody>
         </table>

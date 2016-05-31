@@ -43,6 +43,8 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.cyan-light_blue.min.css">
     <link rel="stylesheet" href="/resources/css/styles.css">
+    <link rel="stylesheet" href="/resources/css/notification/pnotify.custom.min.css">
+
 
 </head>
 <body>
@@ -118,6 +120,7 @@
 <script src="/resources/js/admin-create-user.js"></script>
 <script src="/resources/js/createNewUserValid.js"></script>
 <script src="/resources/js/adminmenu.js"></script>
+<script src="/resources/js/notification/pnotify.custom.min.js"></script>
 <script>
     $('#password').hideShowPassword(false, true);
 </script>
