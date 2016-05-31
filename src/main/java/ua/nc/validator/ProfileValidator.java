@@ -21,6 +21,11 @@ public class ProfileValidator implements Validator {
     private Matcher matcher;
     private int minNumberOfChoice = 1;
     private int maxNumberOfChoice = 4;
+
+
+    private double minNumb = 0;
+    private double maxNumb = 10;
+
 //    private String numbPattern = "([0-9]+.?[0-9]+)";
     private String numbPattern = "/^(0\\.[1-5]|[1-5][0-5]{0,2}(\\.[1-5])?)$/";
     private String telPattern = "^\\+\\d{12}$";
@@ -64,7 +69,7 @@ public class ProfileValidator implements Validator {
                 pattern = Pattern.compile(numbPattern);
                 matcher = pattern.matcher(profileField.getValues().get(0).getValue());
                 if (matcher.matches()) {
-                    return  new ValidationError(profileField.getFieldName(), "Please, enter number from "+minNumberOfChoice + " to " + maxNumberOfChoice);
+                    return  new ValidationError(profileField.getFieldName(), "Please, enter number from "+minNumb + " to " + maxNumb);
                 }
             }
 
@@ -129,4 +134,20 @@ public class ProfileValidator implements Validator {
     public void setMaxNumberOfChoice(int maxNumberOfChoice) {
         this.maxNumberOfChoice = maxNumberOfChoice;
     }
+    public double getMinNumb() {
+        return minNumb;
+    }
+
+    public void setMinNumb(double minNumb) {
+        this.minNumb = minNumb;
+    }
+
+    public double getMaxNumb() {
+        return maxNumb;
+    }
+
+    public void setMaxNumb(double maxNumb) {
+        this.maxNumb = maxNumb;
+    }
+
 }
