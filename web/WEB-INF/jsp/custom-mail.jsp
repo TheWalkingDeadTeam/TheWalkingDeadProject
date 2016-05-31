@@ -1,3 +1,4 @@
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%--
   Created by IntelliJ IDEA.
   User: Alexander
@@ -8,7 +9,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
 <html>
 <head>
-    <title>Mail Admin</title>
+    <title><spring:message code="locale.mail"/> Admin</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link href="<c:url value='/resources/css/app.css' />" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap.timepicker/0.2.6/css/bootstrap-timepicker.min.css">
@@ -40,11 +41,11 @@
                                 <label class="col-md-2 control-lable" for="file"></label>
                                 <div class="col-md-8">
                                     <input type="text" data-ng-model="mailHead" name="mailHead"
-                                           class="contact form-control input-sm" placeholder="Enter Topic"
+                                           class="contact form-control input-sm" placeholder="<spring:message code="locale.mailTopic"/>"
                                            ng-minlength="3" required/>
                                     <div class="has-error" ng-show="myForm.$dirty">
-                                        <span ng-show="myForm.mailHead.$error.required">This is a required field </span>
-                                        <span ng-show="myForm.mailHead.$error.minlength">Topic should be at least 3 symbols</span>
+                                        <span ng-show="myForm.mailHead.$error.required"><spring:message code="locale.requiredField"/> </span>
+                                        <span ng-show="myForm.mailHead.$error.minlength"><spring:message code="locale.minLength"/> 3</span>
                                     </div>
                                 </div>
                             </div>
@@ -54,18 +55,18 @@
                                 <label class="col-md-2 control-lable" for="file"></label>
                                 <div class="col-md-8">
                                     <textarea type="text" data-ng-model="mailBody" name="mailBody"
-                                              class="materialize-textarea" placeholder="Enter Body"
+                                              class="materialize-textarea" placeholder="<spring:message code="locale.body"/>"
                                               ng-minlength="3" required> </textarea>
                                     <div class="has-error" ng-show="myForm.$dirty">
-                                        <span ng-show="myForm.mailBody.$error.required">This is a required field </span>
-                                        <span ng-show="myForm.mailBody.$error.minlength">Body should be at least 3 symbols</span>
+                                        <span ng-show="myForm.mailBody.$error.required"><spring:message code="locale.requiredField"/></span>
+                                        <span ng-show="myForm.mailBody.$error.minlength"><spring:message code="locale.requiredField"/> 3</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="form-actions floatRight">
-                                <input type="submit" id="mail" value="Send"
+                                <input type="submit" id="mail" value="<spring:message code="locale.send"/>"
                                        class="btn btn-default waves-effect waves-light">
                             </div>
                         </div>

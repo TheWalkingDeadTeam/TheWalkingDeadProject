@@ -165,7 +165,7 @@
                 case 'number':
                     $('<div id=\"block' + i + '\">').appendTo($(divname));
                     $('<label>').attr({for: item.id}).text(item.fieldName + ' ').appendTo($('#block' + i));
-                    var attributes = {type: 'number', id: item.id, min: '0', max: '5', value: item.values[0].value};
+                    var attributes = {type: 'number', id: item.id, min: '0', max: '5', step: '0.1', value: item.values[0].value};
                     attributes.required = "required";
                     $('<input>')
                         .attr(attributes)
@@ -310,7 +310,7 @@
                         if (isChecked) {
                             attributes.checked = isChecked;
                         }
-                        $('<label>').attr({for: item_value.id + rand}).text(' ' + item_value.fieldValueName).appendTo($('#checkBlock' + i));
+                        $('<label>').attr({for: item_value.id + rand, style: "width:100%" }).text(' ' + item_value.fieldValueName).appendTo($('#checkBlock' + i));
                         $('<input>')
                             .attr(attributes)
                             .attr('ng-model', i)

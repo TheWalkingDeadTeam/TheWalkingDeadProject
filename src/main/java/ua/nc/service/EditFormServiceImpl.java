@@ -13,13 +13,11 @@ import ua.nc.entity.OptionWrapper;
 import ua.nc.entity.profile.Field;
 import ua.nc.entity.profile.ListType;
 import ua.nc.entity.profile.ListValue;
+import ua.nc.validator.ValidationError;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Neltarion on 12.05.2016.
@@ -142,16 +140,20 @@ public class EditFormServiceImpl implements EditFormService {
     public Integer newPositionNumber() {
         List<Field> allFields = getAllFields(getCES_ID());
 
-        Collections.sort(allFields, new Comparator<Field>() {
-            @Override
-            public int compare(Field o1, Field o2) {
-                return o1.getOrderNum() - o2.getOrderNum();
-            }
-        });
+        if (allFields == null || allFields.isEmpty() || allFields.size() == 0) {
+            return 1;
+        } else {
+            Collections.sort(allFields, new Comparator<Field>() {
+                @Override
+                public int compare(Field o1, Field o2) {
+                    return o1.getOrderNum() - o2.getOrderNum();
+                }
+            });
 
-        Integer lastNumber = allFields.get(allFields.size() - 1).getOrderNum();
+            Integer lastNumber = allFields.get(allFields.size() - 1).getOrderNum();
 
-        return lastNumber + 1;
+            return lastNumber + 1;
+        }
     }
 
     @Override
