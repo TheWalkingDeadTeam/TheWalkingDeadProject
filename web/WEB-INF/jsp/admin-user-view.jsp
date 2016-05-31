@@ -104,7 +104,7 @@
                     </a>
                 </td>
                 <td>
-                    <a>
+                    <a ng-click=" sortReverse = !sortReverse; sortType('role',sortReverse);">
                         <spring:message code="locale.roles"/>
                     </a>
                 </td>
