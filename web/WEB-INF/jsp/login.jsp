@@ -173,22 +173,6 @@
             <jsp:include page="forgot-password-slide.jsp"/>
         </div>
 
-        <div class="row">
-            <div class="inputBox col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                <sec:authorize access="isAuthenticated()">
-                    <div class="alert alert-info" role="alert">
-                        <div id="messageCheckPassword"></div>
-                        <form>
-                            <input id="changePassword" name="password" class="form-control" type="password" value=""
-                                   placeholder=<spring:message code="locale.password"/>>
-                            <button id="buttonChangePassword" class="btn btn-lg btn-primary btn-block changebtn">
-                                <spring:message code="locale.changePassword"/>
-                            </button>
-                        </form>
-                    </div>
-                </sec:authorize>
-            </div>
-        </div>
     </div>
 </section><!--/#cta-->
 
@@ -491,8 +475,6 @@
 <script src="/resources/js/test/jquery.inview.min.js"></script>
 <script src="/resources/js/test/wow.min.js"></script>
 <script src="/resources/js/test/main.js"></script>
-
-<script src="/resources/js/changePassword.js"></script>
 <script src="/resources/js/login.js"></script>
 <script src="/resources/js/logout.js"></script>
 <%--<script src="/resources/bootstrap/js/bootstrap.js"></script>--%>
