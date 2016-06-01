@@ -98,17 +98,6 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public void changeStatus(String action, List<Integer> userIds) {
-        if ("activate".equals(action)) {
-            activateUsers(userIds);
-        } else if ("deactivate".equals(action)) {
-            deactivateUsers(userIds);
-        } else {
-            LOGGER.error(action + " action not supported");
-        }
-    }
-
-    @Override
     public Integer getSize() {
         Connection connection = daoFactory.getConnection();
         PostgreUserTableDAO postgreUserTableDAO = new PostgreUserTableDAO(connection);
@@ -237,6 +226,17 @@ public class UserServiceImpl implements UserService {
             daoFactory.putConnection(connection);
         }
         return false;
+    }
+
+    @Override
+    public void changeStatus(String action, List<Integer> userIds) {
+        if ("activate".equals(action)) {
+            activateUsers(userIds);
+        } else if ("deactivate".equals(action)) {
+            deactivateUsers(userIds);
+        } else {
+            LOGGER.error(action + " action not supported");
+        }
     }
 
     public void activateUsers(List<Integer> userIds) {

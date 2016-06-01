@@ -22,9 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import ua.nc.dao.enums.UserRoles;
 import ua.nc.entity.User;
-import ua.nc.service.PhotoService;
-import ua.nc.service.PhotoServiceImpl;
-import ua.nc.service.UserDetailsImpl;
+import ua.nc.service.*;
 import ua.nc.service.user.UserDetailsServiceImpl;
 import ua.nc.service.user.UserService;
 import ua.nc.service.user.UserServiceImpl;
@@ -45,6 +43,7 @@ public class LoginController implements HandlerExceptionResolver {
     private final UserService userService = new UserServiceImpl();
     private final PhotoService photoService = new PhotoServiceImpl();
     private final UserDetailsService userDetailsService = new UserDetailsServiceImpl();
+    private final CESService cesService = new CESServiceImpl();
 
 
     @Autowired
@@ -62,6 +61,10 @@ public class LoginController implements HandlerExceptionResolver {
             if (request.isUserInRole(UserRoles.ROLE_ADMIN.name())
                     || request.isUserInRole(UserRoles.ROLE_HR.name())) {
                 LOGGER.info("Login and redirect to Admin page");
+                if (cesService.getCurrentCES() != null){
+                    cesService.checkRegistrationDate();
+                    cesService.checkInterviewDate();
+                }
                 return "admin";
 
             } else {
