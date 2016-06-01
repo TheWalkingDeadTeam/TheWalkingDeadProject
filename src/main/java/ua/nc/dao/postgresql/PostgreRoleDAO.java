@@ -131,10 +131,10 @@ public class PostgreRoleDAO extends AbstractPostgreDAO<Role, Integer> implements
     public void removeRolesFromUser(User user) throws DAOException {
         try (PreparedStatement statement = connection.prepareStatement(REMOVE_ROLES)) {
             statement.setInt(1, user.getId());
-            int count = statement.executeUpdate();
             int needed = getRolesCount(user.getId());
+            int count = statement.executeUpdate();
             if (count != needed) {
-                throw new DAOException("Only " + count + " rows where affected. Needed: " + needed);
+                throw new DAOException("Only " + count + " rows were affected. Needed: " + needed);
             }
         } catch (SQLException e) {
             throw new DAOException(e);

@@ -9,6 +9,7 @@
     <meta name="description" content="A front-end template that helps you build fast, modern mobile web apps.">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <title>ADMIN</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/resources/images/ico.png"/>
 
     <!-- Add to homescreen for Chrome on Android -->
     <meta name="mobile-web-app-capable" content="yes">

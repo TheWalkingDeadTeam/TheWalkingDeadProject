@@ -114,6 +114,8 @@ public class LoginController implements HandlerExceptionResolver {
             if (registeredUser == null) {
                 LOGGER.warn("Register failed " + user.getEmail());
                 errors.add(new ValidationError("register", "Register failed"));
+            } else {
+                LOGGER.info("Register successfully " + user.getEmail());
             }
 
         }

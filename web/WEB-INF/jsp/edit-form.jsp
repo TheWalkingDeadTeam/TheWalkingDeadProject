@@ -13,6 +13,7 @@
     <meta name="description" content="A front-end template that helps you build fast, modern mobile web apps.">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <title>Edit application form</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/resources/images/ico.png"/>
     <link rel="stylesheet" type="text/css" href="/resources/css/ng-sortable.min.css">
 
     <!-- Add to homescreen for Chrome on Android -->

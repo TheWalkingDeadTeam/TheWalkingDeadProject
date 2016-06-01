@@ -22,6 +22,18 @@ function download() {
 		}
 	};
 
+	var mainData = document.getElementsByClassName("container smprofile")[0];
+	var mainQuestions = mainData.getElementsByTagName("div")[2].getElementsByTagName("h4");
+	var mainAnswers = mainData.getElementsByTagName("div")[3].getElementsByTagName("span");
+	for (var i = 0; i < mainQuestions.length; i++) {
+		var question = mainQuestions[i].textContent;
+		var answer = mainAnswers[i].textContent;
+		dd.content.push({
+			text: question + answer,
+			style: 'plain'
+		});
+	}
+
 	var fields = document.getElementById("fields").getElementsByTagName("div");
 	for (var i = 0; i < fields.length; i++) {
 		var field = fields[i];

@@ -14,7 +14,7 @@ $(document).ready(function () {
             contentType: "application/json",
             data: JSON.stringify({
                 email: $('#j_username').val(),
-                password: $('#j_password').val(),
+                password: $('#j_password').val()
             }),
             success: function (response) {
                 if (response.length) {

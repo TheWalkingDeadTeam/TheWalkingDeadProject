@@ -183,22 +183,26 @@ studentView.controller('StudentCtrl', ["$http", "$scope", 'MailService', 'Notifi
         angular.element($("#tableUsers")).css('display', 'table');
         angular.element($("#pagination")).css('display', 'block');
     };
-    
+
     vm.getData = function () {
         vm.showSpin();
 
         vm.users = [];
-        $http.get(vm.selectUrl).success(function (response) {
-            vm.users = response;
-            if (vm.flagReload) {
-                $scope.headerStud.head = vm.users.header.map(function (item) {
-                    return item;
-                });
-                vm.flagReload = false
-            }
-        });
 
-
+        $http.get(vm.selectUrl)
+            .success(function (response) {
+                vm.users = response;
+                if (vm.flagReload) {
+                    $scope.headerStud.head = vm.users.header.map(function (item) {
+                        return item;
+                    });
+                    vm.flagReload = false
+                }
+            })
+            .error(function (errResponse) {
+                console.error('Error while get data');
+                alert('Error while get data');
+            });
         vm.hideSpin();
     };
     $scope.setSize = function (size) {
@@ -209,18 +213,23 @@ studentView.controller('StudentCtrl', ["$http", "$scope", 'MailService', 'Notifi
         vm.getData();
         vm.getSize();
     };
-    
+
     vm.getSize = function () {
         if (vm.pattern == null) {
             $http.get("students/size").success(function (response) {
                 vm.total_count = response;
+            }).error(function (errResponse) {
+                console.error('Error while get size');
+                alert('Error while get size');
             });
         } else {
             $http.get("students/size/" + vm.pattern).success(function (response) {
                 vm.total_count = response;
+            }).error(function (errResponse) {
+                console.error('Error while get size');
+                alert('Error while get size');
             });
         }
-        // elem.find('.modal-content').style.display = "none";
 
     };
 
@@ -264,7 +273,7 @@ studentView.controller('StudentCtrl', ["$http", "$scope", 'MailService', 'Notifi
 
     };
 
-    $scope.sortType = function (type,revers) {
+    $scope.sortType = function (type, revers) {
         vm.showSpin();
         vm.order_by = type;
         vm.sortReverse = revers;

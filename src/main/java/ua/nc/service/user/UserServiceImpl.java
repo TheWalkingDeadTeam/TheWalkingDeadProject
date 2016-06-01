@@ -172,10 +172,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         Connection connection = daoFactory.getConnection();
         UserDAO userDAO = daoFactory.getUserDAO(connection);
         RoleDAO roleDAO = daoFactory.getRoleDAO(connection);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
         Set<Role> roles = new HashSet<>();
         try {
             for (Role role : user.getRoles()) {
@@ -279,6 +279,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+
     @Override
     public void changeRoles(String email, Set<Role> roles) {
         Connection connection = daoFactory.getConnection();
@@ -293,8 +294,9 @@ public class UserServiceImpl implements UserService {
             roleDAO.removeRolesFromUser(user);
             roleDAO.setRolesToUser(newRoles, user);
         } catch (DAOException e) {
+            LOGGER.warn(e.getCause());
+        } finally {
             daoFactory.putConnection(connection);
-            LOGGER.warn("Cannot find user with email " + email + " in DB.");
         }
     }
 }

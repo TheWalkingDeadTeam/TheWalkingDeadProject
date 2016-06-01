@@ -1,7 +1,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%--
   Created by IntelliJ IDEA.
-  User: Alexander
+  User: Shylov
   Date: 29.04.2016
   Time: 22:26
   To change this template use File | Settings | File Templates.
@@ -17,11 +17,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <title>Interviewers</title>
 
-    <!-- Add to homescreen for Chrome on Android -->
+
     <meta name="mobile-web-app-capable" content="yes">
     <link rel="icon" sizes="192x192" href="images/android-desktop.png">
 
-    <!-- Add to homescreen for Safari on iOS -->
+
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-title" content="Material Design Lite">
@@ -30,17 +30,13 @@
     <link rel="stylesheet" href="/resources/css/notification/angular-ui-notification.min.css">
 
 
-    <!-- Tile icon for Win8 (144x144 + tile color) -->
+
     <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
     <meta name="msapplication-TileColor" content="#3372DF">
 
     <link rel="icon" type="image/png" sizes="32x32" href="/resources/images/ico.png"/>
 
 
-    <!-- SEO: If your mobile URL is different from the desktop URL, add a canonical link to the desktop page https://developers.google.com/webmasters/smartphone-sites/feature-phones -->
-    <!--
-    <link rel="canonical" href="http://www.example.com/">
-    -->
 
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
@@ -49,17 +45,6 @@
     <link rel="stylesheet" href="/resources/css/styles.css">
     <link rel="stylesheet" href="/resources/css/notification/angular-ui-notification.min.css">
 
-    <style>
-        #view-source {
-            position: fixed;
-            display: block;
-            right: 0;
-            bottom: 0;
-            margin-right: 40px;
-            margin-bottom: 40px;
-            z-index: 900;
-        }
-    </style>
 </head>
 <body>
 <main ng-controller="InterCtrl as data"
@@ -97,12 +82,15 @@
 
 
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
-                <label class="mdl-button mdl-js-button mdl-button--icon" for="search">
-                    <i class="material-icons"><spring:message code="locale.search"/></i>
+                <label class="mdl-button mdl-js-button mdl-button--icon" for="search" style="bottom: 30px;">
+                    <i class="material-icons">search</i>
                 </label>
-                <div class="mdl-textfield__expandable-holder">
-                    <form ng-submit = "searchFiltr(field)"><input  class="mdl-textfield__input" type="text" id="search" name="field" ng-model="field"></form>
-                    <label class="mdl-textfield__label" for="search"><spring:message code="locale.enterQuery"/>...</label>
+                <div class="mdl-textfield__expandable-holder" style="padding: 0px">
+                    <form ng-submit="searchFiltr(field)">
+                        <input class="mdl-textfield__input" type="text" id="search" style="border-bottom: 1px solid #9e9e9e;
+                        box-shadow: none"
+                               name="field" ng-model="field"></form>
+
                 </div>
             </div>
             <div class="cssload-thecube">
@@ -146,7 +134,7 @@
                     </a>
                 </td>
                 <td>
-                    <a>
+                    <a ng-click="sortReverse = !sortReverse; sortType('participation',sortReverse);">
                         <spring:message code="locale.status"/>
                     </a>
                 </td>
@@ -154,7 +142,7 @@
             </thead>
             <tbody>
             <tr ng-show="data.users.length <= 0">
-                <td colspan="5" style="text-align:center;"><spring:message code="locale.plsWait"/>...</td>
+                <td colspan="5" style="text-align:center;"><spring:message code="locale.emptyTable"/>...</td>
             </tr>
             <tr dir-paginate="user in data.users|itemsPerPage:data.itemsPerPage" total-items="data.total_count">
                 <td><input type="checkbox" checklist-model="dataStudents.studId" checklist-value="user.id">
@@ -165,8 +153,9 @@
                 <td>{{user.surname}}</td>
                 <td>{{user.email}}</td>
                      <td>{{user.role}}</td>
-                <td ng-style="{opacity:0.5,'background-color':'{{user.participation ? 'green' : 'red'}}'}"
+                <td ng-style="{opacity:0.8,'background-color':'{{user.participation ? 'green' : 'red'}}'}"
                 title="{{user.participation}}">
+
 
                 </td>
             </tr>

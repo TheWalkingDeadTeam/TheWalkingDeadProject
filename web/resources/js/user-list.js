@@ -28,6 +28,9 @@ app.controller('UserCtrl', ["$http", "$scope", function ($http, $scope) {
         vm.users = [];
         $http.get(vm.selectUrl).success(function (response) {
             vm.users = response;
+        }).error(function (errResponse) {
+            console.error('Error while get data');
+            alert('Error while get data');
         });
 
         hideSpin();
@@ -36,10 +39,16 @@ app.controller('UserCtrl', ["$http", "$scope", function ($http, $scope) {
         if(vm.pattern == null) {
             $http.get("users/size").success(function (response) {
                 vm.total_count = response;
+            }).error(function (errResponse) {
+                console.error('Error while get size');
+                alert('Error while get size');
             });
         }else{
             $http.get("users/size/"+vm.pattern).success(function (response) {
                 vm.total_count = response;
+            }).error(function (errResponse) {
+                console.error('Error while get size');
+                alert('Error while get size');
             });
         }
 

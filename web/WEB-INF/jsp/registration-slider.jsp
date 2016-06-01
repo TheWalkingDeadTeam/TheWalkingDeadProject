@@ -34,7 +34,6 @@
             <div class="correct-email"></div>
             <input id="password" name="password" class="form-control login-field  login-field-password" type="password" value="" placeholder=<spring:message code="locale.password"/>>
             <div class="correct-password"></div>
-            <div class="g-recaptcha" data-sitekey="6LdZ1R8TAAAAAMwVjN-N-oTtZR51Li8QmKoSYEiF"></div>
             <button id="buttonRegistration" class="btn btn-lg btn-primary btn-block" style="margin-top: 10px;"><spring:message code="locale.register"/></button>
         </form>
     </sec:authorize>

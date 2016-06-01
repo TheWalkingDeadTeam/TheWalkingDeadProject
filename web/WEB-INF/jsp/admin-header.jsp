@@ -8,7 +8,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+
 <header class="demo-header mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600">
+    <link rel="icon" type="image/png" sizes="32x32" href="/resources/images/ico.png"/>
     <div class="mdl-layout__header-row">
         <%--   <span class="mdl-layout-title">Netcracker</span>--%>
         <a class="navbar-brand brand-img" href="">

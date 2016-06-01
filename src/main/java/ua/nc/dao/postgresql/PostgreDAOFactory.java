@@ -15,7 +15,7 @@ import java.sql.Connection;
  */
 public class PostgreDAOFactory extends DAOFactory {
     private final static Logger LOGGER = Logger.getLogger(PostgreDAOFactory.class);
-    private static ConnectionPool connectionPool = ConnectionPool.getConnectionPool(DataBaseType.POSTGRESQL);
+    private static ConnectionPool connectionPool = PostgreConnectionPool.getInstance();
 
 
     @Override

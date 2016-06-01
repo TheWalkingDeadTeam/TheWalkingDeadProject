@@ -31,6 +31,9 @@ app.controller('IntervieweeCtrl', ["$http", "$scope", function ($http, $scope) {
         vm.users = [];
         $http.get(vm.selectUrl).success(function (response) {
             vm.users = response;
+        }).error(function (errResponse) {
+            console.error('Error while get data');
+            alert('Error while get data');
         });
 
         vm.hideSpin();
@@ -41,10 +44,16 @@ app.controller('IntervieweeCtrl', ["$http", "$scope", function ($http, $scope) {
         if(vm.pattern == null) {
             $http.get("interviewee/size").success(function (response) {
                 vm.total_count = response;
+            }).error(function (errResponse) {
+                console.error('Error while get size');
+                alert('Error while get size');
             });
         }else{
             $http.get("interviewee/size/"+vm.pattern).success(function (response) {
                 vm.total_count = response;
+            }).error(function (errResponse) {
+                console.error('Error while get size');
+                alert('Error while get size');
             });
         }
 
@@ -89,7 +98,7 @@ app.controller('IntervieweeCtrl', ["$http", "$scope", function ($http, $scope) {
         vm.showSpin();
         vm.order_by = type;
         vm.selectUrl = "interviewee/list/" + vm.itemsPerPage + "/" + vm.pageno + "/" + vm.order_by + "/" + $scope.sortReverse;
-        vm.getData()
+        vm.getData();
         vm.getSize();
     };
 

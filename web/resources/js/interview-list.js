@@ -185,6 +185,9 @@ interView.controller('InterCtrl', ["$http", "$scope",'MailService','Notification
         vm.users = [];
         $http.get(vm.selectUrl).success(function (response) {
             vm.users = response;
+        }).error(function (errResponse) {
+            console.error('Error while get data');
+            alert('Error while get data');
         });
 
         vm.hideSpin();
@@ -193,10 +196,16 @@ interView.controller('InterCtrl', ["$http", "$scope",'MailService','Notification
         if(vm.pattern == null) {
             $http.get("interviewers/size").success(function (response) {
                 vm.total_count = response;
+            }).error(function (errResponse) {
+                console.error('Error while get size');
+                alert('Error while get size');
             });
         }else{
             $http.get("interviewers/size/"+vm.pattern).success(function (response) {
                 vm.total_count = response;
+            }).error(function (errResponse) {
+                console.error('Error while get size');
+                alert('Error while get size');
             });
         }
 

@@ -77,7 +77,8 @@ public class ReportController {
     }
 
     @RequestMapping(value = "/reports/{id}", method = RequestMethod.POST)
-    public ResponseEntity<ReportTemplate> updateReport(@PathVariable("id") Integer id, @RequestBody ReportTemplate report) {
+    public ResponseEntity<ReportTemplate> updateReport(@PathVariable("id") Integer id,
+                                                       @RequestBody ReportTemplate report) {
         ReportTemplate reportCurrent = reportService.getReportById(id);
         if (reportCurrent == null) {
             LOGGER.info("Report " + id + " not found");

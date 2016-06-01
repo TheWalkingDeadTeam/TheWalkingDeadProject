@@ -15,7 +15,7 @@ import java.util.List;
  * Created by Rangar on 26.04.2016.
  */
 public class PostgreFieldTypeDAO extends AbstractPostgreDAO<FieldType, Integer> implements FieldTypeDAO {
-    public PostgreFieldTypeDAO(Connection connection) {
+    public  PostgreFieldTypeDAO(Connection connection) {
         super(connection);
     }
 
